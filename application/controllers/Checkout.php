@@ -268,34 +268,65 @@ class Checkout extends CI_Controller {
         $status = $notification['status'] ?? '';
 
         if ($status === 'completed') {
-            $this->db->where('id', $tx_id)->update('transactions', array(
-                'status' => 'approved',
-                'payment_channel' => $notification['payment_method'] ?? '',
-                'gateway_tx_id' => $notification['order_id'] ?? '',
-            ));
-
-            if ($tx->item_type === 'course') {
-                $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
-            } elseif ($tx->item_type === 'seminar') {
-                $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
-            }
-
-            $this->load->helper('mail');
-            $user = $this->db->where('id', $tx->user_id)->get('users')->row();
-            if ($user) {
-                send_email($user->email,
-                    t('Pembayaran Diterima', 'Payment Received'),
-                    email_template(
-                        t('Pembayaran Berhasil!', 'Payment Successful!'),
-                        t('Pembayaran Anda untuk transaksi #' . $tx_id . ' telah diterima. Anda sekarang terdaftar!', 'Your payment for transaction #' . $tx_id . ' has been received. You are now enrolled!'),
-                        t('Lihat Dashboard', 'View Dashboard'),
-                        base_url('dashboard')
-                    )
-                );
-            }
+            $this->_approve_transaction($tx, $notification);
         }
 
         http_response_code(200);
         echo json_encode(array('status' => 'ok'));
+    }
+
+    public function pakasir_check($tx_id) {
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+        if (!$tx || $tx->user_id != $this->session->userdata('user_id')) {
+            echo json_encode(array('status' => 'error', 'message' => 'Invalid transaction'));
+            return;
+        }
+
+        if ($tx->status === 'approved') {
+            echo json_encode(array('status' => 'completed', 'message' => 'Payment received'));
+            return;
+        }
+
+        if (empty($tx->gateway_tx_id)) {
+            echo json_encode(array('status' => 'pending', 'message' => 'Waiting for payment'));
+            return;
+        }
+
+        $result = $this->pakasir->get_transaction_detail($tx->gateway_tx_id, $tx->amount);
+
+        if (isset($result['transaction']) && $result['transaction']['status'] === 'completed') {
+            $this->_approve_transaction($tx, $result['transaction']);
+            echo json_encode(array('status' => 'completed', 'message' => 'Payment received'));
+        } else {
+            echo json_encode(array('status' => 'pending', 'message' => 'Waiting for payment'));
+        }
+    }
+
+    private function _approve_transaction($tx, $notification = array()) {
+        $this->db->where('id', $tx->id)->update('transactions', array(
+            'status' => 'approved',
+            'payment_channel' => $notification['payment_method'] ?? '',
+            'gateway_tx_id' => $notification['order_id'] ?? $tx->gateway_tx_id,
+        ));
+
+        if ($tx->item_type === 'course') {
+            $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
+        } elseif ($tx->item_type === 'seminar') {
+            $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
+        }
+
+        $this->load->helper('mail');
+        $user = $this->db->where('id', $tx->user_id)->get('users')->row();
+        if ($user) {
+            send_email($user->email,
+                t('Pembayaran Diterima', 'Payment Received'),
+                email_template(
+                    t('Pembayaran Berhasil!', 'Payment Successful!'),
+                    t('Pembayaran Anda untuk transaksi #' . $tx->id . ' telah diterima.', 'Your payment for transaction #' . $tx->id . ' has been received.'),
+                    t('Lihat Dashboard', 'View Dashboard'),
+                    base_url('dashboard')
+                )
+            );
+        }
     }
 }

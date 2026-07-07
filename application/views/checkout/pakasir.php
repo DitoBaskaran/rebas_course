@@ -68,12 +68,18 @@
                 </div>
                 <?php endif; ?>
 
-                <div class="d-flex gap-3 pt-3">
-                    <a href="<?php echo base_url('dashboard'); ?>" class="btn btn-dark w-100 py-3 rounded-pill fw-semibold">
-                        <i class="fas fa-check-circle me-2"></i> <?php echo t('Sudah Bayar', 'I\'ve Paid'); ?>
-                    </a>
+                <!-- Status & Actions -->
+                <div id="paymentStatus" class="text-center mb-3 d-none">
+                    <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+                    <span class="small text-secondary" id="statusMessage"><?php echo t('Memeriksa pembayaran...', 'Checking payment...'); ?></span>
+                </div>
+
+                <div class="d-flex flex-column gap-2 pt-3">
+                    <button type="button" class="btn btn-success w-100 py-3 rounded-pill fw-semibold" id="checkPaymentBtn" onclick="checkPayment()">
+                        <i class="fas fa-search me-2"></i> <?php echo t('Cek Status Pembayaran', 'Check Payment Status'); ?>
+                    </button>
                     <a href="<?php echo base_url('checkout/confirm/' . $tx->id); ?>" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-semibold">
-                        <?php echo t('Kembali', 'Back'); ?>
+                        <i class="fas fa-arrow-left me-2"></i> <?php echo t('Kembali ke Konfirmasi', 'Back to Confirmation'); ?>
                     </a>
                 </div>
             </div>
@@ -95,6 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
             correctLevel: QRCode.CorrectLevel.H
         });
     }
+
+    // Auto-check payment status every 10 seconds
+    checkPaymentInterval = setInterval(autoCheckPayment, 10000);
 });
 
 function copyQR() {
@@ -104,5 +113,49 @@ function copyQR() {
         document.execCommand('copy');
         alert('<?php echo t('QR string berhasil disalin!', 'QR string copied!'); ?>');
     }
+}
+
+function checkPayment() {
+    var btn = document.getElementById('checkPaymentBtn');
+    var status = document.getElementById('paymentStatus');
+    var msg = document.getElementById('statusMessage');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> <?php echo t('Memeriksa...', 'Checking...'); ?>';
+    status.classList.remove('d-none');
+    msg.textContent = '<?php echo t('Memeriksa pembayaran...', 'Checking payment...'); ?>';
+
+    fetch('<?php echo base_url('checkout/pakasir_check/' . $tx->id); ?>')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.status === 'completed') {
+                clearInterval(checkPaymentInterval);
+                status.innerHTML = '<div class="alert alert-success border-0 mb-0 py-2 small">✅ ' + data.message + ' <?php echo t('Mengalihkan...', 'Redirecting...'); ?></div>';
+                setTimeout(function() { window.location.href = '<?php echo base_url('dashboard'); ?>'; }, 2000);
+            } else {
+                status.classList.add('d-none');
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-search me-2"></i> <?php echo t('Cek Status Pembayaran', 'Check Payment Status'); ?>';
+            }
+        })
+        .catch(function() {
+            status.classList.add('d-none');
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-search me-2"></i> <?php echo t('Cek Status Pembayaran', 'Check Payment Status'); ?>';
+        });
+}
+
+function autoCheckPayment() {
+    fetch('<?php echo base_url('checkout/pakasir_check/' . $tx->id); ?>')
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.status === 'completed') {
+                clearInterval(checkPaymentInterval);
+                var status = document.getElementById('paymentStatus');
+                status.classList.remove('d-none');
+                status.innerHTML = '<div class="alert alert-success border-0 mb-0 py-2 small">✅ ' + data.message + ' <?php echo t('Mengalihkan...', 'Redirecting...'); ?></div>';
+                setTimeout(function() { window.location.href = '<?php echo base_url('dashboard'); ?>'; }, 2000);
+            }
+        });
 }
 </script>
