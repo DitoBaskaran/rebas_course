@@ -352,6 +352,11 @@ if (!function_exists('seed_default_settings')) {
       array('key' => 'payment_account_number', 'value' => '1234567890', 'type' => 'text', 'group' => 'general', 'label' => 'Account Number', 'sort_order' => 71),
       array('key' => 'payment_account_name', 'value' => 'REBAS COURSE', 'type' => 'text', 'group' => 'general', 'label' => 'Account Holder Name', 'sort_order' => 72),
 
+      // Pakasir Payment Gateway
+      array('key' => 'pakasir_slug', 'value' => '', 'type' => 'text', 'group' => 'payment', 'label' => 'Pakasir Project Slug', 'sort_order' => 1),
+      array('key' => 'pakasir_api_key', 'value' => '', 'type' => 'text', 'group' => 'payment', 'label' => 'Pakasir API Key', 'sort_order' => 2),
+      array('key' => 'pakasir_sandbox', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Pakasir Sandbox Mode', 'sort_order' => 3),
+
     );
 
     foreach ($defaults as $d) {

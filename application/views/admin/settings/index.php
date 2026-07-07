@@ -18,6 +18,9 @@
         <a class="pill <?php echo $active_group === 'footer' ? 'active' : ''; ?>" href="<?php echo base_url('admin/settings/footer'); ?>">
             <i data-lucide="shovel" style="width:16px;height:16px;"></i> Footer
         </a>
+        <a class="pill <?php echo $active_group === 'payment' ? 'active' : ''; ?>" href="<?php echo base_url('admin/settings/payment'); ?>">
+            <i data-lucide="credit-card" style="width:16px;height:16px;"></i> Payment
+        </a>
     </div>
     <div class="d-flex align-items-center justify-content-between mb-4">
         <div>

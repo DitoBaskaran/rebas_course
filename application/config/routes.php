@@ -86,6 +86,8 @@ $route['admin/save_essay_grade/(:num)/(:num)'] = 'admin/save_essay_grade/$1/$2';
 // Payment gateway routes
 $route['checkout/midtrans_snap/(:num)'] = 'checkout/midtrans_snap/$1';
 $route['checkout/midtrans_callback'] = 'checkout/midtrans_callback';
+$route['checkout/pakasir/(:any)'] = 'checkout/pakasir_pay/$1';
+$route['checkout/pakasir_webhook'] = 'checkout/pakasir_webhook';
 
 // Referral redirect
 $route['ref/(:any)'] = 'referral/index/$1';

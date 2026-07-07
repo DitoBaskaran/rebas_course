@@ -35,8 +35,44 @@
                 <div class="mb-4">
                     <h6 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
                         <span class="icon-28 bg-primary-subtle text-primary rounded-2 d-inline-flex align-items-center justify-content-center"><i class="fas fa-info-circle"></i></span>
-                        <span>Panduan Pembayaran</span>
+                        <span><?php echo t('Pilih Metode Pembayaran', 'Choose Payment Method'); ?></span>
                     </h6>
+
+                    <?php $pakasir_configured = FALSE; ?>
+                    <?php if (function_exists('setting')): ?>
+                        <?php $pakasir_configured = !empty(setting('pakasir_slug', '')) && !empty(setting('pakasir_api_key', '')); ?>
+                    <?php endif; ?>
+
+                    <?php if ($pakasir_configured): ?>
+                    <div class="mb-3">
+                        <a href="<?php echo base_url('checkout/pakasir/' . $transaction->id . '?method=qris'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none" style="transition: all 0.2s;">
+                            <div class="bg-primary bg-opacity-10 text-primary rounded-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-qrcode"></i>
+                            </div>
+                            <div class="flex-fill">
+                                <span class="fw-bold text-dark small d-block"><?php echo t('Bayar via QRIS', 'Pay via QRIS'); ?></span>
+                                <span class="text-secondary small"><?php echo t('Scan QR dari GoPay, OVO, DANA, dll.', 'Scan QR from GoPay, OVO, DANA, etc.'); ?></span>
+                            </div>
+                            <i class="fas fa-chevron-right text-primary"></i>
+                        </a>
+                    </div>
+                    <div class="mb-3">
+                        <a href="<?php echo base_url('checkout/pakasir/' . $transaction->id . '?method=bri_va'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 bg-light border text-decoration-none" style="transition: all 0.2s;">
+                            <div class="bg-dark bg-opacity-10 text-dark rounded-2 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="flex-fill">
+                                <span class="fw-bold text-dark small d-block"><?php echo t('Bayar via Virtual Account', 'Pay via Virtual Account'); ?></span>
+                                <span class="text-secondary small"><?php echo t('BRI, BNI, Mandiri, dll.', 'BRI, BNI, Mandiri, etc.'); ?></span>
+                            </div>
+                            <i class="fas fa-chevron-right text-secondary"></i>
+                        </a>
+                    </div>
+                    <hr class="my-4 opacity-25">
+                    <p class="text-secondary small text-center mb-0"><?php echo t('Atau bayar manual via transfer bank:', 'Or pay manually via bank transfer:'); ?></p>
+                    <?php else: ?>
+                    <p class="text-secondary small mb-4"><?php echo t('Transfer sesuai nominal di bawah untuk mengaktifkan akses Anda.', 'Transfer the amount below to activate your access.'); ?></p>
+                    <?php endif; ?>
                     
                     <?php $bank_name = setting('payment_bank_name', 'Bank Mandiri'); ?>
                     <?php $account_number = setting('payment_account_number', '1234567890'); ?>

@@ -733,7 +733,7 @@ class Admin extends CI_Controller {
 
     // ================ SETTINGS ================
     public function settings($group = 'general') {
-        $valid_groups = array('general', 'appearance', 'hero', 'homepage', 'social', 'footer');
+        $valid_groups = array('general', 'appearance', 'hero', 'homepage', 'social', 'footer', 'payment');
         if (!in_array($group, $valid_groups)) $group = 'general';
 
         $data['active_page'] = 'settings-' . $group;
