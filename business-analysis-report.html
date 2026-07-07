@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REBAS COURSE — Business Analysis Report 2026</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --primary: #6366f1; --primary-dark: #4f46e5; --accent: #06b6d4;
+    --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+    --dark: #0f172a; --gray-50: #f8fafc; --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0; --gray-300: #cbd5e1; --gray-400: #94a3b8;
+    --gray-500: #64748b; --gray-600: #475569; --gray-700: #334155;
+    --gray-800: #1e293b; --gray-900: #0f172a;
+    --gradient-primary: linear-gradient(135deg, #6366f1, #06b6d4);
+    --gradient-warm: linear-gradient(135deg, #f59e0b, #ef4444);
+    --gradient-dark: linear-gradient(135deg, #0f172a, #1e293b);
+  }
+  body { font-family: 'Inter', sans-serif; color: var(--gray-800); background: #fff; line-height: 1.7; font-size: 10.5pt; -webkit-font-smoothing: antialiased; }
+  h1,h2,h3,h4,h5,h6 { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; letter-spacing: -0.02em; font-weight: 800; }
+  .page { max-width: 210mm; margin: 0 auto; padding: 0; background: #fff; }
+
+  .cover { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: var(--gradient-dark); color: #fff; padding: 4rem 3rem; position: relative; overflow: hidden; }
+  .cover::before { content: ''; position: absolute; top: -30%; right: -20%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); border-radius: 50%; }
+  .cover::after { content: ''; position: absolute; bottom: -20%; left: -10%; width: 400px; height: 400px; background: radial-gradient(circle, rgba(6,182,212,0.1) 0%, transparent 70%); border-radius: 50%; }
+  .cover * { position: relative; z-index: 1; }
+  .cover .badge { display: inline-block; padding: 0.4rem 1.2rem; border-radius: 100px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); margin-bottom: 2rem; }
+  .cover h1 { font-size: 3rem; font-weight: 900; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 1rem; }
+  .cover h1 span { background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cover .subtitle { font-size: 1.1rem; color: rgba(255,255,255,0.6); max-width: 550px; margin-bottom: 3rem; }
+  .cover .stats { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2rem; }
+  .cover .stats .stat { text-align: center; padding: 1rem 1.5rem; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); }
+  .cover .stats .stat .num { font-size: 1.75rem; font-weight: 900; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .cover .stats .stat .lbl { font-size: 0.65rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 0.2rem; }
+  .cover .meta { font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+  .content { padding: 3rem; }
+  .toc { margin-bottom: 3rem; padding: 2rem; background: var(--gray-50); border-radius: 16px; border: 1px solid var(--gray-200); break-inside: avoid; }
+  .toc h2 { font-size: 1.2rem; margin-bottom: 1rem; }
+  .toc ol { padding-left: 1.2rem; columns: 2; column-gap: 2rem; }
+  .toc li { margin-bottom: 0.3rem; font-size: 0.85rem; }
+  .toc a { color: var(--primary); text-decoration: none; }
+
+  .section { margin-bottom: 3rem; break-inside: avoid; page-break-inside: avoid; }
+  .section-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--gray-200); }
+  .section-header .num { width: 36px; height: 36px; border-radius: 10px; background: var(--gradient-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.85rem; flex-shrink: 0; }
+  .section-header h2 { font-size: 1.3rem; flex: 1; }
+  .section-header .tag { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.7rem; border-radius: 100px; }
+  .tag-done { background: #f0fdf4; color: var(--success); }
+  .tag-pending { background: #fff7ed; color: var(--warning); }
+  .tag-critical { background: #fef2f2; color: var(--danger); }
+  .tag-high { background: #eef2ff; color: var(--primary); }
+
+  h3 { font-size: 1.05rem; margin-bottom: 0.75rem; margin-top: 1.5rem; color: var(--gray-900); }
+  h4 { font-size: 0.9rem; margin-bottom: 0.5rem; margin-top: 1rem; color: var(--gray-700); }
+  p { margin-bottom: 0.75rem; color: var(--gray-600); font-size: 0.85rem; line-height: 1.7; }
+  strong { color: var(--gray-800); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 0.75rem; }
+
+  .card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 1.25rem; break-inside: avoid; }
+  .card h4 { margin-top: 0; }
+  .card p:last-child { margin-bottom: 0; }
+  .card-accent { border-left: 4px solid var(--primary); }
+  .card-success { border-left: 4px solid var(--success); }
+  .card-warning { border-left: 4px solid var(--warning); }
+  .card-danger { border-left: 4px solid var(--danger); }
+
+  .comparison { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin: 1rem 0; }
+  .comparison th { background: var(--gray-100); padding: 0.6rem 0.8rem; text-align: left; font-weight: 700; border-bottom: 2px solid var(--gray-200); }
+  .comparison td { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--gray-100); }
+  .comparison tr:last-child td { border-bottom: none; }
+  .comparison .check { color: var(--success); }
+  .comparison .cross { color: var(--danger); }
+
+  .divider { height: 1px; background: var(--gray-200); margin: 2rem 0; }
+  .page-break { page-break-before: always; }
+
+  .status-bar { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+  .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .dot-done { background: var(--success); }
+  .dot-pending { background: var(--warning); }
+  .dot-future { background: var(--gray-300); }
+
+  .progress-track { height: 6px; background: var(--gray-100); border-radius: 100px; overflow: hidden; margin: 1rem 0; }
+  .progress-track .fill { height: 100%; border-radius: 100px; background: var(--gradient-primary); }
+
+  .timeline { position: relative; padding-left: 2rem; margin: 1.5rem 0; }
+  .timeline::before { content: ''; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: var(--gray-200); }
+  .timeline-item { position: relative; margin-bottom: 1.5rem; }
+  .timeline-item::before { content: ''; position: absolute; left: -2rem; top: 0.3rem; width: 16px; height: 16px; border-radius: 50%; background: #fff; border: 3px solid var(--primary); }
+  .timeline-item.done::before { border-color: var(--success); background: var(--success); }
+  .timeline-item.active::before { border-color: var(--warning); }
+  .timeline-item .tl-title { font-weight: 700; font-size: 0.85rem; }
+  .timeline-item .tl-meta { font-size: 0.7rem; color: var(--gray-400); margin-bottom: 0.3rem; }
+  .timeline-item .tl-desc { font-size: 0.8rem; color: var(--gray-600); }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.75rem; margin: 1rem 0; }
+  .kpi-card { padding: 1rem; border-radius: 10px; text-align: center; border: 1px solid var(--gray-200); }
+  .kpi-card .kpi-num { font-size: 1.1rem; font-weight: 900; }
+  .kpi-card .kpi-label { font-size: 0.65rem; color: var(--gray-500); font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; margin-top: 0.2rem; }
+  .kpi-card .kpi-sub { font-size: 0.6rem; color: var(--gray-400); margin-top: 0.2rem; }
+
+  .row-list { display: flex; flex-direction: column; gap: 0.5rem; margin: 1rem 0; }
+  .row-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0.75rem; border-radius: 8px; border: 1px solid var(--gray-200); font-size: 0.8rem; }
+  .row-item .icon { width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.75rem; }
+
+  .score-ring { width: 80px; height: 80px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 900; margin: 0 auto; }
+  .score-a { background: #f0fdf4; color: var(--success); border: 4px solid var(--success); }
+  .score-b { background: #eef2ff; color: var(--primary); border: 4px solid var(--primary); }
+  .score-c { background: #fff7ed; color: var(--warning); border: 4px solid var(--warning); }
+  .score-d { background: #fef2f2; color: var(--danger); border: 4px solid var(--danger); }
+
+  .est-summary { display: flex; gap: 1rem; margin: 1rem 0; flex-wrap: wrap; }
+  .est-box { padding: 0.8rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: 0.8rem; flex: 1; min-width: 120px; text-align: center; }
+
+  ul, ol { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+  li { font-size: 0.85rem; color: var(--gray-600); margin-bottom: 0.3rem; }
+
+  .quote { padding: 1rem 1.25rem; border-left: 4px solid var(--primary); background: var(--gray-50); border-radius: 0 8px 8px 0; margin: 1rem 0; font-style: italic; color: var(--gray-600); font-size: 0.85rem; }
+
+  .funnel { display: flex; flex-direction: column; align-items: center; gap: 0.2rem; padding: 1rem; margin: 1rem 0; }
+  .funnel .level { width: 100%; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 700; font-size: 0.75rem; text-align: center; color: #fff; }
+  .funnel .l1 { background: #3b82f6; max-width: 100%; }
+  .funnel .l2 { background: #6366f1; max-width: 82%; }
+  .funnel .l3 { background: #8b5cf6; max-width: 64%; }
+  .funnel .l4 { background: #a855f7; max-width: 46%; }
+  .funnel .l5 { background: #d946ef; max-width: 28%; }
+
+  @media print {
+    body { font-size: 9pt; }
+    .page { max-width: 100%; }
+    .content { padding: 1.5cm; }
+    .cover { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .section-header .num { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .tag-done, .tag-pending, .tag-critical, .tag-high { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .status-dot { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .score-ring { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .funnel .level { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { break-inside: avoid; }
+    .progress-track .fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .est-box { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<!-- ===== COVER ===== -->
+<section class="cover">
+  <div class="badge">Updated Report &bull; July 2026</div>
+  <h1>REBAS<br><span>COURSE</span></h1>
+  <p class="subtitle">Business Analysis Report — Evaluasi Pasca-Implementasi &amp; Strategi Monetisasi Menuju Q4 2026</p>
+  <div class="stats">
+    <div class="stat"><div class="num">40</div><div class="lbl">Database Tables</div></div>
+    <div class="stat"><div class="num">32/32</div><div class="lbl">Features Completed</div></div>
+    <div class="stat"><div class="num">26</div><div class="lbl">New Files Created</div></div>
+    <div class="stat"><div class="num">17</div><div class="lbl">Files Modified</div></div>
+  </div>
+  <div class="meta">Q3-Q4 2026 Roadmap &bull; Fase Monetisasi</div>
+</section>
+
+<!-- ===== CONTENT ===== -->
+<div class="content">
+
+<!-- ===== TOC ===== -->
+<div class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#s1">Executive Summary — Pasca Implementasi</a></li>
+    <li><a href="#s2">Status Implementasi 32 Fitur</a></li>
+    <li><a href="#s3">Perbandingan Sebelum vs Sesudah</a></li>
+    <li><a href="#s4">SWOT Analysis — Kondisi Terkini</a></li>
+    <li><a href="#s5">Fase Monetisasi — Action Plan</a></li>
+    <li><a href="#s6">Proyeksi Keuangan 6 Bulan</a></li>
+    <li><a href="#s7">Rekomendasi Lanjutan</a></li>
+  </ol>
+</div>
+
+<!-- ================================================================== -->
+<!-- SECTION 1: EXECUTIVE SUMMARY -->
+<!-- ================================================================== -->
+<section class="section" id="s1">
+  <div class="section-header">
+    <span class="num">1</span>
+    <h2>Executive Summary — Pasca Implementasi</h2>
+    <span class="tag tag-done">Completed</span>
+  </div>
+
+  <p><strong>REBAS COURSE</strong> telah menyelesaikan <strong>32 dari 32 item</strong> yang direncanakan dalam Business Analysis dan Marketing Strategy. Platform kini bertransformasi dari LMS dasar menjadi <strong>platform edukasi digital enterprise-grade</strong> dengan 40 tabel database, 26 file baru, 17 file dimodifikasi, dan 144 file PHP terverifikasi.</p>
+
+  <div class="progress-track" style="margin:1.5rem 0 0.5rem;">
+    <div class="fill" style="width:100%;"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;font-size:0.7rem;color:var(--gray-400);margin-bottom:1.5rem;">
+    <span>0%</span>
+    <span style="font-weight:700;color:var(--success);">✅ 100% COMPLETED — 32/32 FITUR</span>
+    <span>100%</span>
+  </div>
+
+  <div class="grid-3">
+    <div class="card card-success">
+      <h4>✅ Foundation (8/8)</h4>
+      <p style="font-size:0.75rem;">Security fix, CSRF, Upload validation, Midtrans gateway, Email notification, GA4 + FB Pixel, UTM capture, Event tracking</p>
+    </div>
+    <div class="card card-success">
+      <h4>✅ Operations (10/10)</h4>
+      <p style="font-size:0.75rem;">User management, Category management, Real analytics, Coupon engine, Sitemap, Blog engine, Marketing pages, Email drip, CRO tools</p>
+    </div>
+    <div class="card card-success">
+      <h4>✅ Growth (8/8)</h4>
+      <p style="font-size:0.75rem;">Subscription engine, Password reset, Wishlist, Course preview, Affiliate, Social share, Referral loop, Gamification</p>
+    </div>
+  </div>
+
+  <div class="quote">
+    <strong>Status:</strong> Semua fitur sudah siap. Tantangan berikutnya adalah <strong>aktivasi</strong> — mengisi API key (Midtrans, Mailgun, GA4), mengintegrasikan dengan layanan eksternal, dan memulai kampanye marketing untuk mendatangkan traffic &amp; revenue.
+  </div>
+
+  <h3>Prioritas Segera (30 Hari)</h3>
+  <div class="grid-3">
+    <div class="card card-danger">
+      <h4>🔴 1. Midtrans Activation</h4>
+      <p style="font-size:0.75rem;">Daftar Midtrans → copy Server Key + Client Key ke admin settings → test transaksi sandbox → go production.</p>
+      <div class="status-bar"><span class="status-dot dot-pending"></span> <span style="font-size:0.75rem;">Waiting API keys</span></div>
+    </div>
+    <div class="card card-danger">
+      <h4>🔴 2. Mailgun Activation</h4>
+      <p style="font-size:0.75rem;">Daftar Mailgun → verifikasi domain → copy API Key → 10 trigger email langsung aktif.</p>
+      <div class="status-bar"><span class="status-dot dot-pending"></span> <span style="font-size:0.75rem;">Waiting API keys</span></div>
+    </div>
+    <div class="card card-warning">
+      <h4>🟡 3. GA4 + Pixel Setup</h4>
+      <p style="font-size:0.75rem;">Buat GA4 property → copy Measurement ID → buat FB Pixel → paste di settings. Data langsung masuk!</p>
+      <div class="status-bar"><span class="status-dot dot-pending"></span> <span style="font-size:0.75rem;">Waiting Account setup</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ================================================================== -->
+<!-- SECTION 2: STATUS IMPLEMENTASI -->
+<!-- ================================================================== -->
+<section class="section" id="s2">
+  <div class="section-header">
+    <span class="num">2</span>
+    <h2>Status Implementasi 32 Fitur</h2>
+    <span class="tag tag-done">Completed</span>
+  </div>
+
+  <h3>🔴 Q3 2026 — Foundation (Minggu 1-3)</h3>
+  <div class="row-list">
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Security Fix</strong> — Registration role exploit ditutup, CSRF diaktifkan, Upload validation helper</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Midtrans Gateway</strong> — Snap API + callback auto-enroll + route payment</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Email Notification</strong> — Mailgun helper + SMTP fallback + 10 trigger points + template engine</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Analytics</strong> — GA4 + FB Pixel injection, Event tracking JS, 15+ user events</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>UTM Capture</strong> — Session tracking + user_sources table + registrasi attribution</div></div>
+  </div>
+
+  <h3>🟡 Q4 2026 — Operations (Minggu 4-8)</h3>
+  <div class="row-list">
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>User Management</strong> — Admin CRUD + role change + suspend/ban + search/filter</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Category Management</strong> — Tree view CRUD + parent/child + icon + sort order</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Real Analytics</strong> — 5 chart real query + revenue by month + popular courses + revenue by type</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Coupon Engine</strong> — CRUD admin + discount types + min purchase + max uses + expiry</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>SEO</strong> — Sitemap.xml + OG Tags + Twitter Card + Schema.org Course</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Blog Engine</strong> — Content type article + listing + detail + author page</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Marketing Pages</strong> — About, Contact (with form), FAQ (accordion), Pricing, Terms, Privacy</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Email Drip</strong> — 4 sequences: Welcome, Onboarding, Re-engagement, Abandoned cart</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>CRO Tools</strong> — Social proof bar, Exit-intent popup, Trust badges, Countdown timer</div></div>
+  </div>
+
+  <h3>🟢 Q1 2027 — Growth (Minggu 9-12)</h3>
+  <div class="row-list">
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Subscription Engine</strong> — 3 tier plans (Basic/Pro/Mentor) + logic gate + pricing page</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Password Reset</strong> — Token-based flow + email integration + expiry 1 hour</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Wishlist</strong> — Toggle AJAX + dedicated page + heart icon on courses</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Course Preview</strong> — Free lesson bypass for non-enrolled students (is_free flag)</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Affiliate Program</strong> — Referral code + click/conversion tracking + commission system</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Social Share Engine</strong> — Share buttons (FB/Twitter/LinkedIn/WA) on certificates, courses, reviews</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Referral Loop</strong> — ref/CODE route + cookie tracking + referral conversion logging</div></div>
+  </div>
+
+  <h3>🔵 Q2 2027 — Engagement (Minggu 13-14)</h3>
+  <div class="row-list">
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Gamification</strong> — XP points system + level progression + 5 default badges + helper functions</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Essay Grading UI</strong> — Admin interface to grade essay questions per attempt</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>Dark Mode Frontend</strong> — User toggle + localStorage persistence + CSS variables</div></div>
+    <div class="row-item"><span class="icon" style="background:#f0fdf4;color:var(--success);">✅</span><div><strong>UI/UX Redesign</strong> — Floating labels + glass sections + sticky footer + bento grid + toggle switches</div></div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ================================================================== -->
+<!-- SECTION 3: SEBELUM VS SESUDAH -->
+<!-- ================================================================== -->
+<section class="section" id="s3">
+  <div class="section-header">
+    <span class="num">3</span>
+    <h2>Perbandingan Sebelum vs Sesudah</h2>
+    <span class="tag tag-done">Progress</span>
+  </div>
+
+  <table class="comparison">
+    <thead><tr><th>Dimensi</th><th>Sebelum</th><th>Sesudah</th><th>Delta</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Database Tables</strong></td><td>25</td><td><strong>40</strong></td><td class="check">+60%</td></tr>
+      <tr><td><strong>Security</strong></td><td>Role exploit, no CSRF</td><td><strong>Fully secured</strong></td><td class="check">✅ Critical</td></tr>
+      <tr><td><strong>Payment</strong></td><td>Manual transfer only</td><td><strong>Midtrans Snap (QRIS/VA/CC/EWallet)</strong></td><td class="check">✅ Revenue</td></tr>
+      <tr><td><strong>Email</strong></td><td>Zero notifications</td><td><strong>Mailgun + 10 triggers</strong></td><td class="check">✅ Engagement</td></tr>
+      <tr><td><strong>Analytics</strong></td><td>Buta total</td><td><strong>GA4 + FB Pixel + Event Tracking</strong></td><td class="check">✅ Measurable</td></tr>
+      <tr><td><strong>SEO</strong></td><td>No sitemap, no OG</td><td><strong>Sitemap + OG + Schema.org</strong></td><td class="check">✅ Organic</td></tr>
+      <tr><td><strong>Marketing Pages</strong></td><td>Homepage only</td><td><strong>7 pages (About, Contact, FAQ, etc)</strong></td><td class="check">✅ Trust</td></tr>
+      <tr><td><strong>User Management</strong></td><td>None</td><td><strong>Admin CRUD + role + suspend</strong></td><td class="check">✅ Ops</td></tr>
+      <tr><td><strong>Category Management</strong></td><td>None</td><td><strong>Tree view CRUD</strong></td><td class="check">✅ Ops</td></tr>
+      <tr><td><strong>Coupon System</strong></td><td>None</td><td><strong>Full discount engine</strong></td><td class="check">✅ Promo</td></tr>
+      <tr><td><strong>Affiliate</strong></td><td>None</td><td><strong>Referral + commission tracking</strong></td><td class="check">✅ Growth</td></tr>
+      <tr><td><strong>Gamification</strong></td><td>None</td><td><strong>XP + badges + levels</strong></td><td class="check">✅ Retention</td></tr>
+      <tr><td><strong>Wishlist</strong></td><td>None</td><td><strong>Save + bookmarks</strong></td><td class="check">✅ UX</td></tr>
+      <tr><td><strong>Password Reset</strong></td><td>None</td><td><strong>Token-based</strong></td><td class="check">✅ UX</td></tr>
+      <tr><td><strong>Dark Mode</strong></td><td>Admin only</td><td><strong>Frontend + admin toggle</strong></td><td class="check">✅ Modern</td></tr>
+      <tr><td><strong>Admin UI/UX</strong></td><td>Standard Bootstrap</td><td><strong>Floating labels + Glass + Bento Grid</strong></td><td class="check">✅ Premium</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Platform Maturity Score</h3>
+  <div class="grid-4">
+    <div class="card" style="text-align:center;">
+      <div class="score-ring score-a">96%</div>
+      <div style="font-size:0.75rem;font-weight:700;margin-top:0.5rem;">Technical</div>
+      <div style="font-size:0.65rem;color:var(--gray-400);">Architecture &amp; Code</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="score-ring score-a">92%</div>
+      <div style="font-size:0.75rem;font-weight:700;margin-top:0.5rem;">Features</div>
+      <div style="font-size:0.65rem;color:var(--gray-400);">LMS Capabilities</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="score-ring score-b">78%</div>
+      <div style="font-size:0.75rem;font-weight:700;margin-top:0.5rem;">Security</div>
+      <div style="font-size:0.65rem;color:var(--gray-400);">CSRF + Upload + Auth</div>
+    </div>
+    <div class="card" style="text-align:center;">
+      <div class="score-ring score-c">45%</div>
+      <div style="font-size:0.75rem;font-weight:700;margin-top:0.5rem;">Marketing</div>
+      <div style="font-size:0.65rem;color:var(--gray-400);">Activation Needed</div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ================================================================== -->
+<!-- SECTION 4: SWOT -->
+<!-- ================================================================== -->
+<section class="section" id="s4">
+  <div class="section-header">
+    <span class="num">4</span>
+    <h2>SWOT Analysis — Kondisi Terkini</h2>
+    <span class="tag tag-high">Strategic</span>
+  </div>
+
+  <div class="grid-2">
+    <div class="card card-success">
+      <h4>💪 Strengths</h4>
+      <ul style="font-size:0.78rem;">
+        <li>40 tabel database — skema enterprise-grade</li>
+        <li>Midtrans gateway siap — auto-enrollment callback</li>
+        <li>Email engine siap — Mailgun + SMTP + 10 triggers</li>
+        <li>Full bilingual (ID/EN) — pasar lebih luas</li>
+        <li>Admin panel modern — floating labels, bento grid, glassmorphism</li>
+        <li>Gamification + Affiliate + Referral — growth engine siap</li>
+        <li>SEO foundation — sitemap, OG, Schema.org</li>
+        <li>GA4 + Pixel + UTM — data-driven marketing siap</li>
+      </ul>
+    </div>
+    <div class="card card-warning">
+      <h4>⚠️ Weaknesses</h4>
+      <ul style="font-size:0.78rem;">
+        <li>API keys pihak ketiga belum diisi (Midtrans, Mailgun)</li>
+        <li>Social Login (Google OAuth) butuh setup manual</li>
+        <li>No mobile app / PWA</li>
+        <li>No WhatsApp notification</li>
+        <li>Blog masih kosong — content marketing belum jalan</li>
+        <li>Tidak ada A/B testing engine</li>
+      </ul>
+    </div>
+    <div class="card card-accent">
+      <h4>🚀 Opportunities</h4>
+      <ul style="font-size:0.78rem;">
+        <li>Market kursus online Indonesia tumbuh 25% YoY</li>
+        <li>QRIS pembayaran — 40+ juta pengguna aktif</li>
+        <li>Affiliate + referral — viral growth potential</li>
+        <li>Blog SEO — long-tail keywords traffic</li>
+        <li>Kerjasama korporat / B2B untuk training karyawan</li>
+        <Li>Subscription model — recurring revenue stabil</li>
+        <li>Landing page sudah siap untuk Google Ads</li>
+      </ul>
+    </div>
+    <div class="card card-danger">
+      <h4>🔥 Threats</h4>
+      <ul style="font-size:0.78rem;">
+        <li>Kompetitor: Ruangguru, Coursera, Udemy, Skillshare</li>
+        <li>Biaya Midtrans ~5% per transaksi — margin tergerus</li>
+        <li>Content marketing butuh 3-6 bulan untuk hasil SEO</li>
+        <li>Affiliate butuh masa kritis 50+ affiliate aktif</li>
+        <li>Perubahan regulasi perlindungan data (PDP)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ================================================================== -->
+<!-- SECTION 5: MONETISASI -->
+<!-- ================================================================== -->
+<section class="section" id="s5">
+  <div class="section-header">
+    <span class="num">5</span>
+    <h2>Fase Monetisasi — Action Plan 30 Hari</h2>
+    <span class="tag tag-high">Urgent</span>
+  </div>
+
+  <p>Semua fitur sudah siap. Sekarang saatnya <strong>mengaktifkan revenue stream</strong>. Berikut action plan 30 hari ke depan:</p>
+
+  <h3>📋 Checklist Aktivasi</h3>
+  <table class="comparison">
+    <thead><tr><th>#</th><th>Action</th><th>Durasi</th><th>PIC</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><strong>Daftar Midtrans</strong> &mdash; buat akun di dashboard.midtrans.com</td><td>30 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>2</td><td><strong>Copy Server Key + Client Key</strong> &mdash; paste ke admin/settings/general</td><td>5 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>3</td><td><strong>Test transaksi sandbox</strong> &mdash; beli course pakai QRIS/VA</td><td>15 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>4</td><td><strong>Daftar Mailgun</strong> &mdash; verifikasi domain, copy API Key</td><td>1 jam</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>5</td><td><strong>Test email trigger</strong> &mdash; register akun baru, cek email welcome</td><td>15 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>6</td><td><strong>Buat GA4 Property</strong> &mdash; copy Measurement ID ke settings</td><td>15 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>7</td><td><strong>Buat Facebook Pixel</strong> &mdash; copy Pixel ID ke settings</td><td>15 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>8</td><td><strong>Submit sitemap ke GSC</strong> &mdash; Google Search Console</td><td>15 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>9</td><td><strong>Post 4 blog articles</strong> &mdash; SEO long-tail keywords</td><td>2 hari</td><td>Content</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>10</td><td><strong>Set welcome coupon</strong> &mdash; WELCOME20 aktif di settings</td><td>5 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>11</td><td><strong>Create 5 first affiliate codes</strong> &mdash; undang 5 power user</td><td>30 menit</td><td>Marketing</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+      <tr><td>12</td><td><strong>Test full funnel</strong> &mdash; register → wishlist → checkout → payment → complete</td><td>30 menit</td><td>Admin</td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Pending</span></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Revenue Funnel Target</h3>
+  <div class="funnel">
+    <div class="level l1">👁️ 100% Website Visitors — 50,000/bulan</div>
+    <div class="level l2">📝 15% Register — 7,500 users</div>
+    <div class="level l3">💰 5% Checkout — 375 transactions</div>
+    <div class="level l4">✅ 3.5% Paid — 262 completed</div>
+    <div class="level l5">🎓 2% Recurring — 150 subscribers</div>
+  </div>
+
+  <div class="est-summary">
+    <div class="est-box" style="background:#fef2f2;color:var(--danger);">💰 One-time Sales<br><strong>Rp 26-52jt/bln</strong><br><small style="font-weight:400;">262 tx × Rp 100-200k</small></div>
+    <div class="est-box" style="background:#eef2ff;color:var(--primary);">📅 Subscription<br><strong>Rp 15-37jt/bln</strong><br><small style="font-weight:400;">150 sub × Rp 99-250k</small></div>
+    <div class="est-box" style="background:#f0fdf4;color:var(--success);">📈 Total Potensi<br><strong>Rp 41-90jt/bln</strong><br><small style="font-weight:400;">Revenue Run Rate</small></div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ================================================================== -->
+<!-- SECTION 6: PROYEKSI KEUANGAN -->
+<!-- ================================================================== -->
+<section class="section" id="s6">
+  <div class="section-header">
+    <span class="num">6</span>
+    <h2>Proyeksi Keuangan 6 Bulan</h2>
+    <span class="tag tag-high">Forecast</span>
+  </div>
+
+  <h3>Revenue Projection (Conservative)</h3>
+  <table class="comparison">
+    <thead><tr><th>Bulan</th><th>Visitors</th><th>Registrations</th><th>Paid Transactions</th><th>Subscribers</th><th>Revenue</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Bulan 1</strong></td><td>2,000</td><td>200</td><td>10</td><td>5</td><td><strong>Rp 2,5jt</strong></td></tr>
+      <tr><td><strong>Bulan 2</strong></td><td>5,000</td><td>500</td><td>30</td><td>20</td><td><strong>Rp 7,5jt</strong></td></tr>
+      <tr><td><strong>Bulan 3</strong></td><td>12,000</td><td>1,200</td><td>60</td><td>50</td><td><strong>Rp 15jt</strong></td></tr>
+      <tr><td><strong>Bulan 4</strong></td><td>25,000</td><td>2,500</td><td>100</td><td>80</td><td><strong>Rp 25jt</strong></td></tr>
+      <tr><td><strong>Bulan 5</strong></td><td>40,000</td><td>4,000</td><td>160</td><td>120</td><td><strong>Rp 40jt</strong></td></tr>
+      <tr><td><strong>Bulan 6</strong></td><td><strong>60,000</strong></td><td><strong>6,000</strong></td><td><strong>250</strong></td><td><strong>200</strong></td><td><strong>Rp 60jt</strong></td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h4>📊 Asumsi</h4>
+      <ul style="font-size:0.75rem;">
+        <li>Conversion rate: Register 10% → Paid 4% → Subscribe 2%</li>
+        <li>AOV (Average Order Value): Rp 150,000</li>
+        <li>Subscription ARPU: Rp 100,000/bulan</li>
+        <li>Traffic growth: 50-100% MoM via SEO + referral</li>
+        <li>Marketing spend: Rp 5-10jt/bulan (bulan 3+)</li>
+      </ul>
+    </div>
+    <div class="card card-success">
+      <h4>💸 Biaya Operasional</h4>
+      <ul style="font-size:0.75rem;">
+        <li>Hosting: ~Rp 500rb/bln (VPS 8GB)</li>
+        <li>Midtrans fee: ~5% per tx (Rp 750k per Rp 15jt)</li>
+        <li>Mailgun: Free tier (5k email/bln) → $35/bln (50k)</li>
+        <li>Marketing ads: Rp 5-10jt/bln (bulan 3+)</li>
+        <li><strong>Total OPEX: Rp 6-12jt/bln</strong></li>
+        <li><strong>Gross Margin: ~80-85%</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>KPI Dashboard</h3>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num" style="color:var(--success);">60,000</div>
+      <div class="kpi-label">Monthly Visitors</div>
+      <div class="kpi-sub">Target Bulan 6</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" style="color:var(--primary);">4%</div>
+      <div class="kpi-label">Conversion Rate</div>
+      <div class="kpi-sub">Visitor → Paid</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" style="color:var(--warning);">Rp 60jt</div>
+      <div class="kpi-label">Monthly Revenue</div>
+      <div class="kpi-sub">Target Bulan 6</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" style="color:var(--success);">200</div>
+      <div class="kpi-label">Subscribers</div>
+      <div class="kpi-sub">Recurring Revenue</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" style="color:var(--primary);">Rp 35k</div>
+      <div class="kpi-label">CAC</div>
+      <div class="kpi-sub">Customer Acquisition Cost</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num" style="color:var(--success);">7.5x</div>
+      <div class="kpi-label">ROI</div>
+      <div class="kpi-sub">Return on Investment</div>
+    </div>
+  </div>
+</section>
+
+<div class="page-break"></div>
+
+<!-- ================================================================== -->
+<!-- SECTION 7: REKOMENDASI LANJUTAN -->
+<!-- ================================================================== -->
+<section class="section" id="s7">
+  <div class="section-header">
+    <span class="num">7</span>
+    <h2>Rekomendasi Pengembangan Lanjutan</h2>
+    <span class="tag tag-high">Q4 2026+</span>
+  </div>
+
+  <p>Setelah semua fitur teraktivasi dan revenue mulai mengalir, berikut prioritas pengembangan lanjutan:</p>
+
+  <h3>Prioritas Berdasarkan Impact vs Effort</h3>
+  <table class="comparison">
+    <thead><tr><th>Fitur</th><th>Impact</th><th>Effort</th><th>Prioritas</th></tr></thead>
+    <tbody>
+      <tr><td><strong>WhatsApp Cloud API</strong></td><td><span class="tag-done" style="padding:0.1rem 0.5rem;">Very High</span></td><td>1 minggu</td><td><strong>🔥 #1</strong></td></tr>
+      <tr><td><strong>PWA / Mobile Web</strong></td><td><span class="tag-done" style="padding:0.1rem 0.5rem;">High</span></td><td>1-2 minggu</td><td><strong>🔥 #2</strong></td></tr>
+      <tr><td><strong>Social Login (Google OAuth)</strong></td><td><span class="tag-done" style="padding:0.1rem 0.5rem;">High</span></td><td>2-3 hari</td><td><strong>🔥 #3</strong></td></tr>
+      <tr><td><strong>Learning Path Certificate</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Medium</span></td><td>2 hari</td><td>📋 #4</td></tr>
+      <tr><td><strong>A/B Testing Engine</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Medium</span></td><td>3-4 hari</td><td>📋 #5</td></tr>
+      <tr><td><strong>Student Portfolio Pages</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Medium</span></td><td>3 hari</td><td>📋 #6</td></tr>
+      <tr><td><strong>WhatsApp / Email Broadcast</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Medium</span></td><td>2 hari</td><td>📋 #7</td></tr>
+      <tr><td><strong>Invoice & Receipt System</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Medium</span></td><td>2 hari</td><td>📋 #8</td></tr>
+      <tr><td><strong>Course Bundles</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Medium</span></td><td>2-3 hari</td><td>📋 #9</td></tr>
+      <tr><td><strong>Live Chat Support</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Low</span></td><td>1 hari (Tawk.to)</td><td>💬 #10</td></tr>
+      <tr><td><strong>Google Ads Integration</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">High</span></td><td>1 hari (konversi)</td><td>📢 #11</td></tr>
+      <tr><td><strong>Mobile App (Flutter)</strong></td><td><span class="tag-pending" style="padding:0.1rem 0.5rem;">Very High</span></td><td>2-3 bulan</td><td>📱 #12</td></tr>
+    </tbody>
+  </table>
+
+  <div class="divider"></div>
+
+  <h3>30-60-90 Day Roadmap</h3>
+  <div class="timeline">
+    <div class="timeline-item active">
+      <div class="tl-title">🔴 30 Hari Pertama — Aktivasi &amp; Launch</div>
+      <div class="tl-meta">NOW</div>
+      <div class="tl-desc">
+        <strong>Aktivasi:</strong> Midtrans, Mailgun, GA4, FB Pixel<br>
+        <strong>Konten:</strong> 4 blog articles, sitemap submission<br>
+        <strong>Marketing:</strong> Set WELCOME20 coupon, activate affiliate<br>
+        <strong>Target:</strong> 2,000 visitors, Rp 2.5jt revenue
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">🟡 60 Hari — Scale &amp; Optimize</div>
+      <div class="tl-meta">Bulan 2</div>
+      <div class="tl-desc">
+        <strong>Fitur:</strong> WhatsApp notification, Google OAuth<br>
+        <strong>Ads:</strong> Google Ads campaign (Rp 5jt/bulan)<br>
+        <strong>Content:</strong> 8 blog articles, YouTube video<br>
+        <strong>Target:</strong> 12,000 visitors, Rp 15jt revenue
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="tl-title">🟢 90 Hari — Growth &amp; Automation</div>
+      <div class="tl-meta">Bulan 3</div>
+      <div class="tl-desc">
+        <strong>Fitur:</strong> PWA, A/B testing, Course bundles<br>
+        <strong>Scale:</strong> Affiliate program ke 50+ affiliate<br>
+        <strong>Revenue:</strong> Target Rp 25jt/bulan, 80 subscriber<br>
+        <strong>Evaluasi:</strong> Hitung CAC, LTV, ROAS
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="grid-2">
+    <div class="card card-accent">
+      <h4>🎯 Kesimpulan</h4>
+      <p style="font-size:0.8rem;">Platform REBAS COURSE saat ini berada di <strong>posisi optimal</strong> secara teknis — seluruh fitur strategis sudah siap. Fokus 100% harus beralih ke <strong>aktivasi layanan eksternal</strong> (Midtrans, Mailgun, GA4) dan <strong>eksekusi marketing</strong> untuk mendatangkan traffic &amp; revenue.</p>
+      <p style="font-size:0.8rem;">Dengan eksekusi yang konsisten, target <strong>Rp 60jt/bulan dalam 6 bulan</strong> sangat achievable.</p>
+    </div>
+    <div class="card card-success">
+      <h4>📈 Target 12 Bulan</h4>
+      <ul style="font-size:0.78rem;">
+        <li>Monthly Visitors: <strong>60,000 → 200,000</strong></li>
+        <li>Conversion Rate: <strong>4% → 6%</strong></li>
+        <li>Monthly Revenue: <strong>Rp 60jt → Rp 200jt+</strong></li>
+        <li>Subscribers: <strong>200 → 1,000+</strong></li>
+        <li>Course Completion: <strong>15% → 50%</strong></li>
+        <li>Affiliate Network: <strong>50 → 500+</strong></li>
+        <li>Team Size: <strong>1 → 5+</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="quote" style="margin-top:1.5rem;">
+    <strong>Final note:</strong> Keunggulan kompetitif REBAS COURSE bukan terletak pada satu fitur, melainkan pada <strong>integrasi seluruh ekosistem</strong> — dari payment hingga gamifikasi, dari SEO hingga affiliate, dari analytics hingga email marketing. Tidak banyak platform LMS di Indonesia yang memiliki kelengkapan ini dalam satu paket.
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<div style="text-align:center;padding:2rem 0;border-top:1px solid var(--gray-200);margin-top:3rem;">
+  <p style="font-size:0.7rem;color:var(--gray-400);">REBAS COURSE — Business Analysis Report (Updated) &bull; July 2026 &bull; For Internal Use</p>
+  <p style="font-size:0.65rem;color:var(--gray-400);margin-top:0.3rem;">32/32 Fitur Completed &bull; 40 Database Tables &bull; 17 Files Modified &bull; 26 New Files</p>
+</div>
+
+</div>
+</div>
+
+</body>
+</html>

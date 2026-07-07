@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dokumentasi Deploy Course Online via Webmin</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #fff;
+    color: #000;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.7;
+    font-size: 15px;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 20px 80px; }
+  header { border-bottom: 2px solid #000; padding-bottom: 24px; margin-bottom: 32px; }
+  header h1 { font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+  header p { color: #555; margin-top: 6px; font-size: 14px; }
+  .toc { background: #f5f5f5; border: 1px solid #ccc; padding: 20px 24px; margin-bottom: 36px; }
+  .toc h2 { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+  .toc ol { padding-left: 20px; }
+  .toc li { margin-bottom: 4px; }
+  .toc a { color: #000; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  section { margin-bottom: 40px; }
+  h2 { font-size: 20px; font-weight: 700; padding-bottom: 8px; border-bottom: 1px solid #ccc; margin-bottom: 16px; }
+  h3 { font-size: 16px; font-weight: 700; margin-top: 24px; margin-bottom: 8px; }
+  p { margin-bottom: 12px; color: #222; }
+  pre { background: #1a1a1a; color: #f0f0f0; padding: 16px 20px; overflow-x: auto; font-size: 13px; font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace; line-height: 1.6; border-radius: 4px; margin: 12px 0; }
+  code { font-family: "SF Mono", Consolas, "Liberation Mono", Menlo, monospace; font-size: 13px; background: #f0f0f0; padding: 2px 6px; border-radius: 2px; }
+  pre code { background: none; padding: 0; border-radius: 0; }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { border: 1px solid #ccc; padding: 10px 14px; text-align: left; font-size: 14px; }
+  th { background: #f0f0f0; font-weight: 700; }
+  .note { background: #f9f9f9; border-left: 4px solid #000; padding: 12px 16px; margin: 16px 0; font-size: 14px; }
+  .note strong { text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px; }
+  .step { margin-bottom: 28px; }
+  .step-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; background: #000; color: #fff; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .step-title { font-size: 17px; font-weight: 700; }
+  ul, ol { margin: 8px 0 12px 20px; }
+  li { margin-bottom: 4px; }
+  hr { border: none; border-top: 1px solid #ddd; margin: 32px 0; }
+  footer { border-top: 2px solid #000; padding-top: 20px; margin-top: 40px; font-size: 13px; color: #666; }
+  .code-header { display: flex; justify-content: space-between; align-items: center; background: #1a1a1a; padding: 8px 20px; border-bottom: 1px solid #333; font-size: 12px; color: #aaa; }
+  .copy-btn { background: #333; color: #fff; border: none; padding: 4px 12px; cursor: pointer; font-size: 12px; border-radius: 2px; }
+  .copy-btn:hover { background: #555; }
+  .ui-path { font-family: "SF Mono", Consolas, monospace; font-size: 13px; background: #f0f0f0; padding: 2px 6px; border-radius: 2px; color: #000; font-weight: 600; }
+  .diagram { background: #f5f5f5; border: 1px solid #ccc; padding: 20px 24px; margin: 16px 0; font-family: "SF Mono", Consolas, monospace; font-size: 13px; line-height: 1.5; white-space: pre; overflow-x: auto; }
+  @media (max-width: 600px) { .container { padding: 20px 12px 60px; } pre { font-size: 12px; padding: 12px 14px; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Deploy Course Online ke VPS Tanpa IP Publik</h1>
+  <p>Panduan lengkap: install Webmin, LAMP Stack, upload project, dan akses dari internet via Cloudflare Tunnel.</p>
+</header>
+
+<div class="note">
+  <strong>Skenario:</strong> VPS kamu <strong>tidak punya IP publik</strong>, tetapi bisa diakses via SSH dari komputer lokal (IP privat / jaringan internal).
+  Semua akses publik diarahkan melalui <strong>Cloudflare Tunnel</strong>.
+</div>
+
+<div class="toc">
+  <h2>Daftar Isi</h2>
+  <ol>
+    <li><a href="#overview">Overview Arsitektur</a></li>
+    <li><a href="#req">Kebutuhan Sistem</a></li>
+    <li><a href="#install-webmin">Install Webmin di VPS</a></li>
+    <li><a href="#akses-webmin">Akses Webmin via SSH Tunnel</a></li>
+    <li><a href="#lamp">Install LAMP Stack via Webmin</a></li>
+    <li><a href="#db">Buat Database &amp; User MySQL via Webmin</a></li>
+    <li><a href="#upload">Upload Project via File Manager Webmin</a></li>
+    <li><a href="#config">Konfigurasi Project via Webmin</a></li>
+    <li><a href="#permission">Set Permission via Webmin</a></li>
+    <li><a href="#apache">Konfigurasi Apache via Webmin</a></li>
+    <li><a href="#production">Production Settings</a></li>
+    <li><a href="#tunnel">Cloudflare Tunnel</a></li>
+    <li><a href="#firewall">Firewall via Webmin</a></li>
+    <li><a href="#verify">Verifikasi &amp; Troubleshooting</a></li>
+  </ol>
+</div>
+
+<!-- 1 -->
+<section id="overview">
+  <h2>1. Overview Arsitektur</h2>
+  <p>VPS tanpa IP publik &mdash; semua akses internet via Cloudflare Tunnel.</p>
+  <div class="diagram">  INTERNET
+      |
+      v
+  https://course.kamu.com
+      |
+      v
+  +-------------------+
+  |   Cloudflare      |
+  | (DNS + SSL + WAF) |
+  +-------------------+
+      |
+      | (Tunnel - koneksi keluar dari VPS)
+      |
+  +-------------------+
+  |   VPS (IP privat) |
+  |                   |
+  |   Apache :80      | <--- Cloudflare Tunnel
+  |   Webmin  :10000  | <--- SSH Port Forwarding
+  |   MySQL   :3306   |
+  |   PHP     8.x     |
+  +-------------------+
+      ^
+      |
+  SSH dari komputer lokal kamu</div>
+  <table>
+    <tr><th>Komponen</th><th>Akses</th></tr>
+    <tr><td>Aplikasi Course Online</td><td>Internet via <code>https://course.kamu.com</code> (Cloudflare Tunnel)</td></tr>
+    <tr><td>Webmin (GUI)</td><td>SSH Port Forwarding &rarr; <code>https://localhost:10000</code></td></tr>
+    <tr><td>VPS (command)</td><td>SSH langsung ke IP privat</td></tr>
+  </table>
+</section>
+
+<!-- 2 -->
+<section id="req">
+  <h2>2. Kebutuhan Sistem</h2>
+  <table>
+    <tr><th>Komponen</th><th>Spesifikasi Minimal</th></tr>
+    <tr><td>OS</td><td>Ubuntu 20.04 / 22.04 / 24.04 LTS</td></tr>
+    <tr><td>RAM</td><td>1 GB</td></tr>
+    <tr><td>Disk</td><td>10 GB</td></tr>
+    <tr><td>Domain</td><td>Sudah terdaftar di Cloudflare (nameserver Cloudflare aktif)</td></tr>
+    <tr><td>SSH Access</td><td>Bisa SSH ke VPS dari komputer lokal (IP privat)</td></tr>
+    <tr><td>Port</td><td>22 (SSH), 10000 (Webmin), 80 (Apache) &mdash; tidak perlu publik</td></tr>
+  </table>
+</section>
+
+<!-- 3 -->
+<section id="install-webmin">
+  <h2>3. Install Webmin di VPS</h2>
+  <p>Konek ke VPS via SSH dari komputer lokal:</p>
+  <pre><code>ssh root@IP_PRIVAT_VPS</code></pre>
+  <p>Atau jika user biasa:</p>
+  <pre><code>ssh user@IP_PRIVAT_VPS</code></pre>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Update package list</span>
+    </div>
+    <pre><code>sudo apt update &amp;&amp; sudo apt upgrade -y</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Install dependensi</span>
+    </div>
+    <pre><code>sudo apt install wget curl gnupg2 software-properties-common -y</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Tambah repository Webmin</span>
+    </div>
+    <pre><code>curl -fsSL https://download.webmin.com/jcameron-key.asc | sudo gpg --dearmor -o /usr/share/keyrings/webmin.gpg
+echo "deb [signed-by=/usr/share/keyrings/webmin.gpg] https://download.webmin.com/download/repository sarge contrib" | sudo tee /etc/apt/sources.list.d/webmin.list</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Install Webmin</span>
+    </div>
+    <pre><code>sudo apt update
+sudo apt install webmin -y</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">5</span>
+      <span class="step-title">Cek status Webmin</span>
+    </div>
+    <pre><code>sudo systemctl status webmin</code></pre>
+    <p>Pastikan status <strong>active (running)</strong>.</p>
+  </div>
+
+  <div class="note">
+    <strong>Selesai install.</strong> Sekarang buka terminal baru di komputer lokal untuk akses Webmin via SSH tunnel.
+  </div>
+</section>
+
+<!-- 4 -->
+<section id="akses-webmin">
+  <h2>4. Akses Webmin via SSH Tunnel</h2>
+  <p>Karena VPS tidak punya IP publik, Webmin diakses lewat SSH tunnel. Buka terminal baru di komputer lokal kamu (selain yang sedang SSH ke VPS):</p>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Buat SSH tunnel untuk Webmin</span>
+    </div>
+    <pre><code>ssh -L 10000:localhost:10000 user@IP_PRIVAT_VPS</code></pre>
+    <p>Ganti <code>user</code> dan <code>IP_PRIVAT_VPS</code> dengan data VPS kamu.</p>
+    <p>Biarkan terminal ini tetap terbuka (jangan di-close).</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Buka Webmin di browser</span>
+    </div>
+    <p>Buka browser di komputer lokal, akses:</p>
+    <pre><code>https://localhost:10000</code></pre>
+    <p>Browser akan menampilkan peringatan <strong>self-signed SSL</strong>. Klik <strong>Advanced</strong> &gt; <strong>Proceed to localhost (unsafe)</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Login Webmin</span>
+    </div>
+    <p>Gunakan username dan password user <code>root</code> atau user sudo VPS kamu.</p>
+  </div>
+
+  <div class="note">
+    <strong>Penting:</strong> SSH tunnel harus tetap berjalan selama kamu mengakses Webmin.
+    Jika koneksi terputus, ulangi perintah <code>ssh -L 10000:localhost:10000 user@IP_PRIVAT_VPS</code>.
+  </div>
+
+  <div class="note">
+    <strong>Windows:</strong> Bisa juga pakai PowerShell:
+    <pre><code>ssh -L 10000:localhost:10000 user@IP_PRIVAT_VPS -N</code></pre>
+    Flag <code>-N</code> membuat terminal hanya diam (tidak membuka shell), tunnel tetap jalan di background.
+  </div>
+</section>
+
+<!-- 5 -->
+<section id="lamp">
+  <h2>5. Install LAMP Stack via Webmin</h2>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Buka Command Shell</span>
+    </div>
+    <p>Di Webmin, buka <span class="ui-path">Tools &gt; Command Shell</span>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Install Apache</span>
+    </div>
+    <pre><code>sudo apt install apache2 -y</code></pre>
+    <p>Setelah selesai, buka <span class="ui-path">Others &gt; Apache Webserver</span> untuk memastikan module Apache sudah muncul.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Install MySQL</span>
+    </div>
+    <pre><code>sudo apt install mysql-server -y</code></pre>
+    <p>Jalankan security script:</p>
+    <pre><code>sudo mysql_secure_installation</code></pre>
+    <p>Atur password root MySQL. Module MySQL akan muncul di <span class="ui-path">Servers &gt; MySQL Database Server</span>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Install PHP</span>
+    </div>
+    <pre><code>sudo apt install php php-mysql php-mbstring php-xml php-curl libapache2-mod-php php-zip php-gd php-intl -y</code></pre>
+    <p>Cek versi:</p>
+    <pre><code>php -v</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">5</span>
+      <span class="step-title">Restart Apache</span>
+    </div>
+    <pre><code>sudo systemctl restart apache2</code></pre>
+  </div>
+
+  <div class="note">
+    <strong>Info:</strong> Module Apache, MySQL, dan PHP sekarang akan muncul di menu <span class="ui-path">Servers</span> Webmin.
+  </div>
+</section>
+
+<!-- 6 -->
+<section id="db">
+  <h2>6. Buat Database &amp; User MySQL via Webmin</h2>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Buka MySQL Module</span>
+    </div>
+    <p>Webmin &gt; <span class="ui-path">Servers &gt; MySQL Database Server</span>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Buat Database</span>
+    </div>
+    <p>Klik <strong>Create a new database</strong>.</p>
+    <ul>
+      <li><strong>Database name:</strong> <code>db_course_online</code></li>
+      <li><strong>Character set:</strong> <code>utf8mb4</code></li>
+      <li><strong>Collation:</strong> <code>utf8mb4_general_ci</code></li>
+    </ul>
+    <p>Klik <strong>Create</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Buat User Database</span>
+    </div>
+    <p>Klik <strong>Manage users</strong> &gt; <strong>Create a new user</strong>.</p>
+    <ul>
+      <li><strong>Username:</strong> <code>course_user</code></li>
+      <li><strong>Password:</strong> Isi password kuat (catat! akan dipakai di konfigurasi)</li>
+      <li><strong>Confirm password:</strong> Ulangi password</li>
+      <li><strong>Host:</strong> <code>localhost</code></li>
+    </ul>
+    <p>Klik <strong>Create</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Beri Privileges ke User</span>
+    </div>
+    <p>Kembali ke <strong>MySQL Database Server</strong>. Klik <strong>Edit privileges</strong> di samping user <code>course_user</code>.</p>
+    <ul>
+      <li>Di tab <strong>Database Permissions</strong>, pilih <code>db_course_online</code></li>
+      <li>Centang <strong>All privileges</strong></li>
+      <li>Klik <strong>Save</strong></li>
+    </ul>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">5</span>
+      <span class="step-title">Import Schema Database</span>
+    </div>
+    <p>Di MySQL Database Server, klik <strong>Execute SQL</strong>.</p>
+    <p>Pilih <strong>Upload a SQL file</strong>, pilih file <code>schema.sql</code> dari project. Atau paste isi SQL ke text area.</p>
+    <p>Klik <strong>Execute</strong>.</p>
+    <div class="note">
+      <strong>Catatan:</strong> File <code>schema.sql</code> bisa diupload setelah project di-upload di langkah selanjutnya. Jika belum bisa import sekarang, lakukan setelah langkah 7.
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section id="upload">
+  <h2>7. Upload Project via File Manager Webmin</h2>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Siapkan file ZIP project</span>
+    </div>
+    <p>Di komputer lokal, kompres folder <code>course_online</code> menjadi file ZIP.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Buka File Manager Webmin</span>
+    </div>
+    <p>Webmin &gt; <span class="ui-path">Tools &gt; File Manager</span>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Upload file ZIP</span>
+    </div>
+    <p>Navigasi ke <code>/var/www/html/</code>.</p>
+    <p>Klik tombol <strong>Upload to current directory</strong> (icon panah atas di toolbar).</p>
+    <p>Pilih file ZIP dari komputer lokal, klik <strong>Upload</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Extract file ZIP</span>
+    </div>
+    <p>Klik kanan file ZIP &gt; <strong>Extract</strong>, atau klik file ZIP lalu tombol <strong>Extract</strong> di toolbar.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">5</span>
+      <span class="step-title">Verifikasi isi folder</span>
+    </div>
+    <p>Masuk ke <code>/var/www/html/course_online/</code>. Pastikan ada:</p>
+    <ul>
+      <li><code>index.php</code></li>
+      <li><code>.htaccess</code></li>
+      <li><code>application/config/database.php</code></li>
+      <li><code>application/config/config.php</code></li>
+      <li><code>schema.sql</code></li>
+    </ul>
+  </div>
+</section>
+
+<!-- 8 -->
+<section id="config">
+  <h2>8. Konfigurasi Project via Webmin</h2>
+  <p>Gunakan <span class="ui-path">Tools &gt; File Manager</span>. Klik kanan file &gt; <strong>Edit</strong> (atau double-klik).</p>
+
+  <h3>8a. Konfigurasi Database</h3>
+  <p>Edit <code>/var/www/html/course_online/application/config/database.php</code>:</p>
+  <pre><code>$db['default'] = array(
+    'dsn'     => '',
+    'hostname' => 'localhost',
+    'username' => 'course_user',
+    'password' => 'GantiDenganPasswordKuat123!',
+    'database' => 'db_course_online',
+    'dbdriver' => 'mysqli',
+    'dbprefix' => '',
+    'pconnect' => FALSE,
+    'db_debug' => (ENVIRONMENT !== 'production'),
+    'cache_on' => FALSE,
+    'cachedir' => '',
+    'char_set' => 'utf8',
+    'dbcollat' => 'utf8_general_ci',
+    'swap_pre' => '',
+    'encrypt' => FALSE,
+    'compress' => FALSE,
+    'stricton' => FALSE,
+    'failover' => array(),
+    'save_queries' => TRUE
+);</code></pre>
+  <p>Ganti <code>password</code> dengan password user MySQL yang dibuat di langkah 6.</p>
+
+  <h3>8b. Konfigurasi Base URL</h3>
+  <p>Edit <code>/var/www/html/course_online/application/config/config.php</code>:</p>
+  <pre><code>$config['base_url'] = 'https://course.kamu.com/';</code></pre>
+  <p>Ganti <code>course.kamu.com</code> dengan domain/subdomain yang akan kamu pakai di Cloudflare Tunnel.</p>
+
+  <h3>8c. Set Index Page (untuk URL Clean)</h3>
+  <p>Di file <code>config.php</code> yang sama:</p>
+  <pre><code>$config['index_page'] = '';</code></pre>
+  <p>Klik <strong>Save</strong>.</p>
+</section>
+
+<!-- 9 -->
+<section id="permission">
+  <h2>9. Set Permission via Webmin</h2>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Buka File Manager</span>
+    </div>
+    <p>Webmin &gt; <span class="ui-path">Tools &gt; File Manager</span>. Navigasi ke <code>/var/www/html/</code>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Set Owner folder</span>
+    </div>
+    <p>Klik kanan folder <code>course_online</code> &gt; <strong>Ownership</strong>.</p>
+    <ul>
+      <li><strong>Owner:</strong> <code>www-data</code></li>
+      <li><strong>Group:</strong> <code>www-data</code></li>
+      <li>Ceklis <strong>Apply to all files and subdirectories</strong></li>
+    </ul>
+    <p>Klik <strong>Apply</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Set Permission folder</span>
+    </div>
+    <p>Klik kanan folder <code>course_online</code> &gt; <strong>Permissions</strong>.</p>
+    <ul>
+      <li><strong>Permissions mode:</strong> <code>755</code></li>
+      <li>Ceklis <strong>Apply to all files and subdirectories</strong></li>
+    </ul>
+    <p>Klik <strong>Apply</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Permission khusus folder uploads &amp; assets</span>
+    </div>
+    <p>Lakukan langkah yang sama untuk folder berikut, gunakan permission <code>777</code>:</p>
+    <ul>
+      <li><code>course_online/uploads</code></li>
+      <li><code>course_online/assets</code></li>
+    </ul>
+  </div>
+
+  <div class="note">
+    <strong>Alternatif:</strong> Via <span class="ui-path">Tools &gt; Command Shell</span>:
+    <pre><code>sudo chown -R www-data:www-data /var/www/html/course_online
+sudo chmod -R 755 /var/www/html/course_online
+sudo chmod -R 777 /var/www/html/course_online/uploads
+sudo chmod -R 777 /var/www/html/course_online/assets</code></pre>
+  </div>
+</section>
+
+<!-- 10 -->
+<section id="apache">
+  <h2>10. Konfigurasi Apache via Webmin</h2>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Aktifkan mod_rewrite</span>
+    </div>
+    <p>Via <span class="ui-path">Tools &gt; Command Shell</span>:</p>
+    <pre><code>sudo a2enmod rewrite
+sudo systemctl restart apache2</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Edit VirtualHost Apache</span>
+    </div>
+    <p>Via File Manager Webmin, buka <code>/etc/apache2/sites-available/000-default.conf</code>.</p>
+    <p>Edit menjadi:</p>
+    <pre><code>&lt;VirtualHost *:80&gt;
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html/course_online
+    SetEnv CI_ENV production
+
+    &lt;Directory /var/www/html/course_online&gt;
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    &lt;/Directory&gt;
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+&lt;/VirtualHost&gt;</code></pre>
+    <p>Klik <strong>Save</strong>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Restart Apache</span>
+    </div>
+    <pre><code>sudo systemctl restart apache2</code></pre>
+    <p>Atau via Webmin: buka <span class="ui-path">Others &gt; Apache Webserver</span> &gt; klik tombol <strong>Restart Apache</strong>.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section id="production">
+  <h2>11. Production Settings</h2>
+  <p>Via File Manager, edit <code>/var/www/html/course_online/index.php</code>:</p>
+  <pre><code>define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'production');</code></pre>
+  <p>Variabel <code>CI_ENV=production</code> sudah diset di VirtualHost (langkah 10), jadi CodeIgniter otomatis pakai mode production.</p>
+</section>
+
+<!-- 12 -->
+<section id="tunnel">
+  <h2>12. Cloudflare Tunnel</h2>
+  <p>VPS tanpa IP publik tetap bisa diakses dari internet. Cloudflare Tunnel bekerja dengan membuat koneksi <strong>keluar</strong> (outbound) dari VPS ke Cloudflare.</p>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Install cloudflared</span>
+    </div>
+    <p>Via <span class="ui-path">Tools &gt; Command Shell</span>:</p>
+    <pre><code>curl -L https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb -o /tmp/cloudflared.deb
+sudo dpkg -i /tmp/cloudflared.deb</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Login ke Cloudflare</span>
+    </div>
+    <pre><code>cloudflared tunnel login</code></pre>
+    <p>Perintah ini akan menampilkan URL. <strong>Copy URL</strong> tersebut, buka di browser komputer lokal, dan login ke akun Cloudflare.</p>
+    <p>Pilih domain yang akan dipakai. File sertifikat akan terdownload otomatis di VPS.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">3</span>
+      <span class="step-title">Buat Tunnel</span>
+    </div>
+    <pre><code>cloudflared tunnel create course-online</code></pre>
+    <p>Catat <strong>Tunnel ID</strong> yang muncul di output.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">4</span>
+      <span class="step-title">Buat file konfigurasi tunnel</span>
+    </div>
+    <p>Via File Manager Webmin, buka <code>/root/.cloudflared/</code> (aktifkan tampilan file tersembunyi di Webmin: <span class="ui-path">Webmin &gt; Webmin Configuration &gt; File Manager Options &gt; Show hidden files: Yes</span>).</p>
+    <p>Buat file baru <code>config.yml</code>, isi dengan:</p>
+    <pre><code>tunnel: course-online
+credentials-file: /root/.cloudflared/&lt;TUNNEL_ID&gt;.json
+
+ingress:
+  - hostname: course.kamu.com
+    service: http://localhost:80
+  - service: http_status:404</code></pre>
+    <p>Ganti <code>&lt;TUNNEL_ID&gt;</code> dengan ID dari langkah 3, dan <code>course.kamu.com</code> dengan domain kamu.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">5</span>
+      <span class="step-title">Routing DNS Cloudflare</span>
+    </div>
+    <pre><code>cloudflared tunnel route dns course-online course.kamu.com</code></pre>
+    <p>Otomatis menambah DNS record CNAME di Cloudflare.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">6</span>
+      <span class="step-title">Install tunnel sebagai service (auto-start)</span>
+    </div>
+    <pre><code>sudo cloudflared service install</code></pre>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">7</span>
+      <span class="step-title">Start &amp; Enable tunnel</span>
+    </div>
+    <pre><code>sudo systemctl start cloudflared
+sudo systemctl enable cloudflared
+sudo systemctl status cloudflared</code></pre>
+    <p>Pastikan status <strong>active (running)</strong>.</p>
+  </div>
+
+  <div class="note">
+    <strong>Selesai!</strong> Buka <code>https://course.kamu.com</code> di browser. SSL aktif otomatis dari Cloudflare.
+    Aplikasi Course Online seharusnya sudah bisa diakses dari internet.
+  </div>
+</section>
+
+<!-- 13 -->
+<section id="firewall">
+  <h2>13. Firewall via Webmin</h2>
+  <p>Karena akses ke VPS hanya lewat SSH dan Cloudflare Tunnel (outbound), firewall cukup longgar.</p>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">1</span>
+      <span class="step-title">Buka Linux Firewall</span>
+    </div>
+    <p>Webmin &gt; <span class="ui-path">Networking &gt; Linux Firewall</span>.</p>
+  </div>
+
+  <div class="step">
+    <div class="step-header">
+      <span class="step-num">2</span>
+      <span class="step-title">Pastikan port 22 dan 10000 terbuka</span>
+    </div>
+    <table>
+      <tr><th>Port</th><th>Keterangan</th><th>Status</th></tr>
+      <tr><td>22</td><td>SSH</td><td>Buka</td></tr>
+      <tr><td>10000</td><td>Webmin</td><td>Buka (dari jaringan lokal saja)</td></tr>
+      <tr><td>80</td><td>Apache (untuk tunnel)</td><td>Buka</td></tr>
+    </table>
+    <p>Port 80 harus terbuka agar Cloudflare Tunnel bisa terhubung ke Apache di VPS.</p>
+  </div>
+
+  <div class="note">
+    <strong>Catatan:</strong> Port 10000 (Webmin) tidak perlu diakses dari publik karena sudah diakses via SSH tunnel.
+    Port 80 tidak perlu diakses langsung dari browser publik karena semua traffic masuk lewat Cloudflare Tunnel.
+  </div>
+</section>
+
+<!-- 14 -->
+<section id="verify">
+  <h2>14. Verifikasi &amp; Troubleshooting</h2>
+
+  <h3>Verifikasi</h3>
+  <ol>
+    <li>Buka <code>https://course.kamu.com</code> &rarr; halaman Course Online tampil</li>
+    <li>Cek halaman login, register, halaman course</li>
+    <li>Pastikan SSL aktif (icon gembok di address bar)</li>
+    <li>Coba upload gambar dari admin panel &rarr; pastikan tersimpan di folder <code>uploads/</code></li>
+  </ol>
+
+  <h3>Troubleshooting</h3>
+  <table>
+    <tr><th>Masalah</th><th>Solusi</th></tr>
+    <tr>
+      <td>Error 500 / blank page</td>
+      <td>Cek log: <span class="ui-path">Others &gt; Apache Webserver</span> &gt; <strong>View Error Log</strong>.
+      Juga cek <code>/var/www/html/course_online/application/logs/</code> via File Manager.</td>
+    </tr>
+    <tr>
+      <td>Database connection error</td>
+      <td>Verifikasi username, password, nama DB di <code>database.php</code>. Via Command Shell:
+      <code>mysql -u course_user -p -e "SHOW DATABASES;"</code></td>
+    </tr>
+    <tr>
+      <td>Upload file tidak tersimpan</td>
+      <td>Pastikan folder <code>uploads/</code> punya permission <code>777</code> dan owner <code>www-data</code>.</td>
+    </tr>
+    <tr>
+      <td>404 halaman selain homepage</td>
+      <td>Pastikan <code>mod_rewrite</code> aktif, <code>AllowOverride All</code> di VirtualHost, dan <code>config['index_page'] = ''</code>.</td>
+    </tr>
+    <tr>
+      <td>Cloudflare Tunnel tidak connect</td>
+      <td>Cek log: <code>sudo journalctl -u cloudflared -f</code>. Pastikan <code>config.yml</code> benar.</td>
+    </tr>
+    <tr>
+      <td>Webmin tidak bisa diakses</td>
+      <td>Pastikan SSH tunnel <code>-L 10000:localhost:10000</code> berjalan. Cek status: <code>sudo systemctl status webmin</code>.</td>
+    </tr>
+    <tr>
+      <td>Cloudflare Tunnel: Connection Refused</td>
+      <td>Pastikan Apache berjalan: <code>sudo systemctl status apache2</code>. Tunnel mengarah ke <code>localhost:80</code>.</td>
+    </tr>
+  </table>
+
+  <hr>
+
+  <h3>Informasi Koneksi Database</h3>
+  <table>
+    <tr><th>Item</th><th>Nilai</th></tr>
+    <tr><td>Database</td><td><code>db_course_online</code></td></tr>
+    <tr><td>Username</td><td><code>course_user</code></td></tr>
+    <tr><td>Host</td><td><code>localhost</code></td></tr>
+    <tr><td>Driver</td><td><code>mysqli</code></td></tr>
+    <tr><td>Port</td><td><code>3306</code></td></tr>
+  </table>
+
+  <h3>Shortcut Webmin</h3>
+  <table>
+    <tr><th>Menu Webmin</th><th>Kegunaan</th></tr>
+    <tr><td><span class="ui-path">Others &gt; Apache Webserver</span></td><td>Manage Apache, VirtualHost, module, log</td></tr>
+    <tr><td><span class="ui-path">Servers &gt; MySQL Database Server</span></td><td>Manage database, user, import SQL</td></tr>
+    <tr><td><span class="ui-path">Tools &gt; File Manager</span></td><td>Upload, edit, manage file/folder</td></tr>
+    <tr><td><span class="ui-path">Tools &gt; Command Shell</span></td><td>Jalankan perintah terminal</td></tr>
+    <tr><td><span class="ui-path">Networking &gt; Linux Firewall</span></td><td>Atur firewall</td></tr>
+    <tr><td><span class="ui-path">System &gt; Bootup and Shutdown</span></td><td>Atur service auto-start</td></tr>
+    <tr><td><span class="ui-path">System &gt; Software Packages</span></td><td>Install/uninstall paket</td></tr>
+    <tr><td><span class="ui-path">System &gt; Scheduled Cron</span></td><td>Cron job (backup, dll)</td></tr>
+  </table>
+</section>
+
+<footer>
+  <p>Dokumentasi deploy <strong>Course Online</strong> &mdash; CodeIgniter 3 + MySQL + Cloudflare Tunnel via Webmin.</p>
+  <p>VPS tanpa IP publik &mdash; akses via SSH + Webmin tunnel.</p>
+  <p>Generated: <span id="date"></span></p>
+</footer>
+
+</div>
+
+<script>
+  document.getElementById('date').textContent = new Date().toLocaleDateString('id-ID', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+
+  document.querySelectorAll('pre code').forEach(function(block) {
+    var pre = block.parentElement;
+    if (pre.parentElement.classList.contains('note')) return;
+    var codeHeader = document.createElement('div');
+    codeHeader.className = 'code-header';
+    var lang = block.textContent.includes('php') ? 'PHP' :
+               block.textContent.includes('sudo') || block.textContent.includes('cloudflared') ||
+               block.textContent.includes('mysql') || block.textContent.includes('cd') ||
+               block.textContent.includes('curl') || block.textContent.includes('ls') ||
+               block.textContent.includes('chmod') || block.textContent.includes('chown') ||
+               block.textContent.includes('ssh') || block.textContent.includes('cat') ? 'BASH' : 'TEXT';
+    codeHeader.innerHTML = '<span>' + lang + '</span><button class="copy-btn" onclick="copyCode(this)">Salin</button>';
+    pre.parentNode.insertBefore(codeHeader, pre);
+  });
+
+  function copyCode(btn) {
+    var codeBlock = btn.closest('.code-header').nextElementSibling.querySelector('code');
+    var text = codeBlock.textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      btn.textContent = 'Tersalin!';
+      setTimeout(function() { btn.textContent = 'Salin'; }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

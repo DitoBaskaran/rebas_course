@@ -1,0 +1,249 @@
+<div class="container-fluid py-4" style="padding-top: 86px !important;">
+    <div class="row g-4">
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-3 small">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="text-primary text-decoration-none fw-medium"><?php echo htmlspecialchars($course->title); ?></a></li>
+                    <li class="breadcrumb-item active fw-medium text-dark">Belajar</li>
+                </ol>
+            </nav>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden animate-scale-in">
+                <!-- Video Section -->
+                <?php if ($active_lesson->lesson_type === 'video' && !empty($active_lesson->video_url)): ?>
+                    <div class="ratio ratio-16x9 bg-dark">
+                        <?php if (strpos($active_lesson->video_url, 'youtube.com') !== false || strpos($active_lesson->video_url, 'youtu.be') !== false): ?>
+                            <?php
+                                parse_str(parse_url($active_lesson->video_url, PHP_URL_QUERY), $yt_params);
+                                $yt_id = $yt_params['v'] ?? basename($active_lesson->video_url);
+                            ?>
+                            <iframe src="https://www.youtube.com/embed/<?php echo $yt_id; ?>?autoplay=0&rel=0" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+                        <?php elseif (strpos($active_lesson->video_url, 'vimeo.com') !== false): ?>
+                            <?php $vm_id = (int) substr(parse_url($active_lesson->video_url, PHP_URL_PATH), 1); ?>
+                            <iframe src="https://player.vimeo.com/video/<?php echo $vm_id; ?>" allowfullscreen></iframe>
+                        <?php else: ?>
+                            <video controls class="w-100 h-100" preload="metadata">
+                                <source src="<?php echo $active_lesson->video_url; ?>" type="video/mp4">
+                            </video>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Live Section -->
+                <?php if ($active_lesson->lesson_type === 'live_session'): ?>
+                    <div class="bg-dark p-5 text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-danger rounded-circle mb-4" style="width: 80px; height: 80px;">
+                            <i class="fas fa-video text-white fa-2x"></i>
+                        </div>
+                        <h4 class="text-white fw-bold mb-2"><?php echo t('Sesi Live', 'Live Session'); ?></h4>
+                        <p class="text-white-50 mb-4"><?php echo t('Bergabung dengan sesi langsung bersama instruktur', 'Join the live session with your instructor'); ?></p>
+                        <?php if (!empty($active_lesson->live_url)): ?>
+                            <a href="<?php echo $active_lesson->live_url; ?>" target="_blank" class="btn btn-danger btn-lg rounded-pill px-5 fw-semibold shadow-lg">
+                                <i class="fas fa-video me-2"></i> <?php echo t('Bergabung Sekarang', 'Join Now'); ?>
+                            </a>
+                        <?php else: ?>
+                            <div class="text-white-50">
+                                <i class="fas fa-clock me-2"></i> <?php echo t('Link meeting akan muncul saat sesi dimulai', 'Meeting link will appear when session starts'); ?>
+                            </div>
+                        <?php endif; ?>
+                        <?php if (!empty($active_lesson->description)): ?>
+                            <p class="text-white-50 small mt-4 mb-0"><?php echo htmlspecialchars(t($active_lesson->description, $active_lesson->description_en ?: $active_lesson->description)); ?></p>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Quiz Section -->
+                <?php if ($active_lesson->lesson_type === 'quiz'): ?>
+                    <div class="bg-light p-5 text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning rounded-circle mb-4" style="width: 80px; height: 80px;">
+                            <i class="fas fa-pencil-alt fa-2x"></i>
+                        </div>
+                        <h4 class="fw-extrabold text-dark mb-2"><?php echo t('Quiz', 'Quiz'); ?></h4>
+                        <p class="text-secondary mb-4"><?php echo t('Uji pemahamanmu tentang materi ini', 'Test your understanding of this material'); ?></p>
+                        <?php if (!empty($course_quiz)): ?>
+                            <div class="d-inline-flex align-items-center gap-3 mb-4 bg-white rounded-pill px-4 py-2 shadow-sm">
+                                <span class="text-dark fw-semibold small"><?php echo htmlspecialchars($course_quiz->title); ?></span>
+                                <span class="badge bg-primary-subtle text-primary rounded-pill fw-medium"><?php echo $this->Quiz_model->count_questions($course_quiz->id); ?> <?php echo t('soal', 'questions'); ?></span>
+                                <span class="text-secondary small"><?php echo t('Min lulus:', 'Passing:'); ?> <?php echo $course_quiz->passing_score; ?>%</span>
+                            </div>
+                            <a href="<?php echo base_url('quiz/start/' . $course_quiz->id); ?>" class="btn btn-warning btn-lg rounded-pill px-5 fw-semibold shadow-sm">
+                                <i class="fas fa-play me-2"></i> <?php echo t('Mulai Quiz', 'Start Quiz'); ?>
+                            </a>
+                        <?php else: ?>
+                            <div class="text-secondary">
+                                <i class="fas fa-info-circle me-2"></i> <?php echo t('Belum ada quiz untuk materi ini', 'No quiz for this lesson yet'); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Assignment Section -->
+                <?php if ($active_lesson->lesson_type === 'assignment'): ?>
+                    <div class="bg-light p-5 text-center">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle mb-4" style="width: 80px; height: 80px;">
+                            <i class="fas fa-code fa-2x"></i>
+                        </div>
+                        <h4 class="fw-extrabold text-dark mb-2"><?php echo t('Tugas', 'Assignment'); ?></h4>
+                        <p class="text-secondary mb-4"><?php echo t('Kerjakan tugas berikut untuk menguji kemampuan praktikmu', 'Complete the following task to test your practical skills'); ?></p>
+                        <?php if (!empty($course_assignment)): ?>
+                            <div class="d-inline-flex align-items-center gap-3 mb-4 bg-white rounded-pill px-4 py-2 shadow-sm">
+                                <span class="text-dark fw-semibold small"><?php echo htmlspecialchars($course_assignment->title); ?></span>
+                                <span class="badge bg-success-subtle text-success rounded-pill fw-medium"><i class="fas fa-file me-1"></i> <?php echo strtoupper($course_assignment->allowed_file_types); ?></span>
+                            </div>
+                            <a href="<?php echo base_url('assignment/view/' . $course_assignment->id); ?>" class="btn btn-success btn-lg rounded-pill px-5 fw-semibold shadow-sm">
+                                <i class="fas fa-upload me-2"></i> <?php echo t('Lihat & Kumpulkan', 'View & Submit'); ?>
+                            </a>
+                        <?php else: ?>
+                            <div class="text-secondary">
+                                <i class="fas fa-info-circle me-2"></i> <?php echo t('Belum ada tugas untuk materi ini', 'No assignment for this lesson yet'); ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Text Content -->
+                <div class="p-4 p-xl-5">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <span class="badge bg-dark text-white rounded-pill px-3 py-2 fw-medium d-inline-flex align-items-center gap-1">
+                            <?php if ($active_lesson->lesson_type === 'video'): ?>
+                                <i class="fas fa-play-circle"></i> <?php echo t('Video', 'Video'); ?>
+                            <?php elseif ($active_lesson->lesson_type === 'text'): ?>
+                                <i class="fas fa-file-alt"></i> <?php echo t('Teks', 'Text'); ?>
+                            <?php elseif ($active_lesson->lesson_type === 'quiz'): ?>
+                                <i class="fas fa-pencil-alt"></i> <?php echo t('Quiz', 'Quiz'); ?>
+                            <?php elseif ($active_lesson->lesson_type === 'assignment'): ?>
+                                <i class="fas fa-code"></i> <?php echo t('Tugas', 'Assignment'); ?>
+                            <?php else: ?>
+                                <i class="fas fa-video"></i> <?php echo t('Live', 'Live'); ?>
+                            <?php endif; ?>
+                        </span>
+                        <?php if ($active_lesson->duration > 0): ?>
+                            <span class="text-secondary small"><i class="far fa-clock me-1"></i> <?php echo $active_lesson->duration; ?> <?php echo t('menit', 'min'); ?></span>
+                        <?php endif; ?>
+                        <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
+                            <span class="badge bg-success rounded-pill px-3 py-2 fw-medium ms-auto"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
+                        <?php endif; ?>
+                    </div>
+
+                    <h4 class="fw-extrabold text-dark mb-3 lh-sm" style="letter-spacing: -0.03em;"><?php echo htmlspecialchars(t($active_lesson->title, $active_lesson->title_en ?: $active_lesson->title)); ?></h4>
+
+                    <?php if ($active_lesson->description): ?>
+                        <p class="text-secondary mb-4"><?php echo nl2br(htmlspecialchars(t($active_lesson->description, $active_lesson->description_en ?: $active_lesson->description))); ?></p>
+                    <?php endif; ?>
+
+                    <?php if (!empty($active_lesson->content) && $active_lesson->lesson_type === 'text'): ?>
+                        <div class="bg-light rounded-4 p-4 p-xl-5 mb-4 lesson-content">
+                            <?php echo t($active_lesson->content, $active_lesson->content_en ?: $active_lesson->content); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top">
+                        <div>
+                            <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
+                                <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
+                            <?php else: ?>
+                                <a href="<?php echo base_url('courses/complete_lesson/' . $course->id . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
+                                    <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <?php
+                            $prev_id = null;
+                            $next_id = null;
+                            $found = false;
+                            foreach ($lessons as $lesson) {
+                                if ($found) { $next_id = $lesson->id; break; }
+                                if ($lesson->id == $active_lesson->id) { $found = true; continue; }
+                                if (!$found) $prev_id = $lesson->id;
+                            }
+                            ?>
+                            <?php if ($prev_id): ?>
+                                <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $prev_id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold">
+                                    <i class="fas fa-chevron-left me-1"></i> <?php echo t('Sebelumnya', 'Previous'); ?>
+                                </a>
+                            <?php endif; ?>
+                            <?php if ($next_id): ?>
+                                <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $next_id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
+                                    <?php echo t('Selanjutnya', 'Next'); ?> <i class="fas fa-chevron-right ms-1"></i>
+                                </a>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar - Playlist -->
+        <div class="col-lg-4 animate-fade-in-up">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden sticky-top" style="top: 90px;">
+                <div class="p-3 p-xl-4 border-bottom bg-light">
+                    <h6 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($course->title); ?></h6>
+                    <?php if ($course->duration_total > 0): ?>
+                        <small class="text-secondary"><?php echo count($lessons); ?> <?php echo t('materi', 'lessons'); ?> · <?php echo $course->duration_total; ?> <?php echo t('menit', 'min'); ?></small>
+                    <?php endif; ?>
+                </div>
+                <div class="scroll-area" style="max-height: 500px; overflow-y: auto;">
+                    <?php foreach ($lessons as $i => $lesson): ?>
+                        <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $lesson->id); ?>" class="text-decoration-none d-flex align-items-center gap-3 p-3 p-xl-4 border-bottom border-light <?php echo $lesson->id == $active_lesson->id ? 'bg-primary-subtle' : 'bg-white'; ?>" style="transition: all 0.15s ease;">
+                            <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width: 32px; height: 32px; font-size: 0.75rem; <?php echo in_array($lesson->id, $completed_lessons) ? 'background: #d1fae5; color: #059669;' : ($lesson->id == $active_lesson->id ? 'background: #0f172a; color: #fff;' : 'background: #f1f5f9; color: #64748b;'); ?>">
+                                <?php if (in_array($lesson->id, $completed_lessons)): ?>
+                                    <i class="fas fa-check"></i>
+                                <?php elseif ($lesson->id == $active_lesson->id): ?>
+                                    <i class="fas fa-play"></i>
+                                <?php else: ?>
+                                    <?php echo $i + 1; ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="flex-fill min-w-0">
+                                <p class="fw-semibold small mb-0 text-truncate" style="color: <?php echo $lesson->id == $active_lesson->id ? '#0f172a' : '#1e293b'; ?>;">
+                                    <?php echo htmlspecialchars(t($lesson->title, $lesson->title_en ?: $lesson->title)); ?>
+                                </p>
+                                <div class="d-flex align-items-center gap-2">
+                                    <small class="text-secondary"><?php echo $lesson->duration > 0 ? $lesson->duration . ' ' . t('menit', 'min') : ''; ?></small>
+                                    <small class="text-secondary-50">
+                                        <?php if ($lesson->lesson_type === 'video'): ?><i class="fas fa-play-circle"></i>
+                                        <?php elseif ($lesson->lesson_type === 'text'): ?><i class="fas fa-file-alt"></i>
+                                        <?php elseif ($lesson->lesson_type === 'quiz'): ?><i class="fas fa-pencil-alt"></i>
+                                        <?php elseif ($lesson->lesson_type === 'assignment'): ?><i class="fas fa-code"></i>
+                                        <?php else: ?><i class="fas fa-video"></i><?php endif; ?>
+                                    </small>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+                <div class="p-3 p-xl-4 border-top bg-light">
+                    <?php $pct = $progress_pct; ?>
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="text-dark fw-semibold"><?php echo t('Progress', 'Progress'); ?></span>
+                        <span class="fw-bold text-dark"><?php echo $pct; ?>%</span>
+                    </div>
+                    <div class="progress" style="height: 6px; border-radius: 100px; background: #e2e8f0;">
+                        <div class="progress-bar bg-dark rounded-pill" style="width: <?php echo $pct; ?>%; transition: width 0.5s ease;"></div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="text-primary small fw-medium text-decoration-none">
+                            <i class="fas fa-arrow-left me-1"></i> <?php echo t('Kembali ke Detail', 'Back to Detail'); ?>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Style for rich text content -->
+<style>
+.lesson-content { line-height: 1.8; color: #1e293b; font-size: 0.9375rem; }
+.lesson-content p { margin-bottom: 1rem; }
+.lesson-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1rem 0; }
+.lesson-content h1, .lesson-content h2, .lesson-content h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 700; color: #0f172a; }
+.lesson-content ul, .lesson-content ol { margin-bottom: 1rem; padding-left: 1.5rem; }
+.lesson-content blockquote { border-left: 4px solid #4361ee; padding-left: 1rem; margin: 1rem 0; color: #64748b; font-style: italic; }
+.lesson-content pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
+.lesson-content code { background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; }
+.lesson-content pre code { background: transparent; padding: 0; }
+</style>
