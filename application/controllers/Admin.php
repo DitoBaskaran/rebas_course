@@ -736,6 +736,20 @@ class Admin extends CI_Controller {
         $valid_groups = array('general', 'appearance', 'hero', 'homepage', 'social', 'footer', 'payment');
         if (!in_array($group, $valid_groups)) $group = 'general';
 
+        // Auto-seed payment settings if not exist
+        if ($group === 'payment') {
+            $defaults = array(
+                array('key' => 'pakasir_slug',    'value' => '',  'type' => 'text',    'group' => 'payment', 'label' => 'Pakasir Project Slug'),
+                array('key' => 'pakasir_api_key', 'value' => '',  'type' => 'text',    'group' => 'payment', 'label' => 'Pakasir API Key'),
+                array('key' => 'pakasir_sandbox', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Pakasir Sandbox Mode'),
+            );
+            foreach ($defaults as $d) {
+                if (!$this->Setting_model->get($d['key'])) {
+                    $this->Setting_model->set($d['key'], $d['value'], $d['type'], $d['group'], $d['label']);
+                }
+            }
+        }
+
         $data['active_page'] = 'settings-' . $group;
         $data['title'] = t('Pengaturan', 'Settings');
         $data['page_title'] = t('Pengaturan ' . ucfirst($group), ucfirst($group) . ' Settings');

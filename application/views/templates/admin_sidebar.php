@@ -52,6 +52,9 @@
     <a class="nav-link <?php echo strpos($active_page, 'settings-footer') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('admin/settings/footer'); ?>">
         <i data-lucide="scroll-text"></i> <span><?php echo t('Footer', 'Footer'); ?></span>
     </a>
+    <a class="nav-link <?php echo strpos($active_page, 'settings-payment') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('admin/settings/payment'); ?>">
+        <i data-lucide="credit-card"></i> <span><?php echo t('Pembayaran', 'Payment'); ?></span>
+    </a>
 
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Akun', 'Account'); ?></div>
