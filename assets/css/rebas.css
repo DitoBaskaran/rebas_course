@@ -1573,3 +1573,43 @@ h1, h2, h3, h4, h5, h6,
 
 /* ===== PRINT ===== */
 @media print { .navbar, .admin-sidebar, .btn { display: none !important; } .admin-content { padding: 0 !important; } }
+
+/* ===== COURSES PAGE ===== */
+.hero-section {
+    background: linear-gradient(180deg, var(--light) 0%, var(--gray-50) 100%);
+    border-bottom: 1px solid var(--gray-200);
+}
+.hero-section h1 {
+    letter-spacing: -0.03em;
+}
+.filter-card {
+    background-color: var(--white);
+    border: 1px solid var(--gray-200) !important;
+}
+.course-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: var(--white);
+}
+.course-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.1) !important;
+}
+.course-card img {
+    transition: transform 0.4s ease;
+}
+.course-card:hover img {
+    transform: scale(1.05);
+}
+.hover-text-primary:hover {
+    color: var(--primary) !important;
+}
+.form-label {
+    font-size: 0.875rem;
+    margin-bottom: 0.35rem;
+}
+.form-control-sm,
+.form-select-sm {
+    border-radius: var(--radius-lg);
+    font-size: 0.875rem;
+    padding: 0.5rem 0.875rem;
+}
