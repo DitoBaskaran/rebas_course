@@ -63,7 +63,7 @@
                                             <span class="small fw-bold text-primary flex-shrink-0"><?php echo $course->progress_pct ?? 0; ?>%</span>
                                         </div>
                                     </div>
-                                    <a href="<?php echo base_url('courses/learn/' . $course->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 flex-shrink-0 fw-semibold"><?php echo t('Belajar', 'Learn'); ?></a>
+                                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-dark btn-sm rounded-pill px-3 flex-shrink-0 fw-semibold"><?php echo t('Belajar', 'Learn'); ?></a>
                                 </div>
                             </div>
                         <?php endforeach; ?>
@@ -109,8 +109,8 @@
                     <?php foreach ($certificates as $cert): ?>
                         <a href="<?php echo base_url('certificate/view/' . $cert->id); ?>" class="text-decoration-none p-3 rounded-3 bg-light d-inline-flex align-items-center gap-2 hover-zoom border" style="transition: all 0.2s;">
                             <i class="fas fa-file-alt text-warning"></i>
-                            <span class="fw-bold text-dark small"><?php echo htmlspecialchars($cert->course_title); ?></span>
-                            <span class="badge bg-success text-white rounded-pill px-2 small"><?php echo htmlspecialchars($cert->status ?? 'Completed'); ?></span>
+                            <span class="fw-bold text-dark small"><?php echo htmlspecialchars($cert->title); ?></span>
+                            <span class="badge bg-success text-white rounded-pill px-2 small"><?php echo t('Selesai', 'Completed'); ?></span>
                         </a>
                     <?php endforeach; ?>
                 </div>

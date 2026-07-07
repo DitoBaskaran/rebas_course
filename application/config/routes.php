@@ -93,3 +93,11 @@ $route['ref/(:any)'] = 'referral/index/$1';
 // Course detail by slug (clean URLs)
 $route['courses/detail/(:num)'] = 'courses/detail/$1';
 $route['courses/detail/(:any)'] = 'courses/detail_slug/$1';
+
+// Allow slug-based course routes
+$route['courses/buy/(:any)'] = 'courses/buy/$1';
+$route['courses/review/(:any)'] = 'courses/review/$1';
+$route['courses/complete_lesson/(:any)/(:num)'] = 'courses/complete_lesson/$1/$2';
+$route['forum/index/(:any)'] = 'forum/index/$1';
+$route['forum/create/(:any)'] = 'forum/create/$1';
+$route['wishlist/toggle/(:any)'] = 'wishlist/toggle/$1';

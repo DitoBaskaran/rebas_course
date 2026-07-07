@@ -112,7 +112,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                                         <small class="text-secondary"><?php echo $lesson->duration > 0 ? $lesson->duration . ' ' . t('menit', 'min') : ''; ?></small>
                                     </div>
                                     <?php if ($is_enrolled): ?>
-                                        <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $lesson->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 flex-shrink-0 fw-semibold"><?php echo t('Mulai', 'Start'); ?></a>
+                                        <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $lesson->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 flex-shrink-0 fw-semibold"><?php echo t('Mulai', 'Start'); ?></a>
                                     <?php endif; ?>
                                 </div>
                             <?php endforeach; ?>
@@ -209,7 +209,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                     <?php if ($is_enrolled): ?>
                         <div class="card border-0 shadow-sm rounded-4 p-4 p-xl-5 mt-4">
                             <h6 class="fw-bold text-dark mb-3"><?php echo t('Tulis Ulasan', 'Write a Review'); ?></h6>
-                            <?php echo form_open('courses/review/' . $course->id, array('class' => 'd-flex flex-column gap-3')); ?>
+                            <?php echo form_open('courses/review/' . $course->slug, array('class' => 'd-flex flex-column gap-3')); ?>
                                 <div>
                                     <label class="form-label"><?php echo t('Rating', 'Rating'); ?></label>
                                     <div class="d-flex gap-2">
@@ -237,7 +237,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h6 class="fw-bold text-dark mb-0"><?php echo t('Forum Diskusi', 'Discussion Forum'); ?></h6>
                         <?php if ($is_enrolled): ?>
-                            <a href="<?php echo base_url('forum/create/' . $course->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold"><?php echo t('Diskusi Baru', 'New Discussion'); ?></a>
+                            <a href="<?php echo base_url('forum/create/' . $course->slug); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold"><?php echo t('Diskusi Baru', 'New Discussion'); ?></a>
                         <?php endif; ?>
                     </div>
                     <div class="d-flex flex-column gap-2">
@@ -251,7 +251,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                             </a>
                         <?php endforeach; ?>
                         <?php if (count($discussions) > 5): ?>
-                            <a href="<?php echo base_url('forum/index/' . $course->id); ?>" class="text-center text-primary small fw-semibold text-decoration-none border-bottom border-primary pb-1"><?php echo t('Lihat semua diskusi', 'View all discussions'); ?></a>
+                            <a href="<?php echo base_url('forum/index/' . $course->slug); ?>" class="text-center text-primary small fw-semibold text-decoration-none border-bottom border-primary pb-1"><?php echo t('Lihat semua diskusi', 'View all discussions'); ?></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -262,12 +262,12 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
         <div class="col-lg-4 animate-fade-in-up stagger-1">
             <div class="card border-0 shadow-sm rounded-4 p-4 p-xl-5 sticky-top" style="top: 100px;">
                 <?php if ($is_enrolled): ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->id); ?>" class="btn btn-success w-100 mb-3 rounded-pill py-3 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-success w-100 mb-3 rounded-pill py-3 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
                         <i class="fas fa-play-circle"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
                     </a>
-                    <a href="<?php echo base_url('forum/index/' . $course->id); ?>" class="btn btn-outline-dark w-100 rounded-pill py-2 fw-semibold"><?php echo t('Forum Diskusi', 'Discussion Forum'); ?></a>
+                    <a href="<?php echo base_url('forum/index/' . $course->slug); ?>" class="btn btn-outline-dark w-100 rounded-pill py-2 fw-semibold"><?php echo t('Forum Diskusi', 'Discussion Forum'); ?></a>
                 <?php else: ?>
-                    <a href="<?php echo base_url('courses/buy/' . $course->id); ?>" class="btn btn-dark w-100 mb-3 rounded-pill py-3 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
+                    <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn btn-dark w-100 mb-3 rounded-pill py-3 fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
                         <?php if ($course->price <= 0): ?>
                             <i class="fas fa-graduation-cap"></i> <?php echo t('Daftar Gratis', 'Enroll Free'); ?>
                         <?php else: ?>

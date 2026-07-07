@@ -50,7 +50,7 @@
                 <?php else: ?>
                     <div class="d-flex flex-column gap-2">
                         <?php foreach ($enrolled_courses as $ec): ?>
-                            <a href="<?php echo base_url('courses/learn/' . $ec->id); ?>" class="text-decoration-none d-flex justify-content-between align-items-center p-3 rounded-3 bg-light" style="transition: all 0.2s;">
+                            <a href="<?php echo base_url('courses/learn/' . $ec->slug); ?>" class="text-decoration-none d-flex justify-content-between align-items-center p-3 rounded-3 bg-light" style="transition: all 0.2s;">
                                 <span class="fw-semibold text-dark small"><?php echo htmlspecialchars($ec->title); ?></span>
                                 <span class="badge bg-dark text-white rounded-pill px-3 py-2 fw-medium"><?php echo t('Belajar', 'Learn'); ?></span>
                             </a>

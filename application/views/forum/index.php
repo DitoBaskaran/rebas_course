@@ -9,7 +9,7 @@
             </nav>
             <h3 class="fw-extrabold text-dark mb-0" style="letter-spacing: -0.03em;"><?php echo t('Forum Diskusi', 'Discussion Forum'); ?></h3>
         </div>
-        <a href="<?php echo base_url('forum/create/' . $course->id); ?>" class="btn btn-dark btn-sm rounded-pill px-4 py-2 fw-semibold shadow-sm">
+        <a href="<?php echo base_url('forum/create/' . $course->slug); ?>" class="btn btn-dark btn-sm rounded-pill px-4 py-2 fw-semibold shadow-sm">
             <i class="fas fa-plus me-1"></i> <?php echo t('Diskusi Baru', 'New Discussion'); ?>
         </a>
     </div>

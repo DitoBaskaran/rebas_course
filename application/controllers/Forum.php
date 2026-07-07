@@ -13,13 +13,13 @@ class Forum extends CI_Controller {
         $this->load->model('Course_model');
     }
 
-    public function index($course_id) {
-        $course = $this->Course_model->get_course_by_id($course_id);
+    public function index($course_slug_or_id) {
+        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
         if (!$course) show_404();
 
         $data['title'] = t('Diskusi: ', 'Discussion: ') . $course->title;
         $data['course'] = $course;
-        $data['discussions'] = $this->Discussion_model->get_discussions($course_id);
+        $data['discussions'] = $this->Discussion_model->get_discussions($course->id);
 
         $this->load->view('templates/header', $data);
         $this->load->view('forum/index', $data);
@@ -43,10 +43,10 @@ class Forum extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function create($course_id) {
+    public function create($course_slug_or_id) {
         $this->load->helper('gamification');
 
-        $course = $this->Course_model->get_course_by_id($course_id);
+        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
         if (!$course) show_404();
 
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
@@ -60,14 +60,14 @@ class Forum extends CI_Controller {
             $this->load->view('templates/footer');
         } else {
             $discussion_id = $this->Discussion_model->create_discussion(array(
-                'course_id' => $course_id,
+                'course_id' => $course->id,
                 'user_id' => $this->session->userdata('user_id'),
                 'title' => $this->input->post('title'),
                 'content' => $this->input->post('content')
             ));
             award_points($this->session->userdata('user_id'), 3, 'forum_post', $discussion_id);
             $this->session->set_flashdata('success', t('Diskusi berhasil dibuat.', 'Discussion created.'));
-            redirect('forum/index/' . $course_id);
+            redirect('forum/index/' . $course->slug);
         }
     }
 

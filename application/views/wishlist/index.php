@@ -18,7 +18,7 @@
                 <div class="content-card">
                     <div class="card-thumb">
                         <img src="<?php echo base_url('uploads/courses/' . $c->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60';" alt="">
-                        <button class="btn btn-sm position-absolute top-0 end-0 m-2" onclick="toggleWishlist(<?php echo $c->id; ?>)" style="background:rgba(255,255,255,0.9);border-radius:50%;width:32px;height:32px;">
+                        <button class="btn btn-sm position-absolute top-0 end-0 m-2" onclick="toggleWishlist('<?php echo $c->slug; ?>')" style="background:rgba(255,255,255,0.9);border-radius:50%;width:32px;height:32px;">
                             <i data-lucide="heart" style="width:16px;height:16px;fill:var(--danger);color:var(--danger);"></i>
                         </button>
                     </div>

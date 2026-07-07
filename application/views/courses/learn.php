@@ -144,7 +144,7 @@
                             <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
                                 <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
                             <?php else: ?>
-                                <a href="<?php echo base_url('courses/complete_lesson/' . $course->id . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
+                                <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
                                     <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
                                 </a>
                             <?php endif; ?>
@@ -161,12 +161,12 @@
                             }
                             ?>
                             <?php if ($prev_id): ?>
-                                <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $prev_id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold">
+                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $prev_id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold">
                                     <i class="fas fa-chevron-left me-1"></i> <?php echo t('Sebelumnya', 'Previous'); ?>
                                 </a>
                             <?php endif; ?>
                             <?php if ($next_id): ?>
-                                <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $next_id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
+                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $next_id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
                                     <?php echo t('Selanjutnya', 'Next'); ?> <i class="fas fa-chevron-right ms-1"></i>
                                 </a>
                             <?php endif; ?>
@@ -187,7 +187,7 @@
                 </div>
                 <div class="scroll-area" style="max-height: 500px; overflow-y: auto;">
                     <?php foreach ($lessons as $i => $lesson): ?>
-                        <a href="<?php echo base_url('courses/learn/' . $course->id . '/' . $lesson->id); ?>" class="text-decoration-none d-flex align-items-center gap-3 p-3 p-xl-4 border-bottom border-light <?php echo $lesson->id == $active_lesson->id ? 'bg-primary-subtle' : 'bg-white'; ?>" style="transition: all 0.15s ease;">
+                        <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $lesson->id); ?>" class="text-decoration-none d-flex align-items-center gap-3 p-3 p-xl-4 border-bottom border-light <?php echo $lesson->id == $active_lesson->id ? 'bg-primary-subtle' : 'bg-white'; ?>" style="transition: all 0.15s ease;">
                             <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width: 32px; height: 32px; font-size: 0.75rem; <?php echo in_array($lesson->id, $completed_lessons) ? 'background: #d1fae5; color: #059669;' : ($lesson->id == $active_lesson->id ? 'background: #0f172a; color: #fff;' : 'background: #f1f5f9; color: #64748b;'); ?>">
                                 <?php if (in_array($lesson->id, $completed_lessons)): ?>
                                     <i class="fas fa-check"></i>

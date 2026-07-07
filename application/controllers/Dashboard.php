@@ -31,12 +31,13 @@ class Dashboard extends CI_Controller {
         $course_ids = array_column($data['enrolled_courses'], 'id');
         if (!empty($course_ids)) {
             $progress_data = $this->db
-                ->select('course_id, COUNT(*) as completed')
-                ->from('progress')
-                ->where('status', 'completed')
-                ->where_in('user_id', $user_id)
-                ->where_in('course_id', $course_ids)
-                ->group_by('course_id')
+                ->select('l.course_id, COUNT(p.id) as completed')
+                ->from('progress p')
+                ->join('lessons l', 'l.id = p.lesson_id')
+                ->where('p.user_id', $user_id)
+                ->where_in('l.course_id', $course_ids)
+                ->where('p.status', 'completed')
+                ->group_by('l.course_id')
                 ->get()
                 ->result();
             $progress_map = array();

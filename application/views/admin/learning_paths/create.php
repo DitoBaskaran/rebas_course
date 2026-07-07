@@ -89,7 +89,7 @@
                     </div>
                     <div class="d-flex justify-content-end gap-2 px-4 px-xl-5 py-3 form-footer-sticky">
                         <a href="<?php echo base_url('admin/learning_paths'); ?>" class="btn btn-outline-secondary btn-sm rounded-pill px-4"><?php echo t('Batal', 'Cancel'); ?></a>
-                        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 d-flex align-items-center gap-1 btn-loading">
+                        <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 d-flex align-items-center gap-1">
                             <i data-lucide="save" style="width:16px;height:16px;"></i> <?php echo t('Simpan', 'Save'); ?>
                         </button>
                     </div>

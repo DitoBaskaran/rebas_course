@@ -107,32 +107,32 @@ class Courses extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function buy($id) {
+    public function buy($id_or_slug) {
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login terlebih dahulu.', 'Please login first.'));
             redirect('auth/login');
         }
 
-        $course = $this->Course_model->get_course_by_id($id);
+        $course = is_numeric($id_or_slug) ? $this->Course_model->get_course_by_id($id_or_slug) : $this->Course_model->get_course_by_slug($id_or_slug);
         if (!$course) show_404();
 
         $user_id = $this->session->userdata('user_id');
 
-        if ($this->Course_model->check_enrollment($user_id, $id)) {
+        if ($this->Course_model->check_enrollment($user_id, $course->id)) {
             $this->session->set_flashdata('error', t('Anda sudah terdaftar.', 'Already enrolled.'));
-            redirect('courses/learn/' . $id);
+            redirect('courses/learn/' . $course->slug);
         }
 
         if ($course->price <= 0) {
-            $this->Course_model->enroll_user($user_id, $id);
+            $this->Course_model->enroll_user($user_id, $course->id);
             $this->session->set_flashdata('success', t('Berhasil mendaftar!', 'Enrolled successfully!'));
-            redirect('courses/learn/' . $id);
+            redirect('courses/learn/' . $course->slug);
         }
 
         $tx_data = array(
             'user_id' => $user_id,
             'item_type' => $course->content_type,
-            'item_id' => $id,
+            'item_id' => $course->id,
             'amount' => $course->price,
             'status' => 'pending'
         );
@@ -140,8 +140,25 @@ class Courses extends CI_Controller {
         redirect('checkout/confirm/' . $tx_id);
     }
 
-    public function learn($course_id, $lesson_id = NULL) {
+    public function learn($course_slug_or_id, $lesson_id = NULL) {
         $user_id = $this->session->userdata('user_id');
+        $course_id = is_numeric($course_slug_or_id) ? $course_slug_or_id : null;
+        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
+        if (!$course) show_404();
+        $course_id = $course->id;
+
+        // Get all lessons first to find first one if no lesson_id
+        $lessons = $this->Course_model->get_lessons_by_course($course_id);
+
+        if (empty($lessons)) {
+            $this->session->set_flashdata('error', t('Belum ada materi.', 'No lessons yet.'));
+            redirect('courses/detail/' . $course->slug);
+        }
+
+        // If no lesson_id specified, use first lesson
+        if (!$lesson_id) {
+            redirect('courses/learn/' . $course->slug . '/' . $lessons[0]->id);
+        }
 
         // Allow free lesson preview for anyone
         $lesson = $this->Course_model->get_lesson_by_id($lesson_id);
@@ -154,26 +171,10 @@ class Courses extends CI_Controller {
                 redirect('auth/login');
             }
             $this->session->set_flashdata('error', t('Anda belum terdaftar di kursus ini.', 'You are not enrolled in this course.'));
-            $course = $this->Course_model->get_course_by_id($course_id);
             redirect('courses/detail/' . $course->slug);
         }
 
-        $course = $this->Course_model->get_course_by_id($course_id);
-        $lessons = $this->Course_model->get_lessons_by_course($course_id);
-
-        if (empty($lessons)) {
-            $this->session->set_flashdata('error', t('Belum ada materi.', 'No lessons yet.'));
-            $course = $this->Course_model->get_course_by_id($course_id);
-            redirect('courses/detail/' . $course->slug);
-        }
-
-        $active_lesson = NULL;
-        if ($lesson_id) {
-            $active_lesson = $this->Course_model->get_lesson_by_id($lesson_id);
-        }
-        if (!$active_lesson) {
-            $active_lesson = $lessons[0];
-        }
+        $active_lesson = $this->Course_model->get_lesson_by_id($lesson_id);
 
         $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
 
@@ -195,7 +196,7 @@ class Courses extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function complete_lesson($course_id, $lesson_id) {
+    public function complete_lesson($course_slug_or_id, $lesson_id) {
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login.', 'Please login.'));
             redirect('auth/login');
@@ -204,10 +205,12 @@ class Courses extends CI_Controller {
         $this->load->helper('gamification');
 
         $user_id = $this->session->userdata('user_id');
+        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
+        if (!$course) show_404();
+        $course_id = $course->id;
 
         if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar dulu.', 'Please enroll first.'));
-            $course = $this->Course_model->get_course_by_id($course_id);
             redirect('courses/detail/' . $course->slug);
         }
 
@@ -229,7 +232,7 @@ class Courses extends CI_Controller {
 
         if ($next_lesson_id) {
             $this->session->set_flashdata('success', t('Materi selesai!', 'Lesson completed!'));
-            redirect('courses/learn/' . $course_id . '/' . $next_lesson_id);
+            redirect('courses/learn/' . $course->slug . '/' . $next_lesson_id);
         } else {
             // Check if certificate should be issued
             $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
@@ -240,11 +243,11 @@ class Courses extends CI_Controller {
             } else {
                 $this->session->set_flashdata('success', t('Materi terakhir selesai!', 'Final lesson completed!'));
             }
-            redirect('courses/learn/' . $course_id . '/' . $lesson_id);
+            redirect('courses/learn/' . $course->slug . '/' . $lesson_id);
         }
     }
 
-    public function review($course_id) {
+    public function review($course_slug_or_id) {
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login.', 'Please login.'));
             redirect('auth/login');
@@ -253,10 +256,13 @@ class Courses extends CI_Controller {
         $this->load->helper('gamification');
 
         $user_id = $this->session->userdata('user_id');
+        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
+        if (!$course) show_404();
+        $course_id = $course->id;
+
         if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar.', 'You must be enrolled.'));
-        $course = $this->Course_model->get_course_by_id($course_id);
-        redirect('courses/detail/' . $course->slug);
+            redirect('courses/detail/' . $course->slug);
         }
 
         $this->form_validation->set_rules('rating', t('Rating', 'Rating'), 'required|numeric|greater_than[0]|less_than[6]');
@@ -279,7 +285,6 @@ class Courses extends CI_Controller {
             award_points($user_id, 5, 'review_written', $course_id);
             $this->session->set_flashdata('success', t('Review berhasil dikirim.', 'Review submitted.'));
         }
-        $course = $this->Course_model->get_course_by_id($course_id);
         redirect('courses/detail/' . $course->slug);
     }
 }

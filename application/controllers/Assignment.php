@@ -114,8 +114,7 @@ class Assignment extends CI_Controller {
             $this->Course_model->mark_lesson_completed($user_id, $assignment->lesson_id);
         }
 
-        $this->session->set_flashdata('success', t('Tugas berhasil dikumpulkan.', 'Assignment submitted successfully.'));
-        award_points($user_id, 15, 'assignment_submitted', $assignment_id);
-        redirect('courses/learn/' . $assignment->course_id);
+        $course = $this->Course_model->get_course_by_id($assignment->course_id);
+        redirect('courses/learn/' . $course->slug);
     }
 }

@@ -11,14 +11,17 @@ class Wishlist extends CI_Controller {
         $this->load->model('Course_model');
     }
 
-    public function toggle($course_id) {
+    public function toggle($course_slug_or_id) {
+        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
+        if (!$course) { echo json_encode(array('status' => 'error')); return; }
+
         $user_id = $this->session->userdata('user_id');
-        $existing = $this->db->where('user_id', $user_id)->where('course_id', $course_id)->get('wishlists')->row();
+        $existing = $this->db->where('user_id', $user_id)->where('course_id', $course->id)->get('wishlists')->row();
         if ($existing) {
             $this->db->where('id', $existing->id)->delete('wishlists');
             echo json_encode(array('status' => 'removed'));
         } else {
-            $this->db->insert('wishlists', array('user_id' => $user_id, 'course_id' => $course_id, 'created_at' => date('Y-m-d H:i:s')));
+            $this->db->insert('wishlists', array('user_id' => $user_id, 'course_id' => $course->id, 'created_at' => date('Y-m-d H:i:s')));
             echo json_encode(array('status' => 'added'));
         }
     }
