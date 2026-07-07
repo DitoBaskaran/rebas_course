@@ -50,7 +50,7 @@
         $recent_count = $CI->db->where('enrolled_at >=', date('Y-m-d', strtotime('-30 days')))->count_all_results('enrollments');
         $site_name = setting('general_site_name', 'REBAS COURSE');
     ?>
-    <div class="social-proof-bar" style="background:linear-gradient(135deg,#6366f1,#06b6d4);color:#fff;text-align:center;padding:0.4rem;font-size:0.75rem;font-weight:500;">
+    <div class="social-proof-bar" style="background:linear-gradient(135deg,#6366f1,#06b6d4);color:#fff;text-align:center;padding:1rem;font-size:0.75rem;font-weight:500;">
         🎉 <strong><?php echo $recent_count; ?></strong> <?php echo t('siswa telah mendaftar dalam 30 hari terakhir! Mulai belajar sekarang.', 'students have enrolled in the last 30 days! Start learning now.'); ?>
         <a href="<?php echo base_url('courses'); ?>" style="color:#fff;text-decoration:underline;font-weight:700;margin-left:0.5rem;"><?php echo t('Lihat Kursus', 'View Courses'); ?> →</a>
     </div>
