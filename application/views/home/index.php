@@ -1,5 +1,6 @@
 <?php $site_settings = settings(); ?>
 
+
 <!-- Hero Section -->
 <?php if (!isset($site_settings['hero_enabled']) || $site_settings['hero_enabled'] === '1'): ?>
 <section class="hero-section bg-white text-dark position-relative overflow-hidden py-5">
