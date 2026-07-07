@@ -430,6 +430,11 @@ try {
         ['footer_about_text', 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.', 'textarea', 'footer', 'Footer About Text', 1],
         ['footer_about_text_en', 'Modern online learning platform with structured classes and interactive seminars from Indonesia\'s best experts.', 'textarea', 'footer', 'Footer About Text (English)', 2],
         ['footer_copyright', 'REBAS COURSE. All rights reserved.', 'text', 'footer', 'Copyright Text', 3],
+
+        // Payment / Pakasir
+        ['pakasir_slug', '', 'text', 'payment', 'Pakasir Project Slug', 1],
+        ['pakasir_api_key', '', 'text', 'payment', 'Pakasir API Key', 2],
+        ['pakasir_sandbox', '1', 'boolean', 'payment', 'Pakasir Sandbox Mode', 3],
     ];
 
     foreach ($seed_settings as $s) {
