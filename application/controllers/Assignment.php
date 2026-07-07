@@ -41,7 +41,7 @@ class Assignment extends CI_Controller {
         // Check enrollment
         if (!$this->Course_model->check_enrollment($user_id, $assignment->course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar di kelas ini.', 'You must be enrolled in this course.'));
-            redirect('courses/detail/' . $assignment->course_id);
+            redirect('courses/detail/' . $course->slug);
         }
 
         // Check due date

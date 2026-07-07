@@ -89,3 +89,7 @@ $route['checkout/midtrans_callback'] = 'checkout/midtrans_callback';
 
 // Referral redirect
 $route['ref/(:any)'] = 'referral/index/$1';
+
+// Course detail by slug (clean URLs)
+$route['courses/detail/(:num)'] = 'courses/detail/$1';
+$route['courses/detail/(:any)'] = 'courses/detail_slug/$1';

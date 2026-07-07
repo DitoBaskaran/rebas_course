@@ -91,7 +91,7 @@
                                     <p class="text-secondary small mb-4 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><?php echo htmlspecialchars($course->description); ?></p>
                                     <div class="mt-auto pt-3 border-top border-light d-flex align-items-center justify-content-between">
                                         <span class="fs-5 fw-bold text-dark"><?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span class="text-success">' . t('Gratis', 'Free') . '</span>'; ?></span>
-                                        <a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold"><?php echo t('Detail', 'Detail'); ?> <i class="fas fa-arrow-right ms-1"></i></a>
+                                        <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold"><?php echo t('Detail', 'Detail'); ?> <i class="fas fa-arrow-right ms-1"></i></a>
                                     </div>
                                 </div>
                             </div>

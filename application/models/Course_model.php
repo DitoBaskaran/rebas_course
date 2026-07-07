@@ -115,6 +115,15 @@ class Course_model extends CI_Model {
         return $this->db->get()->row();
     }
 
+    public function get_course_by_slug($slug) {
+        $this->db->select('courses.*, categories.name as category_name, categories.name_en as category_name_en, users.name as teacher_name, users.avatar as teacher_avatar');
+        $this->db->from('courses');
+        $this->db->join('categories', 'categories.id = courses.category_id', 'left');
+        $this->db->join('users', 'users.id = courses.teacher_id');
+        $this->db->where('courses.slug', $slug);
+        return $this->db->get()->row();
+    }
+
     public function create_course($data) {
         $this->db->insert('courses', $data);
         return $this->db->insert_id();

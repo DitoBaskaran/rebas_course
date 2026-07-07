@@ -29,7 +29,7 @@
                     </h5>
                     <div class="d-flex flex-column gap-2">
                         <?php foreach ($courses as $c): ?>
-                            <a href="<?php echo base_url('courses/detail/' . $c->id); ?>" class="text-decoration-none d-flex justify-content-between align-items-center p-3 rounded-3 bg-light" style="transition: all 0.2s;">
+                            <a href="<?php echo base_url('courses/detail/' . $c->slug); ?>" class="text-decoration-none d-flex justify-content-between align-items-center p-3 rounded-3 bg-light" style="transition: all 0.2s;">
                                 <span class="fw-semibold text-dark small"><?php echo htmlspecialchars($c->title); ?></span>
                                 <span class="badge bg-light text-secondary rounded-pill px-3 py-2 fw-medium border"><?php echo content_type_label($c->content_type); ?></span>
                             </a>

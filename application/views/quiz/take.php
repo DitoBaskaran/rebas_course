@@ -6,7 +6,7 @@
                     <div>
                         <nav aria-label="breadcrumb" class="mb-2">
                             <ol class="breadcrumb small mb-0">
-                                <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $quiz->course_id); ?>" class="text-primary text-decoration-none fw-medium">Kembali</a></li>
+                                <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $quiz->course_slug); ?>" class="text-primary text-decoration-none fw-medium">Kembali</a></li>
                                 <li class="breadcrumb-item active fw-medium text-dark">Quiz</li>
                             </ol>
                         </nav>

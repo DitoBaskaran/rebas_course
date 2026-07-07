@@ -43,7 +43,7 @@ class Learning_path_model extends CI_Model {
     }
 
     public function get_contents($path_id) {
-        $this->db->select('learning_path_contents.*, courses.title, courses.title_en, courses.content_type, courses.thumbnail, courses.skill_level, courses.duration_total,
+        $this->db->select('learning_path_contents.*, courses.title, courses.title_en, courses.content_type, courses.thumbnail, courses.skill_level, courses.duration_total, courses.slug,
             categories.name as category_name');
         $this->db->from('learning_path_contents');
         $this->db->join('courses', 'courses.id = learning_path_contents.course_id');

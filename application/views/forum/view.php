@@ -3,7 +3,7 @@
         <div class="col-lg-8">
             <nav aria-label="breadcrumb" class="mb-3 animate-fade-in-up">
                 <ol class="breadcrumb small mb-0">
-                    <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="text-decoration-none"><?php echo htmlspecialchars($course->title); ?></a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none"><?php echo htmlspecialchars($course->title); ?></a></li>
                     <li class="breadcrumb-item"><a href="<?php echo base_url('forum/index/' . $course->id); ?>" class="text-decoration-none"><?php echo t('Diskusi', 'Discussion'); ?></a></li>
                     <li class="breadcrumb-item active"><?php echo htmlspecialchars($discussion->title); ?></li>
                 </ol>

@@ -23,13 +23,13 @@ class Quiz extends CI_Controller {
         // BUG FIX: Check enrollment
         if (!$this->Course_model->check_enrollment($user_id, $quiz->course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar di kelas ini.', 'You must be enrolled in this course.'));
-            redirect('courses/detail/' . $quiz->course_id);
+            redirect('courses/detail/' . $quiz->course_slug);
         }
 
         $attempt_count = $this->Quiz_model->get_attempt_count($quiz_id, $user_id);
         if ($quiz->max_attempts > 0 && $attempt_count >= $quiz->max_attempts) {
             $this->session->set_flashdata('error', t('Batas percobaan sudah habis.', 'Maximum attempts reached.'));
-            redirect('courses/detail/' . $quiz->course_id);
+            redirect('courses/detail/' . $quiz->course_slug);
         }
 
         $attempt = array(

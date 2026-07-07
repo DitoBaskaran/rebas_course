@@ -78,7 +78,7 @@
                 <?php else: ?>
                     <?php foreach ($courses as $i => $course): ?>
                         <div class="col animate-fade-in-up stagger-<?php echo min($i + 1, 8); ?>">
-                            <a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="text-decoration-none">
+                            <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none">
                                 <div class="card course-card h-100 border-0 shadow-sm rounded-3 overflow-hidden">
                                     <div class="position-relative overflow-hidden" style="aspect-ratio: 16/9;">
                                         <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100 object-fit-cover">

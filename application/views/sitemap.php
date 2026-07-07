@@ -10,7 +10,7 @@
     <url><loc><?php echo base_url('pricing'); ?></loc><priority>0.8</priority></url>
     <url><loc><?php echo base_url('blog'); ?></loc><priority>0.7</priority></url>
     <?php if (!empty($courses)): foreach ($courses as $c): ?>
-    <url><loc><?php echo base_url('courses/detail/' . $c->id); ?></loc><priority>0.6</priority></url>
+    <url><loc><?php echo base_url('courses/detail/' . $c->slug); ?></loc><priority>0.6</priority></url>
     <?php endforeach; endif; ?>
     <?php if (!empty($seminars)): foreach ($seminars as $s): ?>
     <url><loc><?php echo base_url('seminars/detail/' . $s->id); ?></loc><priority>0.5</priority></url>

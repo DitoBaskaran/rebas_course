@@ -51,7 +51,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center gap-3 pt-4 mt-4 border-top border-light">
-                    <a href="<?php echo base_url('courses/detail/' . $quiz->course_id); ?>" class="btn btn-dark rounded-pill px-5 py-2 fw-semibold"><?php echo t('Kembali ke Kelas', 'Back to Course'); ?></a>
+                    <a href="<?php echo base_url('courses/detail/' . $quiz->course_slug); ?>" class="btn btn-dark rounded-pill px-5 py-2 fw-semibold"><?php echo t('Kembali ke Kelas', 'Back to Course'); ?></a>
                 </div>
             </div>
         </div>

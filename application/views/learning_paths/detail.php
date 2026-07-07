@@ -46,7 +46,7 @@
                                         <span class="badge bg-primary-subtle text-primary badge-modern" style="font-size: 0.65rem;"><?php echo skill_level_label($content->skill_level); ?></span>
                                     </div>
                                 </div>
-                                <a href="<?php echo base_url('courses/detail/' . $content->course_id); ?>" class="btn btn-sm <?php echo (isset($content->is_enrolled) && $content->is_enrolled) ? 'btn-success' : 'btn-outline-primary'; ?> flex-shrink-0">
+                                <a href="<?php echo base_url('courses/detail/' . $content->slug); ?>" class="btn btn-sm <?php echo (isset($content->is_enrolled) && $content->is_enrolled) ? 'btn-success' : 'btn-outline-primary'; ?> flex-shrink-0">
                                     <?php echo (isset($content->is_enrolled) && $content->is_enrolled) ? t('Mulai', 'Start') : t('Lihat', 'View'); ?>
                                 </a>
                             </div>

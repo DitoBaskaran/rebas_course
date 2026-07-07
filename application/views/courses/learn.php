@@ -5,7 +5,7 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-3 small">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="text-primary text-decoration-none fw-medium"><?php echo htmlspecialchars($course->title); ?></a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-primary text-decoration-none fw-medium"><?php echo htmlspecialchars($course->title); ?></a></li>
                     <li class="breadcrumb-item active fw-medium text-dark">Belajar</li>
                 </ol>
             </nav>
@@ -225,7 +225,7 @@
                         <div class="progress-bar bg-dark rounded-pill" style="width: <?php echo $pct; ?>%; transition: width 0.5s ease;"></div>
                     </div>
                     <div class="text-center mt-3">
-                        <a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="text-primary small fw-medium text-decoration-none">
+                        <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-primary small fw-medium text-decoration-none">
                             <i class="fas fa-arrow-left me-1"></i> <?php echo t('Kembali ke Detail', 'Back to Detail'); ?>
                         </a>
                     </div>

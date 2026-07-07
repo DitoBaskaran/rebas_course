@@ -14,7 +14,11 @@ class Quiz_model extends CI_Model {
     }
 
     public function get_quiz_by_id($id) {
-        return $this->db->get_where('quizzes', array('id' => $id))->row();
+        $this->db->select('quizzes.*, courses.slug as course_slug');
+        $this->db->from('quizzes');
+        $this->db->join('courses', 'courses.id = quizzes.course_id');
+        $this->db->where('quizzes.id', $id);
+        return $this->db->get()->row();
     }
 
     public function create_quiz($data) {

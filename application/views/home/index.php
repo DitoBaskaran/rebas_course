@@ -360,7 +360,7 @@
                             
                             <div class="mt-auto pt-3 border-top border-light d-flex align-items-center justify-content-between">
                                 <span class="fs-5 fw-bold text-dark"><?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span class="text-success">Gratis</span>'; ?></span>
-                                <a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold transition-all hover-bg-dark">Detail <i class="fas fa-arrow-right ms-1"></i></a>
+                                <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold transition-all hover-bg-dark">Detail <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>
@@ -412,7 +412,7 @@
                             
                             <div class="mt-auto pt-3 border-top border-light d-flex align-items-center justify-content-between">
                                 <span class="fs-5 fw-bold text-dark"><?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span class="text-success">Gratis</span>'; ?></span>
-                                <a href="<?php echo base_url('courses/detail/' . $course->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold transition-all">Pelajari <i class="fas fa-arrow-right ms-1"></i></a>
+                                <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold transition-all">Pelajari <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>

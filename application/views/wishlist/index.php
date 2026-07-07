@@ -27,7 +27,7 @@
                         <div class="card-title"><?php echo htmlspecialchars($c->title); ?></div>
                         <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
                             <span class="card-price"><?php echo $c->price > 0 ? 'Rp ' . number_format($c->price, 0, ',', '.') : t('Gratis', 'Free'); ?></span>
-                            <a href="<?php echo base_url('courses/detail/' . $c->id); ?>" class="btn btn-dark btn-sm rounded-pill px-3"><?php echo t('Detail', 'Detail'); ?></a>
+                            <a href="<?php echo base_url('courses/detail/' . $c->slug); ?>" class="btn btn-dark btn-sm rounded-pill px-3"><?php echo t('Detail', 'Detail'); ?></a>
                         </div>
                     </div>
                 </div>

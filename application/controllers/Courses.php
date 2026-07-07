@@ -72,6 +72,41 @@ class Courses extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function detail_slug($slug) {
+        $course = $this->Course_model->get_course_by_slug($slug);
+        if (!$course) show_404();
+
+        $data['title'] = $course->title;
+        $data['course'] = $course;
+        $data['lessons'] = $this->Course_model->get_lessons_by_course($course->id);
+        $data['tags'] = $this->Course_model->get_content_tags($course->id);
+        $data['reviews'] = $this->Review_model->get_reviews($course->id);
+        $data['avg_rating'] = $this->Review_model->get_average_rating($course->id);
+        $data['rating_counts'] = $this->Review_model->get_rating_counts($course->id);
+        $data['review_count'] = $this->Review_model->get_review_count($course->id);
+        $data['quizzes'] = $this->Quiz_model->get_quizzes($course->id);
+        $data['quiz_question_counts'] = array();
+        foreach ($data['quizzes'] as $qz) {
+            $data['quiz_question_counts'][$qz->id] = $this->Quiz_model->count_questions($qz->id);
+        }
+        $data['assignments'] = $this->Assignment_model->get_assignments($course->id);
+        $data['discussions'] = $this->Discussion_model->get_discussions($course->id);
+        $data['enrolled_count'] = count($this->Course_model->get_enrolled_students($course->id));
+
+        $data['is_enrolled'] = FALSE;
+        $user_id = $this->session->userdata('user_id');
+        if ($user_id) {
+            $data['is_enrolled'] = $this->Course_model->check_enrollment($user_id, $course->id);
+            $data['user_review'] = $this->Review_model->get_user_review($user_id, $course->id);
+        } else {
+            $data['user_review'] = null;
+        }
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('courses/detail', $data);
+        $this->load->view('templates/footer');
+    }
+
     public function buy($id) {
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login terlebih dahulu.', 'Please login first.'));
@@ -119,7 +154,8 @@ class Courses extends CI_Controller {
                 redirect('auth/login');
             }
             $this->session->set_flashdata('error', t('Anda belum terdaftar di kursus ini.', 'You are not enrolled in this course.'));
-            redirect('courses/detail/' . $course_id);
+            $course = $this->Course_model->get_course_by_id($course_id);
+            redirect('courses/detail/' . $course->slug);
         }
 
         $course = $this->Course_model->get_course_by_id($course_id);
@@ -127,7 +163,8 @@ class Courses extends CI_Controller {
 
         if (empty($lessons)) {
             $this->session->set_flashdata('error', t('Belum ada materi.', 'No lessons yet.'));
-            redirect('courses/detail/' . $course_id);
+            $course = $this->Course_model->get_course_by_id($course_id);
+            redirect('courses/detail/' . $course->slug);
         }
 
         $active_lesson = NULL;
@@ -170,7 +207,8 @@ class Courses extends CI_Controller {
 
         if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar dulu.', 'Please enroll first.'));
-            redirect('courses/detail/' . $course_id);
+            $course = $this->Course_model->get_course_by_id($course_id);
+            redirect('courses/detail/' . $course->slug);
         }
 
         $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
@@ -217,7 +255,8 @@ class Courses extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
         if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar.', 'You must be enrolled.'));
-            redirect('courses/detail/' . $course_id);
+        $course = $this->Course_model->get_course_by_id($course_id);
+        redirect('courses/detail/' . $course->slug);
         }
 
         $this->form_validation->set_rules('rating', t('Rating', 'Rating'), 'required|numeric|greater_than[0]|less_than[6]');
@@ -240,6 +279,7 @@ class Courses extends CI_Controller {
             award_points($user_id, 5, 'review_written', $course_id);
             $this->session->set_flashdata('success', t('Review berhasil dikirim.', 'Review submitted.'));
         }
-        redirect('courses/detail/' . $course_id);
+        $course = $this->Course_model->get_course_by_id($course_id);
+        redirect('courses/detail/' . $course->slug);
     }
 }
