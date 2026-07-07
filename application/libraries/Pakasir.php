@@ -11,7 +11,7 @@ class Pakasir
     public function __construct()
     {
         $CI =& get_instance();
-        $CI->load->helper('setting');
+        $CI->load->helper('settings');
         $this->slug = setting('pakasir_slug', '');
         $this->api_key = setting('pakasir_api_key', '');
         $this->sandbox = setting('pakasir_sandbox', '1') === '1';
