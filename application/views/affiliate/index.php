@@ -1,4 +1,4 @@
-<div class="container py-5 my-4">
+<div>
     <div class="text-center mb-5">
         <span class="badge bg-primary-subtle text-primary badge-modern mb-3"><?php echo t('Affiliate', 'Affiliate'); ?></span>
         <h1 class="display-5 fw-extrabold text-dark mb-3" style="letter-spacing:-0.03em;"><?php echo t('Program Affiliate', 'Affiliate Program'); ?></h1>
@@ -56,7 +56,6 @@
         </div>
     </div>
     <?php endif; ?>
-</div>
 <script>
 function copyRefLink() {
     var input = document.getElementById('refLink');

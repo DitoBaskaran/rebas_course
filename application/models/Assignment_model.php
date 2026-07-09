@@ -3,6 +3,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Assignment_model extends CI_Model {
 
+    public function __construct() {
+        parent::__construct();
+        if (!$this->db->field_exists('lesson_id', 'assignments')) {
+            $this->load->dbforge();
+            $this->dbforge->add_column('assignments', array(
+                'lesson_id' => array('type' => 'INT', 'null' => TRUE, 'default' => NULL)
+            ));
+        }
+    }
+
     public function get_assignments($course_id) {
         $this->db->where('course_id', $course_id);
         $this->db->order_by('sort_order', 'ASC');

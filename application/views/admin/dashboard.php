@@ -106,7 +106,7 @@
                             <th><?php echo t('Siswa', 'Student'); ?></th>
                             <th><?php echo t('Tipe', 'Type'); ?></th>
                             <th><?php echo t('Nominal', 'Amount'); ?></th>
-                            <th><?php echo t('Bukti', 'Proof'); ?></th>
+                            <th><?php echo t('Channel', 'Channel'); ?></th>
                             <th><?php echo t('Status', 'Status'); ?></th>
                             <th class="text-center col-w-120"><?php echo t('Aksi', 'Action'); ?></th>
                         </tr>
@@ -119,13 +119,7 @@
                                 <td><span class="badge bg-secondary badge-modern text-uppercase"><?php echo $tx->item_type; ?></span></td>
                                 <td class="fw-bold text-dark">Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></td>
                                 <td>
-                                    <?php if (!empty($tx->payment_proof)): ?>
-                                        <a href="<?php echo base_url('uploads/proofs/' . $tx->payment_proof); ?>" target="_blank" class="text-primary text-decoration-none small fw-semibold d-flex align-items-center gap-1">
-                                            <i data-lucide="image" style="width:14px;height:14px;"></i> <?php echo t('Lihat', 'View'); ?>
-                                        </a>
-                                    <?php else: ?>
-                                        <span class="text-muted small">-</span>
-                                    <?php endif; ?>
+                                    <span class="small text-muted"><?php echo !empty($tx->payment_channel) ? strtoupper(str_replace('_', ' ', $tx->payment_channel)) : (empty($tx->payment_proof) ? '-' : 'Transfer'); ?></span>
                                 </td>
                                 <td>
                                     <?php if ($tx->status === 'approved'): ?>

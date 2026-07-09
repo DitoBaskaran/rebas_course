@@ -1,4 +1,4 @@
-<div class="container my-5 py-3">
+<div>
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="card-modern p-4 p-md-5 animate-scale-in">
@@ -38,4 +38,3 @@
             </div>
         </div>
     </div>
-</div>

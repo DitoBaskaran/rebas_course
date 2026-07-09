@@ -37,7 +37,52 @@
                     <span><?php echo $page_title; ?></span>
                 </div>
                 <div class="d-flex flex-column gap-4 p-4 p-xl-5">
-                    <?php foreach ($settings as $s): ?>
+                    <?php
+                    $payment_methods_config = array(
+                        'payment_method_qris' => array('icon' => 'qris-logo.png', 'color' => '#0d6efd', 'label' => 'QRIS', 'desc' => 'GoPay, OVO, DANA, ShopeePay, LinkAja'),
+                        'payment_method_bri_va' => array('icon' => 'bri-logo.svg', 'color' => '#065f46', 'label' => 'BRI Virtual Account', 'desc' => 'Bank Rakyat Indonesia'),
+                        'payment_method_bni_va' => array('icon' => 'bni-logo.svg', 'color' => '#1e40af', 'label' => 'BNI Virtual Account', 'desc' => 'Bank Negara Indonesia'),
+                        'payment_method_cimb_niaga_va' => array('icon' => 'cimb-logo.svg', 'color' => '#dc2626', 'label' => 'CIMB Niaga VA', 'desc' => 'CIMB Niaga'),
+                        'payment_method_maybank_va' => array('icon' => 'maybank-logo.svg', 'color' => '#f59e0b', 'label' => 'Maybank VA', 'desc' => 'Maybank Indonesia'),
+                        'payment_method_permata_va' => array('icon' => 'permata-logo.png', 'color' => '#4b5563', 'label' => 'Permata VA', 'desc' => 'Bank Permata'),
+                        'payment_method_atm_bersama_va' => array('icon' => 'atm-bersama-logo.png', 'color' => '#1e293b', 'label' => 'ATM Bersama VA', 'desc' => 'ATM Bersama'),
+                        'payment_method_sampoerna_va' => array('icon' => 'fa-university', 'color' => '#7c3aed', 'label' => 'Sampoerna VA', 'desc' => 'Bank Sampoerna'),
+                        'payment_method_bnc_va' => array('icon' => 'fa-university', 'color' => '#0891b2', 'label' => 'BNC VA', 'desc' => 'BNC'),
+                        'payment_method_artha_graha_va' => array('icon' => 'fa-university', 'color' => '#64748b', 'label' => 'Artha Graha VA', 'desc' => 'Bank Artha Graha'),
+                    );
+                    ?>
+                    <?php
+                    $payment_cards = '';
+                    $other_settings = array();
+                    foreach ($settings as $s):
+                        if ($active_group === 'payment' && isset($payment_methods_config[$s->key])):
+                            $pm = $payment_methods_config[$s->key];
+                            $checked = $s->value === '1' ? 'checked' : '';
+                            $logo_html = strpos($pm['icon'], '.') !== false ? '<span style="display:inline-block;width:60px;text-align:center;"><img src="' . base_url('assets/img/' . $pm['icon']) . '" alt="' . $pm['label'] . '" style="max-width:60px;max-height:24px;width:auto;height:auto;"></span>' : '<i class="fas ' . $pm['icon'] . '"></i>';
+                            $payment_cards .= '
+                            <div class="payment-method-card p-3 rounded-3 border" style="background:var(--card-bg);border-color:var(--card-border)!important;transition:all 0.2s;">
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    ' . $logo_html . '
+                                    <span class="fw-semibold text-dark small">' . $pm['label'] . '</span>
+                                    <label class="toggle-switch flex-shrink-0 ms-auto">
+                                        <input type="checkbox" name="' . $s->key . '" id="setting_' . $s->key . '" value="1" ' . $checked . '>
+                                        <div class="track"></div>
+                                    </label>
+                                </div>
+                                <div class="text-secondary small">' . $pm['desc'] . '</div>
+                            </div>';
+                        else:
+                            $other_settings[] = $s;
+                        endif;
+                    endforeach;
+                    ?>
+                    <?php if ($payment_cards): ?>
+                    <div class="payment-methods-grid">
+                        <?php echo $payment_cards; ?>
+                    </div>
+                    <hr class="my-3 opacity-25">
+                    <?php endif; ?>
+                    <?php foreach ($other_settings as $s): ?>
                         <div>
                             <?php if ($s->type === 'boolean'): ?>
                                 <label class="form-label fw-semibold text-dark small" for="setting_<?php echo $s->key; ?>">

@@ -12,10 +12,12 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` VARCHAR(100) UNIQUE NOT NULL,
   `password` VARCHAR(255) NOT NULL,
   `role` ENUM('student', 'teacher', 'admin') DEFAULT 'student',
+  `status` ENUM('active', 'banned') DEFAULT 'active',
   `bio` TEXT NULL,
   `avatar` VARCHAR(255) DEFAULT 'default_avatar.png',
   `phone` VARCHAR(20) DEFAULT '',
   `language` ENUM('id', 'en') DEFAULT 'id',
+  `last_login` DATETIME NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -161,12 +163,13 @@ CREATE TABLE IF NOT EXISTS `seminar_registrations` (
 -- 11. Transactions (unified for all content types)
 CREATE TABLE IF NOT EXISTS `transactions` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `uuid` VARCHAR(32) UNIQUE NOT NULL,
   `user_id` INT NOT NULL,
   `item_type` ENUM('course','seminar','workshop','bootcamp','ebook','project','mentoring') NOT NULL,
   `item_id` INT NOT NULL,
   `amount` DECIMAL(10, 2) NOT NULL,
   `payment_proof` VARCHAR(255) DEFAULT NULL,
-  `payment_method` VARCHAR(50) DEFAULT 'manual_transfer',
+  `payment_method` VARCHAR(50) DEFAULT '',
   `payment_channel` VARCHAR(50) DEFAULT NULL,
   `gateway_tx_id` VARCHAR(100) DEFAULT NULL,
   `notes` TEXT NULL,
@@ -280,6 +283,7 @@ CREATE TABLE IF NOT EXISTS `quiz_attempts` (
 CREATE TABLE IF NOT EXISTS `assignments` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `course_id` INT NOT NULL,
+  `lesson_id` INT DEFAULT NULL,
   `title` VARCHAR(255) NOT NULL,
   `title_en` VARCHAR(255) DEFAULT '',
   `description` TEXT NOT NULL,
@@ -293,7 +297,8 @@ CREATE TABLE IF NOT EXISTS `assignments` (
   `allowed_file_types` VARCHAR(255) DEFAULT 'pdf,zip,rar,doc,docx',
   `sort_order` INT DEFAULT 0,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`lesson_id`) REFERENCES `lessons`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- 19. Submissions
@@ -414,4 +419,180 @@ CREATE TABLE IF NOT EXISTS `translations` (
   `value_id` TEXT,
   `value_en` TEXT,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
+-- MARKETING & AFFILIATES
+-- ============================================================
+
+-- 26. Coupons (discount codes)
+CREATE TABLE IF NOT EXISTS `coupons` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `code` VARCHAR(50) NOT NULL,
+  `discount_type` VARCHAR(10) DEFAULT 'percent',
+  `discount_value` INT DEFAULT 0,
+  `min_purchase` INT DEFAULT 0,
+  `max_uses` INT NULL,
+  `used_count` INT DEFAULT 0,
+  `expired_at` DATETIME NULL,
+  `is_active` TINYINT DEFAULT 1,
+  `created_at` DATETIME NULL,
+  INDEX `idx_coupon_code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 27. Coupon Usages
+CREATE TABLE IF NOT EXISTS `coupon_usages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `coupon_id` INT NULL,
+  `user_id` INT NULL,
+  `transaction_id` INT NULL,
+  `used_at` DATETIME NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 28. Affiliates
+CREATE TABLE IF NOT EXISTS `affiliates` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `referral_code` VARCHAR(50) NOT NULL,
+  `total_commission` INT DEFAULT 0,
+  `paid_commission` INT DEFAULT 0,
+  INDEX `idx_affiliate_code` (`referral_code`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 29. Affiliate Clicks
+CREATE TABLE IF NOT EXISTS `affiliate_clicks` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `affiliate_id` INT NULL,
+  `ip` VARCHAR(45) NULL,
+  `user_agent` VARCHAR(500) NULL,
+  `created_at` DATETIME NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 30. Affiliate Conversions
+CREATE TABLE IF NOT EXISTS `affiliate_conversions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `affiliate_id` INT NULL,
+  `referred_user_id` INT NULL,
+  `transaction_id` INT NULL,
+  `commission` INT DEFAULT 0,
+  `status` VARCHAR(20) DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
+-- USER ENGAGEMENT
+-- ============================================================
+
+-- 31. User Sources (UTM tracking)
+CREATE TABLE IF NOT EXISTS `user_sources` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `source` VARCHAR(100) NULL,
+  `medium` VARCHAR(100) NULL,
+  `campaign` VARCHAR(100) NULL,
+  `referrer` VARCHAR(500) NULL,
+  `landing_page` VARCHAR(500) NULL,
+  `created_at` DATETIME NULL,
+  INDEX `idx_user_source_user` (`user_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 32. Wishlists
+CREATE TABLE IF NOT EXISTS `wishlists` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `course_id` INT NULL,
+  `created_at` DATETIME NULL,
+  UNIQUE KEY `user_course_wish` (`user_id`, `course_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 33. Password Resets
+CREATE TABLE IF NOT EXISTS `password_resets` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `email` VARCHAR(255) NULL,
+  `token` VARCHAR(100) NOT NULL,
+  `expired_at` DATETIME NULL,
+  `used_at` DATETIME NULL,
+  INDEX `idx_reset_token` (`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 34. Contact Messages
+CREATE TABLE IF NOT EXISTS `contact_messages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(255) NULL,
+  `email` VARCHAR(255) NULL,
+  `message` TEXT NULL,
+  `created_at` DATETIME NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
+-- SUBSCRIPTIONS & GAMIFICATION
+-- ============================================================
+
+-- 35. Subscriptions
+CREATE TABLE IF NOT EXISTS `subscriptions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `plan` VARCHAR(20) DEFAULT 'basic',
+  `start_date` DATETIME NULL,
+  `end_date` DATETIME NULL,
+  `status` VARCHAR(20) DEFAULT 'active',
+  `gateway_subscription_id` VARCHAR(100) NULL,
+  `created_at` DATETIME NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 36. User Points (gamification)
+CREATE TABLE IF NOT EXISTS `user_points` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `points` INT DEFAULT 0,
+  `level` INT DEFAULT 1,
+  `updated_at` DATETIME NULL,
+  UNIQUE KEY `uq_user_points` (`user_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 37. Point Transactions
+CREATE TABLE IF NOT EXISTS `point_transactions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `points` INT DEFAULT 0,
+  `source` VARCHAR(50) NULL,
+  `reference_id` INT NULL,
+  `created_at` DATETIME NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 38. Badges
+CREATE TABLE IF NOT EXISTS `badges` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NULL,
+  `icon` VARCHAR(255) NULL,
+  `description` TEXT NULL,
+  `criteria` VARCHAR(50) NULL,
+  `criteria_value` INT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 39. User Badges
+CREATE TABLE IF NOT EXISTS `user_badges` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NULL,
+  `badge_id` INT NULL,
+  `earned_at` DATETIME NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`badge_id`) REFERENCES `badges`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 40. Settings (for site configuration)
+CREATE TABLE IF NOT EXISTS `settings` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `key` VARCHAR(100) UNIQUE NOT NULL,
+  `value` TEXT NULL,
+  `type` VARCHAR(50) DEFAULT 'text',
+  `group` VARCHAR(50) DEFAULT 'general',
+  `label` VARCHAR(255) DEFAULT '',
+  `sort_order` INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

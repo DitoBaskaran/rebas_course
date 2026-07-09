@@ -2,8 +2,8 @@
 // Seed database untuk REBAS COURSE
 $host = 'localhost';
 $db   = 'db_course_online';
-$user = 'course_user';
-$pass = 'Ditobaskaran123!@#';
+$user = 'root';
+$pass = '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -18,7 +18,7 @@ try {
     echo "Koneksi database berhasil.\n";
 
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0;");
-    foreach (['path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'] as $t) {
+    foreach (['settings','user_sources','badges','user_badges','user_points','point_transactions','affiliates','affiliate_clicks','affiliate_conversions','coupons','coupon_usages','wishlists','subscriptions','contact_messages','path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'] as $t) {
         $pdo->exec("TRUNCATE TABLE $t;");
     }
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1;");
@@ -144,6 +144,22 @@ try {
 
     echo "Courses OK.\n";
 
+    // ========== SEMINARS ==========
+    $stmt = $pdo->prepare("INSERT INTO seminars (speaker_id, title, title_en, description, description_en, date_time, price, location_link, thumbnail, quota, language, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$teacher_bryan, 'Masterclass: Desain Grafis dengan AI', 'Masterclass: Graphic Design with AI', 'Pelajari cara memanfaatkan AI tools untuk desain grafis: Midjourney, DALL-E, Adobe Firefly, dan Canva AI.', 'Learn how to leverage AI tools for graphic design: Midjourney, DALL-E, Adobe Firefly, and Canva AI.', date('Y-m-d H:i:s', strtotime('+7 days 09:00')), 50000, 'https://zoom.us/j/example1', 'seminar_ai_design.png', 50, 'id']);
+    $stmt->execute([$teacher_dimas, 'Workshop: Laravel 11 Fitur Terbaru', 'Workshop: Laravel 11 New Features', 'Workshop gratis membahas fitur-fitur terbaru di Laravel 11: Slimmer skeleton, SQLite driver, health routing, dan lainnya.', 'Free workshop covering latest features in Laravel 11: Slimmer skeleton, SQLite driver, health routing, and more.', date('Y-m-d H:i:s', strtotime('+14 days 13:00')), 0, 'https://meet.google.com/xyz-abc-def', 'seminar_laravel11.png', 100, 'id']);
+    echo "Seminars OK.\n";
+
+    // ========== SEMINAR REGISTRATIONS ==========
+    $seminars = $pdo->query("SELECT id FROM seminars ORDER BY id LIMIT 2")->fetchAll();
+    $seminar_1 = (int)$seminars[0]['id'];
+    $seminar_2 = (int)$seminars[1]['id'];
+    $stmt = $pdo->prepare("INSERT INTO seminar_registrations (user_id, seminar_id, registered_at) VALUES (?, ?, NOW())");
+    $stmt->execute([$student_rian, $seminar_1]);
+    $stmt->execute([$student_siti, $seminar_1]);
+    $stmt->execute([$student_rian, $seminar_2]);
+    echo "Seminar Registrations OK.\n";
+
     // ========== CONTENT TAGS ==========
     $content_tags_data = [
         [$course_1, $tag_ids[0]], // laravel + beginer
@@ -195,7 +211,7 @@ try {
     echo "Lessons OK.\n";
 
     // ========== QUIZZES ==========
-    $stmt = $pdo->prepare("INSERT INTO quizzes (course_id, title, title_en, description, description_en, time_limit_minutes, max_attempts, passing_score, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt = $pdo->prepare("INSERT INTO quizzes (course_id, title, title_en, description, description_en, time_limit, max_attempts, passing_score, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([$course_1, 'Kuis Laravel Dasar', 'Basic Laravel Quiz', 'Uji pemahamanmu tentang Laravel framework.', 'Test your understanding of the Laravel framework.', 15, 3, 70]);
     $quiz_1 = (int)$pdo->lastInsertId();
     $stmt->execute([$course_2, 'Kuis HTML & CSS', 'HTML & CSS Quiz', 'Tes pengetahuan HTML dan CSS dasar.', 'Test basic HTML and CSS knowledge.', 10, 2, 60]);
@@ -253,11 +269,45 @@ try {
         'Cascading Style Sheets', 25, 4]);
     echo "Quizzes & Questions OK.\n";
 
+    // ========== QUIZ ATTEMPTS ==========
+    $stmt = $pdo->prepare("INSERT INTO quiz_attempts (quiz_id, user_id, score, total_points, answers, is_passed, started_at, finished_at) VALUES (?, ?, ?, ?, ?, ?, DATE_SUB(NOW(), INTERVAL 1 DAY), NOW())");
+    $answers_q1 = json_encode([
+        ['question_idx' => 0, 'answer' => 'php artisan make:controller', 'score' => 20],
+        ['question_idx' => 1, 'answer' => 'Eloquent', 'score' => 20],
+        ['question_idx' => 2, 'answer' => 'True', 'score' => 10],
+        ['question_idx' => 3, 'answer' => 'oneToMany,manyToMany,hasOne', 'score' => 25],
+    ]);
+    $stmt->execute([$quiz_1, $student_rian, 75, 75, $answers_q1, 1]);
+    $stmt->execute([$quiz_1, $student_john, 45, 75, $answers_q1, 0]);
+    $answers_q2 = json_encode([
+        ['question_idx' => 0, 'answer' => '<a>', 'score' => 25],
+        ['question_idx' => 1, 'answer' => 'color', 'score' => 25],
+        ['question_idx' => 2, 'answer' => 'True', 'score' => 25],
+        ['question_idx' => 3, 'answer' => 'Cascading Style Sheets', 'score' => 25],
+    ]);
+    $stmt->execute([$quiz_2, $student_rian, 100, 100, $answers_q2, 1]);
+    echo "Quiz Attempts OK.\n";
+
     // ========== ASSIGNMENTS ==========
     $stmt = $pdo->prepare("INSERT INTO assignments (course_id, title, title_en, description, description_en, max_score, due_days, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([$course_2, 'Buat Halaman HTML Pertamamu', 'Build Your First HTML Page', 'Buat file HTML dengan: header, 3 paragraf, 2 gambar, dan 1 link ke Google.', 'Create an HTML file with: a header, 3 paragraphs, 2 images, and 1 link to Google.', 100, 7]);
     $stmt->execute([$course_4, 'Desain Poster Media Sosial', 'Design a Social Media Poster', 'Buat desain poster promosi untuk event fiktif menggunakan Canva. Ukuran 1080x1080 px.', 'Create a promotional poster design for a fictional event using Canva. Size 1080x1080 px.', 100, 7]);
     echo "Assignments OK.\n";
+
+    // ========== SUBMISSIONS ==========
+    $assignments = $pdo->query("SELECT id FROM assignments ORDER BY id LIMIT 2")->fetchAll();
+    $assignment_1 = (int)$assignments[0]['id'];
+    $assignment_2 = (int)$assignments[1]['id'];
+    $stmt = $pdo->prepare("INSERT INTO submissions (assignment_id, user_id, file_url, text_body, status, submitted_at) VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$assignment_1, $student_rian, 'submission_html_rian.zip', '<p>Saya sudah membuat halaman HTML sesuai instruksi.</p>', 'graded']);
+    // Grade it
+    $graded_id = (int)$pdo->lastInsertId();
+    $stmt2 = $pdo->prepare("UPDATE submissions SET grade = 85, feedback = 'Bagus! Struktur HTML rapi. Tambahkan meta viewport.', graded_at = NOW() WHERE id = ?");
+    $stmt2->execute([$graded_id]);
+    // Another submission (not yet graded)
+    $stmt->execute([$assignment_1, $student_siti, '', '<p>Halaman HTML saya masih sederhana.</p>', 'submitted']);
+    $stmt->execute([$assignment_2, $student_siti, 'poster_canva_siti.png', '', 'submitted']);
+    echo "Submissions OK.\n";
 
     // ========== LEARNING PATHS ==========
     $stmt = $pdo->prepare("INSERT INTO learning_paths (title, title_en, slug, description, description_en, category_id, color, skill_level, estimated_hours, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
@@ -321,15 +371,71 @@ try {
     echo "Discussions & Replies OK.\n";
 
     // ========== MENTORING SESSIONS ==========
-    $stmt = $pdo->prepare("INSERT INTO mentoring_sessions (mentor_id, student_id, scheduled_at, topic, topic_en, status, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute([$teacher_dimas, $student_rian, date('Y-m-d H:i:s', strtotime('+2 days 14:00')), 'Konsultasi: Memilih framework frontend terbaik untuk portfolio', 'Consultation: Choosing the best frontend framework for portfolio', 'scheduled']);
-    $stmt->execute([$teacher_dimas, $student_siti, date('Y-m-d H:i:s', strtotime('-1 day 10:00')), 'Review portfolio HTML/CSS', 'HTML/CSS portfolio review', 'completed']);
+    $stmt = $pdo->prepare("INSERT INTO mentoring_sessions (mentor_id, student_id, course_id, scheduled_at, topic, topic_en, duration, meeting_link, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$teacher_dimas, $student_rian, $course_1, date('Y-m-d H:i:s', strtotime('+2 days 14:00')), 'Konsultasi: Memilih framework frontend terbaik untuk portfolio', 'Consultation: Choosing the best frontend framework for portfolio', 60, 'https://meet.google.com/abc-defg-hij', 'scheduled']);
+    $stmt->execute([$teacher_dimas, $student_siti, $course_2, date('Y-m-d H:i:s', strtotime('-1 day 10:00')), 'Review portfolio HTML/CSS', 'HTML/CSS portfolio review', 45, '', 'completed']);
     echo "Mentoring OK.\n";
 
     // ========== TRANSACTIONS ==========
-    $stmt = $pdo->prepare("INSERT INTO transactions (user_id, item_type, item_id, amount, status, payment_proof, created_at) VALUES (?, ?, ?, ?, 'approved', 'seed_proof.png', NOW())");
-    $stmt->execute([$student_rian, 'course', $course_3, 350000]);
+    $stmt = $pdo->prepare("INSERT INTO transactions (uuid, user_id, item_type, item_id, amount, status, payment_proof, created_at) VALUES (?, ?, ?, ?, ?, 'approved', 'seed_proof.png', NOW())");
+    $stmt->execute([substr(md5(uniqid(mt_rand(), true)), 0, 8), $student_rian, 'course', $course_3, 350000]);
     echo "Transactions OK.\n";
+
+    // ========== COUPONS ==========
+    $stmt = $pdo->prepare("INSERT INTO coupons (code, discount_type, discount_value, min_purchase, max_uses, used_count, is_active, created_at) VALUES (?, ?, ?, ?, ?, ?, 1, NOW())");
+    $stmt->execute(['WELCOME20', 'percent', 20, 0, 100, 0]);
+    $stmt->execute(['DISKON50K', 'nominal', 50000, 200000, 50, 0]);
+    $stmt->execute(['FREEACCESS', 'percent', 100, 0, 10, 0]);
+    echo "Coupons OK.\n";
+
+    // ========== WISHLISTS ==========
+    $stmt = $pdo->prepare("INSERT INTO wishlists (user_id, course_id, created_at) VALUES (?, ?, NOW())");
+    $stmt->execute([$student_rian, $course_1]);
+    $stmt->execute([$student_rian, $course_5]);
+    $stmt->execute([$student_siti, $course_3]);
+    echo "Wishlists OK.\n";
+
+    // ========== AFFILIATES ==========
+    $stmt = $pdo->prepare("INSERT INTO affiliates (user_id, referral_code, total_commission, paid_commission) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$student_rian, 'RIAN' . substr(md5(uniqid()), 0, 4), 50000, 0]);
+    $affiliate_id_1 = (int)$pdo->lastInsertId();
+    $stmt->execute([$student_siti, 'SITI' . substr(md5(uniqid()), 0, 4), 0, 0]);
+    echo "Affiliates OK.\n";
+
+    // ========== AFFILIATE CONVERSIONS ==========
+    $stmt = $pdo->prepare("INSERT INTO affiliate_conversions (affiliate_id, referred_user_id, transaction_id, commission, status) VALUES (?, ?, NULL, ?, 'pending')");
+    $stmt->execute([$affiliate_id_1, $student_siti, 25000]);
+    echo "Affiliate Conversions OK.\n";
+
+    // ========== BADGES ==========
+    $stmt = $pdo->prepare("INSERT INTO badges (name, icon, description, criteria, criteria_value) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute(['Siswa Baru', 'stars', 'Mendaftar pertama kali', 'register', 1]);
+    $badge_1 = (int)$pdo->lastInsertId();
+    $stmt->execute(['Pembelajar Aktif', 'book', 'Menyelesaikan 5 pelajaran', 'lessons_completed', 5]);
+    $badge_2 = (int)$pdo->lastInsertId();
+    $stmt->execute(['Kolektor Kursus', 'trophy', 'Mendaftar di 3 kursus', 'courses_enrolled', 3]);
+    $badge_3 = (int)$pdo->lastInsertId();
+    echo "Badges OK.\n";
+
+    // ========== USER POINTS & BADGES ==========
+    $stmt = $pdo->prepare("INSERT INTO user_points (user_id, points, level, updated_at) VALUES (?, ?, ?, NOW())");
+    $stmt->execute([$student_rian, 150, 2]);
+    $stmt->execute([$student_siti, 75, 1]);
+    $stmt->execute([$student_john, 200, 3]);
+    echo "User Points OK.\n";
+
+    $stmt = $pdo->prepare("INSERT INTO user_badges (user_id, badge_id, earned_at) VALUES (?, ?, NOW())");
+    $stmt->execute([$student_rian, $badge_1]);
+    $stmt->execute([$student_rian, $badge_2]);
+    $stmt->execute([$student_siti, $badge_1]);
+    $stmt->execute([$student_john, $badge_1]);
+    echo "User Badges OK.\n";
+
+    // ========== CONTACT MESSAGES ==========
+    $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, message, created_at) VALUES (?, ?, ?, NOW())");
+    $stmt->execute(['Budi Santoso', 'budi@email.com', 'Saya ingin bertanya tentang kelas Laravel. Apakah ada diskon untuk siswa?']);
+    $stmt->execute(['Ani Putri', 'ani@email.com', 'Materi di kelas HTML/CSS sangat membantu! Terima kasih.']);
+    echo "Contact Messages OK.\n";
 
     // ========== TRANSLATIONS ==========
     $stmt = $pdo->prepare("INSERT INTO translations (`key`, value_id, value_en) VALUES (?, ?, ?)");
@@ -431,7 +537,48 @@ try {
         ['footer_about_text_en', 'Modern online learning platform with structured classes and interactive seminars from Indonesia\'s best experts.', 'textarea', 'footer', 'Footer About Text (English)', 2],
         ['footer_copyright', 'REBAS COURSE. All rights reserved.', 'text', 'footer', 'Copyright Text', 3],
 
-        // Payment / Pakasir
+        // Analytics
+        ['analytics_ga4_id', '', 'text', 'general', 'Google Analytics 4 Measurement ID', 50],
+        ['analytics_fb_pixel', '', 'text', 'general', 'Facebook Pixel ID', 51],
+
+        // Marketing
+        ['marketing_social_proof', '1', 'boolean', 'general', 'Show Social Proof Bar', 52],
+        ['marketing_exit_popup', '1', 'boolean', 'general', 'Show Exit-Intent Popup', 53],
+        ['marketing_exit_popup_text', 'Dapatkan diskon 20% untuk kursus pertama Anda!', 'text', 'general', 'Exit Popup Text', 54],
+
+        // Email / SMTP
+        ['mailgun_api_key', '', 'text', 'general', 'Mailgun API Key', 55],
+        ['mailgun_domain', '', 'text', 'general', 'Mailgun Domain', 56],
+        ['smtp_host', '', 'text', 'general', 'SMTP Host', 57],
+        ['smtp_port', '587', 'number', 'general', 'SMTP Port', 58],
+        ['smtp_user', '', 'text', 'general', 'SMTP Username', 59],
+        ['smtp_pass', '', 'text', 'general', 'SMTP Password', 60],
+
+        // Midtrans
+        ['midtrans_server_key', '', 'text', 'general', 'Midtrans Server Key', 61],
+        ['midtrans_client_key', '', 'text', 'general', 'Midtrans Client Key', 62],
+        ['midtrans_is_production', '0', 'boolean', 'general', 'Midtrans Production Mode', 63],
+
+        // Coupon defaults
+        ['coupon_welcome_code', 'WELCOME20', 'text', 'general', 'Welcome Coupon Code', 64],
+        ['coupon_welcome_discount', '20', 'number', 'general', 'Welcome Discount (%)', 65],
+
+        // Manual Bank Transfer
+        
+
+        // Payment Methods (toggle on/off)
+        ['payment_method_qris', '1', 'boolean', 'payment', 'QRIS', 10],
+        ['payment_method_bri_va', '1', 'boolean', 'payment', 'BRI Virtual Account', 11],
+        ['payment_method_bni_va', '1', 'boolean', 'payment', 'BNI Virtual Account', 12],
+        ['payment_method_cimb_niaga_va', '1', 'boolean', 'payment', 'CIMB Niaga Virtual Account', 13],
+        ['payment_method_maybank_va', '1', 'boolean', 'payment', 'Maybank Virtual Account', 14],
+        ['payment_method_permata_va', '1', 'boolean', 'payment', 'Permata Virtual Account', 15],
+        ['payment_method_atm_bersama_va', '1', 'boolean', 'payment', 'ATM Bersama Virtual Account', 16],
+        ['payment_method_sampoerna_va', '1', 'boolean', 'payment', 'Sampoerna Virtual Account', 17],
+        ['payment_method_bnc_va', '1', 'boolean', 'payment', 'BNC Virtual Account', 18],
+        ['payment_method_artha_graha_va', '1', 'boolean', 'payment', 'Artha Graha Virtual Account', 19],
+
+        // Pakasir Payment Gateway
         ['pakasir_slug', '', 'text', 'payment', 'Pakasir Project Slug', 1],
         ['pakasir_api_key', '', 'text', 'payment', 'Pakasir API Key', 2],
         ['pakasir_sandbox', '1', 'boolean', 'payment', 'Pakasir Sandbox Mode', 3],

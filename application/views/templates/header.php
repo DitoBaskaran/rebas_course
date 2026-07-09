@@ -59,6 +59,10 @@
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom border-light fixed-top shadow-sm" id="mainNavbar">
         <div class="container py-1">
+            <!-- Mobile toggler (left) -->
+            <button class="navbar-toggler border-0 d-lg-none" style="padding:2px;margin-right:2px;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <a class="navbar-brand text-dark d-flex align-items-center gap-2 fw-bold" href="<?php echo base_url(); ?>">
                 <?php $logo_url = site_logo_url(); if ($logo_url): ?>
                     <img src="<?php echo $logo_url; ?>" alt="<?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?>" style="height: 28px; width: auto;">
@@ -69,10 +73,67 @@
                     <span style="letter-spacing: -0.02em;"><?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?></span>
                 <?php endif; ?>
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Mobile offcanvas sidebar (left) -->
+            <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header border-bottom">
+                    <h5 class="offcanvas-title d-flex align-items-center gap-2" id="offcanvasNavbarLabel">
+                        <?php $logo_url = site_logo_url(); if ($logo_url): ?>
+                            <img src="<?php echo $logo_url; ?>" alt="<?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?>" style="height: 28px; width: auto;">
+                        <?php else: ?>
+                            <span class="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-2 p-1" style="width: 32px; height: 32px;">
+                                <i class="fas fa-graduation-cap fa-sm"></i>
+                            </span>
+                        <?php endif; ?>
+                        <span style="letter-spacing: -0.02em;"><?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?></span>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body p-0">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo uri_string() === '' ? ' active' : ''; ?>" href="<?php echo base_url(); ?>"><?php echo t('Beranda', 'Home'); ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo strpos(uri_string(), 'courses') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('courses'); ?>"><?php echo t('Kelas', 'Courses'); ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo strpos(uri_string(), 'seminars') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('seminars'); ?>"><?php echo t('Seminar', 'Seminars'); ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo strpos(uri_string(), 'learning_paths') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('learning_paths'); ?>"><?php echo t('Learning Paths', 'Paths'); ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo strpos(uri_string(), 'mentoring') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>"><?php echo t('Mentoring', 'Mentoring'); ?></a>
+                        </li>
+                    </ul>
+                    <hr class="my-0">
+                    <div class="p-3 d-flex flex-column gap-2">
+                        <?php if ($this->session->userdata('logged_in')): ?>
+                            <a href="<?php echo base_url('dashboard'); ?>" class="btn btn-dark btn-sm w-100 rounded-pill fw-semibold">
+                                <i class="fas fa-th-large me-2"></i><?php echo t('Dashboard', 'Dashboard'); ?>
+                            </a>
+                            <?php if (in_array($this->session->userdata('role'), ['admin', 'teacher'])): ?>
+                                <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold">
+                                    <i class="fas fa-user-shield me-2"></i><?php echo t('Panel Admin', 'Admin Panel'); ?>
+                                </a>
+                            <?php endif; ?>
+                            <a href="<?php echo base_url('profile'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold">
+                                <i class="fas fa-user-circle me-2"></i><?php echo t('Profil', 'Profile'); ?>
+                            </a>
+                            <div class="border-top pt-2 mt-1">
+                                <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-outline-danger btn-sm w-100 rounded-pill fw-semibold">
+                                    <i class="fas fa-sign-out-alt me-2"></i><?php echo t('Keluar', 'Logout'); ?>
+                                </a>
+                            </div>
+                        <?php else: ?>
+                            <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-ghost btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Masuk', 'Login'); ?></a>
+                            <a href="<?php echo base_url('auth/register'); ?>" class="btn btn-dark btn-sm w-100 rounded-pill fw-semibold shadow-sm"><?php echo t('Daftar', 'Register'); ?></a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            <!-- Desktop navbar -->
+            <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                     <li class="nav-item">
                         <a class="nav-link<?php echo uri_string() === '' ? ' active' : ''; ?>" href="<?php echo base_url(); ?>"><?php echo t('Beranda', 'Home'); ?></a>
@@ -91,10 +152,6 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
-                    <button class="btn btn-sm btn-ghost rounded-circle d-flex align-items-center justify-content-center" id="frontendThemeToggle" style="width:34px;height:34px;" title="Toggle theme">
-                        <i data-lucide="moon" class="moon-icon" style="width:16px;height:16px;"></i>
-                        <i data-lucide="sun" class="sun-icon" style="width:16px;height:16px;display:none;"></i>
-                    </button>
                     <?php if ($this->session->userdata('logged_in')): ?>
                         <div class="dropdown">
                             <button class="btn btn-sm btn-ghost d-flex align-items-center gap-2 px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -128,6 +185,18 @@
     <style>
         body {
             padding-top: 76px;
+        }
+        .navbar>.container,
+        .navbar>.container-fluid,
+        .navbar>.container-lg,
+        .navbar>.container-md,
+        .navbar>.container-sm,
+        .navbar>.container-xl,
+        .navbar>.container-xxl {
+            display: flex;
+            flex-wrap: inherit;
+            align-items: center;
+            justify-content: flex-start;
         }
     </style>
 

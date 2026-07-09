@@ -13,17 +13,30 @@ class Forum extends CI_Controller {
         $this->load->model('Course_model');
     }
 
-    public function index($course_slug_or_id) {
+    public function index($course_slug_or_id = null) {
+        if (!$course_slug_or_id) {
+            $courses = $this->Course_model->get_user_enrolled_courses($this->session->userdata('user_id'));
+            if (!empty($courses)) {
+                redirect('forum/index/' . $courses[0]->slug);
+            }
+            $data['title'] = t('Forum Diskusi', 'Discussion Forum');
+            $data['active_page'] = 'forum';
+            $this->load->view('templates/student_header', $data);
+            $this->load->view('forum/empty', $data);
+            $this->load->view('templates/student_footer');
+            return;
+        }
         $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
         if (!$course) show_404();
 
         $data['title'] = t('Diskusi: ', 'Discussion: ') . $course->title;
+        $data['active_page'] = 'forum';
         $data['course'] = $course;
         $data['discussions'] = $this->Discussion_model->get_discussions($course->id);
 
-        $this->load->view('templates/header', $data);
+        $this->load->view('templates/student_header', $data);
         $this->load->view('forum/index', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 
     public function view($id) {
@@ -34,13 +47,15 @@ class Forum extends CI_Controller {
         $replies = $this->Discussion_model->get_replies($id);
 
         $data['title'] = $discussion->title;
+        $data['active_page'] = 'forum';
         $data['discussion'] = $discussion;
         $data['course'] = $course;
         $data['replies'] = $replies;
+        $data['has_best_answer'] = !empty(array_filter($replies, function($r) { return $r->is_best_answer; }));
 
-        $this->load->view('templates/header', $data);
+        $this->load->view('templates/student_header', $data);
         $this->load->view('forum/view', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 
     public function create($course_slug_or_id) {
@@ -54,10 +69,11 @@ class Forum extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Buat Diskusi Baru', 'New Discussion');
+            $data['active_page'] = 'forum';
             $data['course'] = $course;
-            $this->load->view('templates/header', $data);
+            $this->load->view('templates/student_header', $data);
             $this->load->view('forum/create', $data);
-            $this->load->view('templates/footer');
+            $this->load->view('templates/student_footer');
         } else {
             $discussion_id = $this->Discussion_model->create_discussion(array(
                 'course_id' => $course->id,

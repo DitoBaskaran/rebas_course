@@ -1,4 +1,4 @@
-<div class="container py-5 my-4">
+<div>
     <div class="d-flex justify-content-between align-items-center mb-5 animate-fade-in-up">
         <div>
             <nav aria-label="breadcrumb" class="mb-2">

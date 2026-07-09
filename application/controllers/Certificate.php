@@ -29,10 +29,11 @@ class Certificate extends CI_Controller {
             redirect('auth/login');
         }
         $data['title'] = t('Sertifikat Saya', 'My Certificates');
+        $data['active_page'] = 'certificates';
         $data['certificates'] = $this->Certificate_model->get_user_certificates($this->session->userdata('user_id'));
 
-        $this->load->view('templates/header', $data);
+        $this->load->view('templates/student_header', $data);
         $this->load->view('certificate/my', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 }

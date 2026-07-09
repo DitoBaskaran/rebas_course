@@ -479,6 +479,16 @@ class Admin extends CI_Controller {
         redirect('admin/seminars');
     }
 
+    // ================ MENTORING SESSIONS ================
+    public function mentoring() {
+        $data['active_page'] = 'mentoring';
+        $data['title'] = t('Jadwal Mentoring', 'Mentoring Schedule');
+        $data['sessions'] = $this->Mentoring_model->get_all_sessions();
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/mentoring/list', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
     // ================ LEARNING PATHS ================
     public function learning_paths() {
         $data['active_page'] = 'learning_paths';
@@ -739,12 +749,22 @@ class Admin extends CI_Controller {
         // Auto-seed payment settings if not exist
         if ($group === 'payment') {
             $defaults = array(
-                array('key' => 'pakasir_slug',    'value' => '',  'type' => 'text',    'group' => 'payment', 'label' => 'Pakasir Project Slug'),
-                array('key' => 'pakasir_api_key', 'value' => '',  'type' => 'text',    'group' => 'payment', 'label' => 'Pakasir API Key'),
-                array('key' => 'pakasir_sandbox', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Pakasir Sandbox Mode'),
+                array('key' => 'pakasir_slug',           'value' => '',  'type' => 'text',    'group' => 'payment', 'label' => 'Pakasir Project Slug'),
+                array('key' => 'pakasir_api_key',        'value' => '',  'type' => 'text',    'group' => 'payment', 'label' => 'Pakasir API Key'),
+                array('key' => 'pakasir_sandbox',        'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Pakasir Sandbox Mode'),
+                array('key' => 'payment_method_qris',          'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'QRIS'),
+                array('key' => 'payment_method_bri_va',        'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'BRI Virtual Account'),
+                array('key' => 'payment_method_bni_va',        'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'BNI Virtual Account'),
+                array('key' => 'payment_method_cimb_niaga_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'CIMB Niaga Virtual Account'),
+                array('key' => 'payment_method_maybank_va',    'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Maybank Virtual Account'),
+                array('key' => 'payment_method_permata_va',    'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Permata Virtual Account'),
+                array('key' => 'payment_method_atm_bersama_va','value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'ATM Bersama Virtual Account'),
+                array('key' => 'payment_method_sampoerna_va',  'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Sampoerna Virtual Account'),
+                array('key' => 'payment_method_bnc_va',        'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'BNC Virtual Account'),
+                array('key' => 'payment_method_artha_graha_va','value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Artha Graha Virtual Account'),
             );
             foreach ($defaults as $d) {
-                if (!$this->Setting_model->get($d['key'])) {
+                if ($this->Setting_model->get($d['key']) === NULL) {
                     $this->Setting_model->set($d['key'], $d['value'], $d['type'], $d['group'], $d['label']);
                 }
             }

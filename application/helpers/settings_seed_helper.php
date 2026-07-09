@@ -347,10 +347,17 @@ if (!function_exists('seed_default_settings')) {
       array('key' => 'coupon_welcome_code',   'value' => 'WELCOME20', 'type' => 'text', 'group' => 'general', 'label' => 'Welcome Coupon Code', 'sort_order' => 64),
       array('key' => 'coupon_welcome_discount', 'value' => '20', 'type' => 'number', 'group' => 'general', 'label' => 'Welcome Discount (%)', 'sort_order' => 65),
 
-      // Bank/Payment
-      array('key' => 'payment_bank_name', 'value' => 'Bank Mandiri', 'type' => 'text', 'group' => 'general', 'label' => 'Bank Name', 'sort_order' => 70),
-      array('key' => 'payment_account_number', 'value' => '1234567890', 'type' => 'text', 'group' => 'general', 'label' => 'Account Number', 'sort_order' => 71),
-      array('key' => 'payment_account_name', 'value' => 'REBAS COURSE', 'type' => 'text', 'group' => 'general', 'label' => 'Account Holder Name', 'sort_order' => 72),
+      // Payment Methods (toggle on/off)
+      array('key' => 'payment_method_qris', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'QRIS', 'sort_order' => 10),
+      array('key' => 'payment_method_bri_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'BRI Virtual Account', 'sort_order' => 11),
+      array('key' => 'payment_method_bni_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'BNI Virtual Account', 'sort_order' => 12),
+      array('key' => 'payment_method_cimb_niaga_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'CIMB Niaga Virtual Account', 'sort_order' => 13),
+      array('key' => 'payment_method_maybank_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Maybank Virtual Account', 'sort_order' => 14),
+      array('key' => 'payment_method_permata_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Permata Virtual Account', 'sort_order' => 15),
+      array('key' => 'payment_method_atm_bersama_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'ATM Bersama Virtual Account', 'sort_order' => 16),
+      array('key' => 'payment_method_sampoerna_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Sampoerna Virtual Account', 'sort_order' => 17),
+      array('key' => 'payment_method_bnc_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'BNC Virtual Account', 'sort_order' => 18),
+      array('key' => 'payment_method_artha_graha_va', 'value' => '1', 'type' => 'boolean', 'group' => 'payment', 'label' => 'Artha Graha Virtual Account', 'sort_order' => 19),
 
       // Pakasir Payment Gateway
       array('key' => 'pakasir_slug', 'value' => '', 'type' => 'text', 'group' => 'payment', 'label' => 'Pakasir Project Slug', 'sort_order' => 1),

@@ -3,9 +3,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Transaction_model extends CI_Model {
 
+    public function __construct() {
+        parent::__construct();
+        $this->_ensure_uuid_column();
+    }
+
+    private function _ensure_uuid_column() {
+        if (!$this->db->field_exists('uuid', 'transactions')) {
+            $this->load->dbforge();
+            $this->dbforge->add_column('transactions', array(
+                'uuid' => array('type' => 'VARCHAR', 'constraint' => 32)
+            ));
+            $this->db->query("UPDATE transactions SET uuid = SUBSTRING(MD5(CONCAT(id, RAND(), UNIX_TIMESTAMP())), 1, 8) WHERE uuid IS NULL OR uuid = ''");
+        }
+    }
+
     public function create_transaction($data) {
+        if (!isset($data['uuid'])) {
+            $data['uuid'] = substr(md5(uniqid(mt_rand(), true)), 0, 8);
+        }
         $this->db->insert('transactions', $data);
         return $this->db->insert_id();
+    }
+
+    public function get_by_uuid($uuid) {
+        return $this->db->get_where('transactions', array('uuid' => $uuid))->row();
     }
 
     public function get_user_transactions($user_id) {

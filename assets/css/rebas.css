@@ -790,6 +790,18 @@ h1, h2, h3, h4, h5, h6,
   margin: 0.75rem 1.25rem;
 }
 
+/* ---- Sidebar Profile ---- */
+.admin-sidebar .sidebar-profile .rounded-3 {
+    transition: var(--transition);
+}
+.admin-sidebar .sidebar-profile a:hover .rounded-3 {
+    background: var(--gray-100);
+}
+.admin-sidebar .logout-link:hover {
+    background: rgba(220,38,38,0.08);
+    border-radius: 0.5rem;
+}
+
 /* ---- Sidebar Collapse Toggle ---- */
 .sidebar-collapse-btn {
   display: flex;
@@ -1607,6 +1619,23 @@ h1, h2, h3, h4, h5, h6,
     font-size: 0.875rem;
     margin-bottom: 0.35rem;
 }
+.payment-methods-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+}
+@media (min-width: 992px) {
+    .payment-methods-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+.payment-methods-grid .payment-method-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 90px;
+}
+
 .form-control-sm,
 .form-select-sm {
     border-radius: var(--radius-lg);

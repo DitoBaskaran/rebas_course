@@ -17,14 +17,16 @@ class Mentoring extends CI_Controller {
         $data['title'] = t('Mentoring & Konsultasi', 'Mentoring & Consultation');
         $data['mentors'] = $this->Mentoring_model->get_available_mentors();
 
-        $this->load->view('templates/header', $data);
+        $data['active_page'] = 'mentoring';
+        $this->load->view('templates/student_header', $data);
         $this->load->view('mentoring/index', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 
     public function my() {
         $user_id = $this->session->userdata('user_id');
         $data['title'] = t('Sesi Mentoring Saya', 'My Mentoring Sessions');
+        $data['active_page'] = 'mentoring';
         $role = $this->session->userdata('role');
 
         if ($role === 'teacher' || $role === 'admin') {
@@ -33,9 +35,9 @@ class Mentoring extends CI_Controller {
             $data['sessions'] = $this->Mentoring_model->get_student_sessions($user_id);
         }
 
-        $this->load->view('templates/header', $data);
+        $this->load->view('templates/student_header', $data);
         $this->load->view('mentoring/my', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 
     public function book($mentor_id) {
@@ -47,12 +49,13 @@ class Mentoring extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Booking Mentoring', 'Book Mentoring');
+            $data['active_page'] = 'mentoring';
             $data['mentor'] = $mentor;
             $data['courses'] = $this->Course_model->get_user_enrolled_courses($this->session->userdata('user_id'));
 
-            $this->load->view('templates/header', $data);
+            $this->load->view('templates/student_header', $data);
             $this->load->view('mentoring/book', $data);
-            $this->load->view('templates/footer');
+            $this->load->view('templates/student_footer');
         } else {
             $this->Mentoring_model->create_session(array(
                 'mentor_id' => $mentor_id,

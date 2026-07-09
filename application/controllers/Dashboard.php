@@ -51,8 +51,9 @@ class Dashboard extends CI_Controller {
             }
         }
 
-        $this->load->view('templates/header', $data);
+        $data['active_page'] = 'dashboard';
+        $this->load->view('templates/student_header', $data);
         $this->load->view('dashboard/index', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 }

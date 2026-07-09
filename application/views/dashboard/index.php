@@ -1,17 +1,14 @@
-<div class="container py-5 my-4">
+<div>
     <!-- Header -->
-    <div class="row mb-5 animate-fade-in-up">
-        <div class="col-lg-8">
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-2">Akun Saya</span>
-            <h1 class="display-5 fw-extrabold text-dark mb-2 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Dashboard', 'Dashboard'); ?></h1>
-            <p class="text-secondary lead mb-0" style="font-size: 1.1rem;"><?php echo t('Pantau progress belajarmu.', 'Track your learning progress.'); ?></p>
-        </div>
+    <div class="mb-4 animate-fade-in-up">
+        <h2 class="fw-extrabold text-dark mb-1" style="letter-spacing: -0.03em;"><?php echo t('Dashboard', 'Dashboard'); ?></h2>
+        <p class="text-secondary mb-0"><?php echo t('Pantau progress belajarmu.', 'Track your learning progress.'); ?></p>
     </div>
 
-    <div class="row g-4">
+    <div class="d-flex flex-column gap-4">
         <!-- Learning Paths -->
         <?php if (!empty($learning_paths)): ?>
-        <div class="col-12 animate-fade-in-up">
+        <div class="animate-fade-in-up">
             <div class="card border-0 shadow-sm rounded-4 p-4 p-xl-5">
                 <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
                     <span class="icon-32 bg-info-subtle text-info rounded-2 d-inline-flex align-items-center justify-content-center"><i class="fas fa-road"></i></span>
@@ -112,6 +109,40 @@
                             <span class="fw-bold text-dark small"><?php echo htmlspecialchars($cert->title); ?></span>
                             <span class="badge bg-success text-white rounded-pill px-2 small"><?php echo t('Selesai', 'Completed'); ?></span>
                         </a>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Transaction History / Riwayat Pembelian -->
+        <?php if (!empty($transactions)): ?>
+        <div class="col-12 animate-fade-in-up stagger-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 p-xl-5">
+                <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+                    <span class="icon-32 bg-secondary-subtle text-secondary rounded-2 d-inline-flex align-items-center justify-content-center"><i class="fas fa-receipt"></i></span>
+                    <span><?php echo t('Riwayat Pembelian', 'Purchase History'); ?></span>
+                </h5>
+                <div class="d-flex flex-column gap-2">
+                    <?php foreach ($transactions as $tx): ?>
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-light">
+                        <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width:40px;height:40px;background:var(--primary-light);color:var(--primary);">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <div class="flex-fill min-w-0">
+                            <div class="fw-bold text-dark small"><?php echo ucfirst($tx->item_type); ?> #<?php echo $tx->uuid; ?></div>
+                            <div class="text-secondary small"><?php echo date('d M Y H:i', strtotime($tx->created_at)); ?> &middot; Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
+                        </div>
+                        <div>
+                            <?php if ($tx->status === 'approved'): ?>
+                                <span class="badge bg-success rounded-pill px-3 py-2 fw-medium"><?php echo t('Berhasil', 'Success'); ?></span>
+                            <?php elseif ($tx->status === 'pending'): ?>
+                                <span class="badge bg-warning text-dark rounded-pill px-3 py-2 fw-medium"><?php echo t('Menunggu', 'Pending'); ?></span>
+                            <?php elseif ($tx->status === 'rejected'): ?>
+                                <span class="badge bg-danger rounded-pill px-3 py-2 fw-medium"><?php echo t('Ditolak', 'Rejected'); ?></span>
+                            <?php endif; ?>
+                        </div>
+                    </div>
                     <?php endforeach; ?>
                 </div>
             </div>

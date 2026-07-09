@@ -1,4 +1,4 @@
-<div class="container my-5 py-3">
+<div>
     <div class="d-flex justify-content-between align-items-center mb-5 animate-fade-in-up">
         <div>
             <h4 class="fw-extrabold text-dark mb-1"><?php echo t('Sesi Mentoring Saya', 'My Mentoring Sessions'); ?></h4>
@@ -40,4 +40,3 @@
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-</div>
