@@ -113,3 +113,5 @@ $route['wishlist/toggle/(:any)'] = 'wishlist/toggle/$1';
 $route['transactions/history'] = 'transactions/history';
 $route['transactions/history_data'] = 'transactions/history_data';
 $route['transactions/detail/(:any)'] = 'transactions/detail/$1';
+$route['admin/documents'] = 'admin/documents';
+$route['admin/document/view/(:any)'] = 'admin/document_view/$1';

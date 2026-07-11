@@ -822,6 +822,34 @@ class Admin extends CI_Controller {
         $this->load->view('templates/admin_footer');
     }
 
+    // ================ REFERENCE DOCUMENTS ================
+    public function documents() {
+        $data['active_page'] = 'documents';
+        $data['title'] = t('Dokumen Referensi', 'Reference Documents');
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/partnership/index', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function document_view($key) {
+        $allowed = array('partnership_discussion');
+        if (!in_array($key, $allowed)) show_404();
+
+        $data['active_page'] = 'documents';
+        $titles = array(
+            'partnership_discussion' => t('Diskusi Partnership', 'Partnership Discussion'),
+        );
+        $data['title'] = $titles[$key] ?? t('Dokumen', 'Document');
+
+        $views = array(
+            'partnership_discussion' => 'admin/partnership/discussion',
+        );
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view($views[$key], $data);
+        $this->load->view('templates/admin_footer');
+    }
+
     // ===== USER MANAGEMENT =====
     public function users() {
         $this->load->model('User_model');

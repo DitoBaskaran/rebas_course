@@ -34,6 +34,9 @@
     <a class="nav-link <?php echo $active_page === 'translations' ? 'active' : ''; ?>" href="<?php echo base_url('admin/translations'); ?>">
         <i data-lucide="languages"></i> <span><?php echo t('Translasi', 'Translations'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'documents' ? 'active' : ''; ?>" href="<?php echo base_url('admin/documents'); ?>">
+        <i data-lucide="file-text"></i> <span><?php echo t('Dokumen', 'Documents'); ?></span>
+    </a>
 
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Pengaturan', 'Settings'); ?></div>
