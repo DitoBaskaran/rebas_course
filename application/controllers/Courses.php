@@ -118,6 +118,12 @@ class Courses extends CI_Controller {
 
         $user_id = $this->session->userdata('user_id');
 
+        // Check if user has active subscription for this course
+        if ($this->access_library->has_subscription_access($user_id, $course->id)) {
+            $this->session->set_flashdata('success', t('Anda memiliki akses via langganan aktif.', 'You have access via active subscription.'));
+            redirect('courses/learn/' . $course->slug);
+        }
+
         if ($this->Course_model->check_enrollment($user_id, $course->id)) {
             $this->session->set_flashdata('error', t('Anda sudah terdaftar.', 'Already enrolled.'));
             redirect('courses/learn/' . $course->slug);
@@ -160,18 +166,24 @@ class Courses extends CI_Controller {
             redirect('courses/learn/' . $course->slug . '/' . $lessons[0]->id);
         }
 
-        // Allow free lesson preview for anyone
         $lesson = $this->Course_model->get_lesson_by_id($lesson_id);
         if (!$lesson) show_404();
+
+        // Check access using Access_library (supports enrollment, subscription, and minute balance)
+        $access_info = $this->access_library->check_course_access($user_id, $course_id, $lesson_id);
+
         if ($lesson->is_free) {
-            // Allow access without enrollment check
-        } elseif (!$this->Course_model->check_enrollment($user_id, $course_id)) {
+            $access_info = ['has_access' => true, 'reason' => t('Materi gratis.', 'Free lesson.'), 'access_type' => 'free'];
+        }
+
+        if (!$access_info['has_access']) {
             if (!$this->session->userdata('logged_in')) {
                 $this->session->set_flashdata('error', t('Silakan login untuk mengakses materi ini.', 'Please login to access this lesson.'));
                 redirect('auth/login');
             }
-            $this->session->set_flashdata('error', t('Anda belum terdaftar di kursus ini.', 'You are not enrolled in this course.'));
-            redirect('courses/detail/' . $course->slug);
+            $redirect_url = $course->price > 0 ? 'courses/detail/' . $course->slug : 'subscription';
+            $this->session->set_flashdata('error', t('Anda belum memiliki akses ke materi ini. Berlangganan atau beli menit untuk mengakses.', 'You do not have access to this content. Subscribe or buy minutes to access.'));
+            redirect($redirect_url);
         }
 
         $active_lesson = $this->Course_model->get_lesson_by_id($lesson_id);
@@ -190,6 +202,16 @@ class Courses extends CI_Controller {
         $data['active_lesson'] = $active_lesson;
         $data['completed_lessons'] = $completed_lessons;
         $data['progress_pct'] = $this->Course_model->get_course_progress_percentage($user_id, $course->id);
+        $data['access_type'] = $access_info['access_type'];
+
+        // If accessing via minute balance, start a heartbeat session
+        $data['minute_session'] = null;
+        $data['minute_balance'] = null;
+        if ($access_info['access_type'] === 'minutes') {
+            $this->load->model('User_minute_balance_model');
+            $data['minute_session'] = $this->User_minute_balance_model->create_session($user_id, $course_id, $lesson_id);
+            $data['minute_balance'] = $this->User_minute_balance_model->get_balance($user_id);
+        }
 
         $this->load->view('templates/header', $data);
         $this->load->view('courses/learn', $data);

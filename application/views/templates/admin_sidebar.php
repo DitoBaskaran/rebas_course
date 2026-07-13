@@ -22,6 +22,12 @@
     <a class="nav-link <?php echo $active_page === 'coupons' ? 'active' : ''; ?>" href="<?php echo base_url('admin/coupons'); ?>">
         <i data-lucide="ticket"></i> <span><?php echo t('Kupon', 'Coupons'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'packages' ? 'active' : ''; ?>" href="<?php echo base_url('admin/packages'); ?>">
+        <i data-lucide="layers"></i> <span><?php echo t('Paket Langganan', 'Subscription Packages'); ?></span>
+    </a>
+    <a class="nav-link <?php echo $active_page === 'minute_bundles' ? 'active' : ''; ?>" href="<?php echo base_url('admin/minute_bundles'); ?>">
+        <i data-lucide="clock"></i> <span><?php echo t('Bundel Menit', 'Minute Bundles'); ?></span>
+    </a>
     <a class="nav-link <?php echo $active_page === 'users' ? 'active' : ''; ?>" href="<?php echo base_url('admin/users'); ?>">
         <i data-lucide="users"></i> <span><?php echo t('Pengguna', 'Users'); ?></span>
     </a>

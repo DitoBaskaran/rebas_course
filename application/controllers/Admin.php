@@ -20,9 +20,11 @@ class Admin extends CI_Controller {
         $this->load->model('Mentoring_model');
         $this->load->model('Learning_path_model');
         $this->load->model('Tag_model');
-    $this->load->model('Translation_model');
-    $this->load->model('Setting_model');
-  }
+        $this->load->model('Translation_model');
+        $this->load->model('Setting_model');
+        $this->load->model('Package_model');
+        $this->load->model('Minute_bundle_model');
+   }
 
     // ================ DASHBOARD ================
     public function dashboard() {
@@ -118,6 +120,33 @@ class Admin extends CI_Controller {
                 $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
             } elseif ($tx->item_type === 'seminar') {
                 $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
+            } elseif ($tx->item_type === 'package') {
+                $this->load->model('Package_model');
+                $this->load->model('User_subscription_model');
+                $package = $this->Package_model->get_package_by_id($tx->item_id);
+                if ($package) {
+                    $this->User_subscription_model->activate_subscription($tx->user_id, $package->id, $package->duration_days, $tx->id);
+                }
+            } elseif ($tx->item_type === 'package_6mo') {
+                $this->load->model('Package_model');
+                $this->load->model('User_subscription_model');
+                $package = $this->Package_model->get_package_by_id($tx->item_id);
+                if ($package) {
+                    $duration_days = $package->duration_days * 6;
+                    if (!empty($tx->notes)) {
+                        $note = json_decode($tx->notes, true);
+                        if (isset($note['duration_days'])) $duration_days = (int)$note['duration_days'];
+                    }
+                    $this->User_subscription_model->activate_subscription($tx->user_id, $package->id, $duration_days, $tx->id);
+                }
+            } elseif ($tx->item_type === 'minute_bundle') {
+                $this->load->model('Minute_bundle_model');
+                $this->load->model('User_minute_balance_model');
+                $bundle = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
+                if ($bundle) {
+                    $seconds = $bundle->minutes * 60;
+                    $this->User_minute_balance_model->add_seconds($tx->user_id, $seconds);
+                }
             }
             $this->session->set_flashdata('success', t('Transaksi disetujui.', 'Transaction approved.'));
         } else {
@@ -1010,5 +1039,169 @@ class Admin extends CI_Controller {
 
         $this->session->set_flashdata('success', t('Nilai essay disimpan.', 'Essay grade saved.'));
         redirect('admin/grade_essays/' . $attempt->quiz_id);
+    }
+
+    // ===== PACKAGE MANAGEMENT =====
+    public function packages() {
+        $data['packages'] = $this->Package_model->get_packages(false);
+        $data['active_page'] = 'packages';
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/packages/list', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function create_package() {
+        $this->form_validation->set_rules('name', t('Nama Paket', 'Package Name'), 'required|trim');
+        $this->form_validation->set_rules('price', t('Harga', 'Price'), 'required|numeric');
+        $this->form_validation->set_rules('duration_days', t('Durasi (hari)', 'Duration (days)'), 'required|numeric');
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['active_page'] = 'packages';
+            $data['categories'] = $this->Course_model->get_categories();
+            $data['courses'] = $this->Course_model->get_courses(array('status' => 'all'));
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('admin/packages/create', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $slug = url_title($this->input->post('name'), 'dash', TRUE) . '-' . time();
+            $package_id = $this->Package_model->create_package(array(
+                'name' => $this->input->post('name'),
+                'name_en' => $this->input->post('name_en') ?: '',
+                'slug' => $slug,
+                'description' => $this->input->post('description') ?: '',
+                'description_en' => $this->input->post('description_en') ?: '',
+                'price' => $this->input->post('price'),
+                'duration_days' => $this->input->post('duration_days'),
+                'discount_6mo' => $this->input->post('discount_6mo') ?: 0,
+                'access_scope' => $this->input->post('access_scope') ?: 'all',
+                'is_active' => $this->input->post('is_active') ? 1 : 0,
+                'sort_order' => $this->input->post('sort_order') ?: 0,
+            ));
+
+            $this->_save_package_items($package_id);
+            $this->session->set_flashdata('success', t('Paket berhasil dibuat.', 'Package created.'));
+            redirect('admin/packages');
+        }
+    }
+
+    public function edit_package($id) {
+        $package = $this->Package_model->get_package_by_id($id);
+        if (!$package) show_404();
+
+        $this->form_validation->set_rules('name', t('Nama Paket', 'Package Name'), 'required|trim');
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['active_page'] = 'packages';
+            $data['package'] = $package;
+            $data['existing_items'] = $this->Package_model->get_package_items($id);
+            $data['categories'] = $this->Course_model->get_categories();
+            $data['courses'] = $this->Course_model->get_courses(array('status' => 'all'));
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('admin/packages/edit', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $this->Package_model->update_package($id, array(
+                'name' => $this->input->post('name'),
+                'name_en' => $this->input->post('name_en') ?: '',
+                'description' => $this->input->post('description') ?: '',
+                'description_en' => $this->input->post('description_en') ?: '',
+                'price' => $this->input->post('price'),
+                'duration_days' => $this->input->post('duration_days'),
+                'discount_6mo' => $this->input->post('discount_6mo') ?: 0,
+                'access_scope' => $this->input->post('access_scope') ?: 'all',
+                'is_active' => $this->input->post('is_active') ? 1 : 0,
+                'sort_order' => $this->input->post('sort_order') ?: 0,
+            ));
+
+            $this->_save_package_items($id);
+            $this->session->set_flashdata('success', t('Paket berhasil diperbarui.', 'Package updated.'));
+            redirect('admin/packages');
+        }
+    }
+
+    public function delete_package($id) {
+        $this->Package_model->delete_package($id);
+        $this->session->set_flashdata('success', t('Paket berhasil dihapus.', 'Package deleted.'));
+        redirect('admin/packages');
+    }
+
+    private function _save_package_items($package_id) {
+        $items = array();
+        if ($this->input->post('access_scope') === 'category') {
+            $category_ids = $this->input->post('categories') ?: array();
+            foreach ($category_ids as $cat_id) {
+                $items[] = array('item_type' => 'category', 'item_id' => (int)$cat_id);
+            }
+        } elseif ($this->input->post('access_scope') === 'course') {
+            $course_ids = $this->input->post('courses') ?: array();
+            foreach ($course_ids as $course_id) {
+                $items[] = array('item_type' => 'course', 'item_id' => (int)$course_id);
+            }
+        }
+        $this->Package_model->set_package_items($package_id, $items);
+    }
+
+    // ===== MINUTE BUNDLE MANAGEMENT =====
+    public function minute_bundles() {
+        $data['bundles'] = $this->Minute_bundle_model->get_bundles(false);
+        $data['active_page'] = 'minute_bundles';
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/minute_bundles/list', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function create_bundle() {
+        $this->form_validation->set_rules('name', t('Nama', 'Name'), 'required|trim');
+        $this->form_validation->set_rules('minutes', t('Menit', 'Minutes'), 'required|numeric');
+        $this->form_validation->set_rules('price', t('Harga', 'Price'), 'required|numeric');
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['active_page'] = 'minute_bundles';
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('admin/minute_bundles/create', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $this->Minute_bundle_model->create_bundle(array(
+                'name' => $this->input->post('name'),
+                'name_en' => $this->input->post('name_en') ?: '',
+                'minutes' => $this->input->post('minutes'),
+                'price' => $this->input->post('price'),
+                'is_active' => $this->input->post('is_active') ? 1 : 0,
+                'sort_order' => $this->input->post('sort_order') ?: 0,
+            ));
+            $this->session->set_flashdata('success', t('Bundel menit berhasil dibuat.', 'Minute bundle created.'));
+            redirect('admin/minute_bundles');
+        }
+    }
+
+    public function edit_bundle($id) {
+        $bundle = $this->Minute_bundle_model->get_bundle_by_id($id);
+        if (!$bundle) show_404();
+
+        $this->form_validation->set_rules('name', t('Nama', 'Name'), 'required|trim');
+        if ($this->form_validation->run() === FALSE) {
+            $data['active_page'] = 'minute_bundles';
+            $data['bundle'] = $bundle;
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('admin/minute_bundles/edit', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $this->Minute_bundle_model->update_bundle($id, array(
+                'name' => $this->input->post('name'),
+                'name_en' => $this->input->post('name_en') ?: '',
+                'minutes' => $this->input->post('minutes'),
+                'price' => $this->input->post('price'),
+                'is_active' => $this->input->post('is_active') ? 1 : 0,
+                'sort_order' => $this->input->post('sort_order') ?: 0,
+            ));
+            $this->session->set_flashdata('success', t('Bundel menit berhasil diperbarui.', 'Minute bundle updated.'));
+            redirect('admin/minute_bundles');
+        }
+    }
+
+    public function delete_bundle($id) {
+        $this->Minute_bundle_model->delete_bundle($id);
+        $this->session->set_flashdata('success', t('Bundel menit berhasil dihapus.', 'Minute bundle deleted.'));
+        redirect('admin/minute_bundles');
     }
 }

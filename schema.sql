@@ -415,3 +415,107 @@ CREATE TABLE IF NOT EXISTS `translations` (
   `value_en` TEXT,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
+-- SUBSCRIPTION PACKAGES & MINUTE-BASED ACCESS
+-- ============================================================
+
+-- 26. Packages (subscription tiers defined by admin)
+CREATE TABLE IF NOT EXISTS `packages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `name_en` VARCHAR(100) DEFAULT '',
+  `slug` VARCHAR(100) UNIQUE NOT NULL,
+  `description` TEXT NULL,
+  `description_en` TEXT NULL,
+  `price` DECIMAL(10, 2) DEFAULT 0.00,
+  `duration_days` INT NOT NULL DEFAULT 30,
+  `discount_6mo` DECIMAL(5, 2) DEFAULT 0.00 COMMENT 'Diskon persen untuk langganan 6 bulan',
+  `access_scope` ENUM('all','category','course') DEFAULT 'all',
+  `is_active` BOOLEAN DEFAULT TRUE,
+  `sort_order` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 27. Package Items (content a package grants access to)
+CREATE TABLE IF NOT EXISTS `package_items` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `package_id` INT NOT NULL,
+  `item_type` ENUM('category','course') NOT NULL,
+  `item_id` INT NOT NULL,
+  FOREIGN KEY (`package_id`) REFERENCES `packages`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 28. User Subscriptions (active package subscriptions per user)
+CREATE TABLE IF NOT EXISTS `user_subscriptions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `package_id` INT NOT NULL,
+  `transaction_id` INT DEFAULT NULL,
+  `status` ENUM('active','expired','cancelled') DEFAULT 'active',
+  `started_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `expires_at` TIMESTAMP NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`package_id`) REFERENCES `packages`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 29. Minute Bundles (admin-defined time bundles for purchase)
+CREATE TABLE IF NOT EXISTS `minute_bundles` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `name_en` VARCHAR(100) DEFAULT '',
+  `minutes` INT NOT NULL,
+  `price` DECIMAL(10, 2) DEFAULT 0.00,
+  `is_active` BOOLEAN DEFAULT TRUE,
+  `sort_order` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 30. User Minute Balances (remaining time per user)
+CREATE TABLE IF NOT EXISTS `user_minute_balances` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL UNIQUE,
+  `balance_seconds` INT DEFAULT 0,
+  `total_purchased_seconds` INT DEFAULT 0,
+  `total_used_seconds` INT DEFAULT 0,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 31. Minute Sessions (real-time tracking of active consumption)
+CREATE TABLE IF NOT EXISTS `minute_sessions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `course_id` INT DEFAULT NULL,
+  `lesson_id` INT DEFAULT NULL,
+  `session_token` VARCHAR(100) NOT NULL,
+  `started_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `last_heartbeat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `seconds_consumed` INT DEFAULT 0,
+  `status` ENUM('active','ended','expired') DEFAULT 'active',
+  `ended_at` TIMESTAMP NULL,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`lesson_id`) REFERENCES `lessons`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 32. Minute Consumption Logs (ledger of time usage)
+CREATE TABLE IF NOT EXISTS `minute_consumption_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `course_id` INT DEFAULT NULL,
+  `lesson_id` INT DEFAULT NULL,
+  `seconds_consumed` INT NOT NULL,
+  `balance_before` INT NOT NULL,
+  `balance_after` INT NOT NULL,
+  `session_id` VARCHAR(100) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE SET NULL,
+  FOREIGN KEY (`lesson_id`) REFERENCES `lessons`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Extend transactions.item_type to support packages & minute bundles
+ALTER TABLE `transactions` MODIFY `item_type` ENUM('course','seminar','workshop','bootcamp','ebook','project','mentoring','package','package_6mo','minute_bundle') NOT NULL;

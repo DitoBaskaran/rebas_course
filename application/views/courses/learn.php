@@ -107,48 +107,49 @@
                 <div class="p-4 p-xl-5">
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <span class="badge bg-dark text-white rounded-pill px-3 py-2 fw-medium d-inline-flex align-items-center gap-1">
-                            <?php if ($active_lesson->lesson_type === 'video'): ?>
-                                <i class="fas fa-play-circle"></i> <?php echo t('Video', 'Video'); ?>
-                            <?php elseif ($active_lesson->lesson_type === 'text'): ?>
-                                <i class="fas fa-file-alt"></i> <?php echo t('Teks', 'Text'); ?>
-                            <?php elseif ($active_lesson->lesson_type === 'quiz'): ?>
-                                <i class="fas fa-pencil-alt"></i> <?php echo t('Quiz', 'Quiz'); ?>
-                            <?php elseif ($active_lesson->lesson_type === 'assignment'): ?>
-                                <i class="fas fa-code"></i> <?php echo t('Tugas', 'Assignment'); ?>
-                            <?php else: ?>
-                                <i class="fas fa-video"></i> <?php echo t('Live', 'Live'); ?>
-                            <?php endif; ?>
+                <?php
+                    if ($active_lesson->lesson_type === 'video') echo t('Video', 'Video');
+                    elseif ($active_lesson->lesson_type === 'text') echo t('Teks', 'Text');
+                    elseif ($active_lesson->lesson_type === 'quiz') echo t('Quiz', 'Quiz');
+                    elseif ($active_lesson->lesson_type === 'assignment') echo t('Tugas', 'Assignment');
+                    else echo t('Live', 'Live');
+                ?>
                         </span>
-                        <?php if ($active_lesson->duration > 0): ?>
-                            <span class="text-secondary small"><i class="far fa-clock me-1"></i> <?php echo $active_lesson->duration; ?> <?php echo t('menit', 'min'); ?></span>
-                        <?php endif; ?>
-                        <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
-                            <span class="badge bg-success rounded-pill px-3 py-2 fw-medium ms-auto"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
-                        <?php endif; ?>
-                    </div>
+            <?php if ($active_lesson->duration > 0): ?>
+                <small class="text-secondary"><i class="far fa-clock me-1"></i> <?php echo $active_lesson->duration; ?> <?php echo t('menit', 'min'); ?></small>
+            <?php endif; ?>
+            <?php if ($access_type === 'minutes'): ?>
+                <small class="text-success fw-semibold ms-auto"><i class="fas fa-hourglass-half me-1"></i> <span id="liveMinuteBalance"><?php echo format_seconds_for_timer($minute_balance->balance_seconds ?? 0); ?></span></small>
+            <?php endif; ?>
+            <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
+                <span class="badge bg-success rounded-pill px-3 py-2 fw-medium ms-auto"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
+            <?php endif; ?>
+        </div>
 
-                    <h4 class="fw-extrabold text-dark mb-3 lh-sm" style="letter-spacing: -0.03em;"><?php echo htmlspecialchars(t($active_lesson->title, $active_lesson->title_en ?: $active_lesson->title)); ?></h4>
+        <h4 class="fw-extrabold text-dark mb-3 lh-sm" style="letter-spacing: -0.03em;"><?php echo htmlspecialchars(t($active_lesson->title, $active_lesson->title_en ?: $active_lesson->title)); ?></h4>
 
-                    <?php if ($active_lesson->description): ?>
-                        <p class="text-secondary mb-4"><?php echo nl2br(htmlspecialchars(t($active_lesson->description, $active_lesson->description_en ?: $active_lesson->description))); ?></p>
-                    <?php endif; ?>
+        <?php if ($active_lesson->description): ?>
+            <p class="text-secondary mb-4"><?php echo nl2br(htmlspecialchars(t($active_lesson->description, $active_lesson->description_en ?: $active_lesson->description))); ?></p>
+        <?php endif; ?>
 
-                    <?php if (!empty($active_lesson->content) && $active_lesson->lesson_type === 'text'): ?>
-                        <div class="bg-light rounded-4 p-4 p-xl-5 mb-4 lesson-content">
-                            <?php echo t($active_lesson->content, $active_lesson->content_en ?: $active_lesson->content); ?>
-                        </div>
-                    <?php endif; ?>
+        <?php if (!empty($active_lesson->content) && $active_lesson->lesson_type === 'text'): ?>
+            <div class="bg-light rounded-4 p-4 p-xl-5 mb-4 lesson-content">
+                <?php echo t($active_lesson->content, $active_lesson->content_en ?: $active_lesson->content); ?>
+            </div>
+        <?php endif; ?>
 
-                    <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top">
-                        <div>
-                            <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
-                                <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
-                            <?php else: ?>
-                                <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
-                                    <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
-                                </a>
-                            <?php endif; ?>
-                        </div>
+        <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top">
+            <div>
+                <?php if ($access_type === 'minutes'): ?>
+                    <span class="badge bg-primary rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-hourglass-half me-1"></i> <?php echo t('Akses Menit', 'Minute Access'); ?></span>
+                <?php elseif (in_array($active_lesson->id, $completed_lessons)): ?>
+                    <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
+                <?php else: ?>
+                    <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
+                        <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
+                    </a>
+                <?php endif; ?>
+            </div>
                         <div class="d-flex gap-2">
                             <?php
                             $prev_id = null;
@@ -236,14 +237,84 @@
 </div>
 
 <!-- Style for rich text content -->
-<style>
-.lesson-content { line-height: 1.8; color: #1e293b; font-size: 0.9375rem; }
-.lesson-content p { margin-bottom: 1rem; }
-.lesson-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1rem 0; }
-.lesson-content h1, .lesson-content h2, .lesson-content h3 { margin-top: 1.5rem; margin-bottom: 0.75rem; font-weight: 700; color: #0f172a; }
-.lesson-content ul, .lesson-content ol { margin-bottom: 1rem; padding-left: 1.5rem; }
-.lesson-content blockquote { border-left: 4px solid #4361ee; padding-left: 1rem; margin: 1rem 0; color: #64748b; font-style: italic; }
-.lesson-content pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
-.lesson-content code { background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; }
-.lesson-content pre code { background: transparent; padding: 0; }
-</style>
+<script>
+const access_type = '<?php echo $access_type; ?>';
+const minute_session_id = '<?php echo $minute_session['id'] ?? ''; ?>';
+const minute_session_token = '<?php echo $minute_session['token'] ?? ''; ?>';
+const base_url = '<?php echo base_url(); ?>';
+
+let remainingSeconds = <?php echo $minute_balance->balance_seconds ?? 0; ?>;
+let heartbeatInterval;
+
+function formatSecondsForTimer(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    if (h > 0) {
+        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function updateMinuteBalanceDisplay() {
+    const displayElement = document.getElementById('liveMinuteBalance');
+    if (displayElement) {
+        displayElement.textContent = formatSecondsForTimer(remainingSeconds);
+        if (remainingSeconds <= 60 && remainingSeconds > 0) {
+            displayElement.classList.add('text-danger');
+        } else if (remainingSeconds === 0) {
+            displayElement.classList.remove('text-danger');
+            displayElement.classList.add('text-muted');
+        }
+    }
+}
+
+async function sendHeartbeat() {
+    if (access_type !== 'minutes' || !minute_session_id || !minute_session_token) return;
+
+    try {
+        const response = await fetch(`${base_url}heartbeat/tick`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `session_id=${minute_session_id}&session_token=${minute_session_token}`
+        });
+        const data = await response.json();
+
+        if (data.status === 'ok') {
+            remainingSeconds = data.remaining_seconds;
+            updateMinuteBalanceDisplay();
+        } else if (data.status === 'ended') {
+            remainingSeconds = 0;
+            updateMinuteBalanceDisplay();
+            alert(data.message);
+            clearInterval(heartbeatInterval);
+            window.location.reload(); // Or redirect to a purchase page
+        }
+    } catch (error) {
+        console.error('Heartbeat failed:', error);
+    }
+}
+
+async function endSession() {
+    if (access_type !== 'minutes' || !minute_session_id || !minute_session_token) return;
+    try {
+        await fetch(`${base_url}heartbeat/end`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `session_id=${minute_session_id}&session_token=${minute_session_token}`
+        });
+    } catch (error) {
+        console.error('End session failed:', error);
+    }
+}
+
+if (access_type === 'minutes') {
+    window.addEventListener('load', () => {
+        updateMinuteBalanceDisplay();
+        heartbeatInterval = setInterval(sendHeartbeat, 5000); // Send heartbeat every 5 seconds
+    });
+    window.addEventListener('beforeunload', endSession);
+}
+
+</script>
+

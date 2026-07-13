@@ -83,6 +83,18 @@ $route['wishlist/toggle/(:num)'] = 'wishlist/toggle/$1';
 $route['admin/grade_essays/(:num)'] = 'admin/grade_essays/$1';
 $route['admin/save_essay_grade/(:num)/(:num)'] = 'admin/save_essay_grade/$1/$2';
 
+// Admin Package Routes
+$route['admin/packages'] = 'admin/packages';
+$route['admin/packages/create'] = 'admin/create_package';
+$route['admin/packages/edit/(:num)'] = 'admin/edit_package/$1';
+$route['admin/packages/delete/(:num)'] = 'admin/delete_package/$1';
+
+// Admin Minute Bundle Routes
+$route['admin/minute_bundles'] = 'admin/minute_bundles';
+$route['admin/minute_bundles/create'] = 'admin/create_bundle';
+$route['admin/minute_bundles/edit/(:num)'] = 'admin/edit_bundle/$1';
+$route['admin/minute_bundles/delete/(:num)'] = 'admin/delete_bundle/$1';
+
 // Payment gateway routes
 $route['checkout/midtrans_snap/(:num)'] = 'checkout/midtrans_snap/$1';
 $route['checkout/midtrans_callback'] = 'checkout/midtrans_callback';
@@ -96,6 +108,25 @@ $route['ref/(:any)'] = 'referral/index/$1';
 // Course detail by slug (clean URLs)
 $route['courses/detail/(:num)'] = 'courses/detail/$1';
 $route['courses/detail/(:any)'] = 'courses/detail_slug/$1';
+
+// Subscription Routes
+$route['subscription'] = 'subscription/index';
+$route['subscription/detail/(:any)'] = 'subscription/detail/$1';
+$route['subscription/buy/(:any)'] = 'subscription/buy/$1';
+$route['subscription/buy/(:any)/(:num)'] = 'subscription/buy/$1/$2';
+$route['subscription/my'] = 'subscription/my';
+
+// Minute Balance Routes
+$route['minute_balance'] = 'minute_balance/index';
+$route['minute_balance/buy/(:num)'] = 'minute_balance/buy/$1';
+
+// Heartbeat API Routes
+$route['heartbeat/start'] = 'heartbeat/start';
+$route['heartbeat/tick'] = 'heartbeat/tick';
+$route['heartbeat/end'] = 'heartbeat/end';
+
+// Cleanup stale minute sessions (call from cron)
+$route['heartbeat/cleanup'] = 'heartbeat/cleanup';
 
 // Allow slug-based course routes
 $route['courses/buy/(:any)'] = 'courses/buy/$1';

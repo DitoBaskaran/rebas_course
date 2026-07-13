@@ -18,7 +18,7 @@ try {
     echo "Koneksi database berhasil.\n";
 
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0;");
-    foreach (['path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'] as $t) {
+    foreach (['minute_consumption_logs','minute_sessions','user_minute_balances','minute_bundles','user_subscriptions','package_items','packages','path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'] as $t) {
         $pdo->exec("TRUNCATE TABLE $t;");
     }
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 1;");
@@ -195,7 +195,7 @@ try {
     echo "Lessons OK.\n";
 
     // ========== QUIZZES ==========
-    $stmt = $pdo->prepare("INSERT INTO quizzes (course_id, title, title_en, description, description_en, time_limit_minutes, max_attempts, passing_score, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt = $pdo->prepare("INSERT INTO quizzes (course_id, title, title_en, description, description_en, time_limit, max_attempts, passing_score, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([$course_1, 'Kuis Laravel Dasar', 'Basic Laravel Quiz', 'Uji pemahamanmu tentang Laravel framework.', 'Test your understanding of the Laravel framework.', 15, 3, 70]);
     $quiz_1 = (int)$pdo->lastInsertId();
     $stmt->execute([$course_2, 'Kuis HTML & CSS', 'HTML & CSS Quiz', 'Tes pengetahuan HTML dan CSS dasar.', 'Test basic HTML and CSS knowledge.', 10, 2, 60]);
@@ -330,6 +330,46 @@ try {
     $stmt = $pdo->prepare("INSERT INTO transactions (user_id, item_type, item_id, amount, status, payment_proof, created_at) VALUES (?, ?, ?, ?, 'approved', 'seed_proof.png', NOW())");
     $stmt->execute([$student_rian, 'course', $course_3, 350000]);
     echo "Transactions OK.\n";
+
+    // ========== PACKAGES (Subscription Tiers) ==========
+    $stmt = $pdo->prepare("INSERT INTO packages (name, name_en, slug, description, description_en, price, duration_days, discount_6mo, access_scope, is_active, sort_order, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute(['Basic', 'Basic', 'basic', 'Akses ke kategori Pemrograman & Web Development.', 'Access to Programming & Web Development categories.', 100000, 30, 0, 'category', 1, 1]);
+    $pkg_basic = (int)$pdo->lastInsertId();
+    $stmt->execute(['Premium', 'Premium', 'premium', 'Akses ke SEMUA kategori dan konten premium. Termasuk kursus, workshop, bootcamp, dan ebook.', 'Access to ALL categories and premium content. Includes courses, workshops, bootcamps, and ebooks.', 250000, 30, 10.00, 'all', 1, 2]);
+    $pkg_premium = (int)$pdo->lastInsertId();
+    $stmt->execute(['Master', 'Master', 'master', 'Akses tak terbatas ke semua konten + mentoring prioritas + sertifikat gratis.', 'Unlimited access to all content + priority mentoring + free certificates.', 500000, 90, 16.67, 'all', 1, 3]);
+    $pkg_master = (int)$pdo->lastInsertId();
+    echo "Packages OK.\n";
+
+    // Package Items (category-based access)
+    $stmt = $pdo->prepare("INSERT INTO package_items (package_id, item_type, item_id) VALUES (?, ?, ?)");
+    $stmt->execute([$pkg_basic, 'category', $cat_prog]); // Programming
+    $sub_web = (int)$pdo->query("SELECT id FROM categories WHERE slug='web-dev'")->fetchColumn(); // fetch it again for safety
+    $sub_mobile = (int)$pdo->query("SELECT id FROM categories WHERE slug='mobile-app'")->fetchColumn();
+    $sub_data = (int)$pdo->query("SELECT id FROM categories WHERE slug='data-science-ai'")->fetchColumn();
+    $stmt->execute([$pkg_basic, 'category', $sub_web]);
+    $stmt->execute([$pkg_basic, 'category', $sub_mobile]);
+    $stmt->execute([$pkg_basic, 'category', $sub_data]);
+    echo "Package Items OK.\n";
+
+    // ========== MINUTE BUNDLES ==========
+    $stmt = $pdo->prepare("INSERT INTO minute_bundles (name, name_en, minutes, price, is_active, sort_order, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute(['30 Menit', '30 Minutes', 30, 25000, 1, 1]);
+    $stmt->execute(['60 Menit', '60 Minutes', 60, 45000, 1, 2]);
+    $stmt->execute(['120 Menit', '120 Minutes', 120, 80000, 1, 3]);
+    $stmt->execute(['300 Menit', '300 Minutes', 300, 175000, 1, 4]);
+    $stmt->execute(['600 Menit', '600 Minutes', 600, 300000, 1, 5]);
+    echo "Minute Bundles OK.\n";
+
+    // ========== USER MINUTE BALANCES (sample) ==========
+    $stmt = $pdo->prepare("INSERT INTO user_minute_balances (user_id, balance_seconds, total_purchased_seconds, total_used_seconds, updated_at) VALUES (?, ?, ?, ?, NOW())");
+    $stmt->execute([$student_rian, 7200, 7200, 0]); // Rian has 120 minutes
+    echo "User Minute Balances OK.\n";
+
+    // ========== USER SUBSCRIPTIONS (sample) ==========
+    $stmt = $pdo->prepare("INSERT INTO user_subscriptions (user_id, package_id, status, started_at, expires_at, created_at) VALUES (?, ?, 'active', NOW(), DATE_ADD(NOW(), INTERVAL ? DAY), NOW())");
+    $stmt->execute([$student_siti, $pkg_premium, 30]); // Siti has premium
+    echo "User Subscriptions OK.\n";
 
     // ========== TRANSLATIONS ==========
     $stmt = $pdo->prepare("INSERT INTO translations (`key`, value_id, value_en) VALUES (?, ?, ?)");

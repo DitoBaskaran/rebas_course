@@ -29,6 +29,15 @@ class Checkout extends CI_Controller {
             $item = $this->Course_model->get_course_by_id($tx->item_id);
         } else if ($tx->item_type === 'seminar') {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
+        } else if ($tx->item_type === 'package') {
+            $this->load->model('Package_model');
+            $item = $this->Package_model->get_package_by_id($tx->item_id);
+        } else if ($tx->item_type === 'package_6mo') {
+            $this->load->model('Package_model');
+            $item = $this->Package_model->get_package_by_id($tx->item_id);
+        } else if ($tx->item_type === 'minute_bundle') {
+            $this->load->model('Minute_bundle_model');
+            $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
         }
 
         $data['title'] = t('Konfirmasi Pembayaran', 'Payment Confirmation');
@@ -61,6 +70,14 @@ class Checkout extends CI_Controller {
         } elseif ($tx->item_type === 'seminar') {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
             $item_name = $item ? $item->title : 'Seminar';
+        } elseif ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
+            $this->load->model('Package_model');
+            $item = $this->Package_model->get_package_by_id($tx->item_id);
+            $item_name = $item ? $item->name : 'Package';
+        } elseif ($tx->item_type === 'minute_bundle') {
+            $this->load->model('Minute_bundle_model');
+            $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
+            $item_name = $item ? $item->name : 'Minute Bundle';
         }
 
         $data['snap_token'] = get_midtrans_token($tx_id, $tx->amount, $item_name, array(
@@ -114,6 +131,32 @@ class Checkout extends CI_Controller {
                 $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
             } elseif ($tx->item_type === 'seminar') {
                 $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
+            } elseif ($tx->item_type === 'package') {
+                $this->load->model('Package_model');
+                $this->load->model('User_subscription_model');
+                $pkg = $this->Package_model->get_package_by_id($tx->item_id);
+                if ($pkg) {
+                    $this->User_subscription_model->activate_subscription($tx->user_id, $pkg->id, $pkg->duration_days, $tx->id);
+                }
+            } elseif ($tx->item_type === 'package_6mo') {
+                $this->load->model('Package_model');
+                $this->load->model('User_subscription_model');
+                $pkg = $this->Package_model->get_package_by_id($tx->item_id);
+                if ($pkg) {
+                    $duration_days = $pkg->duration_days * 6;
+                    if (!empty($tx->notes)) {
+                        $note = json_decode($tx->notes, true);
+                        if (isset($note['duration_days'])) $duration_days = (int)$note['duration_days'];
+                    }
+                    $this->User_subscription_model->activate_subscription($tx->user_id, $pkg->id, $duration_days, $tx->id);
+                }
+            } elseif ($tx->item_type === 'minute_bundle') {
+                $this->load->model('Minute_bundle_model');
+                $this->load->model('User_minute_balance_model');
+                $bundle = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
+                if ($bundle) {
+                    $this->User_minute_balance_model->add_seconds($tx->user_id, $bundle->minutes * 60);
+                }
             }
 
             // Send email notification
@@ -313,6 +356,33 @@ class Checkout extends CI_Controller {
             $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
         } elseif ($tx->item_type === 'seminar') {
             $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
+        } elseif ($tx->item_type === 'package') {
+            $this->load->model('Package_model');
+            $this->load->model('User_subscription_model');
+            $package = $this->Package_model->get_package_by_id($tx->item_id);
+            if ($package) {
+                $this->User_subscription_model->activate_subscription($tx->user_id, $package->id, $package->duration_days, $tx->id);
+            }
+        } elseif ($tx->item_type === 'package_6mo') {
+            $this->load->model('Package_model');
+            $this->load->model('User_subscription_model');
+            $package = $this->Package_model->get_package_by_id($tx->item_id);
+            if ($package) {
+                $duration_days = $package->duration_days * 6;
+                if (!empty($tx->notes)) {
+                    $note = json_decode($tx->notes, true);
+                    if (isset($note['duration_days'])) $duration_days = (int)$note['duration_days'];
+                }
+                $this->User_subscription_model->activate_subscription($tx->user_id, $package->id, $duration_days, $tx->id);
+            }
+        } elseif ($tx->item_type === 'minute_bundle') {
+            $this->load->model('Minute_bundle_model');
+            $this->load->model('User_minute_balance_model');
+            $bundle = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
+            if ($bundle) {
+                $seconds = $bundle->minutes * 60;
+                $this->User_minute_balance_model->add_seconds($tx->user_id, $seconds);
+            }
         }
 
         $this->load->helper('mail');
