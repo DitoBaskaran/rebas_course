@@ -1,6 +1,9 @@
 <?php
 // Seed database untuk REBAS COURSE
 // Database credentials loaded from CI config (per-environment, not tracked by git)
+if (!defined('BASEPATH')) {
+    define('BASEPATH', '');
+}
 if (!defined('ENVIRONMENT')) {
     define('ENVIRONMENT', 'development');
 }
