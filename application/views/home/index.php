@@ -671,7 +671,7 @@
                             </li>
                         </ul>
                         
-                        <a href="<?php echo base_url('checkout/subscribe/pro'); ?>" class="btn btn-primary w-100 py-2 fw-semibold rounded-pill mt-auto shadow-sm">Mulai Berlangganan</a>
+                        <a href="<?php echo base_url('subscription'); ?>" class="btn btn-primary w-100 py-2 fw-semibold rounded-pill mt-auto shadow-sm">Mulai Berlangganan</a>
                     </div>
                 </div>
             </div>
@@ -711,7 +711,7 @@
                             </li>
                         </ul>
                         
-                        <a href="<?php echo base_url('checkout/subscribe/mentorship'); ?>" class="btn btn-outline-primary w-100 py-2 fw-semibold rounded-pill mt-auto">Pilih Mentorship</a>
+                        <a href="<?php echo base_url('subscription'); ?>" class="btn btn-outline-primary w-100 py-2 fw-semibold rounded-pill mt-auto">Pilih Mentorship</a>
                     </div>
                 </div>
             </div>

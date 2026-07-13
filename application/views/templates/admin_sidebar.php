@@ -16,6 +16,9 @@
     <a class="nav-link <?php echo $active_page === 'learning_paths' ? 'active' : ''; ?>" href="<?php echo base_url('admin/learning_paths'); ?>">
         <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Paths'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'transactions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/transactions'); ?>">
+        <i data-lucide="receipt"></i> <span><?php echo t('Transaksi', 'Transactions'); ?></span>
+    </a>
     <a class="nav-link <?php echo $active_page === 'tags' ? 'active' : ''; ?>" href="<?php echo base_url('admin/tags'); ?>">
         <i data-lucide="tags"></i> <span><?php echo t('Tags', 'Tags'); ?></span>
     </a>

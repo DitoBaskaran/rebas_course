@@ -110,12 +110,27 @@ class Admin extends CI_Controller {
     }
 
     // ================ TRANSACTION ACTIONS ================
+    public function transactions() {
+        $data['transactions'] = $this->Transaction_model->get_all_transactions();
+        $data['active_page'] = 'transactions';
+        $data['title'] = t('Transaksi', 'Transactions');
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/transactions/list', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
     public function approve_transaction($tx_id) {
         $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
         if (!$tx) show_404();
 
         if ($tx->status === 'pending') {
             $this->Transaction_model->update_transaction_status($tx_id, 'approved');
+
+            if ($tx->coupon_id) {
+                $this->load->model('Coupon_model');
+                $this->Coupon_model->increment_usage($tx->coupon_id);
+            }
+
             if ($tx->item_type === 'course' || in_array($tx->item_type, ['workshop','bootcamp','ebook','project'])) {
                 $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
             } elseif ($tx->item_type === 'seminar') {
@@ -152,7 +167,7 @@ class Admin extends CI_Controller {
         } else {
             $this->session->set_flashdata('error', t('Transaksi sudah diproses.', 'Already processed.'));
         }
-        redirect('admin/dashboard');
+        redirect('admin/transactions');
     }
 
     public function reject_transaction($tx_id) {
@@ -165,7 +180,7 @@ class Admin extends CI_Controller {
         } else {
             $this->session->set_flashdata('error', t('Sudah diproses.', 'Already processed.'));
         }
-        redirect('admin/dashboard');
+        redirect('admin/transactions');
     }
 
     // ================ COURSE MANAGEMENT ================

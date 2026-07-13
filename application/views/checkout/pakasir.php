@@ -35,7 +35,7 @@
                     <?php if ($item): ?>
                     <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
                         <div class="flex-fill min-w-0">
-                            <div class="fw-bold text-dark"><?php echo htmlspecialchars($item->title); ?></div>
+                            <div class="fw-bold text-dark"><?php echo htmlspecialchars($item->title ?? $item->name ?? ''); ?></div>
                             <div class="text-secondary small"><?php echo ucfirst($tx->item_type); ?> &middot; Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
                         </div>
                     </div>

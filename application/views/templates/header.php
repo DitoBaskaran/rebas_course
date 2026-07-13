@@ -105,6 +105,12 @@
                         <li class="nav-item">
                             <a class="nav-link<?php echo strpos(uri_string(), 'mentoring') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>"><?php echo t('Mentoring', 'Mentoring'); ?></a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo strpos(uri_string(), 'subscription') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('subscription'); ?>"><?php echo t('Langganan', 'Subscription'); ?></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link<?php echo strpos(uri_string(), 'minute_balance') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('minute_balance'); ?>"><?php echo t('Beli Menit', 'Buy Minutes'); ?></a>
+                        </li>
                     </ul>
                     <hr class="my-0">
                     <div class="p-3 d-flex flex-column gap-2">
@@ -149,6 +155,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link<?php echo strpos(uri_string(), 'mentoring') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>"><?php echo t('Mentoring', 'Mentoring'); ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link<?php echo strpos(uri_string(), 'subscription') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('subscription'); ?>"><?php echo t('Langganan', 'Subscription'); ?></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link<?php echo strpos(uri_string(), 'minute_balance') === 0 ? ' active' : ''; ?>" href="<?php echo base_url('minute_balance'); ?>"><?php echo t('Beli Menit', 'Buy Minutes'); ?></a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">

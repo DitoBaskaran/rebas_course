@@ -1,12 +1,25 @@
 <?php
 // Seed database untuk REBAS COURSE
-$host = 'localhost';
-$db   = 'db_course_online';
-$user = 'root';
-$pass = '';
+// Database credentials loaded from CI config (per-environment, not tracked by git)
+if (!defined('ENVIRONMENT')) {
+    define('ENVIRONMENT', 'development');
+}
+$cfg = __DIR__ . '/application/config/database.php';
+if (file_exists($cfg)) {
+    require $cfg;
+    $host   = $db['default']['hostname'];
+    $dbname = $db['default']['database'];
+    $user   = $db['default']['username'];
+    $pass   = $db['default']['password'];
+} else {
+    $host   = 'localhost';
+    $dbname = 'db_course_online';
+    $user   = 'root';
+    $pass   = '';
+}
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$dsn = "mysql:host=$host;dbname=$dbname;charset=$charset";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,

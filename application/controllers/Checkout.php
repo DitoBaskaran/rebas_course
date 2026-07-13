@@ -12,6 +12,7 @@ class Checkout extends CI_Controller {
         $this->load->model('Transaction_model');
         $this->load->model('Course_model');
         $this->load->model('Seminar_model');
+        $this->load->model('Coupon_model');
         $this->load->library('pakasir');
     }
 
@@ -25,28 +26,98 @@ class Checkout extends CI_Controller {
         }
 
         $item = NULL;
+        $item_name = '';
         if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project'])) {
             $item = $this->Course_model->get_course_by_id($tx->item_id);
+            $item_name = $item ? $item->title : ucfirst($tx->item_type);
         } else if ($tx->item_type === 'seminar') {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
-        } else if ($tx->item_type === 'package') {
+            $item_name = $item ? $item->title : 'Seminar';
+        } else if ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
             $this->load->model('Package_model');
             $item = $this->Package_model->get_package_by_id($tx->item_id);
-        } else if ($tx->item_type === 'package_6mo') {
-            $this->load->model('Package_model');
-            $item = $this->Package_model->get_package_by_id($tx->item_id);
+            $item_name = $item ? $item->name : 'Package';
         } else if ($tx->item_type === 'minute_bundle') {
             $this->load->model('Minute_bundle_model');
             $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
+            $item_name = $item ? $item->name : 'Minute Bundle';
         }
 
         $data['title'] = t('Konfirmasi Pembayaran', 'Payment Confirmation');
         $data['transaction'] = $tx;
         $data['item'] = $item;
+        $data['item_name'] = $item_name;
+        $data['applied_coupon'] = null;
+
+        if ($tx->coupon_id) {
+            $data['applied_coupon'] = $this->Coupon_model->get_coupon_by_id($tx->coupon_id);
+        }
 
         $this->load->view('templates/header', $data);
         $this->load->view('checkout/confirm', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function apply_coupon($uuid) {
+        $tx = $this->Transaction_model->get_by_uuid($uuid);
+        if (!$tx || $tx->user_id != $this->session->userdata('user_id')) {
+            echo json_encode(array('status' => 'error', 'message' => t('Transaksi tidak valid.', 'Invalid transaction.')));
+            return;
+        }
+        if ($tx->status !== 'pending') {
+            echo json_encode(array('status' => 'error', 'message' => t('Transaksi sudah diproses.', 'Already processed.')));
+            return;
+        }
+
+        $code = $this->input->post('code');
+        if (!$code) {
+            echo json_encode(array('status' => 'error', 'message' => t('Masukkan kode kupon.', 'Enter coupon code.')));
+            return;
+        }
+
+        $amount = $tx->original_amount > 0 ? $tx->original_amount : $tx->amount;
+        $validation = $this->Coupon_model->validate_coupon($code, $amount);
+
+        if (!$validation['valid']) {
+            echo json_encode(array('status' => 'error', 'message' => $validation['message']));
+            return;
+        }
+
+        $coupon = $validation['coupon'];
+        $calc = $this->Coupon_model->calculate_discount($coupon, $amount);
+
+        $this->db->where('id', $tx->id)->update('transactions', array(
+            'coupon_id' => $coupon->id,
+            'original_amount' => $amount,
+            'discount_amount' => $calc['discount'],
+            'amount' => $calc['total'],
+        ));
+
+        echo json_encode(array(
+            'status' => 'ok',
+            'discount' => $calc['discount'],
+            'total' => $calc['total'],
+            'label' => $calc['label'],
+            'message' => t('Kupon berhasil diterapkan!', 'Coupon applied!')
+        ));
+    }
+
+    public function remove_coupon($uuid) {
+        $tx = $this->Transaction_model->get_by_uuid($uuid);
+        if (!$tx || $tx->user_id != $this->session->userdata('user_id')) {
+            echo json_encode(array('status' => 'error'));
+            return;
+        }
+
+        $original = $tx->original_amount > 0 ? $tx->original_amount : $tx->amount;
+        $this->db->where('id', $tx->id)->update('transactions', array(
+            'coupon_id' => null,
+            'original_amount' => 0,
+            'discount_amount' => 0,
+            'amount' => $original,
+        ));
+
+        echo json_encode(array('status' => 'ok', 'amount' => $original));
     }
 
     public function midtrans_snap($uuid) {
@@ -118,6 +189,10 @@ class Checkout extends CI_Controller {
                 'payment_channel' => $notification['payment_type'] ?? '',
                 'gateway_tx_id' => $notification['transaction_id'] ?? '',
             ));
+
+            if ($tx->coupon_id) {
+                $this->Coupon_model->increment_usage($tx->coupon_id);
+            }
 
             if ($tx->item_type === 'course') {
                 $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
@@ -237,6 +312,12 @@ class Checkout extends CI_Controller {
             $item = $this->Course_model->get_course_by_id($tx->item_id);
         } elseif ($tx->item_type === 'seminar') {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
+        } elseif ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
+            $this->load->model('Package_model');
+            $item = $this->Package_model->get_package_by_id($tx->item_id);
+        } elseif ($tx->item_type === 'minute_bundle') {
+            $this->load->model('Minute_bundle_model');
+            $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
         }
 
         $data['title'] = t('Pembayaran', 'Payment');
@@ -319,6 +400,11 @@ class Checkout extends CI_Controller {
             'payment_channel' => $notification['payment_method'] ?? '',
             'gateway_tx_id' => $notification['order_id'] ?? $tx->gateway_tx_id,
         ));
+
+        // Increment coupon usage if coupon was applied
+        if ($tx->coupon_id) {
+            $this->Coupon_model->increment_usage($tx->coupon_id);
+        }
 
         if ($tx->item_type === 'course') {
             $this->Course_model->enroll_user($tx->user_id, $tx->item_id);

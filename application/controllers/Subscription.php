@@ -17,6 +17,7 @@ class Subscription extends CI_Controller {
 
     public function index() {
         $data['title'] = t('Paket Berlangganan', 'Subscription Plans');
+        $data['active_page'] = 'subscription';
         $packages = $this->Package_model->get_packages(true);
 
         foreach ($packages as $pkg) {
@@ -99,7 +100,8 @@ class Subscription extends CI_Controller {
             'status' => 'pending'
         );
         $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        redirect('checkout/confirm/' . $tx_id);
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+        redirect('checkout/confirm/' . $tx->uuid);
     }
 
     public function my() {
@@ -109,6 +111,7 @@ class Subscription extends CI_Controller {
         $this->User_subscription_model->expire_past_subscriptions();
 
         $data['title'] = t('Langganan Saya', 'My Subscriptions');
+        $data['active_page'] = 'subscription';
         $data['subscriptions'] = $this->User_subscription_model->get_user_subscriptions($user_id);
 
         $this->load->view('templates/header', $data);

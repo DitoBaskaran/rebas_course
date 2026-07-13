@@ -22,6 +22,12 @@
     <a class="nav-link <?php echo $active_page === 'wishlist' ? 'active' : ''; ?>" href="<?php echo base_url('wishlist'); ?>">
         <i data-lucide="heart"></i> <span><?php echo t('Wishlist', 'Wishlist'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'subscription' ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>">
+        <i data-lucide="layers"></i> <span><?php echo t('Langganan', 'Subscription'); ?></span>
+    </a>
+    <a class="nav-link <?php echo $active_page === 'minute_balance' ? 'active' : ''; ?>" href="<?php echo base_url('minute_balance'); ?>">
+        <i data-lucide="clock"></i> <span><?php echo t('Saldo Menit', 'Minute Balance'); ?></span>
+    </a>
     <a class="nav-link <?php echo $active_page === 'transactions' ? 'active' : ''; ?>" href="<?php echo base_url('transactions/history'); ?>">
         <i data-lucide="receipt"></i> <span><?php echo t('Riwayat Transaksi', 'Transaction History'); ?></span>
     </a>

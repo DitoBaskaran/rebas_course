@@ -19,6 +19,7 @@ class Minute_balance extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
 
         $data['title'] = t('Saldo Menit', 'Minute Balance');
+        $data['active_page'] = 'minute_balance';
         $data['bundles'] = $this->Minute_bundle_model->get_bundles(true);
         $data['balance'] = $this->User_minute_balance_model->get_balance($user_id);
         $data['consumption_logs'] = $this->User_minute_balance_model->get_consumption_logs($user_id, 20);
@@ -42,6 +43,7 @@ class Minute_balance extends CI_Controller {
             'status' => 'pending'
         );
         $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        redirect('checkout/confirm/' . $tx_id);
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+        redirect('checkout/confirm/' . $tx->uuid);
     }
 }
