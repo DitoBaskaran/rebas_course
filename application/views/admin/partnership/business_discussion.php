@@ -61,6 +61,41 @@
                         <div style="color:#333;"><b>Pernyataan:</b> Kuis eksisting hanya menampilkan soal tanpa sistem penilaian otomatis yang terintegrasi dengan progress siswa.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Implementasi kuis dengan grading otomatis, passing grade, dan retake limit. Hasil kuis mempengaruhi kelayakan sertifikat. Target pengerjaan setelah alur transaksi stabil.</div>
                     </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur pencarian (search) kursus apakah perlu?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Saat ini user harus scroll atau filter manual. Tidak ada search bar yang menampilkan hasil berdasarkan judul, kategori, atau instruktur.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Implementasi full-text search dengan filter kategori, level, harga, dan rating. Search bar di header dan halaman kursus. Gunakan MySQL LIKE untuk tahap awal, Elasticsearch jika data sudah besar.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Sistem rating dan review untuk kursus?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada fitur rating atau review. User tidak bisa memberikan feedback publik tentang kualitas kursus.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tambahkan rating bintang 1-5 + review tertulis setelah user menyelesaikan minimal 50% konten. Rating membantu user lain memilih kursus dan memberi insentif guru menjaga kualitas.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur bookmark dan continue watching?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> User harus mengingat sendiri di mana terakhir kali berhenti menonton. Tidak ada progress tracker per video.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Simpan posisi terakhir setiap video di database. Tampilkan "Lanjutkan Belajar" di dashboard dengan link langsung ke menit terakhir. Fitur bookmark untuk menandai momen penting.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur download materi untuk akses offline?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Semua konten hanya bisa diakses online. User di daerah dengan koneksi tidak stabil kesulitan belajar.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Izinkan download video dan materi pendukung (PDF, slide) untuk akses offline. Konten yang sudah di-download bisa ditonton tanpa koneksi internet. Batasi jumlah download per hari.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur reminder dan jadwal belajar?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada pengingat. user yang sibuk sering lupa belajar dan akhirnya drop out.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Kirim reminder via WhatsApp atau email: "Hai, saatnya belajar! Kamu punya 3 lesson menunggumu." User bisa atur jadwal belajar mingguan dan dapat notifikasi sesuai jadwal.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur kolaborasi antar siswa (group project)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Belajar bersifat individual. Tidak ada mekanisme untuk diskusi kelompok atau proyek bersama.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat ruang kolaborasi: grup belajar per kursus, fitur assign tugas kelompok, forum diskusi terbatas anggota grup. Ini meningkatkan engagement dan hasil belajar.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur laporan progress untuk wali atau mentor?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada akses bagi pihak ketiga untuk memantau progress belajar siswa.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Sediakan dashboard orang tua atau mentor: lihat kursus yang diambil, progress, jam belajar, nilai kuis. Fitur ini penting untuk segmen siswa di bawah umur atau program corporate.</div>
+                    </li>
                 </ul>
             </div>
 
@@ -100,6 +135,41 @@
                         <div class="fw-bold" style="color:#000;">Pertanyaan: Metode pengujian (testing) seperti apa?</div>
                         <div style="color:#333;"><b>Pernyataan:</b> Belum ada automated test. Pengujian dilakukan manual, sangat bergantung pada ingatan dan ketelitian developer.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Minimal, jalankan php -l pada setiap file sebelum commit. Buat checklist manual untuk alur kritis: registrasi, beli, bayar, aktivasi, akses konten. Pertimbangkan unit test untuk model dan helper jika waktu memungkinkan.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Monitoring server dan uptime?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada monitoring server otomatis. Jika server down, baru diketahui ketika user komplain.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Gunakan UptimeRobot atau BetterStack untuk monitoring uptime gratis. Pasang notifikasi ke WhatsApp jika server down. Pantau resource (CPU, RAM, disk) secara berkala.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Manajemen SSL certificate?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> SSL sudah terpasang tetapi masa berlaku tidak dimonitor secara terjadwal.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Gunakan Let's Encrypt dengan auto-renewal via cron job. Pantau expiry date dan kirim notifikasi 30 hari sebelum habis. SSL adalah syarat mutlak untuk keamanan data dan SEO.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Strategi log management?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Log error hanya muncul di console atau file error_log tanpa rotasi. Log bertambah terus hingga memenuhi disk.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Implementasi log rotasi harian. Pisahkan log berdasarkan level (error, warning, info). Gunakan format terstruktur (JSON) agar mudah dianalisis. Pertimbangkan tools seperti Sentry untuk error tracking.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Containerization dengan Docker perlu?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Aplikasi berjalan langsung di server tanpa container. Environment development dan production bisa berbeda.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Docker memastikan environment konsisten di semua tahap. Untuk saat ini prioritas rendah karena tim kecil. Evaluasi Docker ketika perlu scaling atau deployment lebih kompleks.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: CI/CD pipeline untuk otomatisasi?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Deployment manual: pull code lalu upload. Rentan human error dan makan waktu.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Setup GitHub Actions atau GitLab CI: auto-run php -l, auto-deploy ke staging saat push ke branch develop, auto-deploy ke production saat merge ke main. Mulai sederhana, tingkatkan bertahap.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Optimasi biaya server dan cloud?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Server berjalan di VPS dengan spesifikasi tetap. Biaya bulanan tetap walau trafik rendah.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Evaluasi penggunaan resource secara berkala. Jika trafik fluktuatif, pertimbangkan auto-scaling cloud. Matikan service yang tidak perlu. Gunakan reserved instance untuk diskon.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: API rate limiting dan keamanan endpoint?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada rate limiting. API endpoint publik bisa diakses tanpa batas, rentan abuse.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Implementasi rate limiting per IP (misal 100 request/menit). Gunakan API key untuk akses endpoint. Validasi input di semua endpoint untuk cegah injection.</div>
                     </li>
                 </ul>
             </div>
@@ -141,6 +211,41 @@
                         <div style="color:#333;"><b>Pernyataan:</b> Kupon diskon sudah bisa dibuat melalui admin (tabel coupons). Namun pemanfaatan masih minim karena belum ada kampanye promosi terjadwal.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Buat kalender promosi: diskon awal tahun, Harbolnas, hari pendidikan, diskon ulang tahun platform. Kode seperti WELCOME20 untuk pengguna baru dan REFERRAL10 untuk program referral.</div>
                     </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Strategi free trial untuk akuisisi?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada free trial untuk langganan. User harus bayar penuh untuk mencoba, menyebabkan阻力 tinggi.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tawarkan free trial 3-7 hari untuk paket langganan. User akses penuh selama trial, diminta input kartu (atau tidak). Konversi dari trial ke paid biasanya 20-40% jika produk bagus.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Tiered pricing (beberapa level paket)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Hanya ada dua paket: Pro dan Mentorship. Tidak ada tier menengah atau pemula.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat tiga tier: Basic (akses kursus tertentu), Pro (akses semua kursus), Premium (semua fitur + mentoring 1-on-1). Setiap tier punya harga dan nilai yang jelas beda.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Insentif untuk pembayaran tahunan?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Harga bulanan dan tahunan tidak dibedakan secara signifikan. Tidak ada diskon untuk komitmen panjang.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tawarkan diskon 20-30% untuk langganan tahunan vs bulanan. Annual billing meningkatkan cash flow dan mengurangi churn karena user cenderung tidak cancel setelah bayar tahunan.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Program diskon khusus pelajar?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Harga sama untuk semua segmen. Tidak ada diskon pelajar atau mahasiswa.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Verifikasi status pelajar via email .edu atau kartu pelajar. Beri diskon 40-50% untuk segmen ini. Pelajar adalah pangsa pasar besar untuk platform pendidikan.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Bundle pricing psychology?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Harga ditampilkan polos tanpa strategi anchor pricing atau decoy effect.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Gunakan anchor price: tampilkan harga asli yang dicoret di samping harga diskon. Sediakan opsi decoy (paket yang sengaja dibuat kurang menarik) untuk mendorong user memilih paket target.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Dynamic pricing berdasarkan perilaku?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Harga statis untuk semua user di semua waktu. Tidak ada personalisasi harga.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Pertimbangkan dynamic pricing untuk user yang sudah beberapa kali visit tapi belum checkout (tawarkan diskon kecil). Atau untuk user yang akan expire (tawarkan renewal discount).</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Program loyalitas dan reward?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada program loyalitas. User lama dan user baru mendapat perlakuan sama.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat program poin loyalitas: setiap transaksi dapat poin, poin bisa ditukar diskon atau akses konten eksklusif. User dengan masa aktif > 1 tahun dapat badge loyalitas dan benefit khusus.</div>
+                    </li>
                 </ul>
             </div>
 
@@ -180,6 +285,41 @@
                         <div class="fw-bold" style="color:#000;">Pertanyaan: Perhitungan pajak untuk setiap transaksi?</div>
                         <div style="color:#333;"><b>Pernyataan:</b> Belum ada kalkulasi PPN atau PPh per transaksi. Harga yang ditampilkan adalah harga final tanpa breakdown pajak.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Konsultasi dengan akuntan untuk kewajiban pajak digital. Siapkan sistem yang mencatat semua transaksi dengan detail untuk pelaporan SPT. Jika omzet sudah di atas 4,8 miliar, wajib PPN.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Dukungan multi-mata uang (multi-currency)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Semua transaksi dalam Rupiah. User dari luar negeri tidak bisa membayar dengan mata uang mereka.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Jika target pasar adalah diaspora atau internasional, tambahkan opsi USD. Gateway Pakasir dan Midtrans mendukung multi-currency. Tampilkan harga dalam IDR dan USD dengan kurs real-time.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Opsi cicilan atau paylater?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Hanya bayar penuh di muka. Tidak ada opsi cicilan atau paylater.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Integrasikan opsi cicilan via Midtrans (0% untuk kartu kredit tertentu) atau Akulaku. Paylater (GoPay Later, SPayLater) juga meningkatkan konversi untuk user dengan budget terbatas.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Retry logic untuk pembayaran gagal?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Jika pembayaran gagal, user harus memulai dari awal. Tidak ada mekanisme retry otomatis.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Jika user memilih VA atau QRIS dan tidak bayar dalam waktu tertentu, kirim reminder. Jika kartu ditolak, beri opsi ganti metode bayar tanpa harus ulang proses checkout.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Sistem generate invoice otomatis?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada invoice yang bisa di-download user. Bukti bayar hanya berupa screenshot.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Generate invoice PDF otomatis setelah pembayaran sukses. Invoice mencakup: nomor invoice, tanggal, item, harga, pajak, total. User bisa download dari riwayat transaksi kapan saja.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Pengiriman receipt (struk) pembayaran?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada receipt otomatis. User tidak mendapat konfirmasi tertulis setelah bayar.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Kirim receipt via email setelah pembayaran sukses. Sertakan detail transaksi, metode bayar, total, dan link ke invoice. Untuk WhatsApp, kirim ringkasan singkat.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Rekonsiliasi transaksi harian?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada proses rekonsiliasi. Admin tidak bisa mencocokkan transaksi di sistem dengan laporan dari gateway.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat laporan rekonsiliasi: daftar transaksi di DB vs di gateway. Cocokkan setiap hari. Jika ada selisih (contoh: sukses di gateway tapi pending di sistem), admin bisa langsung tindak lanjuti.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Fraud detection untuk transaksi mencurigakan?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada sistem deteksi fraud. Transaksi mencurigakan tidak terfilter.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Deteksi anomali: multiple transaksi dari IP berbeda dalam waktu singkat, nominal tidak wajar, email sementara. Flag transaksi mencurigakan untuk review manual admin sebelum aktivasi.</div>
                     </li>
                 </ul>
             </div>
@@ -221,6 +361,41 @@
                         <div style="color:#333;"><b>Pernyataan:</b> SEO belum dioptimalkan. Meta description, alt text gambar, dan struktur heading masih seadanya.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Optimasi on-page: title unik, meta description, heading hierarchy, schema markup untuk course. Buat blog atau artikel yang menargetkan keyword long-tail seperti "cara belajar coding untuk pemula".</div>
                     </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Strategi retargeting iklan?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Meta Pixel sudah terpasang tetapi tidak ada campaign retargeting yang aktif.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat audience retargeting untuk: pengunjung landing page, user yang belum selesai checkout, user yang sudah trial tapi tidak konversi. Tawarkan diskon khusus untuk retargeting.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Kalender konten marketing?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Konten marketing dipublikasikan secara sporadis tanpa jadwal tetap.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat editorial calendar bulanan: tema mingguan, jadwal posting (TikTok 3x/minggu, Instagram 2x/minggu, YouTube 1x/minggu, blog 1x/minggu). Konsistensi lebih penting dari volume.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Kolaborasi dengan influencer?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Belum pernah kerja sama dengan influencer atau content creator untuk promosi.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Cari micro-influencer (5k-50k followers) di niche pendidikan. Tawarkan akses gratis + komisi afiliasi. Micro-influencer lebih engaged dan biaya lebih rendah dibanding macro-influencer.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Viral marketing dan share mechanics?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada mekanisme yang mendorong sharing. Konten tidak mudah di-share ke media sosial.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tambahkan tombol share di setiap lesson. Buat fitur "Bagikan Progress": user bisa share sertifikat atau capaian ke Instagram/LinkedIn. Beri reward untuk share tertentu.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Community building sebagai channel marketing?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada komunitas resmi. User tidak terhubung satu sama lain di luar forum.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Bangun grup komunitas (WhatsApp, Telegram, atau Discord) untuk setiap kursus. Komunitas aktif meningkatkan retensi dan word-of-mouth marketing. Anggota komunitas bisa menjadi brand advocate.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Mekanisme referral program yang efektif?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tabel referral sudah siap tetapi belum ada mekanisme yang mengatur kapan komisi dibayarkan.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Komisi referral dibayar setelah teman yang direferensikan melakukan pembayaran pertama. Beri reward dua arah: referrer dapat diskon, referee dapat diskon pertama. Buat dashboard tracking referral.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Brand awareness measurement?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada metrik brand awareness. Sulit mengukur efektivitas campaign branding.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Gunakan Google Trends untuk melihat minat pencarian. Pantau brand mention di media sosial. Survey sederhana ke user baru: "Dari mana Anda tahu tentang kami?" untuk mengukur source of awareness.</div>
+                    </li>
                 </ul>
             </div>
 
@@ -260,6 +435,41 @@
                         <div class="fw-bold" style="color:#000;">Pertanyaan: Asuransi untuk risiko bisnis?</div>
                         <div style="color:#333;"><b>Pernyataan:</b> Tidak ada asurasi yang melindungi aset digital atau risiko operasional.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Pertimbangkan asuransi properti (server, perangkat) dan asuransi cyber liability jika trafik dan nilai transaksi sudah besar. Untuk tahap awal, fokus pada pencegahan (backup, keamanan).</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Kepatuhan GDPR untuk user internasional?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Jika ada user dari Eropa, GDPR berlaku. Saat ini belum ada mekanisme kepatuhan.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Untuk tahap awal, blokir akses dari EU atau tampilkan banner consent cookie. Jika target pasar internasional, perlu data processing agreement, right to be forgotten, dan data portability.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Verifikasi umur pengguna?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada verifikasi umur saat registrasi. Anak di bawah umur bisa mendaftar tanpa persetujuan orang tua.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tambahkan field tanggal lahir saat registrasi. Jika user di bawah 13 tahun, minta persetujuan orang tua (COPPA compliance). Batasi fitur tertentu untuk pengguna di bawah umur.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Kebijakan moderasi konten?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Konten yang diupload tidak melalui proses moderasi formal selain review admin.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat pedoman konten: larangan plagiarisme, konten SARA, kekerasan, dan pornografi. Jika ada dashboard guru, setiap konten harus melewati moderasi sebelum publikasi. Sediakan tombol report untuk user.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Prosedur DMCA takedown?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada prosedur penanganan klaim hak cipta dari pihak ketiga.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Siapkan formulir DMCA takedown: identitas pelapor, bukti kepemilikan, URL konten yang dilanggar. Target respon < 48 jam. Tentukan kontak resmi untuk penerimaan klaim.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Non-disclosure agreement untuk kontraktor?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Freelancer dan kontraktor tidak menandatangani NDA. Data dan kode bisa bocor tanpa konsekuensi hukum.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Wajibkan NDA untuk semua pihak yang memiliki akses ke source code, data user, atau informasi bisnis sensitif. Sediakan template NDA yang sudah direview konsultan hukum.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Template perjanjian partnership?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Setiap kerja sama dibuat secara informal via chat. Tidak ada dokumen hukum yang mengikat.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat template perjanjian partnership standar: scope of work, hak dan kewajiban, pembagian revenue, durasi, termination clause. Setiap mitra harus menandatangani sebelum kerja sama dimulai.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Strategi perlindungan kekayaan intelektual?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Konten kursus tidak terdaftar di HAKI. Rentan dicuri dan didistribusikan ulang.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Daftarkan konten utama ke HAKI (Kemenkumham). Pasang watermark pada video preview. Gunakan teknologi DRM untuk video premium. Pantau platform ilegal yang mungkin membajak konten.</div>
                     </li>
                 </ul>
             </div>
@@ -301,6 +511,41 @@
                         <div style="color:#333;"><b>Pernyataan:</b> Meeting tidak terjadwal. Komunikasi terjadi secara ad-hoc via chat. Tidak ada laporan berkala.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Daily standup 15 menit via chat untuk sync. Weekly meeting 30 menit via video call untuk review progress dan blocking. Monthly retrospective 1 jam untuk evaluasi besar. Dokumentasikan keputusan di setiap meeting.</div>
                     </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Kebijakan kerja remote?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada kebijakan formal tentang work from home atau jam kerja fleksibel.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat kebijakan remote-friendly: jam kerja inti (misal 10.00-15.00), sisanya fleksibel. Target output-based, bukan jam-based. Sediakan budget internet dan tools kolaborasi untuk tim remote.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Sistem performance review?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada evaluasi performa formal. Feedback hanya diberikan jika ada masalah.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Lakukan performance review setiap 6 bulan. Tetapkan KPI individu sesuai peran. Gunakan metode 360-degree feedback untuk gambaran lengkap. Hubungkan hasil review dengan kenaikan gaji atau bonus.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Budget pengembangan kompetensi tim?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada alokasi budget untuk pelatihan atau kursus bagi anggota tim.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Alokasikan minimal 5% dari gaji untuk pengembangan: langganan course, conference, sertifikasi. Tim yang terus belajar akan meningkatkan kualitas produk secara langsung.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Company culture dan nilai-nilai?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada company culture yang didefinisikan. Nilai-nilai tim tidak tertulis.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Definisikan core values: misal "Student First", "Quality over Quantity", "Continuous Improvement". Tempelkan di mana-mana. Rekrut orang yang sesuai dengan nilai ini. Nilai yang kuat menyatukan tim.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Proses rekrutmen yang efektif?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Rekrutmen dilakukan tanpa proses baku: lihat CV, chat, langsung kerja.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat proses: screening CV → tugas kecil (paid) → interview → keputusan. Tugas kecil lebih indikatif daripada CV. Libatkan minimal 2 orang dalam interview untuk mengurangi bias.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Onboarding anggota tim baru?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Anggota baru langsung diberi tugas tanpa onboarding formal. Butuh waktu lama untuk produktif.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat onboarding checklist: pengenalan tim, akses tools, baca dokumentasi, tugas kecil pertama, mentoring dengan anggota senior. Target: anggota baru bisa produktif dalam 2 minggu.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Strategi retensi talenta?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada program retensi. Talenta bisa pergi kapan saja tanpa golden handcuffs.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Retensi dimulai dari: gaji kompetitif, lingkungan kerja positif, peluang berkembang, dan apresiasi. Pertimbangkan opsi saham atau profit-sharing untuk talenta kunci. Exit interview untuk belajar dari yang resign.</div>
+                    </li>
                 </ul>
             </div>
 
@@ -340,6 +585,41 @@
                         <div class="fw-bold" style="color:#000;">Pertanyaan: Tools analitik dan reporting?</div>
                         <div style="color:#333;"><b>Pernyataan:</b> GA4 dan Meta Pixel sudah terpasang untuk tracking pengunjung. Namun data transaksi tidak terintegrasi dengan tools ini.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Buat admin dashboard sendiri dengan chart: tren pendapatan, user aktif, transaksi per metode bayar. Jika budget ada, integrasikan dengan Google Data Studio untuk visualisasi yang lebih advance.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Cohort analysis untuk retensi?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada cohort analysis. Tidak tahu apakah user yang daftar bulan ini bertahan lebih baik dari bulan lalu.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat cohort analysis per bulan registrasi. Lihat persentase user yang masih aktif di bulan ke-1, ke-3, ke-6, ke-12. Cohort analysis adalah metrik paling penting untuk bisnis subscription.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Funnel analysis konversi?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada funnel tracking. Tidak tahu di tahap mana user paling banyak drop out.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Identifikasi funnel: Landing Page → Registrasi → Pilih Produk → Checkout → Bayar → Aktivasi. Hitung konversi di setiap step. Fokus optimasi di step dengan drop tertinggi.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Retention curve analysis?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada retention curve. Churn rate hanya diperkirakan secara kasar.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Plot retention curve: berapa persen user kembali setiap minggu setelah registrasi. Bandingkan retention antar cohort. Identifikasi point di mana retention drop tajam dan lakukan intervensi.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Net Revenue Retention (NRR)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada metrik NRR. Revenue dari existing customer tidak dipantau.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Hitung NRR: (revenue awal periode + upgrade - downgrade - churn) / revenue awal periode. NRR > 100% berarti existing customer tumbuh. Ini adalah metrik kesehatan bisnis subscription.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Customer Health Score?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada sistem yang mengidentifikasi user berisiko churn sebelum mereka pergi.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat health score berdasarkan: frekuensi login, jumlah lesson ditonton, interaksi dengan forum, status pembayaran. User dengan skor rendah dapat di-intervensi dengan email khusus atau diskon.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Time to Value (TTV) metric?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak diukur berapa lama waktu yang dibutuhkan user untuk mendapat value pertama.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> TTV adalah waktu dari registrasi hingga user menyelesaikan lesson pertama atau mendapat "aha moment". Semakin pendek TTV, semakin tinggi retensi. Optimasi onboarding untuk memperpendek TTV.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Feature adoption rate?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak tahu fitur mana yang paling banyak dipakai dan mana yang diabaikan.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Track event: play video, download materi, buka forum, ikut kuis, generate sertifikat. Hitung adoption rate per fitur. Fitur dengan adopsi rendah perlu dievaluasi: apakah tidak berguna atau tidak diketahui user.</div>
                     </li>
                 </ul>
             </div>
@@ -381,6 +661,41 @@
                         <div style="color:#333;"><b>Pernyataan:</b> Tidak ada A/B testing. Semua perubahan dilakukan berdasarkan intuisi atau permintaan user.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Mulai A/B testing sederhana: uji 2 versi harga, 2 versi CTA button, atau 2 versi landing page. Gunakan data untuk memutuskan perubahan, bukan asumsi.</div>
                     </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Personalisasi konten untuk setiap user?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Semua user melihat konten yang sama. Tidak ada rekomendasi personal.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Implementasi rekomendasi berdasarkan: minat saat registrasi, riwayat menonton, kursus yang dibeli. Tampilkan "Kursus untuk Anda" di dashboard. Personalisasi meningkatkan engagement dan konversi.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Push notification di browser?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada push notification. User hanya dapat notifikasi via email atau WhatsApp.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Minta izin push notification saat registrasi. Kirim notifikasi: reminder belajar, kursus baru, diskon, progress. Push notification memiliki open rate lebih tinggi dari email.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Optimasi UX pencarian (search)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Search hanya mencari judul. Tidak ada autocomplete, filter, atau sorting.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tambahkan autocomplete dengan saran populer. Filter berdasarkan kategori, level, harga, durasi. Sorting: terbaru, terpopuler, rating tertinggi. Tampilkan jumlah hasil untuk feedback cepat.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Loading state dan skeleton screen?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Saat loading, halaman kosong atau spinner. User tidak tahu apa yang terjadi.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Gunakan skeleton screen (placeholder abu-abu yang menyerupai layout) saat konten dimuat. Ini memberikan persepsi kecepatan lebih baik. Tambahkan progress bar untuk proses yang panjang.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Desain halaman error (404, 500)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Halaman error menampilkan pesan default browser atau teks polos tidak membantu.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat halaman 404 dan 500 yang user-friendly: ilustrasi, pesan jelas, tombol navigasi ke home atau kontak support. Jangan tampilkan error detail ke user (security risk).</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Desain empty state yang informatif?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Halaman kosong (belum ada kursus, belum ada transaksi) hanya menampilkan teks "Tidak ada data".</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Empty state yang baik: ilustrasi, pesan positif, dan CTA. Contoh: "Belum ada kursus, yuk mulai belajar!" dengan tombol "Jelajahi Kursus". Empty state adalah kesempatan untuk guiding user.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Micro-interactions untuk engagement?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada animasi atau feedback visual saat user melakukan aksi. UI terasa kaku.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tambahkan micro-interactions: button hover effect, loading animation, success checkmark, subtle transition antar halaman. Micro-interactions membuat pengalaman lebih hidup dan profesional.</div>
+                    </li>
                 </ul>
             </div>
 
@@ -420,6 +735,41 @@
                         <div class="fw-bold" style="color:#000;">Pertanyaan: Fitur self-service untuk user?</div>
                         <div style="color:#333;"><b>Pernyataan:</b> User bisa melihat riwayat transaksi dan status langganan. Namun tidak bisa membatalkan langganan atau mengubah paket sendiri.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Tambahkan fitur self-service: cancel subscription, change plan, download invoice, update profil. Semakin banyak yang bisa dilakukan user tanpa bantuan admin, semakin efisien operasional.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Implementasi chatbot untuk support awal?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Semua pertanyaan dilayani manual oleh admin. Pertanyaan berulang menyita waktu.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Implementasi chatbot sederhana untuk FAQ: "Cara reset password", "Cara bayar", "Cara refund". Jika tidak bisa menjawab, escalate ke admin. Chatbot bisa handle 60-80% pertanyaan umum.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Self-help resources selain FAQ?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada video tutorial atau panduan interaktif tentang cara menggunakan platform.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat video tutorial pendek (1-2 menit) untuk setiap fitur utama: cara daftar, cara beli, cara akses kursus, cara download sertifikat. Letakkan di halaman help atau kirim sebagai email onboarding.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Community forum sebagai support alternatif?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Forum ada tetapi kurang aktif. User lebih suka chat langsung daripada posting di forum.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Aktifkan forum dengan moderator yang responsif. Beri badge untuk user yang aktif membantu. Kategorikan forum: teknis, diskusi kursus, feedback. Forum mengurangi beban support tim.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Proactive support berdasarkan perilaku user?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Support hanya reaktif. Menunggu user datang dengan masalah.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Deteksi sinyal user kesulitan: gagal bayar 2x, tidak login 7 hari, error saat akses konten. Kirim pesan proaktif: "Hai, kami lihat Anda mengalami kendala, ada yang bisa dibantu?"</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Dukungan multi-bahasa?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Support hanya dalam Bahasa Indonesia. User asing tidak bisa mendapatkan bantuan.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Jika target pasar meluas, siapkan support Bahasa Inggris. Gunakan Google Translate untuk chat awal, lalu human agent jika perlu. Terjemahkan FAQ ke Bahasa Inggris.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Analitik support: metrik apa yang dipantau?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada metrik support. Tidak tahu berapa rata-rata waktu respon atau resolusi.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Pantau: First Response Time, Average Resolution Time, CSAT (Customer Satisfaction Score), Ticket Volume per hari. Target: FRT < 1 jam, ART < 8 jam, CSAT > 4.0/5.0.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: VIP support tier untuk user premium?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Semua user mendapat level support yang sama, tidak peduli paketnya.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Untuk paket Mentorship atau Premium, sediakan support prioritas: response < 15 menit, dedicated account manager, direct line ke owner. Ini menambah nilai paket premium.</div>
                     </li>
                 </ul>
             </div>
@@ -461,6 +811,41 @@
                         <div style="color:#333;"><b>Pernyataan:</b> Fokus saat ini adalah B2C (langsung ke siswa). Belum melayani B2B atau corporate training.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Kembangkan paket corporate training untuk perusahaan. Fitur: admin perusahaan bisa manage akun karyawan, laporan progress, dan invoice terpusat. Ini membuka segmen pendapatan baru yang lebih stabil.</div>
                     </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Pengembangan aplikasi mobile?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Website sudah responsive. Namun user mobile masih mengalami UX yang kurang optimal.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Jika traffic mobile > 60%, kembangkan PWA (Progressive Web App) dulu. PWA lebih murah dari native app, bisa di-install di home screen, dan mendukung push notification. Native app untuk fase berikutnya.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Social learning features (belajar bersama)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Belajar bersifat individual. Tidak ada interaksi sosial selama proses belajar.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tambahkan fitur social: study group, leaderboard teman, tantangan mingguan, fitur "belajar bersama" real-time. Social learning meningkatkan motivasi dan retensi signifikan.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Peer review untuk tugas?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada tugas yang dikumpulkan dan dinilai. Semua pembelajaran bersifat pasif (nonton video).</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Untuk kursus tertentu, tambahkan tugas praktik yang dikumpulkan. Sistem peer review: siswa menilai tugas teman berdasarkan rubrik. Ini meningkatkan pemahaman dan membangun komunitas.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Project-based learning?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada proyek akhir (capstone project). Sertifikat diberikan berdasarkan penyelesaian video saja.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Implementasi capstone project untuk kursus advanced. Siswa mengerjakan proyek nyata, dikumpulkan, dinilai. Sertifikat hanya diberikan jika lulus kuis dan proyek. Ini meningkatkan kredibilitas sertifikat.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Mentorship matching system?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Paket Mentorship ada tetapi proses matching mentor-mentee masih manual.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat algoritma matching: mentor dipilih berdasarkan bidang keahlian, ketersediaan waktu, dan preferensi mentee. Sediakan dashboard untuk jadwal sesi mentoring dan tracking progress.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Career path dan guidance?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada panduan karir. User belajar tanpa tahu jalur karir yang tersedia.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Buat learning path berdasarkan tujuan karir: "Web Developer", "Data Analyst", "UI/UX Designer". Setiap path berisi rekomendasi kursus berurutan. Tambahkan artikel tentang prospek karir dan gaji.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Alumni network?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada jaringan alumni. Lulusan tidak terhubung satu sama lain.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Bangun alumni network: grup khusus, event reunian, forum lowongan kerja. Alumni yang sukses bisa menjadi mentor atau brand ambassador. Jaringan alumni meningkatkan kredibilitas platform.</div>
+                    </li>
                 </ul>
             </div>
 
@@ -500,6 +885,41 @@
                         <div class="fw-bold" style="color:#000;">Pertanyaan: Kolaborasi dengan pemerintah atau BUMN?</div>
                         <div style="color:#333;"><b>Pernyataan:</b> Belum ada pendekatan ke sektor pemerintahan untuk program pelatihan.</div>
                         <div style="color:#333;"><b>Jawaban:</b> Ajukan diri sebagai mitra program pelatihan digital (Kominfo, Kemendikbud, Kartu Prakerja). Sektor ini memiliki budget besar dan kebutuhan konten digital. Dibutuhkan administrasi yang rapi dan badan hukum yang jelas.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Co-branding dengan brand lain?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada kerja sama co-branding. Brand sendiri belum cukup kuat untuk kolaborasi besar.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Cari brand non-kompetitif untuk co-branding: platform kursus dengan penyedia tools (contoh: Canva, Notion, GitHub). Buat konten bersama, masing-masing promosi ke audiens sendiri. Co-branding memperluas reach secara organik.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Sponsorship event pendidikan?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada sponsorship event. Brand awareness masih rendah di komunitas pendidikan.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Sponsor event seperti hackathon, seminar pendidikan, atau kompetisi coding. Biaya sponsorship bisa Rp5-20 juta tergantung skala. Dampaknya: brand awareness dan leads langsung dari audiens yang relevan.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Cross-promotion dengan platform lain?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada cross-promotion. Bekerja sendiri tanpa memanfaatkan audiens platform lain.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Lakukan cross-promotion dengan platform non-kompetitif: forum coding, grup belajar, newsletter pendidikan. Tawarkan diskon khusus untuk audiens mereka. Mereka dapat komisi atau konten gratis.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Content syndication ke platform lain?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Konten hanya ada di platform sendiri. Tidak didistribusikan ke channel lain.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Syndicate konten ke platform seperti Medium, LinkedIn Articles, atau YouTube. Gunakan excerpt atau versi ringkas dengan link ke platform utama. Content syndication meningkatkan backlink dan traffic SEO.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Joint research dengan institusi akademik?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada penelitian bersama dengan universitas atau lembaga riset.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Tawarkan data agregat anonim (tren belajar, efektivitas metode) untuk penelitian. Hasil penelitian bisa menjadi publikasi bersama yang meningkatkan reputasi platform.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: University credit transfer (konversi SKS)?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Tidak ada kerja sama dengan universitas untuk konversi nilai kursus ke SKS.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Jalin MoU dengan universitas untuk program MBKM (Merdeka Belajar Kampus Merdeka). Mahasiswa bisa mengambil kursus dan dikonversi ke SKS. Ini membuka akses ke jutaan mahasiswa.</div>
+                    </li>
+                    <li class="p-3 mb-3" style="background:#fafafa;border:1px solid #000;border-radius:6px;">
+                        <div class="fw-bold" style="color:#000;">Pertanyaan: Sertifikasi resmi dari pemerintah?</div>
+                        <div style="color:#333;"><b>Pernyataan:</b> Sertifikat dari platform tidak diakui secara resmi oleh pemerintah atau industri.</div>
+                        <div style="color:#333;"><b>Jawaban:</b> Ajukan sertifikasi ke BNSP (Badan Nasional Sertifikasi Profesi) untuk kursus tertentu. Sertifikat ber-BNSP lebih bernilai di industri. Prosesnya panjang tapi worth it untuk kredibilitas jangka panjang.</div>
                     </li>
                 </ul>
             </div>
