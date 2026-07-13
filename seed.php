@@ -33,6 +33,18 @@ try {
     $pdo = new PDO($dsn, $user, $pass, $options);
     echo "Koneksi database berhasil.\n";
 
+    // ===== BOOTSTRAP: pastikan semua tabel ada =====
+    $schema_file = __DIR__ . '/schema.sql';
+    if (file_exists($schema_file)) {
+        $sql = file_get_contents($schema_file);
+        $sql = preg_replace('/^\s*CREATE\s+DATABASE\b.+$/mi', '', $sql);
+        $sql = preg_replace('/^\s*USE\s+\S+\s*;/mi', '', $sql);
+        foreach (array_filter(array_map('trim', explode(';', $sql))) as $stmt) {
+            if ($stmt !== '') $pdo->exec($stmt);
+        }
+        echo "Schema tables ensured.\n";
+    }
+
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0;");
     foreach (['minute_consumption_logs','minute_sessions','user_minute_balances','minute_bundles','user_subscriptions','package_items','packages','coupon_usages','coupons','affiliate_conversions','affiliate_clicks','affiliates','user_sources','wishlists','point_transactions','user_points','user_badges','badges','password_resets','contact_messages','settings','path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'] as $t) {
         $pdo->exec("TRUNCATE TABLE $t;");
