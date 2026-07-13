@@ -13,10 +13,19 @@ class Checkout extends CI_Controller {
         $this->load->model('Course_model');
         $this->load->model('Seminar_model');
         $this->load->model('Coupon_model');
+        $this->load->model('Package_model');
+        $this->load->model('Minute_bundle_model');
         $this->load->library('pakasir');
     }
 
     public function confirm($uuid) {
+        // Cart-based flow (no transaction in DB yet)
+        if (strpos($uuid, 'cart_') === 0) {
+            $this->_confirm_cart($uuid);
+            return;
+        }
+
+        // UUID-based flow (old — transaction already in DB)
         $tx = $this->Transaction_model->get_by_uuid($uuid);
         if (!$tx || $tx->user_id != $this->session->userdata('user_id')) show_404();
 
@@ -34,11 +43,9 @@ class Checkout extends CI_Controller {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
             $item_name = $item ? $item->title : 'Seminar';
         } else if ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
-            $this->load->model('Package_model');
             $item = $this->Package_model->get_package_by_id($tx->item_id);
             $item_name = $item ? $item->name : 'Package';
         } else if ($tx->item_type === 'minute_bundle') {
-            $this->load->model('Minute_bundle_model');
             $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
             $item_name = $item ? $item->name : 'Minute Bundle';
         }
@@ -48,6 +55,9 @@ class Checkout extends CI_Controller {
         $data['item'] = $item;
         $data['item_name'] = $item_name;
         $data['applied_coupon'] = null;
+        $data['tx_ref'] = $tx->uuid;
+        $data['pay_method'] = 'pay';
+        $data['coupon_method'] = 'coupon';
 
         if ($tx->coupon_id) {
             $data['applied_coupon'] = $this->Coupon_model->get_coupon_by_id($tx->coupon_id);
@@ -56,6 +66,207 @@ class Checkout extends CI_Controller {
         $this->load->view('templates/header', $data);
         $this->load->view('checkout/confirm', $data);
         $this->load->view('templates/footer');
+    }
+
+    public function initiate($item_type, $item_id, $extra = null) {
+        $user_id = $this->session->userdata('user_id');
+        $item = null;
+        $amount = 0;
+        $item_name = '';
+        $notes = null;
+        $real_item_type = $item_type;
+
+        if ($item_type === 'minute_bundle') {
+            $item = $this->Minute_bundle_model->get_bundle_by_id($item_id);
+            if (!$item || !$item->is_active) show_404();
+            $amount = $item->price;
+            $item_name = $item->name;
+        } elseif ($item_type === 'package') {
+            $package = is_numeric($item_id)
+                ? $this->Package_model->get_package_by_id($item_id)
+                : $this->Package_model->get_package_by_slug($item_id);
+            if (!$package || !$package->is_active) show_404();
+
+            $months = (int)$extra ?: 1;
+            if (!in_array($months, [1, 6])) $months = 1;
+
+            $this->load->model('User_subscription_model');
+            $active = $this->User_subscription_model->get_active_subscriptions($user_id);
+            foreach ($active as $sub) {
+                if ($sub->package_id == $package->id) {
+                    $this->session->set_flashdata('info', t('Anda sudah berlangganan paket ini.', 'You already subscribed to this package.'));
+                    redirect('subscription/my');
+                }
+            }
+
+            if ($months === 6) {
+                $six = $this->Package_model->calculate_6mo_price($package->id);
+                $amount = $six ? $six['discounted'] : $package->price * 6;
+                $real_item_type = 'package_6mo';
+                $duration_days = $package->duration_days * 6;
+            } else {
+                $amount = $package->price;
+                $real_item_type = 'package';
+                $duration_days = $package->duration_days;
+            }
+            $item_name = $package->name;
+            $notes = json_encode(array('duration_days' => $duration_days));
+        } elseif ($item_type === 'seminar') {
+            $item = $this->Seminar_model->get_seminar_by_id($item_id);
+            if (!$item) show_404();
+            $amount = $item->price;
+            $item_name = $item->title;
+        } elseif (in_array($item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
+            $item = $this->Course_model->get_course_by_id($item_id);
+            if (!$item) show_404();
+            $amount = $item->price;
+            $item_name = $item->title;
+        } else {
+            show_404();
+        }
+
+        // Store pending purchase in session (no DB transaction yet)
+        $token = 'cart_' . substr(md5(uniqid(mt_rand(), true)), 0, 8);
+        $this->session->set_userdata('pending_cart_' . $token, array(
+            'item_type' => $real_item_type,
+            'item_id' => (int)$item_id,
+            'amount' => (float)$amount,
+            'original_amount' => (float)$amount,
+            'discount_amount' => 0,
+            'coupon_id' => null,
+            'item_name' => $item_name,
+            'notes' => $notes,
+            'created_at' => time(),
+        ));
+        $this->session->set_userdata('pending_cart_tokens', array_merge(
+            (array)$this->session->userdata('pending_cart_tokens'),
+            array($token)
+        ));
+
+        redirect('checkout/confirm/' . $token);
+    }
+
+    private function _confirm_cart($token) {
+        $cart = $this->_get_cart($token);
+        if (!$cart) show_404();
+
+        $data['title'] = t('Konfirmasi Pembayaran', 'Payment Confirmation');
+        $data['tx_ref'] = $token;
+        $data['pay_method'] = 'pay_cart';
+        $data['coupon_method'] = 'coupon_cart';
+        $data['transaction'] = (object)array(
+            'uuid' => $token,
+            'amount' => $cart['amount'],
+            'discount_amount' => $cart['discount_amount'],
+            'original_amount' => $cart['original_amount'],
+            'coupon_id' => $cart['coupon_id'],
+        );
+        $data['item_name'] = $cart['item_name'];
+        $data['item'] = null;
+        $data['applied_coupon'] = $cart['coupon_id']
+            ? $this->Coupon_model->get_coupon_by_id($cart['coupon_id'])
+            : null;
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('checkout/confirm', $data);
+        $this->load->view('templates/footer');
+    }
+
+    private function _get_cart($token) {
+        if (strpos($token, 'cart_') !== 0) return null;
+        $cart = $this->session->userdata('pending_cart_' . $token);
+        if (!$cart) return null;
+        // Auto-expire carts older than 2 hours
+        if (isset($cart['created_at']) && (time() - $cart['created_at']) > 7200) {
+            $this->session->unset_userdata('pending_cart_' . $token);
+            return null;
+        }
+        return $cart;
+    }
+
+    private function _clear_cart($token) {
+        $this->session->unset_userdata('pending_cart_' . $token);
+        $tokens = (array)$this->session->userdata('pending_cart_tokens');
+        $tokens = array_diff($tokens, array($token));
+        $this->session->set_userdata('pending_cart_tokens', $tokens);
+    }
+
+    public function apply_coupon_cart($token) {
+        $cart = $this->_get_cart($token);
+        if (!$cart) {
+            echo json_encode(array('status' => 'error', 'message' => t('Sesi habis.', 'Session expired.')));
+            return;
+        }
+
+        $code = $this->input->post('code');
+        if (!$code) {
+            echo json_encode(array('status' => 'error', 'message' => t('Masukkan kode kupon.', 'Enter coupon code.')));
+            return;
+        }
+
+        $validation = $this->Coupon_model->validate_coupon($code, $cart['original_amount']);
+        if (!$validation['valid']) {
+            echo json_encode(array('status' => 'error', 'message' => $validation['message']));
+            return;
+        }
+
+        $calc = $this->Coupon_model->calculate_discount($validation['coupon'], $cart['original_amount']);
+
+        $cart['coupon_id'] = $validation['coupon']->id;
+        $cart['amount'] = $calc['total'];
+        $cart['discount_amount'] = $calc['discount'];
+        $this->session->set_userdata('pending_cart_' . $token, $cart);
+
+        echo json_encode(array(
+            'status' => 'ok',
+            'discount' => $calc['discount'],
+            'total' => $calc['total'],
+            'label' => $calc['label'],
+            'message' => t('Kupon berhasil diterapkan!', 'Coupon applied!')
+        ));
+    }
+
+    public function remove_coupon_cart($token) {
+        $cart = $this->_get_cart($token);
+        if (!$cart) {
+            echo json_encode(array('status' => 'error'));
+            return;
+        }
+
+        $cart['coupon_id'] = null;
+        $cart['amount'] = $cart['original_amount'];
+        $cart['discount_amount'] = 0;
+        $this->session->set_userdata('pending_cart_' . $token, $cart);
+
+        echo json_encode(array('status' => 'ok', 'amount' => $cart['original_amount']));
+    }
+
+    public function pay_cart($token) {
+        $cart = $this->_get_cart($token);
+        if (!$cart) show_404();
+
+        $user_id = $this->session->userdata('user_id');
+
+        // Create the transaction NOW (only when user clicks pay)
+        $tx_data = array(
+            'user_id' => $user_id,
+            'item_type' => $cart['item_type'],
+            'item_id' => $cart['item_id'],
+            'amount' => $cart['amount'],
+            'original_amount' => $cart['original_amount'],
+            'discount_amount' => $cart['discount_amount'],
+            'coupon_id' => $cart['coupon_id'],
+            'notes' => $cart['notes'],
+            'status' => 'pending',
+        );
+        $tx_id = $this->Transaction_model->create_transaction($tx_data);
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+
+        // Clear the cart
+        $this->_clear_cart($token);
+
+        // Redirect to the UUID-based pay flow
+        redirect('checkout/pay/' . $tx->uuid . ($this->input->get('method') ? '?method=' . $this->input->get('method') : ''));
     }
 
     public function apply_coupon($uuid) {

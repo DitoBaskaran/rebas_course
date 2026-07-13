@@ -147,16 +147,7 @@ class Courses extends CI_Controller {
             redirect('courses/learn/' . $course->slug);
         }
 
-        $tx_data = array(
-            'user_id' => $user_id,
-            'item_type' => $course->content_type,
-            'item_id' => $course->id,
-            'amount' => $course->price,
-            'status' => 'pending'
-        );
-        $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
-        redirect('checkout/confirm/' . $tx->uuid);
+        redirect('checkout/initiate/' . $course->content_type . '/' . $course->id);
     }
 
     public function learn($course_slug_or_id, $lesson_id = NULL) {

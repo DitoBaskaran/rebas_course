@@ -17,7 +17,7 @@
                     </div>
                     <div class="d-flex justify-content-between mb-3 small">
                         <span class="text-secondary"><?php echo t('ID Transaksi', 'Transaction ID'); ?></span>
-                        <span class="fw-bold text-dark font-monospace small"><?php echo $transaction->uuid; ?></span>
+                        <span class="fw-bold text-dark font-monospace small"><?php echo $tx_ref; ?></span>
                     </div>
                     <?php if ($applied_coupon): ?>
                     <div class="d-flex justify-content-between mb-3 small">
@@ -91,7 +91,7 @@
                         }
                     ?>
                     <?php if ($qris_enabled): ?>
-                    <a href="<?php echo base_url('checkout/pay/' . $transaction->uuid . '?method=qris'); ?>" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none mb-3" style="transition: all 0.2s;">
+                    <a href="<?php echo base_url('checkout/' . $pay_method . '/' . $tx_ref . '?method=qris'); ?>" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none mb-3" style="transition: all 0.2s;">
                         <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #f0f5ff;">
                             <img src="<?php echo base_url('assets/img/qris-logo.png'); ?>" alt="QRIS" style="max-width:36px;max-height:36px;width:auto;height:auto;">
                         </div>
@@ -119,7 +119,7 @@
                         <div class="collapse" id="vaCollapse">
                             <div class="d-flex flex-column" style="border-top: 1px solid var(--card-border);">
                                 <?php foreach ($va_methods as $method_key => $info): ?>
-                                <a href="<?php echo base_url('checkout/pay/' . $transaction->uuid . '?method=' . $method_key); ?>" class="d-flex align-items-center gap-3 px-4 py-3 text-decoration-none border-bottom" style="transition: all 0.1s;">
+                                <a href="<?php echo base_url('checkout/' . $pay_method . '/' . $tx_ref . '?method=' . $method_key); ?>" class="d-flex align-items-center gap-3 px-4 py-3 text-decoration-none border-bottom" style="transition: all 0.1s;">
                                     <?php if ($info['logo']): ?>
                                     <span style="display:inline-block;width:50px;text-align:center;"><img src="<?php echo base_url('assets/img/' . $info['logo']); ?>" alt="<?php echo $info['name']; ?>" style="max-width:50px;max-height:18px;width:auto;height:auto;"></span>
                                     <?php else: ?>
@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!code) { alert('<?php echo t('Masukkan kode kupon.', 'Enter coupon code.'); ?>'); return; }
             applyBtn.disabled = true;
             applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
-            fetch('<?php echo base_url('checkout/apply_coupon/' . $transaction->uuid); ?>', {
+            fetch('<?php echo base_url('checkout/apply_' . $coupon_method . '/' . $tx_ref); ?>', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 body: 'code=' + encodeURIComponent(code)
@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (removeBtn) {
         removeBtn.addEventListener('click', function() {
             if (!confirm('<?php echo t('Hapus kupon?', 'Remove coupon?'); ?>')) return;
-            fetch('<?php echo base_url('checkout/remove_coupon/' . $transaction->uuid); ?>').then(function(r) { return r.json(); }).then(function(data) {
+            fetch('<?php echo base_url('checkout/remove_' . $coupon_method . '/' . $tx_ref); ?>').then(function(r) { return r.json(); }).then(function(data) {
                 if (data.status === 'ok') location.reload();
             });
         });

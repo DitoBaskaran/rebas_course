@@ -20,6 +20,16 @@
             'pages' => 6,
         ),
         array(
+            'key' => 'business_discussion',
+            'icon' => 'briefcase',
+            'color' => '#334155',
+            'title_id' => 'Diskusi Bisnis',
+            'title_en' => 'Business Discussion',
+            'desc_id' => 'Pembahasan fitur, alur, metode, pembayaran, marketing, dan topik diskusi bisnis.',
+            'desc_en' => 'Discussion on features, flow, methods, payment, marketing, and business topics.',
+            'pages' => 5,
+        ),
+        array(
             'key' => 'coming_soon',
             'icon' => 'file-text',
             'color' => '#94a3b8',

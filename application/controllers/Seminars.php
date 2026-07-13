@@ -76,15 +76,6 @@ class Seminars extends CI_Controller {
             redirect('seminars/detail/' . $id);
         }
 
-        $tx_data = array(
-            'user_id' => $user_id,
-            'item_type' => 'seminar',
-            'item_id' => $id,
-            'amount' => $seminar->price,
-            'status' => 'pending'
-        );
-        $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
-        redirect('checkout/confirm/' . $tx->uuid);
+        redirect('checkout/initiate/seminar/' . $id);
     }
 }

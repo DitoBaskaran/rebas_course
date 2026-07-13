@@ -876,17 +876,19 @@ class Admin extends CI_Controller {
     }
 
     public function document_view($key) {
-        $allowed = array('partnership_discussion');
+        $allowed = array('partnership_discussion', 'business_discussion');
         if (!in_array($key, $allowed)) show_404();
 
         $data['active_page'] = 'documents';
         $titles = array(
             'partnership_discussion' => t('Diskusi Partnership', 'Partnership Discussion'),
+            'business_discussion' => t('Diskusi Bisnis', 'Business Discussion'),
         );
         $data['title'] = $titles[$key] ?? t('Dokumen', 'Document');
 
         $views = array(
             'partnership_discussion' => 'admin/partnership/discussion',
+            'business_discussion' => 'admin/partnership/business_discussion',
         );
 
         $this->load->view('templates/admin_header', $data);

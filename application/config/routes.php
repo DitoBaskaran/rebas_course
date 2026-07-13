@@ -97,6 +97,11 @@ $route['admin/minute_bundles/delete/(:num)'] = 'admin/delete_bundle/$1';
 
 // Payment gateway routes
 $route['checkout/confirm/(:any)'] = 'checkout/confirm/$1';
+$route['checkout/initiate/(:any)/(:num)'] = 'checkout/initiate/$1/$2';
+$route['checkout/initiate/(:any)/(:num)/(:num)'] = 'checkout/initiate/$1/$2/$3';
+$route['checkout/pay_cart/(:any)'] = 'checkout/pay_cart/$1';
+$route['checkout/apply_coupon_cart/(:any)'] = 'checkout/apply_coupon_cart/$1';
+$route['checkout/remove_coupon_cart/(:any)'] = 'checkout/remove_coupon_cart/$1';
 $route['checkout/midtrans_snap/(:any)'] = 'checkout/midtrans_snap/$1';
 $route['checkout/midtrans_callback'] = 'checkout/midtrans_callback';
 $route['checkout/pay/(:any)'] = 'checkout/pay/$1';

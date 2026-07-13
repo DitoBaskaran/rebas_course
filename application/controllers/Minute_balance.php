@@ -32,18 +32,6 @@ class Minute_balance extends CI_Controller {
     public function buy($bundle_id) {
         $bundle = $this->Minute_bundle_model->get_bundle_by_id($bundle_id);
         if (!$bundle || !$bundle->is_active) show_404();
-
-        $user_id = $this->session->userdata('user_id');
-
-        $tx_data = array(
-            'user_id' => $user_id,
-            'item_type' => 'minute_bundle',
-            'item_id' => $bundle->id,
-            'amount' => $bundle->price,
-            'status' => 'pending'
-        );
-        $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
-        redirect('checkout/confirm/' . $tx->uuid);
+        redirect('checkout/initiate/minute_bundle/' . $bundle_id);
     }
 }

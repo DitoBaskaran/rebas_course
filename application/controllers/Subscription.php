@@ -79,29 +79,7 @@ class Subscription extends CI_Controller {
             }
         }
 
-        // Calculate amount and duration based on months
-        if ($months === 6) {
-            $six = $this->Package_model->calculate_6mo_price($package->id);
-            $amount = $six ? $six['discounted'] : $package->price * 6;
-            $item_type = 'package_6mo';
-            $duration_days = $package->duration_days * 6;
-        } else {
-            $amount = $package->price;
-            $item_type = 'package';
-            $duration_days = $package->duration_days;
-        }
-
-        $tx_data = array(
-            'user_id' => $user_id,
-            'item_type' => $item_type,
-            'item_id' => $package->id,
-            'amount' => $amount,
-            'notes' => json_encode(array('duration_days' => $duration_days)),
-            'status' => 'pending'
-        );
-        $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
-        redirect('checkout/confirm/' . $tx->uuid);
+        redirect('checkout/initiate/package/' . $package->id . '/' . $months);
     }
 
     public function my() {
