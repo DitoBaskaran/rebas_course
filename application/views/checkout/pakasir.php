@@ -2,26 +2,51 @@
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6 animate-scale-in">
             <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+                <?php
+                    $method_logos = array(
+                        'qris' => 'qris-logo.png',
+                        'bri_va' => 'bri-logo.svg',
+                        'bni_va' => 'bni-logo.svg',
+                        'cimb_niaga_va' => 'cimb-logo.svg',
+                        'maybank_va' => 'maybank-logo.svg',
+                        'permata_va' => 'permata-logo.png',
+                        'atm_bersama_va' => 'atm-bersama-logo.png',
+                        'sampoerna_va' => '',
+                        'bnc_va' => '',
+                        'artha_graha_va' => '',
+                    );
+                    $logo_file = $method_logos[$method] ?? '';
+                ?>
                 <div class="text-center mb-4">
+                    <?php if ($logo_file): ?>
+                    <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-3 mb-4 shadow-sm p-3" style="width: 80px; height: 80px;">
+                        <img src="<?php echo base_url('assets/img/' . $logo_file); ?>" alt="<?php echo htmlspecialchars($method_label ?? $method); ?>" style="max-width:56px;max-height:40px;width:auto;height:auto;">
+                    </div>
+                    <?php else: ?>
                     <div class="d-inline-flex align-items-center justify-content-center bg-success text-white rounded-3 mb-4 shadow-sm" style="width: 64px; height: 64px;">
                         <i class="fas fa-credit-card fa-lg"></i>
                     </div>
-                    <h3 class="fw-extrabold text-dark mb-2" style="letter-spacing: -0.03em;"><?php echo t('Pembayaran Online', 'Online Payment'); ?></h3>
-                    <p class="text-secondary small mb-0"><?php echo t('Selesaikan pembayaran melalui metode di bawah ini.', 'Complete your payment using the method below.'); ?></p>
+                    <?php endif; ?>
+                    <h3 class="fw-extrabold text-dark mb-2" style="letter-spacing: -0.03em;"><?php echo t('Pembayaran', 'Payment'); ?></h3>
+                    <p class="text-secondary small mb-0"><?php echo htmlspecialchars($method_label ?? $method); ?></p>
                 </div>
 
                 <div class="bg-light rounded-4 p-4 mb-4">
+                    <?php if ($item): ?>
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
+                        <div class="flex-fill min-w-0">
+                            <div class="fw-bold text-dark"><?php echo htmlspecialchars($item->title); ?></div>
+                            <div class="text-secondary small"><?php echo ucfirst($tx->item_type); ?> &middot; Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
                     <div class="d-flex justify-content-between mb-3 small">
                         <span class="text-secondary"><?php echo t('ID Transaksi', 'Transaction ID'); ?></span>
-                        <span class="fw-bold text-dark">#<?php echo $tx->id; ?></span>
+                        <span class="fw-bold text-dark">#<?php echo $tx->uuid; ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-3 small">
                         <span class="text-secondary"><?php echo t('Order ID', 'Order ID'); ?></span>
                         <span class="fw-bold text-dark font-monospace small"><?php echo htmlspecialchars($order_id); ?></span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3 small">
-                        <span class="text-secondary"><?php echo t('Metode', 'Method'); ?></span>
-                        <span class="badge bg-dark text-white rounded-pill px-3 py-2 fw-medium text-uppercase"><?php echo htmlspecialchars($method); ?></span>
                     </div>
                     <hr class="my-4 opacity-25">
                     <div class="d-flex justify-content-between align-items-baseline">
@@ -59,13 +84,41 @@
                 <?php endif; ?>
 
                 <?php if (isset($payment['expired_at'])): ?>
+                <?php $exp_ts = strtotime($payment['expired_at']); ?>
                 <div class="text-center mb-4">
-                    <p class="text-danger small mb-0">
-                        <i class="far fa-clock me-1"></i>
-                        <?php echo t('Batas bayar: ', 'Expires: '); ?>
-                        <?php echo date('d M Y H:i', strtotime($payment['expired_at'])); ?> WIB
-                    </p>
+                    <p class="text-muted small mb-2"><?php echo t('Selesaikan pembayaran sebelum waktu habis:', 'Complete payment before time runs out:'); ?></p>
+                    <div class="d-inline-flex align-items-center gap-1 px-3 py-2 rounded-3 border bg-white" id="countdownTimer">
+                        <i class="far fa-clock text-danger me-1"></i>
+                        <span class="fw-bold text-dark fs-6 font-monospace" id="cd-hours">00</span>
+                        <span class="text-muted">:</span>
+                        <span class="fw-bold text-dark fs-6 font-monospace" id="cd-minutes">00</span>
+                        <span class="text-muted">:</span>
+                        <span class="fw-bold text-dark fs-6 font-monospace" id="cd-seconds">00</span>
+                    </div>
                 </div>
+                <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var expiry = new Date('<?php echo date('Y/m/d H:i:s', $exp_ts); ?>').getTime();
+                    var timer = document.getElementById('countdownTimer');
+                    function updateCountdown() {
+                        var diff = expiry - new Date().getTime();
+                        if (diff <= 0) {
+                            ['cd-hours','cd-minutes','cd-seconds'].forEach(function(id) { document.getElementById(id).textContent = '00'; });
+                            timer.classList.remove('bg-white');
+                            timer.classList.add('bg-light');
+                            return;
+                        }
+                        var h = Math.floor(diff / 3600000);
+                        var m = Math.floor((diff % 3600000) / 60000);
+                        var s = Math.floor((diff % 60000) / 1000);
+                        document.getElementById('cd-hours').textContent = String(h).padStart(2, '0');
+                        document.getElementById('cd-minutes').textContent = String(m).padStart(2, '0');
+                        document.getElementById('cd-seconds').textContent = String(s).padStart(2, '0');
+                    }
+                    updateCountdown();
+                    setInterval(updateCountdown, 1000);
+                });
+                </script>
                 <?php endif; ?>
 
                 <!-- Status & Actions -->
@@ -78,7 +131,7 @@
                     <button type="button" class="btn btn-success w-100 py-3 rounded-pill fw-semibold" id="checkPaymentBtn" onclick="checkPayment()">
                         <i class="fas fa-search me-2"></i> <?php echo t('Cek Status Pembayaran', 'Check Payment Status'); ?>
                     </button>
-                    <a href="<?php echo base_url('checkout/confirm/' . $tx->id); ?>" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-semibold">
+                    <a href="<?php echo base_url('checkout/confirm/' . $tx->uuid); ?>" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-semibold">
                         <i class="fas fa-arrow-left me-2"></i> <?php echo t('Kembali ke Konfirmasi', 'Back to Confirmation'); ?>
                     </a>
                 </div>
@@ -125,7 +178,7 @@ function checkPayment() {
     status.classList.remove('d-none');
     msg.textContent = '<?php echo t('Memeriksa pembayaran...', 'Checking payment...'); ?>';
 
-    fetch('<?php echo base_url('checkout/pakasir_check/' . $tx->id); ?>')
+    fetch('<?php echo base_url('checkout/pakasir_check/' . $tx->uuid); ?>')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.status === 'completed') {
@@ -146,7 +199,7 @@ function checkPayment() {
 }
 
 function autoCheckPayment() {
-    fetch('<?php echo base_url('checkout/pakasir_check/' . $tx->id); ?>')
+    fetch('<?php echo base_url('checkout/pakasir_check/' . $tx->uuid); ?>')
         .then(function(r) { return r.json(); })
         .then(function(data) {
             if (data.status === 'completed') {

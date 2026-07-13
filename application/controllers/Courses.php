@@ -37,6 +37,18 @@ class Courses extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function mine() {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('auth/login');
+        }
+        $data['title'] = t('Kelas Saya', 'My Courses');
+        $data['active_page'] = 'my_courses';
+        $data['enrolled_courses'] = $this->Course_model->get_user_enrolled_courses($this->session->userdata('user_id'));
+        $this->load->view('templates/student_header', $data);
+        $this->load->view('courses/mine', $data);
+        $this->load->view('templates/student_footer');
+    }
+
     public function detail($id) {
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
@@ -143,7 +155,8 @@ class Courses extends CI_Controller {
             'status' => 'pending'
         );
         $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        redirect('checkout/confirm/' . $tx_id);
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+        redirect('checkout/confirm/' . $tx->uuid);
     }
 
     public function learn($course_slug_or_id, $lesson_id = NULL) {

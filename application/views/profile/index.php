@@ -1,6 +1,6 @@
-<div class="container py-5 my-4">
-    <div class="row g-5">
-        <div class="col-lg-4 animate-fade-in-up">
+<div>
+    <div class="row g-4">
+        <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 p-4 p-xl-5 text-center">
                 <div class="position-relative d-inline-block mb-4">
                     <img src="<?php echo base_url('uploads/avatars/' . ($user->avatar ?: 'default_avatar.png')); ?>" onerror="this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($user->name); ?>&background=4361ee&color=fff&size=120';" alt="" class="rounded-circle mx-auto object-fit-cover shadow-sm border border-3 border-white" style="width: 120px; height: 120px;">
@@ -72,8 +72,8 @@
                             <?php foreach ($recent_activity as $act): ?>
                                 <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-light">
                                     <div class="text-primary flex-shrink-0"><i class="fas fa-circle" style="font-size: 0.4rem;"></i></div>
-                                    <span class="text-dark small"><?php echo htmlspecialchars($act->description); ?></span>
-                                    <span class="text-secondary small ms-auto flex-shrink-0"><?php echo time_elapsed($act->created_at); ?></span>
+                                    <span class="text-dark small"><?php echo htmlspecialchars($act->course_title . ' — ' . $act->lesson_title); ?></span>
+                                    <span class="text-secondary small ms-auto flex-shrink-0"><?php echo time_elapsed($act->updated_at); ?></span>
                                 </div>
                             <?php endforeach; ?>
                         </div>

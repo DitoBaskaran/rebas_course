@@ -39,6 +39,16 @@ class Mentoring_model extends CI_Model {
         return $this->db->update('mentoring_sessions', $data);
     }
 
+    public function get_all_sessions() {
+        $this->db->select('mentoring_sessions.*, student.name as student_name, mentor.name as mentor_name, courses.title as course_title');
+        $this->db->from('mentoring_sessions');
+        $this->db->join('users as student', 'student.id = mentoring_sessions.student_id');
+        $this->db->join('users as mentor', 'mentor.id = mentoring_sessions.mentor_id');
+        $this->db->join('courses', 'courses.id = mentoring_sessions.course_id', 'left');
+        $this->db->order_by('mentoring_sessions.scheduled_at', 'DESC');
+        return $this->db->get()->result();
+    }
+
     public function get_available_mentors($course_id = null) {
         $this->db->select('users.id, users.name, users.email, users.avatar, users.bio');
         $this->db->from('users');

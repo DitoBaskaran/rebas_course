@@ -1,4 +1,4 @@
-<div class="container py-5 my-4">
+<div>
     <div class="row mb-5 animate-fade-in-up text-center">
         <div class="col-lg-8 mx-auto">
             <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-2">Bimbingan Ahli</span>
@@ -44,4 +44,3 @@
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-</div>

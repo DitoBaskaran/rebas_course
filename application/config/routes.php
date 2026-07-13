@@ -96,16 +96,20 @@ $route['admin/minute_bundles/edit/(:num)'] = 'admin/edit_bundle/$1';
 $route['admin/minute_bundles/delete/(:num)'] = 'admin/delete_bundle/$1';
 
 // Payment gateway routes
-$route['checkout/midtrans_snap/(:num)'] = 'checkout/midtrans_snap/$1';
+$route['checkout/confirm/(:any)'] = 'checkout/confirm/$1';
+$route['checkout/midtrans_snap/(:any)'] = 'checkout/midtrans_snap/$1';
 $route['checkout/midtrans_callback'] = 'checkout/midtrans_callback';
-$route['checkout/pakasir/(:any)'] = 'checkout/pakasir_pay/$1';
-$route['checkout/pakasir_check/(:num)'] = 'checkout/pakasir_check/$1';
+$route['checkout/pay/(:any)'] = 'checkout/pay/$1';
+$route['checkout/pakasir_check/(:any)'] = 'checkout/pakasir_check/$1';
 $route['checkout/pakasir_webhook'] = 'checkout/pakasir_webhook';
 
 // Referral redirect
 $route['ref/(:any)'] = 'referral/index/$1';
 
 // Course detail by slug (clean URLs)
+$route['courses/mine'] = 'courses/mine';
+$route['seminars/mine'] = 'seminars/mine';
+$route['learning_paths/mine'] = 'learning_paths/mine';
 $route['courses/detail/(:num)'] = 'courses/detail/$1';
 $route['courses/detail/(:any)'] = 'courses/detail_slug/$1';
 
@@ -132,6 +136,13 @@ $route['heartbeat/cleanup'] = 'heartbeat/cleanup';
 $route['courses/buy/(:any)'] = 'courses/buy/$1';
 $route['courses/review/(:any)'] = 'courses/review/$1';
 $route['courses/complete_lesson/(:any)/(:num)'] = 'courses/complete_lesson/$1/$2';
+$route['forum'] = 'forum/index';
 $route['forum/index/(:any)'] = 'forum/index/$1';
+$route['forum/view/(:any)'] = 'forum/view/$1';
 $route['forum/create/(:any)'] = 'forum/create/$1';
 $route['wishlist/toggle/(:any)'] = 'wishlist/toggle/$1';
+$route['transactions/history'] = 'transactions/history';
+$route['transactions/history_data'] = 'transactions/history_data';
+$route['transactions/detail/(:any)'] = 'transactions/detail/$1';
+$route['admin/documents'] = 'admin/documents';
+$route['admin/document/view/(:any)'] = 'admin/document_view/$1';

@@ -34,8 +34,14 @@
     <a class="nav-link <?php echo $active_page === 'submissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/submissions'); ?>">
         <i data-lucide="code"></i> <span><?php echo t('Tugas', 'Submissions'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url('admin/mentoring'); ?>">
+        <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
+    </a>
     <a class="nav-link <?php echo $active_page === 'translations' ? 'active' : ''; ?>" href="<?php echo base_url('admin/translations'); ?>">
         <i data-lucide="languages"></i> <span><?php echo t('Translasi', 'Translations'); ?></span>
+    </a>
+    <a class="nav-link <?php echo $active_page === 'documents' ? 'active' : ''; ?>" href="<?php echo base_url('admin/documents'); ?>">
+        <i data-lucide="file-text"></i> <span><?php echo t('Dokumen', 'Documents'); ?></span>
     </a>
 
     <div class="sidebar-section-divider"></div>

@@ -40,9 +40,10 @@ class Profile extends CI_Controller {
             $data['courses'] = $this->Course_model->get_courses(array('teacher_id' => $user_id));
         }
 
-        $this->load->view('templates/header', $data);
+        $data['active_page'] = 'profile';
+        $this->load->view('templates/student_header', $data);
         $this->load->view('profile/index', $data);
-        $this->load->view('templates/footer');
+        $this->load->view('templates/student_footer');
     }
 
     public function edit() {
@@ -55,10 +56,11 @@ class Profile extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Edit Profil', 'Edit Profile');
+            $data['active_page'] = 'profile';
             $data['user'] = $this->User_model->get_user_by_id($user_id);
-            $this->load->view('templates/header', $data);
+            $this->load->view('templates/student_header', $data);
             $this->load->view('profile/edit', $data);
-            $this->load->view('templates/footer');
+            $this->load->view('templates/student_footer');
         } else {
             $update = array(
                 'name' => $this->input->post('name'),
@@ -93,10 +95,11 @@ class Profile extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Ganti Password', 'Change Password');
+            $data['active_page'] = 'profile';
             $data['user'] = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
-            $this->load->view('templates/header', $data);
+            $this->load->view('templates/student_header', $data);
             $this->load->view('profile/change_password', $data);
-            $this->load->view('templates/footer');
+            $this->load->view('templates/student_footer');
         } else {
             $user = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
             if (!password_verify($this->input->post('current_password'), $user->password)) {

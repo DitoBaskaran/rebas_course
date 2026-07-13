@@ -1,4 +1,4 @@
-<div class="container py-5 my-4">
+<div>
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="text-center mb-5 animate-fade-in-up">
@@ -52,4 +52,3 @@
             </div>
         </div>
     </div>
-</div>

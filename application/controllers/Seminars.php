@@ -18,6 +18,18 @@ class Seminars extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function mine() {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('auth/login');
+        }
+        $data['title'] = t('Seminar Saya', 'My Seminars');
+        $data['active_page'] = 'seminars';
+        $data['registered_seminars'] = $this->Seminar_model->get_user_registered_seminars($this->session->userdata('user_id'));
+        $this->load->view('templates/student_header', $data);
+        $this->load->view('seminars/mine', $data);
+        $this->load->view('templates/student_footer');
+    }
+
     public function detail($id) {
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
@@ -72,6 +84,7 @@ class Seminars extends CI_Controller {
             'status' => 'pending'
         );
         $tx_id = $this->Transaction_model->create_transaction($tx_data);
-        redirect('checkout/confirm/' . $tx_id);
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+        redirect('checkout/confirm/' . $tx->uuid);
     }
 }

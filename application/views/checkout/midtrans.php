@@ -24,9 +24,9 @@
                 </div>
 
                 <div class="mt-4 pt-3 border-top">
-                    <a href="<?php echo base_url('checkout/confirm/' . $tx->id); ?>" class="text-muted small text-decoration-none">
+                    <a href="<?php echo base_url('checkout/confirm/' . $tx->uuid); ?>" class="text-muted small text-decoration-none">
                         <i data-lucide="arrow-left" style="width:14px;height:14px;" class="me-1"></i>
-                        <?php echo t('Kembali ke transfer manual', 'Back to manual transfer'); ?>
+                        <?php echo t('Kembali ke metode lain', 'Back to other methods'); ?>
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
 document.getElementById('payBtn').addEventListener('click', function() {
     snap.pay('<?php echo $snap_token; ?>', {
         onSuccess: function(result) {
-            window.location.href = '<?php echo base_url('dashboard'); ?>?purchase=success&tx_id=<?php echo $tx->id; ?>';
+            window.location.href = '<?php echo base_url('dashboard'); ?>?purchase=success&tx_id=<?php echo $tx->uuid; ?>';
         },
         onPending: function(result) {
             alert('<?php echo t('Pembayaran sedang diproses.', 'Payment is being processed.'); ?>');

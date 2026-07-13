@@ -1,4 +1,4 @@
-<div class="container py-5 my-4">
+<div>
     <div class="d-flex align-items-center justify-content-between mb-5">
         <div>
             <h1 class="display-6 fw-extrabold text-dark mb-1" style="letter-spacing:-0.03em;"><?php echo t('Sertifikat Saya', 'My Certificates'); ?></h1>
@@ -47,4 +47,3 @@
             <?php endforeach; ?>
         </div>
     <?php endif; ?>
-</div>

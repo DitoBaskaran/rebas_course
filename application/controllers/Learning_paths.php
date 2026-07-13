@@ -18,6 +18,18 @@ class Learning_paths extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
+    public function mine() {
+        if (!$this->session->userdata('logged_in')) {
+            redirect('auth/login');
+        }
+        $data['title'] = t('Learning Path Saya', 'My Learning Paths');
+        $data['active_page'] = 'learning_paths';
+        $data['learning_paths'] = $this->Learning_path_model->get_user_paths($this->session->userdata('user_id'));
+        $this->load->view('templates/student_header', $data);
+        $this->load->view('learning_paths/mine', $data);
+        $this->load->view('templates/student_footer');
+    }
+
     public function detail($slug) {
         $path = $this->Learning_path_model->get_by_slug($slug);
         if (!$path) show_404();
