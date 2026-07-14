@@ -30,6 +30,16 @@
             'pages' => 5,
         ),
         array(
+            'key' => 'business_plan',
+            'icon' => 'bar-chart-3',
+            'color' => '#0f766e',
+            'title_id' => 'Rencana Bisnis',
+            'title_en' => 'Business Plan',
+            'desc_id' => 'Rencana bisnis lengkap: analisis pasar, strategi, proyeksi keuangan 5 tahun, analisis risiko, dan milestone implementasi.',
+            'desc_en' => 'Complete business plan: market analysis, strategy, 5-year financial projections, risk analysis, and implementation milestones.',
+            'pages' => 14,
+        ),
+        array(
             'key' => 'coming_soon',
             'icon' => 'file-text',
             'color' => '#94a3b8',
