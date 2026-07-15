@@ -1,46 +1,144 @@
-<div>
-    <div class="row mb-5 animate-fade-in-up text-center">
-        <div class="col-lg-8 mx-auto">
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-2">Bimbingan Ahli</span>
-            <h1 class="display-5 fw-extrabold text-dark mb-3 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Mentoring & Konsultasi', 'Mentoring & Consultation'); ?></h1>
-            <p class="text-secondary lead mb-0" style="font-size: 1.1rem;"><?php echo t('Belajar 1-on-1 dengan mentor ahli di bidangnya.', 'Learn 1-on-1 with expert mentors in their field.'); ?></p>
+<!-- Hero -->
+<div style="border-bottom: 1px solid #e5e5e5;">
+    <div class="container" style="padding-top: 2rem; padding-bottom: 1.5rem; max-width: 960px;">
+        <div class="text-center mb-4">
+            <span class="px-3 py-1 rounded-pill fw-semibold mb-3 d-inline-block" style="background: #111827; color: #fff; font-size: 0.72rem;">1-on-1 MENTORING</span>
+            <h1 class="fw-extrabold mb-2" style="font-size: 1.6rem; letter-spacing: -0.02em; color: #111827;">
+                <?php echo t('Dapatkan Mentoring Karirmu Bersama', 'Get Career Mentoring With'); ?>
+                <br><span style="color: #eab308;"><?php echo t('Mentor Ahli Terpercaya', 'Trusted Expert Mentors'); ?></span>
+            </h1>
+            <p class="mb-3 mx-auto" style="color: #737373; font-size: 0.9rem; max-width: 500px;">
+                <?php echo t('Pilih mentor, jadwalkan sesi 1-on-1, dan mulai perjalanan karirmu.', 'Choose a mentor, schedule a 1-on-1 session, and start your career journey.'); ?>
+            </p>
+            <div class="d-flex justify-content-center gap-4 mb-2" style="font-size: 0.8rem;">
+                <div><strong style="color: #111827;">16+</strong> <span style="color: #737373;"><?php echo t('Bidang', 'Fields'); ?></span></div>
+                <div><strong style="color: #111827;"><?php echo count($mentors); ?>+</strong> <span style="color: #737373;"><?php echo t('Mentor', 'Mentors'); ?></span></div>
+                <div><strong style="color: #111827;">200+</strong> <span style="color: #737373;"><?php echo t('Industri', 'Industries'); ?></span></div>
+            </div>
+        </div>
+
+        <!-- 3 Steps -->
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-2">
+            <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #eab308; color: #111827; font-size: 0.7rem;">1</div>
+                <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Jelajahi Mentor', 'Explore Mentors'); ?></span>
+            </div>
+            <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #eab308; color: #111827; font-size: 0.7rem;">2</div>
+                <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Pilih Jadwal', 'Choose Schedule'); ?></span>
+            </div>
+            <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #eab308; color: #111827; font-size: 0.7rem;">3</div>
+                <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Mentoring 1-on-1', '1-on-1 Mentoring'); ?></span>
+            </div>
         </div>
     </div>
+</div>
 
-    <div class="row g-4 justify-content-center">
-        <?php if (empty($mentors)): ?>
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <div class="icon-64 bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center">
-                        <i class="fas fa-chalkboard-teacher fs-3 text-secondary"></i>
-                    </div>
-                    <h5 class="fw-bold text-dark"><?php echo t('Belum Ada Mentor', 'No Mentors Available'); ?></h5>
-                    <p class="text-secondary small mb-0"><?php echo t('Mentor akan segera bergabung. Pantau terus!', 'Mentors will be available soon. Stay tuned!'); ?></p>
-                </div>
+<!-- Category Tabs -->
+<div style="border-bottom: 1px solid #f0f0f0;">
+    <div class="container d-flex gap-2 overflow-auto py-3" style="max-width: 960px; scrollbar-width: none; -ms-overflow-style: none;">
+        <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.78rem; background: <?php echo !$selected_category ? '#111827' : '#f5f5f5'; ?>; color: <?php echo !$selected_category ? '#fff' : '#525252'; ?>;">
+            <?php echo t('Semua', 'All'); ?>
+        </a>
+        <?php foreach ($categories as $cat): ?>
+            <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.78rem; background: <?php echo $selected_category == $cat->id ? '#111827' : '#f5f5f5'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#525252'; ?>;">
+                <?php echo htmlspecialchars(t($cat->name, $cat->name_en)); ?>
+            </a>
+        <?php endforeach; ?>
+        <a href="<?php echo base_url('mentoring/packages'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.78rem; background: #fef3c7; color: #92400e;">
+            <i class="fas fa-shopping-bag" style="font-size: 0.65rem;"></i> <?php echo t('Paket', 'Packages'); ?>
+        </a>
+    </div>
+</div>
+
+<!-- Search -->
+<div style="background: #fafafa; border-bottom: 1px solid #f0f0f0;">
+    <div class="container py-3" style="max-width: 960px;">
+        <form method="get" class="d-flex gap-2">
+            <?php if ($selected_category): ?>
+                <input type="hidden" name="category" value="<?php echo $selected_category; ?>">
+            <?php endif; ?>
+            <div class="flex-fill position-relative">
+                <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
+                <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari mentor berdasarkan nama atau keahlian...', 'Search mentors by name or expertise...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e5e5e5; font-size: 0.85rem; height: 42px; background: #fff;">
             </div>
-        <?php else: ?>
-            <?php $loop = 0; ?>
+            <button type="submit" class="btn px-4 fw-semibold flex-shrink-0" style="background: #111827; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 42px;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Mentor Grid -->
+<div class="container" style="max-width: 960px; padding-top: 1.5rem; padding-bottom: 3rem;">
+    <div class="mb-3" style="color: #737373; font-size: 0.85rem; font-weight: 500;">
+        <?php echo t('Menampilkan', 'Showing'); ?> <strong style="color: #111827;"><?php echo count($mentors); ?></strong> <?php echo t('mentor', 'mentors'); ?>
+    </div>
+
+    <?php if (empty($mentors)): ?>
+        <div class="text-center py-5">
+            <div style="font-size: 2.5rem; color: #d4d4d4; margin-bottom: 0.75rem;"><i class="fas fa-search"></i></div>
+            <h5 class="fw-bold" style="color: #111827;"><?php echo t('Tidak Ada Mentor', 'No Mentors Found'); ?></h5>
+            <p style="color: #737373; font-size: 0.85rem;"><?php echo t('Coba ubah filter pencarian Anda.', 'Try changing your search filters.'); ?></p>
+        </div>
+    <?php else: ?>
+        <div class="row g-3">
             <?php foreach ($mentors as $mentor): ?>
-                <?php $loop++; ?>
-                <div class="col-md-6 col-lg-4 animate-fade-in-up stagger-<?php echo min($loop, 5); ?>">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 bg-white overflow-hidden hover-zoom d-flex flex-column text-center" style="transition: all 0.3s ease;">
-                        <div class="p-4 p-xl-5 d-flex flex-column align-items-center">
-                            <div class="position-relative mb-4">
-                                <img src="<?php echo base_url('uploads/avatars/' . ($mentor->avatar ?: 'default_avatar.png')); ?>" onerror="this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($mentor->name); ?>&background=4361ee&color=fff&size=96';" alt="" class="rounded-circle object-fit-cover shadow-sm border border-3 border-white" style="width: 96px; height: 96px;">
-                                <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle p-1"></span>
-                            </div>
-                            <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($mentor->name); ?></h5>
-                            <?php if ($mentor->bio): ?>
-                                <p class="text-secondary small mb-4 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><?php echo htmlspecialchars($mentor->bio); ?></p>
-                            <?php endif; ?>
-                            <div class="mt-auto w-100 pt-3 border-top border-light">
-                                <a href="<?php echo base_url('mentoring/book/' . $mentor->id); ?>" class="btn btn-dark w-100 rounded-pill py-2 fw-semibold">
-                                    <i class="fas fa-calendar-check me-2"></i> <?php echo t('Booking Sesi', 'Book Session'); ?>
-                                </a>
+                <div class="col-md-6 col-lg-4">
+                    <a href="<?php echo base_url('mentoring/detail/' . $mentor->id); ?>" class="text-decoration-none">
+                        <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s;">
+                            <div class="card-body p-3">
+                                <!-- Mentor Header -->
+                                <div class="d-flex align-items-center gap-3 mb-3">
+                                    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($mentor->name); ?>&background=f59e0b&color=fff&size=48&font-size=0.45" alt="" style="width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0;">
+                                    <div class="min-w-0 flex-fill">
+                                        <h6 class="fw-bold mb-0 text-truncate" style="color: #111827; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
+                                        <small class="fw-medium text-truncate d-block" style="color: #737373; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
+                                        <div class="d-flex align-items-center gap-1 mt-1">
+                                            <i class="fas fa-star" style="color: #eab308; font-size: 0.6rem;"></i>
+                                            <span class="fw-bold" style="color: #111827; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
+                                            <span style="color: #a3a3a3; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bio -->
+                                <p class="mb-3" style="color: #737373; font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                    <?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?>
+                                </p>
+
+                                <!-- Tags -->
+                                <div class="d-flex flex-wrap gap-1 mb-3">
+                                    <?php
+                                    $m_cats = $this->db->select('mentor_categories.*')
+                                        ->from('mentor_category_pivot')
+                                        ->join('mentor_categories', 'mentor_categories.id = mentor_category_pivot.category_id')
+                                        ->where('mentor_category_pivot.mentor_id', $mentor->id)
+                                        ->get()->result();
+                                    ?>
+                                    <?php foreach (array_slice($m_cats, 0, 3) as $mc): ?>
+                                        <span class="px-2 py-1 rounded-pill" style="background: #f5f5f5; color: #525252; font-size: 0.65rem; font-weight: 600;">
+                                            <?php echo htmlspecialchars(t($mc->name, $mc->name_en)); ?>
+                                        </span>
+                                    <?php endforeach; ?>
+                                </div>
+
+                                <!-- Stats -->
+                                <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0f0f0;">
+                                    <div class="d-flex gap-3" style="color: #a3a3a3; font-size: 0.72rem;">
+                                        <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
+                                        <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
+                                    </div>
+                                    <span style="color: #eab308; font-size: 0.78rem; font-weight: 600;">
+                                        <?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
+</div>

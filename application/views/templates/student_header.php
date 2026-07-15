@@ -19,6 +19,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- REBAS Design System v3.0 -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/rebas.css'); ?>">
+    <!-- BISATUNTAS Colorful Playful Override -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/rebas-playful-alt.css'); ?>">
     <style>
         :root {
             <?php echo settings_css_vars(); ?>
@@ -40,13 +42,13 @@
     <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','<?php echo $fb_pixel; ?>');fbq('track','PageView');</script>
     <?php endif; ?>
 </head>
-<body>
+<body class="playful">
 
     <!-- Top Bar (Glass) -->
     <nav class="admin-topbar">
         <div class="admin-topbar-inner">
             <div class="admin-topbar-start">
-                <button class="admin-topbar-toggle d-lg-none" onclick="toggleStudentSidebar()" aria-label="Toggle sidebar">
+                <button class="admin-topbar-toggle d-lg-none" onclick="toggleAdminSidebar()" aria-label="Toggle sidebar">
                     <i data-lucide="menu" style="width:18px;height:18px;"></i>
                 </button>
                 <button class="admin-topbar-toggle d-none d-lg-inline-flex" id="sidebarToggle" aria-label="Toggle sidebar">
@@ -59,10 +61,10 @@
                         <span class="admin-topbar-logo-icon">
                             <i data-lucide="graduation-cap" style="width:16px;height:16px;"></i>
                         </span>
-                        <span class="admin-topbar-brand-text"><?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?></span>
+                        <span class="admin-topbar-brand-text">BISATUNTAS</span>
                     <?php endif; ?>
                 </a>
-                <span class="admin-topbar-badge">Siswa</span>
+                <span class="admin-topbar-badge"><?php echo $this->session->userdata('role') === 'mentor' ? t('Mentor', 'Mentor') : t('Siswa', 'Student'); ?></span>
             </div>
             <div class="admin-topbar-end">
                 <button class="theme-toggle" id="themeToggle" title="Toggle theme">
@@ -108,6 +110,6 @@
     </div>
 
     <!-- Student Wrapper -->
-    <div class="admin-wrapper" id="studentWrapper">
+    <div class="admin-wrapper playful" id="studentWrapper">
         <?php $this->load->view('templates/student_sidebar'); ?>
         <div class="admin-content">

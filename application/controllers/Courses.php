@@ -173,8 +173,8 @@ class Courses extends CI_Controller {
         $lesson = $this->Course_model->get_lesson_by_id($lesson_id);
         if (!$lesson) show_404();
 
-        // Check access using Access_library (supports enrollment, subscription, and minute balance)
-        $access_info = $this->access_library->check_course_access($user_id, $course_id, $lesson_id);
+        // Check access using Access_library (supports enrollment and subscription)
+        $access_info = $this->access_library->check_course_access($user_id, $course_id);
 
         if ($lesson->is_free) {
             $access_info = ['has_access' => true, 'reason' => t('Materi gratis.', 'Free lesson.'), 'access_type' => 'free'];
@@ -186,7 +186,7 @@ class Courses extends CI_Controller {
                 redirect('auth/login');
             }
             $redirect_url = $course->price > 0 ? 'courses/detail/' . $course->slug : 'subscription';
-            $this->session->set_flashdata('error', t('Anda belum memiliki akses ke materi ini. Berlangganan atau beli menit untuk mengakses.', 'You do not have access to this content. Subscribe or buy minutes to access.'));
+            $this->session->set_flashdata('error', t('Anda belum memiliki akses ke materi ini.', 'You do not have access to this content.'));
             redirect($redirect_url);
         }
 
@@ -207,15 +207,6 @@ class Courses extends CI_Controller {
         $data['completed_lessons'] = $completed_lessons;
         $data['progress_pct'] = $this->Course_model->get_course_progress_percentage($user_id, $course->id);
         $data['access_type'] = $access_info['access_type'];
-
-        // If accessing via minute balance, start a heartbeat session
-        $data['minute_session'] = null;
-        $data['minute_balance'] = null;
-        if ($access_info['access_type'] === 'minutes') {
-            $this->load->model('User_minute_balance_model');
-            $data['minute_session'] = $this->User_minute_balance_model->create_session($user_id, $course_id, $lesson_id);
-            $data['minute_balance'] = $this->User_minute_balance_model->get_balance($user_id);
-        }
 
         $this->load->view('templates/header', $data);
         $this->load->view('courses/learn', $data);

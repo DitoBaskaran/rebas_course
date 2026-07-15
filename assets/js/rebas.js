@@ -515,6 +515,33 @@
       });
     });
 
+    /* ---- Dealls-style Micro-interactions ---- */
+    if (document.querySelector('.playful')) {
+      /* Sidebar link icon subtle scale on hover */
+      document.querySelectorAll('.playful .admin-sidebar .nav-link').forEach(function(link) {
+        link.addEventListener('mouseenter', function() {
+          var icon = this.querySelector('i, svg');
+          if (icon) { icon.style.transform = 'scale(1.1)'; icon.style.transition = 'transform 0.15s ease'; }
+        });
+        link.addEventListener('mouseleave', function() {
+          var icon = this.querySelector('i, svg');
+          if (icon) { icon.style.transform = 'scale(1)'; }
+        });
+      });
+
+      /* Avatar light scale on hover */
+      document.querySelectorAll('.playful .admin-topbar-avatar').forEach(function(avatar) {
+        avatar.addEventListener('mouseenter', function() {
+          var circle = this.querySelector('.avatar-circle');
+          if (circle) { circle.style.transform = 'scale(1.05)'; circle.style.transition = 'transform 0.15s ease'; }
+        });
+        avatar.addEventListener('mouseleave', function() {
+          var circle = this.querySelector('.avatar-circle');
+          if (circle) { circle.style.transform = ''; }
+        });
+      });
+    }
+
   }
 
   function toggleQuestionOptions(select) {

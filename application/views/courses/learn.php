@@ -118,12 +118,6 @@
             <?php if ($active_lesson->duration > 0): ?>
                 <small class="text-secondary"><i class="far fa-clock me-1"></i> <?php echo $active_lesson->duration; ?> <?php echo t('menit', 'min'); ?></small>
             <?php endif; ?>
-            <?php if ($access_type === 'minutes'): ?>
-                <small class="text-success fw-semibold ms-auto"><i class="fas fa-hourglass-half me-1"></i> <span id="liveMinuteBalance"><?php echo format_seconds_for_timer($minute_balance->balance_seconds ?? 0); ?></span></small>
-            <?php endif; ?>
-            <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
-                <span class="badge bg-success rounded-pill px-3 py-2 fw-medium ms-auto"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
-            <?php endif; ?>
         </div>
 
         <h4 class="fw-extrabold text-dark mb-3 lh-sm" style="letter-spacing: -0.03em;"><?php echo htmlspecialchars(t($active_lesson->title, $active_lesson->title_en ?: $active_lesson->title)); ?></h4>
@@ -140,9 +134,7 @@
 
         <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top">
             <div>
-                <?php if ($access_type === 'minutes'): ?>
-                    <span class="badge bg-primary rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-hourglass-half me-1"></i> <?php echo t('Akses Menit', 'Minute Access'); ?></span>
-                <?php elseif (in_array($active_lesson->id, $completed_lessons)): ?>
+                <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
                     <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
                 <?php else: ?>
                     <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
@@ -238,83 +230,4 @@
 
 <!-- Style for rich text content -->
 <script>
-const access_type = '<?php echo $access_type; ?>';
-const minute_session_id = '<?php echo $minute_session['id'] ?? ''; ?>';
-const minute_session_token = '<?php echo $minute_session['token'] ?? ''; ?>';
-const base_url = '<?php echo base_url(); ?>';
-
-let remainingSeconds = <?php echo $minute_balance->balance_seconds ?? 0; ?>;
-let heartbeatInterval;
-
-function formatSecondsForTimer(seconds) {
-    const h = Math.floor(seconds / 3600);
-    const m = Math.floor((seconds % 3600) / 60);
-    const s = seconds % 60;
-    if (h > 0) {
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-    }
-    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-}
-
-function updateMinuteBalanceDisplay() {
-    const displayElement = document.getElementById('liveMinuteBalance');
-    if (displayElement) {
-        displayElement.textContent = formatSecondsForTimer(remainingSeconds);
-        if (remainingSeconds <= 60 && remainingSeconds > 0) {
-            displayElement.classList.add('text-danger');
-        } else if (remainingSeconds === 0) {
-            displayElement.classList.remove('text-danger');
-            displayElement.classList.add('text-muted');
-        }
-    }
-}
-
-async function sendHeartbeat() {
-    if (access_type !== 'minutes' || !minute_session_id || !minute_session_token) return;
-
-    try {
-        const response = await fetch(`${base_url}heartbeat/tick`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `session_id=${minute_session_id}&session_token=${minute_session_token}`
-        });
-        const data = await response.json();
-
-        if (data.status === 'ok') {
-            remainingSeconds = data.remaining_seconds;
-            updateMinuteBalanceDisplay();
-        } else if (data.status === 'ended') {
-            remainingSeconds = 0;
-            updateMinuteBalanceDisplay();
-            alert(data.message);
-            clearInterval(heartbeatInterval);
-            window.location.reload(); // Or redirect to a purchase page
-        }
-    } catch (error) {
-        console.error('Heartbeat failed:', error);
-    }
-}
-
-async function endSession() {
-    if (access_type !== 'minutes' || !minute_session_id || !minute_session_token) return;
-    try {
-        await fetch(`${base_url}heartbeat/end`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: `session_id=${minute_session_id}&session_token=${minute_session_token}`
-        });
-    } catch (error) {
-        console.error('End session failed:', error);
-    }
-}
-
-if (access_type === 'minutes') {
-    window.addEventListener('load', () => {
-        updateMinuteBalanceDisplay();
-        heartbeatInterval = setInterval(sendHeartbeat, 5000); // Send heartbeat every 5 seconds
-    });
-    window.addEventListener('beforeunload', endSession);
-}
-
-</script>
 

@@ -1,30 +1,35 @@
-<div class="container-fluid px-0">
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5 gap-3">
+<div class="container-fluid py-4" style="max-width: 1400px;">
+    <!-- Header -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
         <div>
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-1">Konten</span>
-            <h1 class="display-6 fw-extrabold text-dark mb-1 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Daftar Konten', 'Content List'); ?></h1>
-            <p class="text-secondary mb-0"><?php echo t('Kelola dan tambahkan konten pembelajaran.', 'Manage learning content.'); ?></p>
+            <div style="color: #f97316; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.15rem;"><?php echo t('Konten', 'Content'); ?></div>
+            <h4 class="fw-extrabold mb-0" style="color: #1c1917; letter-spacing: -0.02em; font-size: 1.4rem;">
+                <?php echo t('Daftar Konten', 'Content List'); ?>
+            </h4>
+            <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
+                <?php echo t('Kelola dan tambahkan konten pembelajaran.', 'Manage learning content.'); ?>
+            </p>
         </div>
         <div class="d-flex gap-2">
-            <button class="btn btn-outline-secondary btn-sm px-3 rounded-pill d-flex align-items-center gap-1" id="viewToggle" onclick="toggleView()">
-                <i data-lucide="layout-grid" style="width:16px;height:16px;"></i>
+            <button class="btn px-3 py-2 rounded-pill d-flex align-items-center gap-1" style="background: #f5f5f4; color: #57534e; font-size: 0.78rem;" id="viewToggle" onclick="toggleView()">
+                <i class="fas fa-th" style="font-size: 0.7rem;"></i>
             </button>
-            <a href="<?php echo base_url('admin/settings/general'); ?>" class="btn btn-outline-secondary btn-sm px-3 rounded-pill d-flex align-items-center gap-1">
-                <i data-lucide="settings" style="width:16px;height:16px;"></i>
+            <a href="<?php echo base_url('admin/settings/general'); ?>" class="btn px-3 py-2 rounded-pill d-flex align-items-center gap-1" style="background: #f5f5f4; color: #57534e; font-size: 0.78rem;">
+                <i class="fas fa-cog" style="font-size: 0.7rem;"></i>
             </a>
-            <a href="<?php echo base_url('admin/create_course'); ?>" class="btn btn-dark btn-sm px-3 rounded-pill shadow-sm d-flex align-items-center gap-1">
-                <i data-lucide="plus" style="width:16px;height:16px;"></i> <?php echo t('Tambah Konten', 'Add Content'); ?>
+            <a href="<?php echo base_url('admin/create_course'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="background: #f97316; color: #fff; font-size: 0.78rem;">
+                <i class="fas fa-plus" style="font-size: 0.7rem;"></i> <?php echo t('Tambah Konten', 'Add Content'); ?>
             </a>
         </div>
     </div>
 
-    <!-- Search & Filter Bar -->
+    <!-- Search & Filter -->
     <div class="d-flex gap-2 mb-4 flex-wrap">
-        <div class="position-relative flex-fill" style="min-width:200px;max-width:320px;">
-            <i data-lucide="search" style="width:16px;height:16px;position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);pointer-events:none;"></i>
-            <input type="text" class="form-control form-control-sm rounded-pill" style="padding-left:36px;" placeholder="<?php echo t('Cari konten...', 'Search content...'); ?>" id="searchInput" onkeyup="filterTable()">
+        <div class="position-relative flex-fill" style="min-width: 220px; max-width: 340px;">
+            <i class="fas fa-search" style="font-size: 0.75rem; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a8a29e; pointer-events: none;"></i>
+            <input type="text" class="form-control rounded-pill" style="padding-left: 36px; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" placeholder="<?php echo t('Cari konten...', 'Search content...'); ?>" id="searchInput" onkeyup="filterTable()">
         </div>
-        <select class="form-select form-select-sm rounded-pill" style="width:auto;" onchange="filterTable()" id="statusFilter">
+        <select class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="filterTable()" id="statusFilter">
             <option value=""><?php echo t('Semua Status', 'All Status'); ?></option>
             <option value="published"><?php echo t('Published', 'Published'); ?></option>
             <option value="draft"><?php echo t('Draft', 'Draft'); ?></option>
@@ -33,124 +38,146 @@
     </div>
 
     <!-- Table View -->
-    <div class="bento-card p-4 p-xl-5" id="tableView">
-        <div class="table-responsive">
-            <table class="table-modern" id="courseTable">
-                <thead>
-                    <tr>
-                        <th class="col-w-80"><?php echo t('Cover', 'Cover'); ?></th>
-                        <th><?php echo t('Judul', 'Title'); ?></th>
-                        <th><?php echo t('Tipe', 'Type'); ?></th>
-                        <th><?php echo t('Kategori', 'Category'); ?></th>
-                        <th><?php echo t('Instruktur', 'Instructor'); ?></th>
-                        <th><?php echo t('Status', 'Status'); ?></th>
-                        <th><?php echo t('Harga', 'Price'); ?></th>
-                        <th class="text-center"><?php echo t('Materi', 'Lessons'); ?></th>
-                        <th class="text-center col-w-120"><?php echo t('Aksi', 'Action'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($courses)): ?>
-                        <tr><td colspan="9" class="text-center text-muted py-5"><?php echo t('Belum ada konten.', 'No content yet.'); ?></td></tr>
-                    <?php else: ?>
+    <div id="tableView">
+        <?php if (empty($courses)): ?>
+        <div class="border rounded-3 p-5 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
+            <div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-book-open"></i></div>
+            <h6 class="fw-bold" style="color: #1c1917;"><?php echo t('Belum Ada Konten', 'No Content Yet'); ?></h6>
+            <p style="color: #78716c; font-size: 0.82rem;"><?php echo t('Tambahkan konten pembelajaran pertama Anda.', 'Add your first learning content.'); ?></p>
+        </div>
+        <?php else: ?>
+        <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
+            <div class="table-responsive p-0">
+                <table class="table mb-0" style="font-size: 0.8rem;" id="courseTable">
+                    <thead>
+                        <tr>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em; width: 72px;"><?php echo t('Cover', 'Cover'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Judul', 'Title'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tipe', 'Type'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Kategori', 'Category'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Instruktur', 'Instructor'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Status', 'Status'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Harga', 'Price'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;"><?php echo t('Materi', 'Lessons'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em; text-align: center; width: 100px;"><?php echo t('Aksi', 'Action'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php foreach ($courses as $course): ?>
                             <tr data-status="<?php echo $course->status; ?>">
-                                <td>
-                                    <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=100&auto=format&fit=crop&q=60';" alt="" class="thumb-md">
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
+                                    <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=80&auto=format&fit=crop&q=60';" alt="" class="rounded-2" style="width: 64px; height: 44px; object-fit: cover; border: 1px solid #e7e5e4;">
                                 </td>
-                                <td class="fw-bold text-dark small">
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; font-weight: 700; color: #1c1917; font-size: 0.82rem;">
                                     <?php echo htmlspecialchars($course->title); ?>
-                                    <?php if ($course->featured): ?> <i data-lucide="star" style="width:14px;height:14px;color:var(--warning);" class="ms-1"></i><?php endif; ?>
-                                    <?php if ($course->price == 0): ?> <span class="badge bg-success badge-modern ms-1"><?php echo t('Gratis', 'Free'); ?></span><?php endif; ?>
+                                    <?php if ($course->featured): ?><i class="fas fa-star" style="color: #eab308; font-size: 0.6rem; margin-left: 0.25rem;"></i><?php endif; ?>
+                                    <?php if ($course->price == 0): ?><span class="px-2 py-1 rounded-pill fw-semibold ms-1" style="background: #f0fdfa; color: #14b8a6; font-size: 0.6rem;"><?php echo t('Gratis', 'Free'); ?></span><?php endif; ?>
                                 </td>
-                                <td>
-                                    <span class="badge bg-primary-subtle text-primary badge-modern small"><?php echo content_type_label($course->content_type); ?></span>
-                                    <span class="badge bg-info bg-opacity-10 text-info badge-modern small mt-1 d-block d-md-inline"><?php echo skill_level_label($course->skill_level); ?></span>
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
+                                    <span class="px-2 py-1 rounded-pill fw-semibold mb-1 d-inline-block" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;"><?php echo content_type_label($course->content_type); ?></span>
+                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f5f5f4; color: #57534e; font-size: 0.6rem;"><?php echo skill_level_label($course->skill_level); ?></span>
                                 </td>
-                                <td class="small"><?php echo htmlspecialchars($course->category_name ?? '-'); ?></td>
-                                <td class="small"><?php echo htmlspecialchars($course->teacher_name); ?></td>
-                                <td>
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; color: #57534e; font-size: 0.78rem;"><?php echo htmlspecialchars($course->category_name ?? '-'); ?></td>
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; color: #57534e; font-size: 0.78rem;"><?php echo htmlspecialchars($course->teacher_name); ?></td>
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
                                     <?php if ($course->status === 'published'): ?>
-                                        <span class="badge bg-success badge-modern"><i class="fas fa-check-circle me-1"></i> <?php echo t('Published', 'Published'); ?></span>
+                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #14b8a6; font-size: 0.62rem;">
+                                            <i class="fas fa-check-circle me-1" style="font-size: 0.5rem;"></i> <?php echo t('Published', 'Published'); ?>
+                                        </span>
                                     <?php elseif ($course->status === 'draft'): ?>
-                                        <span class="badge bg-warning text-dark badge-modern"><i class="fas fa-pencil-alt me-1"></i> <?php echo t('Draft', 'Draft'); ?></span>
+                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.62rem;">
+                                            <i class="fas fa-pencil-alt me-1" style="font-size: 0.5rem;"></i> <?php echo t('Draft', 'Draft'); ?>
+                                        </span>
                                     <?php else: ?>
-                                        <span class="badge bg-secondary badge-modern"><i class="fas fa-archive me-1"></i> <?php echo t('Archived', 'Archived'); ?></span>
+                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f5f5f4; color: #78716c; font-size: 0.62rem;">
+                                            <i class="fas fa-archive me-1" style="font-size: 0.5rem;"></i> <?php echo t('Archived', 'Archived'); ?>
+                                        </span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="fw-bold text-dark small"><?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : t('Gratis', 'Free'); ?></td>
-                                <td class="text-center">
-                                    <div class="d-flex align-items-center gap-1 justify-content-center flex-wrap">
-                                        <a href="<?php echo base_url('admin/lessons/' . $course->id); ?>" class="btn btn-sm fw-bold border-0 btn-ghost-primary" title="<?php echo t('Materi', 'Lessons'); ?>">
-                                            <i data-lucide="list" style="width:16px;height:16px;"></i>
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; font-weight: 700; color: #1c1917; font-size: 0.8rem;">
+                                    <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span style="color: #14b8a6;">' . t('Gratis', 'Free') . '</span>'; ?>
+                                </td>
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
+                                    <div class="d-flex gap-1 justify-content-center">
+                                        <a href="<?php echo base_url('admin/lessons/' . $course->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center gap-1" style="background: #f5f5f4; color: #57534e; font-size: 0.68rem;" title="<?php echo t('Materi', 'Lessons'); ?>">
+                                            <i class="fas fa-list" style="font-size: 0.65rem;"></i>
                                         </a>
-                                        <a href="<?php echo base_url('quiz/admin_quizzes/' . $course->id); ?>" class="btn btn-sm fw-bold border-0 btn-ghost-primary" title="<?php echo t('Quiz', 'Quizzes'); ?>">
-                                            <i data-lucide="pencil" style="width:16px;height:16px;"></i>
+                                        <a href="<?php echo base_url('quiz/admin_quizzes/' . $course->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center gap-1" style="background: #f5f5f4; color: #57534e; font-size: 0.68rem;" title="<?php echo t('Quiz', 'Quizzes'); ?>">
+                                            <i class="fas fa-pencil-alt" style="font-size: 0.65rem;"></i>
                                         </a>
-                                        <a href="<?php echo base_url('admin/assignments/' . $course->id); ?>" class="btn btn-sm fw-bold border-0 btn-ghost-primary" title="<?php echo t('Tugas', 'Assignments'); ?>">
-                                            <i data-lucide="code" style="width:16px;height:16px;"></i>
+                                        <a href="<?php echo base_url('admin/assignments/' . $course->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center gap-1" style="background: #f5f5f4; color: #57534e; font-size: 0.68rem;" title="<?php echo t('Tugas', 'Assignments'); ?>">
+                                            <i class="fas fa-code" style="font-size: 0.65rem;"></i>
                                         </a>
                                     </div>
                                 </td>
-                                <td class="text-center">
+                                <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="<?php echo base_url('admin/edit_course/' . $course->id); ?>" class="btn btn-warning btn-sm px-2" title="<?php echo t('Edit', 'Edit'); ?>">
-                                            <i data-lucide="edit" style="width:14px;height:14px;"></i>
+                                        <a href="<?php echo base_url('admin/edit_course/' . $course->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background: #f97316; color: #fff; font-size: 0.68rem;" title="<?php echo t('Edit', 'Edit'); ?>">
+                                            <i class="fas fa-edit" style="font-size: 0.65rem;"></i>
                                         </a>
-                                        <a href="<?php echo base_url('admin/delete_course/' . $course->id); ?>" data-confirm="<?php echo t('Hapus konten ini?', 'Delete this content?'); ?>" class="btn btn-outline-danger btn-sm px-2" title="<?php echo t('Hapus', 'Delete'); ?>">
-                                            <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
+                                        <a href="<?php echo base_url('admin/delete_course/' . $course->id); ?>" data-confirm="<?php echo t('Hapus konten ini?', 'Delete this content?'); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="border: 1px solid #fca5a5; color: #f43f5e; font-size: 0.68rem;" title="<?php echo t('Hapus', 'Delete'); ?>">
+                                            <i class="fas fa-trash-alt" style="font-size: 0.65rem;"></i>
                                         </a>
                                     </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
+        <?php endif; ?>
     </div>
 
-    <!-- Grid View (hidden by default) -->
-    <div class="bento-grid bento-grid-3" id="gridView" style="display:none;">
-        <?php if (!empty($courses)): ?>
-            <?php foreach ($courses as $course): ?>
-                <div class="content-card" data-status="<?php echo $course->status; ?>">
-                    <div class="card-thumb">
-                        <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60';" alt="">
-                        <div class="card-badge">
-                            <span class="badge bg-dark badge-modern"><?php echo content_type_label($course->content_type); ?></span>
-                        </div>
-                    </div>
-                    <div class="card-body-custom">
-                        <div class="card-meta">
-                            <span><?php echo htmlspecialchars($course->category_name ?? ''); ?></span>
-                            <span class="dot"></span>
-                            <span><?php echo skill_level_label($course->skill_level); ?></span>
-                        </div>
-                        <div class="card-title"><?php echo htmlspecialchars($course->title); ?></div>
-                        <div class="card-desc"><?php echo htmlspecialchars(substr($course->description, 0, 120)) . '...'; ?></div>
-                        <div class="card-footer-custom">
-                            <span class="card-price"><?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : t('Gratis', 'Free'); ?></span>
-                            <div class="d-flex gap-1">
-                                <a href="<?php echo base_url('admin/edit_course/' . $course->id); ?>" class="btn btn-warning btn-sm px-2" title="<?php echo t('Edit', 'Edit'); ?>">
-                                    <i data-lucide="edit" style="width:14px;height:14px;"></i>
-                                </a>
-                                <a href="<?php echo base_url('admin/delete_course/' . $course->id); ?>" data-confirm="<?php echo t('Hapus konten ini?', 'Delete this content?'); ?>" class="btn btn-outline-danger btn-sm px-2" title="<?php echo t('Hapus', 'Delete'); ?>">
-                                    <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-                                </a>
+    <!-- Grid View -->
+    <div id="gridView" style="display: none;">
+        <div class="row g-3">
+            <?php if (!empty($courses)): ?>
+                <?php foreach ($courses as $course): ?>
+                    <div class="col-md-6 col-lg-4" data-status="<?php echo $course->status; ?>">
+                        <div class="border rounded-3 h-100 d-flex flex-column" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
+                            <div class="position-relative" style="aspect-ratio: 16/9;">
+                                <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100" style="object-fit: cover;">
+                                <span class="position-absolute px-2 py-1 rounded-pill fw-semibold" style="bottom: 8px; left: 8px; background: #1c1917; color: #fff; font-size: 0.6rem;">
+                                    <?php echo content_type_label($course->content_type); ?>
+                                </span>
+                            </div>
+                            <div class="p-3 d-flex flex-column flex-fill">
+                                <div style="color: #78716c; font-size: 0.72rem; margin-bottom: 0.25rem;">
+                                    <?php echo htmlspecialchars($course->category_name ?? ''); ?> · <?php echo skill_level_label($course->skill_level); ?>
+                                </div>
+                                <h6 class="fw-bold mb-2" style="color: #1c1917; font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <?php echo htmlspecialchars($course->title); ?>
+                                </h6>
+                                <p style="color: #78716c; font-size: 0.75rem; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                    <?php echo htmlspecialchars(substr($course->description, 0, 120)); ?>...
+                                </p>
+                                <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
+                                    <span class="fw-bold" style="color: #f97316; font-size: 0.82rem;">
+                                        <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span style="color: #14b8a6;">' . t('Gratis', 'Free') . '</span>'; ?>
+                                    </span>
+                                    <div class="d-flex gap-1">
+                                        <a href="<?php echo base_url('admin/edit_course/' . $course->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background: #f97316; color: #fff; font-size: 0.68rem;">
+                                            <i class="fas fa-edit" style="font-size: 0.65rem;"></i>
+                                        </a>
+                                        <a href="<?php echo base_url('admin/delete_course/' . $course->id); ?>" data-confirm="<?php echo t('Hapus konten ini?', 'Delete this content?'); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="border: 1px solid #fca5a5; color: #f43f5e; font-size: 0.68rem;">
+                                            <i class="fas fa-trash-alt" style="font-size: 0.65rem;"></i>
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="col-12">
+                    <div class="border rounded-3 p-5 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
+                        <div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-book-open"></i></div>
+                        <h6 class="fw-bold" style="color: #1c1917;"><?php echo t('Belum Ada Konten', 'No Content Yet'); ?></h6>
+                    </div>
                 </div>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <div class="col-12">
-                <div class="empty-state">
-                    <i data-lucide="book-open" style="width:48px;height:48px;color:var(--gray-300);"></i>
-                    <h5><?php echo t('Belum ada konten.', 'No content yet.'); ?></h5>
-                </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
     </div>
 </div>
 
@@ -164,18 +191,17 @@ function toggleView() {
     if (tableView) {
         table.style.display = 'block';
         grid.style.display = 'none';
-        btn.innerHTML = '<i data-lucide="layout-grid" style="width:16px;height:16px;"></i>';
+        btn.innerHTML = '<i class="fas fa-th" style="font-size: 0.7rem;"></i>';
     } else {
         table.style.display = 'none';
-        grid.style.display = 'grid';
-        btn.innerHTML = '<i data-lucide="list" style="width:16px;height:16px;"></i>';
+        grid.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-list" style="font-size: 0.7rem;"></i>';
     }
-    if (typeof lucide !== 'undefined') { lucide.createIcons(); }
 }
 function filterTable() {
     var q = document.getElementById('searchInput')?.value.toLowerCase() || '';
     var status = document.getElementById('statusFilter')?.value || '';
-    var rows = document.querySelectorAll('#courseTable tbody tr, #gridView .content-card');
+    var rows = document.querySelectorAll('#courseTable tbody tr, #gridView [data-status]');
     rows.forEach(function(row) {
         var text = row.textContent.toLowerCase();
         var rowStatus = row.getAttribute('data-status') || '';

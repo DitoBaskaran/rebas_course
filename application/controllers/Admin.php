@@ -23,7 +23,6 @@ class Admin extends CI_Controller {
         $this->load->model('Translation_model');
         $this->load->model('Setting_model');
         $this->load->model('Package_model');
-        $this->load->model('Minute_bundle_model');
    }
 
     // ================ DASHBOARD ================
@@ -154,13 +153,19 @@ class Admin extends CI_Controller {
                     }
                     $this->User_subscription_model->activate_subscription($tx->user_id, $package->id, $duration_days, $tx->id);
                 }
-            } elseif ($tx->item_type === 'minute_bundle') {
-                $this->load->model('Minute_bundle_model');
-                $this->load->model('User_minute_balance_model');
-                $bundle = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
-                if ($bundle) {
-                    $seconds = $bundle->minutes * 60;
-                    $this->User_minute_balance_model->add_seconds($tx->user_id, $seconds);
+            } elseif ($tx->item_type === 'mentoring_package') {
+                $this->load->model('Mentoring_package_model');
+                $this->load->model('User_mentoring_balance_model');
+                $package = $this->Mentoring_package_model->get_by_id($tx->item_id);
+                if ($package) {
+                    $this->User_mentoring_balance_model->create(array(
+                        'user_id' => $tx->user_id,
+                        'package_id' => $package->id,
+                        'total_sessions' => $package->session_count,
+                        'remaining_sessions' => $package->session_count,
+                        'session_duration' => $package->session_duration,
+                        'expired_at' => date('Y-m-d', strtotime('+1 year')),
+                    ));
                 }
             }
             $this->session->set_flashdata('success', t('Transaksi disetujui.', 'Transaction approved.'));
@@ -1208,67 +1213,4 @@ class Admin extends CI_Controller {
         $this->Package_model->set_package_items($package_id, $items);
     }
 
-    // ===== MINUTE BUNDLE MANAGEMENT =====
-    public function minute_bundles() {
-        $data['bundles'] = $this->Minute_bundle_model->get_bundles(false);
-        $data['active_page'] = 'minute_bundles';
-        $this->load->view('templates/admin_header', $data);
-        $this->load->view('admin/minute_bundles/list', $data);
-        $this->load->view('templates/admin_footer');
-    }
-
-    public function create_bundle() {
-        $this->form_validation->set_rules('name', t('Nama', 'Name'), 'required|trim');
-        $this->form_validation->set_rules('minutes', t('Menit', 'Minutes'), 'required|numeric');
-        $this->form_validation->set_rules('price', t('Harga', 'Price'), 'required|numeric');
-
-        if ($this->form_validation->run() === FALSE) {
-            $data['active_page'] = 'minute_bundles';
-            $this->load->view('templates/admin_header', $data);
-            $this->load->view('admin/minute_bundles/create', $data);
-            $this->load->view('templates/admin_footer');
-        } else {
-            $this->Minute_bundle_model->create_bundle(array(
-                'name' => $this->input->post('name'),
-                'name_en' => $this->input->post('name_en') ?: '',
-                'minutes' => $this->input->post('minutes'),
-                'price' => $this->input->post('price'),
-                'is_active' => $this->input->post('is_active') ? 1 : 0,
-                'sort_order' => $this->input->post('sort_order') ?: 0,
-            ));
-            $this->session->set_flashdata('success', t('Bundel menit berhasil dibuat.', 'Minute bundle created.'));
-            redirect('admin/minute_bundles');
-        }
-    }
-
-    public function edit_bundle($id) {
-        $bundle = $this->Minute_bundle_model->get_bundle_by_id($id);
-        if (!$bundle) show_404();
-
-        $this->form_validation->set_rules('name', t('Nama', 'Name'), 'required|trim');
-        if ($this->form_validation->run() === FALSE) {
-            $data['active_page'] = 'minute_bundles';
-            $data['bundle'] = $bundle;
-            $this->load->view('templates/admin_header', $data);
-            $this->load->view('admin/minute_bundles/edit', $data);
-            $this->load->view('templates/admin_footer');
-        } else {
-            $this->Minute_bundle_model->update_bundle($id, array(
-                'name' => $this->input->post('name'),
-                'name_en' => $this->input->post('name_en') ?: '',
-                'minutes' => $this->input->post('minutes'),
-                'price' => $this->input->post('price'),
-                'is_active' => $this->input->post('is_active') ? 1 : 0,
-                'sort_order' => $this->input->post('sort_order') ?: 0,
-            ));
-            $this->session->set_flashdata('success', t('Bundel menit berhasil diperbarui.', 'Minute bundle updated.'));
-            redirect('admin/minute_bundles');
-        }
-    }
-
-    public function delete_bundle($id) {
-        $this->Minute_bundle_model->delete_bundle($id);
-        $this->session->set_flashdata('success', t('Bundel menit berhasil dihapus.', 'Minute bundle deleted.'));
-        redirect('admin/minute_bundles');
-    }
 }

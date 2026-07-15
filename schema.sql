@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `name` VARCHAR(100) NOT NULL,
   `email` VARCHAR(100) UNIQUE NOT NULL,
   `password` VARCHAR(255) NOT NULL,
-  `role` ENUM('student', 'teacher', 'admin') DEFAULT 'student',
+  `role` ENUM('student', 'teacher', 'admin', 'mentor') DEFAULT 'student',
   `status` ENUM('active', 'banned') DEFAULT 'active',
   `bio` TEXT NULL,
   `avatar` VARCHAR(255) DEFAULT 'default_avatar.png',
@@ -165,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `transactions` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `uuid` VARCHAR(32) UNIQUE NOT NULL,
   `user_id` INT NOT NULL,
-  `item_type` ENUM('course','seminar','workshop','bootcamp','ebook','project','mentoring','package','package_6mo','minute_bundle') NOT NULL,
+  `item_type` ENUM('course','seminar','workshop','bootcamp','ebook','project','mentoring','package','package_6mo', 'mentoring_package') NOT NULL,
   `item_id` INT NOT NULL,
   `amount` DECIMAL(10, 2) NOT NULL,
   `coupon_id` INT NULL,
@@ -469,70 +469,7 @@ CREATE TABLE IF NOT EXISTS `user_subscriptions` (
   FOREIGN KEY (`transaction_id`) REFERENCES `transactions`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
--- 29. Minute Bundles (admin-defined time bundles for purchase)
-CREATE TABLE IF NOT EXISTS `minute_bundles` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(100) NOT NULL,
-  `name_en` VARCHAR(100) DEFAULT '',
-  `minutes` INT NOT NULL,
-  `price` DECIMAL(10, 2) DEFAULT 0.00,
-  `is_active` BOOLEAN DEFAULT TRUE,
-  `sort_order` INT DEFAULT 0,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 30. User Minute Balances (remaining time per user)
-CREATE TABLE IF NOT EXISTS `user_minute_balances` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT NOT NULL UNIQUE,
-  `balance_seconds` INT DEFAULT 0,
-  `total_purchased_seconds` INT DEFAULT 0,
-  `total_used_seconds` INT DEFAULT 0,
-  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 31. Minute Sessions (real-time tracking of active consumption)
-CREATE TABLE IF NOT EXISTS `minute_sessions` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT NOT NULL,
-  `course_id` INT DEFAULT NULL,
-  `lesson_id` INT DEFAULT NULL,
-  `session_token` VARCHAR(100) NOT NULL,
-  `started_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `last_heartbeat` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  `seconds_consumed` INT DEFAULT 0,
-  `status` ENUM('active','ended','expired') DEFAULT 'active',
-  `ended_at` TIMESTAMP NULL,
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE SET NULL,
-  FOREIGN KEY (`lesson_id`) REFERENCES `lessons`(`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- 32. Minute Consumption Logs (ledger of time usage)
-CREATE TABLE IF NOT EXISTS `minute_consumption_logs` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `user_id` INT NOT NULL,
-  `course_id` INT DEFAULT NULL,
-  `lesson_id` INT DEFAULT NULL,
-  `seconds_consumed` INT NOT NULL,
-  `balance_before` INT NOT NULL,
-  `balance_after` INT NOT NULL,
-  `session_id` VARCHAR(100) DEFAULT NULL,
-  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`course_id`) REFERENCES `courses`(`id`) ON DELETE SET NULL,
-  FOREIGN KEY (`lesson_id`) REFERENCES `lessons`(`id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- Extend transactions.item_type to support packages & minute bundles
-ALTER TABLE `transactions` MODIFY `item_type` ENUM('course','seminar','workshop','bootcamp','ebook','project','mentoring','package','package_6mo','minute_bundle') NOT NULL;
-
--- ============================================================
--- MARKETING & AFFILIATES
--- ============================================================
-
--- 33. Coupons (discount codes)
+-- 29. Coupons (discount codes)
 CREATE TABLE IF NOT EXISTS `coupons` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `code` VARCHAR(50) NOT NULL,
@@ -689,4 +626,158 @@ CREATE TABLE IF NOT EXISTS `settings` (
   `group` VARCHAR(50) DEFAULT 'general',
   `label` VARCHAR(255) DEFAULT '',
   `sort_order` INT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ============================================================
+-- MENTORING 1-ON-1
+-- ============================================================
+
+-- 47. Mentor Categories
+CREATE TABLE IF NOT EXISTS `mentor_categories` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `name_en` VARCHAR(100) DEFAULT '',
+  `slug` VARCHAR(100) UNIQUE NOT NULL,
+  `icon` VARCHAR(255) DEFAULT '',
+  `description` TEXT NULL,
+  `sort_order` INT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 48. Mentors (profile extension for users with role='mentor')
+CREATE TABLE IF NOT EXISTS `mentors` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL UNIQUE,
+  `title` VARCHAR(255) DEFAULT '',
+  `title_en` VARCHAR(255) DEFAULT '',
+  `bio` TEXT NULL,
+  `bio_en` TEXT NULL,
+  `avatar` VARCHAR(255) DEFAULT '',
+  `price_per_session` DECIMAL(10,2) DEFAULT 0.00,
+  `durations_available` VARCHAR(50) DEFAULT '15,30,45,60',
+  `meeting_platforms` VARCHAR(100) DEFAULT 'zoom,gmeet,whatsapp',
+  `is_active` TINYINT(1) DEFAULT 1,
+  `is_available_instant` TINYINT(1) DEFAULT 0,
+  `avg_rating` DECIMAL(2,1) DEFAULT 0.0,
+  `total_reviews` INT DEFAULT 0,
+  `total_sessions` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 49. Mentor Category Pivot
+CREATE TABLE IF NOT EXISTS `mentor_category_pivot` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `mentor_id` INT NOT NULL,
+  `category_id` INT NOT NULL,
+  UNIQUE KEY `mentor_cat_unique` (`mentor_id`, `category_id`),
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`category_id`) REFERENCES `mentor_categories`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 50. Mentoring Packages (what users buy)
+CREATE TABLE IF NOT EXISTS `mentoring_packages` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `name` VARCHAR(100) NOT NULL,
+  `name_en` VARCHAR(100) DEFAULT '',
+  `slug` VARCHAR(100) UNIQUE NOT NULL,
+  `description` TEXT NULL,
+  `description_en` TEXT NULL,
+  `price` DECIMAL(10,2) NOT NULL,
+  `session_count` INT NOT NULL DEFAULT 1,
+  `session_duration` INT NOT NULL DEFAULT 30 COMMENT 'minutes per session',
+  `is_active` TINYINT(1) DEFAULT 1,
+  `sort_order` INT DEFAULT 0,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 51. User Mentoring Balances (when user buys a package)
+CREATE TABLE IF NOT EXISTS `user_mentoring_balances` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `package_id` INT NOT NULL,
+  `total_sessions` INT NOT NULL,
+  `remaining_sessions` INT NOT NULL,
+  `session_duration` INT NOT NULL COMMENT 'minutes per session from package',
+  `expired_at` DATE NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`package_id`) REFERENCES `mentoring_packages`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 52. Mentor Availability (recurring weekly slots)
+CREATE TABLE IF NOT EXISTS `mentor_availability` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `mentor_id` INT NOT NULL,
+  `day_of_week` TINYINT NULL COMMENT '0=Sun, 1=Mon, ... 6=Sat',
+  `start_time` TIME NOT NULL,
+  `end_time` TIME NOT NULL,
+  `is_booked` TINYINT(1) DEFAULT 0,
+  `booking_session_id` INT NULL,
+  `date_override` DATE NULL COMMENT 'specific date override',
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 53. Mentoring Bookings (1-on-1 booked appointments)
+CREATE TABLE IF NOT EXISTS `mentoring_bookings` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `mentor_id` INT NOT NULL,
+  `balance_id` INT NULL,
+  `availability_id` INT NULL,
+  `scheduled_at` DATETIME NOT NULL,
+  `duration` INT NOT NULL DEFAULT 30 COMMENT 'minutes',
+  `status` ENUM('pending','confirmed','completed','cancelled','no_show') DEFAULT 'pending',
+  `meeting_platform` VARCHAR(50) DEFAULT '',
+  `meeting_url` VARCHAR(500) DEFAULT '',
+  `notes` TEXT NULL,
+  `user_confirmed_at` DATETIME NULL,
+  `mentor_confirmed_at` DATETIME NULL,
+  `cancelled_by` VARCHAR(10) NULL COMMENT 'user/mentor',
+  `cancelled_at` DATETIME NULL,
+  `completed_at` DATETIME NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`balance_id`) REFERENCES `user_mentoring_balances`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 54. Mentor Favorites
+CREATE TABLE IF NOT EXISTS `mentor_favorites` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `mentor_id` INT NOT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `user_mentor_fav` (`user_id`, `mentor_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 55. Mentor Reviews (user → mentor)
+CREATE TABLE IF NOT EXISTS `mentor_reviews` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `session_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `mentor_id` INT NOT NULL,
+  `rating` TINYINT NOT NULL CHECK (`rating` BETWEEN 1 AND 5),
+  `review_text` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `session_review` (`session_id`),
+  FOREIGN KEY (`session_id`) REFERENCES `mentoring_bookings`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 56. User Reputations (mentor → user)
+CREATE TABLE IF NOT EXISTS `user_reputations` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `session_id` INT NOT NULL,
+  `mentor_id` INT NOT NULL,
+  `user_id` INT NOT NULL,
+  `rating` TINYINT NOT NULL CHECK (`rating` BETWEEN 1 AND 5),
+  `review_text` TEXT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `session_reputation` (`session_id`),
+  FOREIGN KEY (`session_id`) REFERENCES `mentoring_bookings`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

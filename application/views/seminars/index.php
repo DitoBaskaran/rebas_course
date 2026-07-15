@@ -1,67 +1,107 @@
-<div class="container py-5 my-4">
-    <div class="row mb-5 animate-fade-in-up">
-        <div class="col-lg-8">
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-2">Event</span>
-            <h1 class="display-5 fw-extrabold text-dark mb-2 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Seminar & Webinar', 'Seminars & Webinars'); ?></h1>
-            <p class="text-secondary lead mb-0" style="font-size: 1.1rem; max-width: 600px;"><?php echo t('Kembangkan skill dan wawasanmu melalui diskusi interaktif bersama para pakar.', 'Expand your knowledge through interactive discussions with experts.'); ?></p>
+<!-- Header -->
+<div style="border-bottom: 1px solid #e5e5e5;">
+    <div class="container" style="padding-top: 2rem; padding-bottom: 1.5rem; max-width: 960px;">
+        <div class="text-center mb-4">
+            <span class="px-3 py-1 rounded-pill fw-semibold mb-3 d-inline-block" style="background: #111827; color: #fff; font-size: 0.72rem;">EVENTS</span>
+            <h1 class="fw-extrabold mb-2" style="font-size: 1.6rem; letter-spacing: -0.02em; color: #111827;">
+                <?php echo t('Seminar & Webinar', 'Seminars & Webinars'); ?>
+            </h1>
+            <p class="mb-0 mx-auto" style="color: #737373; font-size: 0.9rem; max-width: 500px;">
+                <?php echo t('Kembangkan skill dan wawasanmu melalui diskusi interaktif bersama para pakar.', 'Expand your knowledge through interactive discussions with experts.'); ?>
+            </p>
         </div>
     </div>
+</div>
 
-    <div class="row g-4">
-        <?php if (empty($seminars)): ?>
-            <div class="col-12">
-                <div class="text-center py-5">
-                    <div class="icon-64 bg-light rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center">
-                        <i class="far fa-calendar-times fs-3 text-secondary"></i>
-                    </div>
-                    <h5 class="fw-bold text-dark"><?php echo t('Belum Ada Seminar', 'No Seminars Yet'); ?></h5>
-                    <p class="text-secondary small mb-0"><?php echo t('Kami sedang merencanakan webinar seru. Pantau terus!', 'We are planning exciting webinars. Stay tuned!'); ?></p>
-                </div>
-            </div>
-        <?php else: ?>
-            <?php $loop = 0; ?>
+<!-- Seminars Grid -->
+<div class="container" style="max-width: 960px; padding-top: 1.5rem; padding-bottom: 3rem;">
+    <?php if (empty($seminars)): ?>
+        <div class="text-center py-5">
+            <div style="font-size: 2.5rem; color: #d4d4d4; margin-bottom: 0.75rem;"><i class="far fa-calendar"></i></div>
+            <h5 class="fw-bold" style="color: #111827;"><?php echo t('Belum Ada Seminar', 'No Seminars Yet'); ?></h5>
+            <p style="color: #737373; font-size: 0.85rem;"><?php echo t('Kami sedang merencanakan seminar seru. Pantau terus!', 'We are planning exciting seminars. Stay tuned!'); ?></p>
+        </div>
+    <?php else: ?>
+        <div class="row g-3">
             <?php foreach($seminars as $seminar): ?>
-                <?php $loop++; ?>
-                <div class="col-md-6 col-lg-4 animate-fade-in-up stagger-<?php echo min($loop, 8); ?>">
-                    <div class="card h-100 border-0 shadow-sm rounded-4 bg-white overflow-hidden hover-zoom d-flex flex-column" style="transition: all 0.3s ease;">
-                        <div class="position-relative overflow-hidden" style="aspect-ratio: 16/10;">
-                            <img src="<?php echo base_url('uploads/seminars/' . $seminar->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100 object-fit-cover">
-                            <div class="position-absolute top-0 start-0 m-3">
-                                <span class="badge bg-white text-dark rounded-pill px-3 py-2 shadow-sm fw-medium border">
-                                    <i class="far fa-clock text-primary me-1"></i> <?php echo date('d M Y', strtotime($seminar->date_time)); ?>
-                                </span>
+                <div class="col-md-6 col-lg-4">
+                    <a href="<?php echo base_url('seminars/detail/' . $seminar->id); ?>" class="text-decoration-none">
+                        <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s;">
+                            <!-- Thumbnail -->
+                            <div class="position-relative overflow-hidden" style="aspect-ratio: 16/9; border-radius: 12px 12px 0 0;">
+                                <img src="<?php echo base_url('uploads/seminars/' . $seminar->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=500&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100" style="object-fit: cover;">
+                                <!-- Date badge -->
+                                <div class="position-absolute top-0 start-0 m-2">
+                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #111827; color: #fff; font-size: 0.65rem;">
+                                        <i class="far fa-calendar me-1" style="font-size: 0.55rem;"></i><?php echo date('d M', strtotime($seminar->date_time)); ?>
+                                    </span>
+                                </div>
+                                <!-- Price badge -->
+                                <?php if ($seminar->price > 0): ?>
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="px-2 py-1 rounded-pill fw-bold" style="background: #eab308; color: #111827; font-size: 0.65rem;">
+                                            Rp <?php echo number_format($seminar->price, 0, ',', '.'); ?>
+                                        </span>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="position-absolute top-0 end-0 m-2">
+                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #22c55e; color: #fff; font-size: 0.65rem;">
+                                            <?php echo t('Gratis', 'Free'); ?>
+                                        </span>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Content -->
+                            <div class="card-body p-3 d-flex flex-column">
+                                <!-- Time & Type -->
+                                <div class="d-flex align-items-center gap-2 mb-1" style="color: #737373; font-size: 0.72rem; font-weight: 500;">
+                                    <span class="d-flex align-items-center gap-1">
+                                        <i class="far fa-clock" style="font-size: 0.6rem;"></i>
+                                        <?php echo date('H:i', strtotime($seminar->date_time)); ?> WIB
+                                    </span>
+                                    <span style="color: #e5e5e5;">•</span>
+                                    <span class="d-flex align-items-center gap-1">
+                                        <i class="fas fa-video" style="font-size: 0.6rem;"></i>
+                                        <?php echo t('Online', 'Online'); ?>
+                                    </span>
+                                </div>
+
+                                <!-- Title -->
+                                <h6 class="fw-bold mb-2 lh-sm" style="color: #111827; font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                    <?php echo htmlspecialchars($seminar->title); ?>
+                                </h6>
+
+                                <!-- Description -->
+                                <p class="mb-2 flex-grow-1" style="color: #737373; font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                    <?php echo htmlspecialchars($seminar->description); ?>
+                                </p>
+
+                                <!-- Speaker -->
+                                <div class="d-flex align-items-center gap-2 mb-2 py-2 px-3 rounded-3" style="background: #fafafa;">
+                                    <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($seminar->speaker_name); ?>&background=f59e0b&color=fff&size=28" alt="" style="width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;">
+                                    <div>
+                                        <div class="fw-semibold" style="color: #111827; font-size: 0.75rem;"><?php echo htmlspecialchars($seminar->speaker_name); ?></div>
+                                        <div style="color: #a3a3a3; font-size: 0.65rem;"><?php echo t('Pembicara', 'Speaker'); ?></div>
+                                    </div>
+                                </div>
+
+                                <!-- Bottom -->
+                                <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0f0f0;">
+                                    <span style="color: #eab308; font-size: 0.8rem; font-weight: 600;">
+                                        <?php echo t('Daftar', 'Register'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i>
+                                    </span>
+                                    <?php if ($seminar->quota): ?>
+                                        <span class="px-2 py-1 rounded-pill" style="background: #f5f5f5; color: #525252; font-size: 0.65rem; font-weight: 600;">
+                                            <?php echo $seminar->quota; ?> <?php echo t('kuota', 'quota'); ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-body p-4 d-flex flex-column flex-grow-1">
-                            <div class="d-flex align-items-center gap-2 mb-3 text-secondary small fw-medium">
-                                <i class="far fa-clock text-primary"></i> <?php echo date('H:i', strtotime($seminar->date_time)); ?> WIB
-                                <span class="opacity-50 mx-1">•</span>
-                                <i class="fas fa-video text-primary"></i> Live Online
-                            </div>
-                            
-                            <h5 class="fw-bold text-dark mb-3 lh-sm" style="font-size: 1.15rem;"><?php echo htmlspecialchars($seminar->title); ?></h5>
-                            <p class="text-secondary small mb-4 flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;"><?php echo htmlspecialchars($seminar->description); ?></p>
-                            
-                            <div class="d-flex align-items-center gap-3 mb-4 p-3 bg-light rounded-3">
-                                <div class="icon-40 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center flex-shrink-0 fw-bold">
-                                    <?php echo substr($seminar->speaker_name, 0, 1); ?>
-                                </div>
-                                <div>
-                                    <div class="text-dark fw-bold small"><?php echo htmlspecialchars($seminar->speaker_name); ?></div>
-                                    <div class="text-secondary" style="font-size: 0.75rem;">Pembicara</div>
-                                </div>
-                            </div>
-                            
-                            <div class="mt-auto pt-3 border-top border-light d-flex align-items-center justify-content-between">
-                                <span class="fs-5 fw-bold text-dark"><?php echo $seminar->price > 0 ? 'Rp ' . number_format($seminar->price, 0, ',', '.') : '<span class="text-success">' . t('Gratis', 'Free') . '</span>'; ?></span>
-                                <a href="<?php echo base_url('seminars/detail/' . $seminar->id); ?>" class="btn btn-primary btn-sm rounded-pill px-4 py-2 fw-semibold shadow-sm">
-                                    <?php echo t('Daftar', 'Register'); ?> <i class="fas fa-arrow-right ms-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
             <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
+        </div>
+    <?php endif; ?>
 </div>

@@ -1,4 +1,4 @@
-<div class="admin-sidebar" id="adminSidebar">
+<div class="admin-sidebar playful" id="adminSidebar">
     <?php $active_page = isset($active_page) ? $active_page : ''; ?>
     <div class="sidebar-heading"><?php echo t('Menu Utama', 'Main Menu'); ?></div>
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url('admin/dashboard'); ?>">
@@ -27,9 +27,6 @@
     </a>
     <a class="nav-link <?php echo $active_page === 'packages' ? 'active' : ''; ?>" href="<?php echo base_url('admin/packages'); ?>">
         <i data-lucide="layers"></i> <span><?php echo t('Paket Langganan', 'Subscription Packages'); ?></span>
-    </a>
-    <a class="nav-link <?php echo $active_page === 'minute_bundles' ? 'active' : ''; ?>" href="<?php echo base_url('admin/minute_bundles'); ?>">
-        <i data-lucide="clock"></i> <span><?php echo t('Bundel Menit', 'Minute Bundles'); ?></span>
     </a>
     <a class="nav-link <?php echo $active_page === 'users' ? 'active' : ''; ?>" href="<?php echo base_url('admin/users'); ?>">
         <i data-lucide="users"></i> <span><?php echo t('Pengguna', 'Users'); ?></span>
@@ -84,4 +81,4 @@
         <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
     </button>
 </div>
-<div class="admin-sidebar-overlay" id="sidebarOverlay"></div>
+<div class="admin-sidebar-overlay playful" id="sidebarOverlay"></div>

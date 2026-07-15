@@ -4,7 +4,7 @@
     <!-- Admin Footer -->
     <div class="admin-footer" id="adminFooter">
         <div class="admin-footer-inner">
-            <span class="small text-secondary">&copy; <?php echo date('Y'); ?> <strong><?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?></strong></span>
+            <span class="small text-secondary">&copy; <?php echo date('Y'); ?> <strong>BISATUNTAS</strong></span>
             <span class="small text-secondary">v3.0</span>
         </div>
     </div>

@@ -1,4 +1,4 @@
-<div class="admin-sidebar" id="adminSidebar">
+<div class="admin-sidebar playful" id="adminSidebar">
     <?php $active_page = isset($active_page) ? $active_page : ''; ?>
     <div class="sidebar-heading"><?php echo t('Menu Utama', 'Main Menu'); ?></div>
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url('dashboard'); ?>">
@@ -25,9 +25,6 @@
     <a class="nav-link <?php echo $active_page === 'subscription' ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>">
         <i data-lucide="layers"></i> <span><?php echo t('Langganan', 'Subscription'); ?></span>
     </a>
-    <a class="nav-link <?php echo $active_page === 'minute_balance' ? 'active' : ''; ?>" href="<?php echo base_url('minute_balance'); ?>">
-        <i data-lucide="clock"></i> <span><?php echo t('Saldo Menit', 'Minute Balance'); ?></span>
-    </a>
     <a class="nav-link <?php echo $active_page === 'transactions' ? 'active' : ''; ?>" href="<?php echo base_url('transactions/history'); ?>">
         <i data-lucide="receipt"></i> <span><?php echo t('Riwayat Transaksi', 'Transaction History'); ?></span>
     </a>
@@ -48,4 +45,4 @@
         <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
     </button>
 </div>
-<div class="admin-sidebar-overlay" id="sidebarOverlay" onclick="document.getElementById('adminSidebar').classList.remove('mobile-show');this.classList.remove('mobile-show');"></div>
+<div class="admin-sidebar-overlay playful" id="sidebarOverlay" onclick="document.getElementById('adminSidebar').classList.remove('mobile-show');this.classList.remove('mobile-show');"></div>

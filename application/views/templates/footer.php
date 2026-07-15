@@ -1,101 +1,83 @@
-    <!-- Footer -->
-    <footer class="bg-gradient-dark text-white mt-auto" style="border-top: 1px solid rgba(255,255,255,0.05);">
-        <div class="container py-5">
-            <div class="row g-5">
+    <!-- Footer — Dealls-style -->
+    <footer class="bg-white mt-auto" style="border-top: 1px solid #e5e5e5;">
+        <div class="container py-4">
+            <div class="row g-4">
                 <div class="col-lg-4">
-                    <div class="d-flex align-items-center gap-2 mb-3">
-                        <?php $logo_url = site_logo_url(); if ($logo_url): ?>
-                            <img src="<?php echo $logo_url; ?>" alt="<?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?>" style="height: 30px; width: auto;">
-                        <?php else: ?>
-                            <span class="d-inline-flex align-items-center justify-content-center bg-gradient-primary text-white rounded-2 p-1" style="width: 34px; height: 34px;">
-                                <i class="fas fa-graduation-cap fa-sm"></i>
-                            </span>
-                        <?php endif; ?>
-                        <span class="fw-extrabold fs-5 text-white"><?php echo htmlspecialchars(setting('general_site_name', 'REBAS COURSE')); ?></span>
+                    <div class="fw-bold text-dark mb-3" style="font-size: 1rem; letter-spacing: -0.02em;">
+                        <?php echo htmlspecialchars(setting('general_site_name', 'BISATUNTAS')); ?>
                     </div>
-                    <p class="text-white-50 small mb-4" style="max-width: 340px; line-height: 1.7;">
+                    <p class="small mb-4" style="color: #737373; line-height: 1.6; max-width: 320px;">
                         <?php echo htmlspecialchars(t(setting('footer_about_text', 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.'), setting('footer_about_text_en', ''))); ?>
                     </p>
                     <div class="d-flex gap-2">
                         <?php $social_platforms = array(
-                            'facebook' => 'fab fa-facebook-f',
                             'instagram' => 'fab fa-instagram',
                             'youtube' => 'fab fa-youtube',
-                            'tiktok' => 'fab fa-tiktok',
-                            'twitter' => 'fab fa-twitter',
                             'linkedin' => 'fab fa-linkedin-in',
-                            'whatsapp' => 'fab fa-whatsapp'
+                            'facebook' => 'fab fa-facebook-f',
+                            'twitter' => 'fab fa-twitter',
+                            'tiktok' => 'fab fa-tiktok',
                         ); ?>
                         <?php foreach ($social_platforms as $platform => $icon): ?>
                             <?php $url = setting('social_' . $platform); if ($url && $url !== '#'): ?>
-                                <a href="<?php echo $url; ?>" class="footer-social-link" target="_blank" rel="noopener">
-                                    <i class="<?php echo $icon; ?>"></i>
+                                <a href="<?php echo $url; ?>" class="d-flex align-items-center justify-content-center rounded-circle text-decoration-none" style="width: 34px; height: 34px; background: #f5f5f5; color: #737373; transition: all 0.15s;" target="_blank" rel="noopener">
+                                    <i class="<?php echo $icon; ?>" style="font-size: 0.85rem;"></i>
                                 </a>
                             <?php endif; ?>
                         <?php endforeach; ?>
                     </div>
                 </div>
-                <div class="col-6 col-md-3 col-lg-2">
-                    <h6 class="fw-bold text-white mb-3" style="font-size: 0.8125rem; letter-spacing: 0.03em;"><?php echo t('Navigasi', 'Navigation'); ?></h6>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-dark mb-3" style="font-size: 0.8rem; letter-spacing: 0.02em;"><?php echo t('Navigasi', 'Navigation'); ?></h6>
                     <ul class="list-unstyled small d-flex flex-column gap-2">
-                        <li><a href="<?php echo base_url(); ?>" class="footer-link"><?php echo t('Beranda', 'Home'); ?></a></li>
-                        <li><a href="<?php echo base_url('courses'); ?>" class="footer-link"><?php echo t('Kelas Online', 'Online Classes'); ?></a></li>
-                        <li><a href="<?php echo base_url('seminars'); ?>" class="footer-link"><?php echo t('Seminar', 'Seminars'); ?></a></li>
-                        <li><a href="<?php echo base_url('learning_paths'); ?>" class="footer-link"><?php echo t('Learning Paths', 'Learning Paths'); ?></a></li>
-                        <li><a href="<?php echo base_url('mentoring'); ?>" class="footer-link"><?php echo t('Mentoring', 'Mentoring'); ?></a></li>
+                        <li><a href="<?php echo base_url(); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Beranda', 'Home'); ?></a></li>
+                        <li><a href="<?php echo base_url('courses'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Kelas', 'Courses'); ?></a></li>
+                        <li><a href="<?php echo base_url('seminars'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Seminar', 'Seminars'); ?></a></li>
+                        <li><a href="<?php echo base_url('learning_paths'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Learning Paths', 'Paths'); ?></a></li>
+                        <li><a href="<?php echo base_url('mentoring'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Mentoring', 'Mentoring'); ?></a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-3 col-lg-2">
-                    <h6 class="fw-bold text-white mb-3" style="font-size: 0.8125rem; letter-spacing: 0.03em;"><?php echo t('Akun', 'Account'); ?></h6>
+                <div class="col-6 col-lg-2">
+                    <h6 class="fw-bold text-dark mb-3" style="font-size: 0.8rem; letter-spacing: 0.02em;"><?php echo t('Akun', 'Account'); ?></h6>
                     <ul class="list-unstyled small d-flex flex-column gap-2">
                         <?php if ($this->session->userdata('logged_in')): ?>
-                            <li><a href="<?php echo base_url('dashboard'); ?>" class="footer-link"><?php echo t('Dashboard', 'Dashboard'); ?></a></li>
-                            <li><a href="<?php echo base_url('profile'); ?>" class="footer-link"><?php echo t('Profil', 'Profile'); ?></a></li>
-                            <li><a href="<?php echo base_url('auth/logout'); ?>" class="footer-link"><?php echo t('Keluar', 'Logout'); ?></a></li>
+                            <li><a href="<?php echo base_url('dashboard'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Dashboard', 'Dashboard'); ?></a></li>
+                            <li><a href="<?php echo base_url('profile'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Profil', 'Profile'); ?></a></li>
+                            <li><a href="<?php echo base_url('auth/logout'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Keluar', 'Logout'); ?></a></li>
                         <?php else: ?>
-                            <li><a href="<?php echo base_url('auth/login'); ?>" class="footer-link"><?php echo t('Masuk', 'Login'); ?></a></li>
-                            <li><a href="<?php echo base_url('auth/register'); ?>" class="footer-link"><?php echo t('Daftar', 'Register'); ?></a></li>
+                            <li><a href="<?php echo base_url('auth/login'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Masuk', 'Login'); ?></a></li>
+                            <li><a href="<?php echo base_url('auth/register'); ?>" style="color: #737373; text-decoration: none; transition: color 0.15s;" onmouseover="this.style.color='#111827'" onmouseout="this.style.color='#737373'"><?php echo t('Daftar', 'Register'); ?></a></li>
                         <?php endif; ?>
                     </ul>
                 </div>
-                <div class="col-md-6 col-lg-4">
-                    <h6 class="fw-bold text-white mb-3" style="font-size: 0.8125rem; letter-spacing: 0.03em;"><?php echo t('Hubungi Kami', 'Contact Us'); ?></h6>
-                    <ul class="list-unstyled small d-flex flex-column gap-3">
-                        <li class="d-flex align-items-center gap-3 text-white-50">
-                            <span class="d-inline-flex align-items-center justify-content-center flex-shrink-0 rounded-2" style="width: 32px; height: 32px; background: rgba(255,255,255,0.06);">
-                                <i class="fas fa-envelope fa-sm"></i>
-                            </span>
-                            <span><?php echo htmlspecialchars(setting('general_contact_email', 'support@rebascourse.com')); ?></span>
+                <div class="col-lg-4">
+                    <h6 class="fw-bold text-dark mb-3" style="font-size: 0.8rem; letter-spacing: 0.02em;"><?php echo t('Hubungi Kami', 'Contact Us'); ?></h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2" style="color: #737373;">
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="fas fa-envelope" style="width: 14px;"></i>
+                            <span><?php echo htmlspecialchars(setting('general_contact_email', 'hello@bisatuntas.com')); ?></span>
                         </li>
-                        <li class="d-flex align-items-center gap-3 text-white-50">
-                            <span class="d-inline-flex align-items-center justify-content-center flex-shrink-0 rounded-2" style="width: 32px; height: 32px; background: rgba(255,255,255,0.06);">
-                                <i class="fas fa-phone-alt fa-sm"></i>
-                            </span>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="fas fa-phone-alt" style="width: 14px;"></i>
                             <span><?php echo htmlspecialchars(setting('general_contact_phone', '021-1234-5678')); ?></span>
                         </li>
-                        <li class="d-flex align-items-center gap-3 text-white-50">
-                            <span class="d-inline-flex align-items-center justify-content-center flex-shrink-0 rounded-2" style="width: 32px; height: 32px; background: rgba(255,255,255,0.06);">
-                                <i class="fas fa-map-marker-alt fa-sm"></i>
-                            </span>
+                        <li class="d-flex align-items-center gap-2">
+                            <i class="fas fa-map-marker-alt" style="width: 14px;"></i>
                             <span><?php echo htmlspecialchars(setting('general_contact_address', 'Jakarta, Indonesia')); ?></span>
                         </li>
                     </ul>
                 </div>
             </div>
         </div>
-        <div class="border-top border-white border-opacity-10">
+        <div class="border-top" style="border-color: #e5e5e5;">
             <div class="container py-3">
-                <div class="row align-items-center">
-                    <div class="col-md-6 text-center text-md-start">
-                        <p class="text-white-50 small mb-0">
-                            &copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(setting('footer_copyright', 'REBAS COURSE. All rights reserved.')); ?>
-                        </p>
-                    </div>
-                    <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
-                        <p class="text-white-50 small mb-0">
-                            <?php echo t('Dibuat dengan', 'Made with'); ?> <i class="fas fa-heart text-danger"></i> <?php echo t('untuk pendidikan', 'for education'); ?>
-                        </p>
-                    </div>
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2">
+                    <p class="small mb-0" style="color: #a3a3a3;">
+                        &copy; <?php echo date('Y'); ?> <?php echo htmlspecialchars(setting('footer_copyright', 'BISATUNTAS. All rights reserved.')); ?>
+                    </p>
+                    <p class="small mb-0" style="color: #a3a3a3;">
+                        <?php echo t('Dibuat dengan', 'Made with'); ?> <i class="fas fa-heart" style="color: #eab308;"></i> <?php echo t('untuk pendidikan', 'for education'); ?>
+                    </p>
                 </div>
             </div>
         </div>

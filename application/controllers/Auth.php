@@ -46,7 +46,11 @@ class Auth extends CI_Controller {
 
                 $this->session->set_flashdata('success', t('Selamat datang kembali, ', 'Welcome back, ') . $user->name);
 
-                if (in_array($user->role, ['admin', 'teacher'])) {
+                if ($user->role === 'mentor') {
+                    redirect('mentor');
+                } else                if ($user->role === 'mentor') {
+                    redirect('mentor');
+                } elseif (in_array($user->role, ['admin', 'teacher'])) {
                     redirect('admin/dashboard');
                 } else {
                     redirect('dashboard');

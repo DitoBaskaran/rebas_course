@@ -15,6 +15,7 @@ class Home extends CI_Controller {
     public function index() {
         $site_name = setting('general_site_name', 'REBAS COURSE');
         $data['title'] = t($site_name . ' - Platform Belajar & Seminar Online', $site_name . ' - Online Learning & Seminar Platform');
+        $data['is_homepage'] = true;
         $featured_count = (int)(setting('home_featured_count', 4));
         $recent_count = (int)(setting('home_recent_count', 6));
         $data['featured_courses'] = $this->Course_model->get_featured_courses($featured_count ?: 4);

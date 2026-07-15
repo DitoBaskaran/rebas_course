@@ -34,7 +34,7 @@ try {
     echo "Koneksi database berhasil.\n";
 
     // ===== BOOTSTRAP: drop + create semua tabel dari schema.sql =====
-    $all_tables = ['minute_consumption_logs','minute_sessions','user_minute_balances','minute_bundles','user_subscriptions','package_items','packages','coupon_usages','coupons','affiliate_conversions','affiliate_clicks','affiliates','user_sources','wishlists','point_transactions','user_points','user_badges','badges','password_resets','contact_messages','settings','path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'];
+    $all_tables = ['user_subscriptions','package_items','packages','coupon_usages','coupons','affiliate_conversions','affiliate_clicks','affiliates','user_sources','wishlists','point_transactions','user_points','user_badges','badges','password_resets','contact_messages','settings','path_enrollments','learning_path_contents','learning_paths','quiz_attempts','quiz_questions','quizzes','submissions','assignments','certificates','reviews','discussion_replies','discussions','mentoring_bookings','mentor_favorites','user_reputations','mentor_reviews','mentoring_packages','user_mentoring_balances','mentor_availability','mentors','mentor_category_pivot','mentor_categories','mentoring_sessions','content_tags','tags','progress','transactions','seminar_registrations','enrollments','lessons','courses','categories','seminars','translations','users'];
 
     $pdo->exec("SET FOREIGN_KEY_CHECKS = 0;");
     foreach ($all_tables as $t) {
@@ -430,20 +430,6 @@ try {
     $stmt->execute([$pkg_basic, 'category', $sub_data]);
     echo "Package Items OK.\n";
 
-    // ========== MINUTE BUNDLES ==========
-    $stmt = $pdo->prepare("INSERT INTO minute_bundles (name, name_en, minutes, price, is_active, sort_order, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute(['30 Menit', '30 Minutes', 30, 25000, 1, 1]);
-    $stmt->execute(['60 Menit', '60 Minutes', 60, 45000, 1, 2]);
-    $stmt->execute(['120 Menit', '120 Minutes', 120, 80000, 1, 3]);
-    $stmt->execute(['300 Menit', '300 Minutes', 300, 175000, 1, 4]);
-    $stmt->execute(['600 Menit', '600 Minutes', 600, 300000, 1, 5]);
-    echo "Minute Bundles OK.\n";
-
-    // ========== USER MINUTE BALANCES (sample) ==========
-    $stmt = $pdo->prepare("INSERT INTO user_minute_balances (user_id, balance_seconds, total_purchased_seconds, total_used_seconds, updated_at) VALUES (?, ?, ?, ?, NOW())");
-    $stmt->execute([$student_rian, 7200, 7200, 0]);
-    echo "User Minute Balances OK.\n";
-
     // ========== USER SUBSCRIPTIONS (sample) ==========
     $stmt = $pdo->prepare("INSERT INTO user_subscriptions (user_id, package_id, status, started_at, expires_at, created_at) VALUES (?, ?, 'active', NOW(), DATE_ADD(NOW(), INTERVAL ? DAY), NOW())");
     $stmt->execute([$student_siti, $pkg_premium, 30]);
@@ -656,6 +642,86 @@ try {
         $stmt->execute($s);
     }
     echo "Settings OK.\n";
+
+    // ========== MENTOR CATEGORIES ==========
+    $stmt = $pdo->prepare("INSERT INTO mentor_categories (name, name_en, slug, icon, sort_order) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute(['Akademik', 'Academic', 'akademik', 'book-open', 10]);
+    $stmt->execute(['Karir', 'Career', 'karir', 'briefcase', 20]);
+    $stmt->execute(['Teknologi', 'Technology', 'teknologi', 'code', 30]);
+    $stmt->execute(['Bisnis', 'Business', 'bisnis', 'dollar-sign', 40]);
+    $stmt->execute(['Soft Skill', 'Soft Skill', 'soft-skill', 'users', 50]);
+    echo "Mentor Categories OK.\n";
+
+    // ========== MENTORS ==========
+    $mentor_dimas = (int)$pdo->query("SELECT id FROM users WHERE email='dimas@rebas.com'")->fetchColumn();
+    $mentor_sarah = (int)$pdo->query("SELECT id FROM users WHERE email='sarah@rebas.com'")->fetchColumn();
+    $mentor_bryan = (int)$pdo->query("SELECT id FROM users WHERE email='bryan@rebas.com'")->fetchColumn();
+
+    $stmt = $pdo->prepare("INSERT INTO mentors (user_id, title, title_en, bio, bio_en, avatar, price_per_session, durations_available, meeting_platforms, is_active, avg_rating, total_reviews, total_sessions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute([$mentor_dimas, 'Full-stack Developer', 'Full-stack Developer', 'Berpengalaman 10 tahun di pengembangan web dan aplikasi mobile. Siap bantu kamu belajar coding dari nol hingga mahir!', '10 years experience in web and mobile app development. Ready to help you learn coding from scratch to advanced!', 'mentor_dimas.png', 100000.00, '30,60', 'zoom,gmeet', 1, 4.9, 25, 120]);
+    $mentor_dimas_id = (int)$pdo->lastInsertId();
+    $stmt->execute([$mentor_sarah, 'Konsultan Karir', 'Career Consultant', 'Membantu fresh graduate dan profesional muda menemukan jalur karir impian mereka. Fokus pada interview & CV.', 'Helps fresh graduates and young professionals find their dream career path. Focus on interviews & CV.', 'mentor_sarah.png', 120000.00, '15,30,45', 'gmeet,whatsapp', 1, 4.7, 30, 150]);
+    $mentor_sarah_id = (int)$pdo->lastInsertId();
+    $stmt->execute([$mentor_bryan, 'Data Scientist', 'Data Scientist', 'Ahli dalam analisis data dan machine learning. Membantu project data science dan persiapan karir di bidang data.', 'Expert in data analysis and machine learning. Helping with data science projects and career preparation in data field.', 'mentor_bryan.png', 150000.00, '30,60', 'zoom', 1, 4.8, 15, 80]);
+    $mentor_bryan_id = (int)$pdo->lastInsertId();
+    echo "Mentors OK.\n";
+
+    // ========== MENTOR CATEGORY PIVOT ==========
+    $akademik_cat = (int)$pdo->query("SELECT id FROM mentor_categories WHERE slug='akademik'")->fetchColumn();
+    $karir_cat = (int)$pdo->query("SELECT id FROM mentor_categories WHERE slug='karir'")->fetchColumn();
+    $teknologi_cat = (int)$pdo->query("SELECT id FROM mentor_categories WHERE slug='teknologi'")->fetchColumn();
+    $bisnis_cat = (int)$pdo->query("SELECT id FROM mentor_categories WHERE slug='bisnis'")->fetchColumn();
+    $softskill_cat = (int)$pdo->query("SELECT id FROM mentor_categories WHERE slug='soft-skill'")->fetchColumn();
+
+    $stmt = $pdo->prepare("INSERT INTO mentor_category_pivot (mentor_id, category_id) VALUES (?, ?)");
+    $stmt->execute([$mentor_dimas_id, $teknologi_cat]);
+    $stmt->execute([$mentor_dimas_id, $akademik_cat]);
+    $stmt->execute([$mentor_sarah_id, $karir_cat]);
+    $stmt->execute([$mentor_sarah_id, $softskill_cat]);
+    $stmt->execute([$mentor_bryan_id, $teknologi_cat]);
+    $stmt->execute([$mentor_bryan_id, $akademik_cat]);
+    echo "Mentor Category Pivot OK.\n";
+
+    // ========== MENTORING PACKAGES ==========
+    $stmt = $pdo->prepare("INSERT INTO mentoring_packages (name, name_en, slug, description, description_en, price, session_count, session_duration, is_active, sort_order) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->execute(['Paket Konsultasi 3x30 Menit', '3x30 Minutes Consultation Package', 'paket-3x30-menit', 'Dapatkan 3 sesi konsultasi masing-masing 30 menit dengan mentor pilihan.', 'Get 3 consultation sessions, 30 minutes each, with a mentor of your choice.', 250000.00, 3, 30, 1, 10]);
+    $stmt->execute(['Paket Konsultasi 5x45 Menit', '5x45 Minutes Consultation Package', 'paket-5x45-menit', 'Dapatkan 5 sesi konsultasi masing-masing 45 menit dengan mentor pilihan.', 'Get 5 consultation sessions, 45 minutes each, with a mentor of your choice.', 450000.00, 5, 45, 1, 20]);
+    echo "Mentoring Packages OK.\n";
+
+    // ========== USER MENTORING BALANCES (sample) ==========
+    $student_rian_id = (int)$pdo->query("SELECT id FROM users WHERE email='rian@rebas.com'")->fetchColumn();
+    $pkg_3x30_id = (int)$pdo->query("SELECT id FROM mentoring_packages WHERE slug='paket-3x30-menit'")->fetchColumn();
+    $stmt = $pdo->prepare("INSERT INTO user_mentoring_balances (user_id, package_id, total_sessions, remaining_sessions, session_duration, expired_at, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$student_rian_id, $pkg_3x30_id, 3, 2, 30, date('Y-m-d', strtotime('+3 months'))]);
+    echo "User Mentoring Balances OK.\n";
+
+    // ========== MENTOR AVAILABILITY (sample) ==========
+    $stmt = $pdo->prepare("INSERT INTO mentor_availability (mentor_id, day_of_week, start_time, end_time, date_override) VALUES (?, ?, ?, ?, ?)");
+    $stmt->execute([$mentor_dimas_id, 1, '09:00:00', '12:00:00', NULL]);
+    $stmt->execute([$mentor_dimas_id, 3, '14:00:00', '17:00:00', NULL]);
+    $stmt->execute([$mentor_dimas_id, 1, '10:00:00', '11:00:00', '2026-07-20']);
+    $stmt->execute([$mentor_sarah_id, 2, '10:00:00', '13:00:00', NULL]);
+    $stmt->execute([$mentor_sarah_id, 4, '15:00:00', '18:00:00', NULL]);
+    echo "Mentor Availability OK.\n";
+
+    // ========== MENTORING BOOKINGS (sample) ==========
+    $booking_pkg_id = (int)$pdo->query("SELECT id FROM user_mentoring_balances WHERE user_id=$student_rian_id AND package_id=$pkg_3x30_id")->fetchColumn();
+    $dimas_avail_id = (int)$pdo->query("SELECT id FROM mentor_availability WHERE mentor_id=$mentor_dimas_id AND day_of_week=1")->fetchColumn();
+    $stmt = $pdo->prepare("INSERT INTO mentoring_bookings (user_id, mentor_id, balance_id, availability_id, scheduled_at, duration, status, meeting_platform, meeting_url, notes, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$student_rian_id, $mentor_dimas_id, $booking_pkg_id, $dimas_avail_id, '2026-07-21 10:00:00', 30, 'confirmed', 'zoom', 'https://zoom.us/j/1234567890', 'Diskusi karir di bidang IT']);
+    echo "Mentoring Bookings OK.\n";
+
+    // ========== MENTOR REVIEWS (sample) ==========
+    $booking_id = (int)$pdo->query("SELECT id FROM mentoring_bookings WHERE user_id=$student_rian_id AND mentor_id=$mentor_dimas_id")->fetchColumn();
+    $stmt = $pdo->prepare("INSERT INTO mentor_reviews (session_id, user_id, mentor_id, rating, review_text, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$booking_id, $student_rian_id, $mentor_dimas_id, 5, 'Mentor Dimas sangat membantu dan memberikan insight yang luar biasa!']);
+    echo "Mentor Reviews OK.\n";
+
+    // ========== USER REPUTATIONS (sample) ==========
+    $stmt = $pdo->prepare("INSERT INTO user_reputations (session_id, mentor_id, user_id, rating, review_text, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
+    $stmt->execute([$booking_id, $mentor_dimas_id, $student_rian_id, 5, 'Rian adalah student yang responsif dan sangat bersemangat. Sesi berjalan lancar.']);
+    echo "User Reputations OK.\n";
+
 
     echo "\n✓ SEMUA DATA SEEDER BERHASIL!\n";
     echo "  Admin: admin@rebas.com / password123\n";

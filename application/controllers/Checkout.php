@@ -14,7 +14,7 @@ class Checkout extends CI_Controller {
         $this->load->model('Seminar_model');
         $this->load->model('Coupon_model');
         $this->load->model('Package_model');
-        $this->load->model('Minute_bundle_model');
+        $this->load->model('Mentoring_package_model');
         $this->load->library('pakasir');
     }
 
@@ -45,9 +45,9 @@ class Checkout extends CI_Controller {
         } else if ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
             $item = $this->Package_model->get_package_by_id($tx->item_id);
             $item_name = $item ? $item->name : 'Package';
-        } else if ($tx->item_type === 'minute_bundle') {
-            $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
-            $item_name = $item ? $item->name : 'Minute Bundle';
+        } else if ($tx->item_type === 'mentoring_package') {
+            $item = $this->Mentoring_package_model->get_by_id($tx->item_id);
+            $item_name = $item ? t($item->name, $item->name_en) : 'Mentoring Package';
         }
 
         $data['title'] = t('Konfirmasi Pembayaran', 'Payment Confirmation');
@@ -76,12 +76,7 @@ class Checkout extends CI_Controller {
         $notes = null;
         $real_item_type = $item_type;
 
-        if ($item_type === 'minute_bundle') {
-            $item = $this->Minute_bundle_model->get_bundle_by_id($item_id);
-            if (!$item || !$item->is_active) show_404();
-            $amount = $item->price;
-            $item_name = $item->name;
-        } elseif ($item_type === 'package') {
+        if ($item_type === 'package') {
             $package = is_numeric($item_id)
                 ? $this->Package_model->get_package_by_id($item_id)
                 : $this->Package_model->get_package_by_slug($item_id);
@@ -111,6 +106,12 @@ class Checkout extends CI_Controller {
             }
             $item_name = $package->name;
             $notes = json_encode(array('duration_days' => $duration_days));
+        } elseif ($item_type === 'mentoring_package') {
+            $this->load->model('Mentoring_package_model');
+            $item = $this->Mentoring_package_model->get_by_id($item_id);
+            if (!$item || !$item->is_active) show_404();
+            $amount = $item->price;
+            $item_name = t($item->name, $item->name_en);
         } elseif ($item_type === 'seminar') {
             $item = $this->Seminar_model->get_seminar_by_id($item_id);
             if (!$item) show_404();
@@ -356,10 +357,10 @@ class Checkout extends CI_Controller {
             $this->load->model('Package_model');
             $item = $this->Package_model->get_package_by_id($tx->item_id);
             $item_name = $item ? $item->name : 'Package';
-        } elseif ($tx->item_type === 'minute_bundle') {
-            $this->load->model('Minute_bundle_model');
-            $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
-            $item_name = $item ? $item->name : 'Minute Bundle';
+        } elseif ($tx->item_type === 'mentoring_package') {
+            $this->load->model('Mentoring_package_model');
+            $item = $this->Mentoring_package_model->get_by_id($tx->item_id);
+            $item_name = $item ? t($item->name, $item->name_en) : 'Mentoring Package';
         }
 
         $data['snap_token'] = get_midtrans_token($uuid, $tx->amount, $item_name, array(
@@ -425,15 +426,22 @@ class Checkout extends CI_Controller {
                     if (!empty($tx->notes)) {
                         $note = json_decode($tx->notes, true);
                         if (isset($note['duration_days'])) $duration_days = (int)$note['duration_days'];
-                    }
-                    $this->User_subscription_model->activate_subscription($tx->user_id, $pkg->id, $duration_days, $tx->id);
+            } elseif ($tx->item_type === 'mentoring_package') {
+                $this->load->model('Mentoring_package_model');
+                $this->load->model('User_mentoring_balance_model');
+                $package = $this->Mentoring_package_model->get_by_id($tx->item_id);
+                if ($package) {
+                    $this->User_mentoring_balance_model->create(array(
+                        'user_id' => $tx->user_id,
+                        'package_id' => $package->id,
+                        'total_sessions' => $package->session_count,
+                        'remaining_sessions' => $package->session_count,
+                        'session_duration' => $package->session_duration,
+                        'expired_at' => date('Y-m-d', strtotime('+1 year')), // Default 1 year expiry
+                    ));
                 }
-            } elseif ($tx->item_type === 'minute_bundle') {
-                $this->load->model('Minute_bundle_model');
-                $this->load->model('User_minute_balance_model');
-                $bundle = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
-                if ($bundle) {
-                    $this->User_minute_balance_model->add_seconds($tx->user_id, $bundle->minutes * 60);
+            }
+                    $this->User_subscription_model->activate_subscription($tx->user_id, $pkg->id, $duration_days, $tx->id);
                 }
             }
 
@@ -526,9 +534,9 @@ class Checkout extends CI_Controller {
         } elseif ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
             $this->load->model('Package_model');
             $item = $this->Package_model->get_package_by_id($tx->item_id);
-        } elseif ($tx->item_type === 'minute_bundle') {
-            $this->load->model('Minute_bundle_model');
-            $item = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
+        } elseif ($tx->item_type === 'mentoring_package') {
+            $this->load->model('Mentoring_package_model');
+            $item = $this->Mentoring_package_model->get_by_id($tx->item_id);
         }
 
         $data['title'] = t('Pembayaran', 'Payment');
@@ -639,14 +647,6 @@ class Checkout extends CI_Controller {
                     if (isset($note['duration_days'])) $duration_days = (int)$note['duration_days'];
                 }
                 $this->User_subscription_model->activate_subscription($tx->user_id, $package->id, $duration_days, $tx->id);
-            }
-        } elseif ($tx->item_type === 'minute_bundle') {
-            $this->load->model('Minute_bundle_model');
-            $this->load->model('User_minute_balance_model');
-            $bundle = $this->Minute_bundle_model->get_bundle_by_id($tx->item_id);
-            if ($bundle) {
-                $seconds = $bundle->minutes * 60;
-                $this->User_minute_balance_model->add_seconds($tx->user_id, $seconds);
             }
         }
 

@@ -63,10 +63,4 @@
         <?php endif; ?>
     </div>
 
-    <div class="text-center mt-5 pt-4 border-top">
-        <p class="text-muted mb-2"><?php echo t('Atau butuh fleksibilitas lebih?', 'Or need more flexibility?'); ?></p>
-        <a href="<?php echo base_url('minute_balance'); ?>" class="btn btn-outline-success rounded-pill px-4">
-            <i data-lucide="clock" style="width:16px;height:16px;" class="me-1"></i><?php echo t('Beli Menit', 'Buy Minutes'); ?>
-        </a>
-    </div>
 </div>

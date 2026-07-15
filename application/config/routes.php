@@ -89,12 +89,6 @@ $route['admin/packages/create'] = 'admin/create_package';
 $route['admin/packages/edit/(:num)'] = 'admin/edit_package/$1';
 $route['admin/packages/delete/(:num)'] = 'admin/delete_package/$1';
 
-// Admin Minute Bundle Routes
-$route['admin/minute_bundles'] = 'admin/minute_bundles';
-$route['admin/minute_bundles/create'] = 'admin/create_bundle';
-$route['admin/minute_bundles/edit/(:num)'] = 'admin/edit_bundle/$1';
-$route['admin/minute_bundles/delete/(:num)'] = 'admin/delete_bundle/$1';
-
 // Payment gateway routes
 $route['checkout/confirm/(:any)'] = 'checkout/confirm/$1';
 $route['checkout/initiate/(:any)/(:num)'] = 'checkout/initiate/$1/$2';
@@ -125,18 +119,6 @@ $route['subscription/buy/(:any)'] = 'subscription/buy/$1';
 $route['subscription/buy/(:any)/(:num)'] = 'subscription/buy/$1/$2';
 $route['subscription/my'] = 'subscription/my';
 
-// Minute Balance Routes
-$route['minute_balance'] = 'minute_balance/index';
-$route['minute_balance/buy/(:num)'] = 'minute_balance/buy/$1';
-
-// Heartbeat API Routes
-$route['heartbeat/start'] = 'heartbeat/start';
-$route['heartbeat/tick'] = 'heartbeat/tick';
-$route['heartbeat/end'] = 'heartbeat/end';
-
-// Cleanup stale minute sessions (call from cron)
-$route['heartbeat/cleanup'] = 'heartbeat/cleanup';
-
 // Allow slug-based course routes
 $route['courses/buy/(:any)'] = 'courses/buy/$1';
 $route['courses/review/(:any)'] = 'courses/review/$1';
@@ -151,3 +133,29 @@ $route['transactions/history_data'] = 'transactions/history_data';
 $route['transactions/detail/(:any)'] = 'transactions/detail/$1';
 $route['admin/documents'] = 'admin/documents';
 $route['admin/document/view/(:any)'] = 'admin/document_view/$1';
+
+// Mentoring Routes (public)
+$route['mentoring'] = 'mentoring/index';
+$route['mentoring/packages'] = 'mentoring/packages';
+$route['mentoring/buy-package/(:num)'] = 'mentoring/buy_package/$1';
+$route['mentoring/detail/(:num)'] = 'mentoring/detail/$1';
+$route['mentoring/book/(:num)'] = 'mentoring/book/$1';
+$route['mentoring/confirm-booking'] = 'mentoring/confirm_booking';
+$route['mentoring/my-sessions'] = 'mentoring/my_sessions';
+$route['mentoring/cancel/(:num)'] = 'mentoring/cancel/$1';
+$route['mentoring/approve-booking/(:num)'] = 'mentoring/approve_booking/$1';
+$route['mentoring/review/(:num)'] = 'mentoring/review/$1';
+$route['mentoring/toggle-favorite/(:num)'] = 'mentoring/toggle_favorite/$1';
+$route['mentoring/slots/(:num)'] = 'mentoring/get_slots_json/$1';
+
+// Mentor Dashboard Routes
+$route['mentor'] = 'mentor_dashboard/index';
+$route['mentor/availability'] = 'mentor_dashboard/availability';
+$route['mentor/add-slot'] = 'mentor_dashboard/add_slot';
+$route['mentor/delete-slot/(:num)'] = 'mentor_dashboard/delete_slot/$1';
+$route['mentor/sessions'] = 'mentor_dashboard/sessions';
+$route['mentor/confirm-session/(:num)'] = 'mentor_dashboard/confirm_session/$1';
+$route['mentor/reject-session/(:num)'] = 'mentor_dashboard/reject_session/$1';
+$route['mentor/complete-session/(:num)'] = 'mentor_dashboard/complete_session/$1';
+$route['mentor/rate-user/(:num)'] = 'mentor_dashboard/rate_user/$1';
+$route['mentor/update-schedule/(:num)'] = 'mentor_dashboard/update_schedule/$1';

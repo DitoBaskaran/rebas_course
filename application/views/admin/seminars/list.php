@@ -1,58 +1,39 @@
-<div class="container-fluid px-0">
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5 gap-3">
+<div class="container-fluid py-4" style="max-width: 1400px;">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
         <div>
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-1">Event</span>
-            <h1 class="display-6 fw-extrabold text-dark mb-1 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Daftar Seminar', 'Seminar List'); ?></h1>
-            <p class="text-secondary mb-0"><?php echo t('Atur jadwal dan kuota seminar langsung.', 'Manage live seminar schedules and quotas.'); ?></p>
+            <div style="color: #f97316; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.15rem;">Event</div>
+            <h4 class="fw-extrabold mb-0" style="color: #1c1917; letter-spacing: -0.02em; font-size: 1.4rem;"><?php echo t('Daftar Seminar', 'Seminar List'); ?></h4>
+            <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;"><?php echo t('Atur jadwal dan kuota seminar langsung.', 'Manage live seminar schedules and quotas.'); ?></p>
         </div>
         <div class="d-flex gap-2">
-            <a href="<?php echo base_url('admin/settings/hero'); ?>" class="btn btn-outline-secondary btn-sm px-3 rounded-pill d-flex align-items-center gap-1">
-                <i data-lucide="settings" style="width:16px;height:16px;"></i>
-            </a>
-            <a href="<?php echo base_url('admin/create_seminar'); ?>" class="btn btn-dark btn-sm px-3 rounded-pill shadow-sm d-flex align-items-center gap-1">
-                <i data-lucide="plus" style="width:16px;height:16px;"></i> <?php echo t('Tambah Seminar', 'Add Seminar'); ?>
-            </a>
+            <a href="<?php echo base_url('admin/settings/hero'); ?>" class="btn px-3 py-2 rounded-pill d-flex align-items-center gap-1" style="background: #f5f5f4; color: #57534e; font-size: 0.78rem;"><i class="fas fa-cog" style="font-size: 0.7rem;"></i></a>
+            <a href="<?php echo base_url('admin/create_seminar'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="background: #f97316; color: #fff; font-size: 0.78rem;"><i class="fas fa-plus" style="font-size: 0.7rem;"></i> <?php echo t('Tambah Seminar', 'Add Seminar'); ?></a>
         </div>
     </div>
 
-    <div class="bento-grid bento-grid-3">
+    <div class="row g-3">
         <?php if (empty($seminars)): ?>
-            <div class="bento-card" style="grid-column:1/-1;">
-                <div class="empty-state">
-                    <i data-lucide="calendar" style="width:48px;height:48px;color:var(--gray-300);"></i>
-                    <h5><?php echo t('Belum ada seminar.', 'No seminars yet.'); ?></h5>
-                </div>
-            </div>
+            <div class="col-12"><div class="border rounded-3 p-5 text-center" style="border-color: #e7e5e4; border-radius: 12px;"><div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-calendar"></i></div><h6 class="fw-bold" style="color: #1c1917;"><?php echo t('Belum ada seminar.', 'No seminars yet.'); ?></h6></div></div>
         <?php else: ?>
             <?php foreach ($seminars as $sem): ?>
-                <div class="content-card">
-                    <div class="card-thumb">
-                        <img src="<?php echo base_url('uploads/seminars/' . $sem->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&auto=format&fit=crop&q=60';" alt="" style="height:140px;">
-                    </div>
-                    <div class="card-body-custom">
-                        <div class="card-title"><?php echo htmlspecialchars($sem->title); ?></div>
-                        <div class="d-flex flex-column gap-1 mt-2">
-                            <span class="small d-flex align-items-center gap-1 text-muted">
-                                <i data-lucide="calendar" style="width:14px;height:14px;"></i>
-                                <?php echo date('d M Y', strtotime($sem->date_time)); ?> <?php echo date('H:i', strtotime($sem->date_time)); ?>
-                            </span>
-                            <span class="small d-flex align-items-center gap-1 text-muted">
-                                <i data-lucide="users" style="width:14px;height:14px;"></i>
-                                <?php echo $sem->quota; ?> <?php echo t('kursi', 'seats'); ?>
-                            </span>
-                            <span class="fw-bold text-dark small mt-1">
-                                <?php echo $sem->price > 0 ? 'Rp ' . number_format($sem->price, 0, ',', '.') : t('Gratis', 'Free'); ?>
-                            </span>
+                <div class="col-md-6 col-lg-4">
+                    <div class="border rounded-3 h-100 overflow-hidden" style="border-color: #e7e5e4; border-radius: 12px;">
+                        <div style="aspect-ratio: 16/9; overflow: hidden;">
+                            <img src="<?php echo base_url('uploads/seminars/' . $sem->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100" style="object-fit: cover;">
                         </div>
-                        <div class="card-footer-custom mt-2 pt-2">
-                            <span class="text-muted small"><?php echo $sem->language === 'en' ? 'English' : 'Indonesia'; ?></span>
-                            <div class="d-flex gap-1">
-                                <a href="<?php echo base_url('admin/edit_seminar/' . $sem->id); ?>" class="btn btn-warning btn-sm px-2" title="<?php echo t('Edit', 'Edit'); ?>">
-                                    <i data-lucide="edit" style="width:14px;height:14px;"></i>
-                                </a>
-                                <a href="<?php echo base_url('admin/delete_seminar/' . $sem->id); ?>" data-confirm="<?php echo t('Hapus seminar ini?', 'Delete this seminar?'); ?>" class="btn btn-outline-danger btn-sm px-2">
-                                    <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-                                </a>
+                        <div class="p-3 d-flex flex-column">
+                            <h6 class="fw-bold mb-2" style="color: #1c1917; font-size: 0.85rem;"><?php echo htmlspecialchars($sem->title); ?></h6>
+                            <div class="d-flex flex-column gap-1 mb-2" style="color: #78716c; font-size: 0.75rem;">
+                                <span class="d-flex align-items-center gap-1"><i class="far fa-calendar" style="font-size: 0.6rem;"></i> <?php echo date('d M Y', strtotime($sem->date_time)); ?> <?php echo date('H:i', strtotime($sem->date_time)); ?></span>
+                                <span class="d-flex align-items-center gap-1"><i class="fas fa-users" style="font-size: 0.6rem;"></i> <?php echo $sem->quota; ?> <?php echo t('kursi', 'seats'); ?></span>
+                                <span class="fw-bold" style="color: #f97316; font-size: 0.82rem;"><?php echo $sem->price > 0 ? 'Rp ' . number_format($sem->price, 0, ',', '.') : t('Gratis', 'Free'); ?></span>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
+                                <span style="color: #a8a29e; font-size: 0.7rem;"><?php echo $sem->language === 'en' ? 'English' : 'Indonesia'; ?></span>
+                                <div class="d-flex gap-1">
+                                    <a href="<?php echo base_url('admin/edit_seminar/' . $sem->id); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="background: #f97316; color: #fff; font-size: 0.68rem;"><i class="fas fa-edit" style="font-size: 0.65rem;"></i></a>
+                                    <a href="<?php echo base_url('admin/delete_seminar/' . $sem->id); ?>" data-confirm="<?php echo t('Hapus seminar ini?', 'Delete this seminar?'); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="border: 1px solid #fca5a5; color: #f43f5e; font-size: 0.68rem;"><i class="fas fa-trash-alt" style="font-size: 0.65rem;"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
