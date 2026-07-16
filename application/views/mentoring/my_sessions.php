@@ -74,10 +74,10 @@
                                 <td style="border-color: #f0f0f0; padding: 0.75rem 1rem;">
                                     <div class="d-flex gap-1">
                                         <?php if ($s->status == 'pending'): ?>
-                                            <a href="<?php echo base_url('mentoring/approve-booking/' . $s->id); ?>" class="btn btn-sm fw-semibold rounded-pill px-2" style="font-size: 0.72rem; background: #111827; color: #fff;"><?php echo t('Konfirmasi', 'Confirm'); ?></a>
-                                            <a href="<?php echo base_url('mentoring/cancel/' . $s->id); ?>" class="btn btn-sm fw-semibold rounded-pill px-2" style="font-size: 0.72rem; border: 1px solid #e5e5e5; color: #ef4444;" onclick="return confirm('<?php echo t('Batalkan sesi?', 'Cancel session?'); ?>')"><?php echo t('Batal', 'Cancel'); ?></a>
+                                            <a href="<?php echo base_url('mentoring/approve-booking/' . encode_id($s->id)); ?>" class="btn btn-sm fw-semibold rounded-pill px-2" style="font-size: 0.72rem; background: #111827; color: #fff;"><?php echo t('Konfirmasi', 'Confirm'); ?></a>
+                                            <a href="<?php echo base_url('mentoring/cancel/' . encode_id($s->id)); ?>" class="btn btn-sm fw-semibold rounded-pill px-2" style="font-size: 0.72rem; border: 1px solid #e5e5e5; color: #ef4444;" onclick="return confirm('<?php echo t('Batalkan sesi?', 'Cancel session?'); ?>')"><?php echo t('Batal', 'Cancel'); ?></a>
                                         <?php elseif ($s->status == 'confirmed'): ?>
-                                            <a href="<?php echo base_url('mentoring/cancel/' . $s->id); ?>" class="btn btn-sm fw-semibold rounded-pill px-2" style="font-size: 0.72rem; border: 1px solid #e5e5e5; color: #ef4444;" onclick="return confirm('<?php echo t('Batalkan sesi?', 'Cancel session?'); ?>')"><?php echo t('Batal', 'Cancel'); ?></a>
+                                            <a href="<?php echo base_url('mentoring/cancel/' . encode_id($s->id)); ?>" class="btn btn-sm fw-semibold rounded-pill px-2" style="font-size: 0.72rem; border: 1px solid #e5e5e5; color: #ef4444;" onclick="return confirm('<?php echo t('Batalkan sesi?', 'Cancel session?'); ?>')"><?php echo t('Batal', 'Cancel'); ?></a>
                                         <?php elseif ($s->status == 'completed'): ?>
                                             <?php $reviewed = $this->db->where('session_id', $s->id)->count_all_results('mentor_reviews'); ?>
                                             <?php if (!$reviewed): ?>
@@ -102,7 +102,7 @@
 <div class="modal fade" id="reviewModal_<?php echo $s->id; ?>" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.12);">
-            <form method="post" action="<?php echo base_url('mentoring/review/' . $s->id); ?>">
+            <form method="post" action="<?php echo base_url('mentoring/review/' . encode_id($s->id)); ?>">
                 <div class="modal-header" style="border-bottom: 1px solid #f0f0f0; padding: 1rem 1.25rem;">
                     <h6 class="fw-bold mb-0" style="font-size: 0.9rem;"><?php echo t('Review Mentor', 'Review Mentor'); ?></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" style="font-size: 0.75rem;"></button>

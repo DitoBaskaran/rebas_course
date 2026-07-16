@@ -105,12 +105,20 @@ $route['checkout/pakasir_webhook'] = 'checkout/pakasir_webhook';
 // Referral redirect
 $route['ref/(:any)'] = 'referral/index/$1';
 
-// Course detail by slug (clean URLs)
+// Course detail by slug (clean URLs — no numeric ID exposed)
 $route['courses/mine'] = 'courses/mine';
+$route['courses/detail/(:any)'] = 'courses/detail/$1';
+$route['courses/buy/(:any)'] = 'courses/buy/$1';
+$route['courses/review/(:any)'] = 'courses/review/$1';
+$route['courses/complete_lesson/(:any)/(:any)'] = 'courses/complete_lesson/$1/$2';
+
+// Seminar routes (use encoded IDs)
 $route['seminars/mine'] = 'seminars/mine';
+$route['seminars/detail/(:any)'] = 'seminars/detail/$1';
+$route['seminars/register/(:any)'] = 'seminars/register/$1';
+
+// Learning Paths
 $route['learning_paths/mine'] = 'learning_paths/mine';
-$route['courses/detail/(:num)'] = 'courses/detail/$1';
-$route['courses/detail/(:any)'] = 'courses/detail_slug/$1';
 
 // Subscription Routes
 $route['subscription'] = 'subscription/index';
@@ -119,43 +127,66 @@ $route['subscription/buy/(:any)'] = 'subscription/buy/$1';
 $route['subscription/buy/(:any)/(:num)'] = 'subscription/buy/$1/$2';
 $route['subscription/my'] = 'subscription/my';
 
-// Allow slug-based course routes
-$route['courses/buy/(:any)'] = 'courses/buy/$1';
-$route['courses/review/(:any)'] = 'courses/review/$1';
-$route['courses/complete_lesson/(:any)/(:num)'] = 'courses/complete_lesson/$1/$2';
+// Forum (use encoded IDs)
 $route['forum'] = 'forum/index';
 $route['forum/index/(:any)'] = 'forum/index/$1';
 $route['forum/view/(:any)'] = 'forum/view/$1';
 $route['forum/create/(:any)'] = 'forum/create/$1';
+$route['forum/reply/(:any)'] = 'forum/reply/$1';
+$route['forum/mark_best/(:any)'] = 'forum/mark_best/$1';
+
+// Wishlist
+$route['wishlist'] = 'wishlist/index';
 $route['wishlist/toggle/(:any)'] = 'wishlist/toggle/$1';
+
+// Transactions (already UUID-based)
 $route['transactions/history'] = 'transactions/history';
 $route['transactions/history_data'] = 'transactions/history_data';
 $route['transactions/detail/(:any)'] = 'transactions/detail/$1';
+
+// Certificates (use code, not ID)
+$route['certificate/view/(:any)'] = 'certificate/view/$1';
+$route['certificate/verify/(:any)'] = 'certificate/verify/$1';
+
+// Admin documents
 $route['admin/documents'] = 'admin/documents';
 $route['admin/document/view/(:any)'] = 'admin/document_view/$1';
 
-// Mentoring Routes (public)
+// Quiz & Assignments (use encoded IDs)
+$route['quiz/start/(:any)'] = 'quiz/start/$1';
+$route['quiz/take/(:any)'] = 'quiz/take/$1';
+$route['quiz/submit/(:any)'] = 'quiz/submit/$1';
+$route['quiz/result/(:any)'] = 'quiz/result/$1';
+$route['quiz/admin_quizzes/(:num)'] = 'quiz/admin_quizzes/$1';
+$route['assignment/view/(:any)'] = 'assignment/view/$1';
+$route['assignment/submit/(:any)'] = 'assignment/submit/$1';
+
+// Profile (no numeric ID — only own profile)
+$route['profile'] = 'profile/index';
+$route['profile/edit'] = 'profile/edit';
+
+// Mentoring Routes (use encoded IDs)
 $route['mentoring'] = 'mentoring/index';
 $route['mentoring/packages'] = 'mentoring/packages';
-$route['mentoring/buy-package/(:num)'] = 'mentoring/buy_package/$1';
-$route['mentoring/detail/(:num)'] = 'mentoring/detail/$1';
-$route['mentoring/book/(:num)'] = 'mentoring/book/$1';
+$route['mentoring/buy-package/(:any)'] = 'mentoring/buy_package/$1';
+$route['mentoring/detail/(:any)'] = 'mentoring/detail/$1';
+$route['mentoring/book/(:any)'] = 'mentoring/book/$1';
 $route['mentoring/confirm-booking'] = 'mentoring/confirm_booking';
 $route['mentoring/my-sessions'] = 'mentoring/my_sessions';
-$route['mentoring/cancel/(:num)'] = 'mentoring/cancel/$1';
-$route['mentoring/approve-booking/(:num)'] = 'mentoring/approve_booking/$1';
-$route['mentoring/review/(:num)'] = 'mentoring/review/$1';
-$route['mentoring/toggle-favorite/(:num)'] = 'mentoring/toggle_favorite/$1';
-$route['mentoring/slots/(:num)'] = 'mentoring/get_slots_json/$1';
+$route['mentoring/cancel/(:any)'] = 'mentoring/cancel/$1';
+$route['mentoring/approve-booking/(:any)'] = 'mentoring/approve_booking/$1';
+$route['mentoring/review/(:any)'] = 'mentoring/review/$1';
+$route['mentoring/toggle-favorite/(:any)'] = 'mentoring/toggle_favorite/$1';
+$route['mentoring/slots/(:any)'] = 'mentoring/get_slots_json/$1';
 
-// Mentor Dashboard Routes
+// Mentor Dashboard Routes (use encoded IDs)
 $route['mentor'] = 'mentor_dashboard/index';
 $route['mentor/availability'] = 'mentor_dashboard/availability';
 $route['mentor/add-slot'] = 'mentor_dashboard/add_slot';
-$route['mentor/delete-slot/(:num)'] = 'mentor_dashboard/delete_slot/$1';
+$route['mentor/delete-slot/(:any)'] = 'mentor_dashboard/delete_slot/$1';
 $route['mentor/sessions'] = 'mentor_dashboard/sessions';
-$route['mentor/confirm-session/(:num)'] = 'mentor_dashboard/confirm_session/$1';
-$route['mentor/reject-session/(:num)'] = 'mentor_dashboard/reject_session/$1';
-$route['mentor/complete-session/(:num)'] = 'mentor_dashboard/complete_session/$1';
-$route['mentor/rate-user/(:num)'] = 'mentor_dashboard/rate_user/$1';
+$route['mentor/confirm-session/(:any)'] = 'mentor_dashboard/confirm_session/$1';
+$route['mentor/reject-session/(:any)'] = 'mentor_dashboard/reject_session/$1';
+$route['mentor/complete-session/(:any)'] = 'mentor_dashboard/complete_session/$1';
+$route['mentor/rate-user/(:any)'] = 'mentor_dashboard/rate_user/$1';
 $route['mentor/update-schedule/(:num)'] = 'mentor_dashboard/update_schedule/$1';

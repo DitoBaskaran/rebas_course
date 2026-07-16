@@ -153,7 +153,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                                 <?php endif; ?>
                             </div>
                             <?php if ($is_enrolled): ?>
-                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $lesson->id); ?>" class="fw-semibold flex-shrink-0" style="color: #eab308; text-decoration: none; font-size: 0.8rem;">
+                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($lesson->id)); ?>" class="fw-semibold flex-shrink-0" style="color: #eab308; text-decoration: none; font-size: 0.8rem;">
                                     <?php echo t('Mulai', 'Start'); ?> <i class="fas fa-chevron-right" style="font-size: 0.6rem;"></i>
                                 </a>
                             <?php endif; ?>
@@ -175,7 +175,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                                 <small style="color: #737373; font-size: 0.75rem;"><?php echo $qcount; ?> <?php echo t('soal', 'questions'); ?> · <?php echo t('Min lulus: ', 'Passing: '); ?><?php echo $qz->passing_score; ?>%</small>
                             </div>
                             <?php if ($is_enrolled): ?>
-                                <a href="<?php echo base_url('quiz/start/' . $qz->id); ?>" class="fw-semibold" style="color: #111827; text-decoration: none; font-size: 0.8rem;">
+                                <a href="<?php echo base_url('quiz/start/' . encode_id($qz->id)); ?>" class="fw-semibold" style="color: #111827; text-decoration: none; font-size: 0.8rem;">
                                     <?php echo t('Kerjakan', 'Take Quiz'); ?> <i class="fas fa-chevron-right" style="font-size: 0.6rem;"></i>
                                 </a>
                             <?php endif; ?>
@@ -195,7 +195,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                                 <h6 class="fw-bold mb-1" style="font-size: 0.85rem; color: #111827;"><?php echo htmlspecialchars($a->title); ?></h6>
                                 <small style="color: #737373; font-size: 0.75rem;"><?php echo htmlspecialchars(substr($a->description, 0, 80)); ?>...</small>
                             </div>
-                            <a href="<?php echo base_url('assignment/view/' . $a->id); ?>" class="fw-semibold flex-shrink-0" style="color: #111827; text-decoration: none; font-size: 0.8rem;">
+                            <a href="<?php echo base_url('assignment/view/' . encode_id($a->id)); ?>" class="fw-semibold flex-shrink-0" style="color: #111827; text-decoration: none; font-size: 0.8rem;">
                                 <?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.6rem;"></i>
                             </a>
                         </div>
@@ -294,7 +294,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
             </div>
             <div class="d-flex flex-column gap-2">
                 <?php foreach (array_slice($discussions, 0, 5) as $d): ?>
-                    <a href="<?php echo base_url('forum/view/' . $d->id); ?>" class="text-decoration-none p-3 rounded-3 d-flex justify-content-between align-items-center" style="border: 1px solid #f0f0f0; transition: all 0.15s;">
+                    <a href="<?php echo base_url('forum/view/' . encode_id($d->id)); ?>" class="text-decoration-none p-3 rounded-3 d-flex justify-content-between align-items-center" style="border: 1px solid #f0f0f0; transition: all 0.15s;">
                         <div class="min-w-0 flex-grow-1 me-3">
                             <p class="small mb-0 text-truncate" style="font-weight: 600; color: #111827; font-size: 0.825rem;">
                                 <?php echo $d->is_pinned ? '<i class="fas fa-thumbtack me-1" style="color: #eab308; font-size: 0.65rem;"></i>' : ''; ?>

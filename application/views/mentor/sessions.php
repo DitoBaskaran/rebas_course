@@ -51,10 +51,10 @@
                                 <td>
                                     <div class="d-flex gap-1">
                                         <?php if ($s->status == 'pending'): ?>
-                                            <a href="<?php echo base_url('mentor/confirm-session/' . $s->id); ?>" class="btn btn-sm btn-success rounded-pill px-3 fw-medium"><?php echo t('Terima', 'Accept'); ?></a>
-                                            <a href="<?php echo base_url('mentor/reject-session/' . $s->id); ?>" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium" onclick="return confirm('<?php echo t('Tolak sesi?', 'Reject session?'); ?>')"><?php echo t('Tolak', 'Reject'); ?></a>
+                                            <a href="<?php echo base_url('mentor/confirm-session/' . encode_id($s->id)); ?>" class="btn btn-sm btn-success rounded-pill px-3 fw-medium"><?php echo t('Terima', 'Accept'); ?></a>
+                                            <a href="<?php echo base_url('mentor/reject-session/' . encode_id($s->id)); ?>" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium" onclick="return confirm('<?php echo t('Tolak sesi?', 'Reject session?'); ?>')"><?php echo t('Tolak', 'Reject'); ?></a>
                                         <?php elseif ($s->status == 'confirmed'): ?>
-                                            <a href="<?php echo base_url('mentor/complete-session/' . $s->id); ?>" class="btn btn-sm btn-dark rounded-pill px-3 fw-medium"><?php echo t('Selesai', 'Complete'); ?></a>
+                                            <a href="<?php echo base_url('mentor/complete-session/' . encode_id($s->id)); ?>" class="btn btn-sm btn-dark rounded-pill px-3 fw-medium"><?php echo t('Selesai', 'Complete'); ?></a>
                                         <?php elseif ($s->status == 'completed'): ?>
                                             <?php $rated = $this->db->where('session_id', $s->id)->count_all_results('user_reputations'); ?>
                                             <?php if (!$rated): ?>
@@ -79,7 +79,7 @@
 <div class="modal fade" id="rateModal_<?php echo $s->id; ?>" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow-lg rounded-4">
-            <form method="post" action="<?php echo base_url('mentor/rate-user/' . $s->id); ?>">
+            <form method="post" action="<?php echo base_url('mentor/rate-user/' . encode_id($s->id)); ?>">
                 <div class="modal-header border-0 pb-0">
                     <h6 class="fw-bold"><?php echo t('Nilai User', 'Rate User'); ?></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>

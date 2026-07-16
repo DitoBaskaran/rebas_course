@@ -68,7 +68,7 @@
                                 <span class="badge bg-primary-subtle text-primary rounded-pill fw-medium"><?php echo $this->Quiz_model->count_questions($course_quiz->id); ?> <?php echo t('soal', 'questions'); ?></span>
                                 <span class="text-secondary small"><?php echo t('Min lulus:', 'Passing:'); ?> <?php echo $course_quiz->passing_score; ?>%</span>
                             </div>
-                            <a href="<?php echo base_url('quiz/start/' . $course_quiz->id); ?>" class="btn btn-warning btn-lg rounded-pill px-5 fw-semibold shadow-sm">
+                            <a href="<?php echo base_url('quiz/start/' . encode_id($course_quiz->id)); ?>" class="btn btn-warning btn-lg rounded-pill px-5 fw-semibold shadow-sm">
                                 <i class="fas fa-play me-2"></i> <?php echo t('Mulai Quiz', 'Start Quiz'); ?>
                             </a>
                         <?php else: ?>
@@ -92,7 +92,7 @@
                                 <span class="text-dark fw-semibold small"><?php echo htmlspecialchars($course_assignment->title); ?></span>
                                 <span class="badge bg-success-subtle text-success rounded-pill fw-medium"><i class="fas fa-file me-1"></i> <?php echo strtoupper($course_assignment->allowed_file_types); ?></span>
                             </div>
-                            <a href="<?php echo base_url('assignment/view/' . $course_assignment->id); ?>" class="btn btn-success btn-lg rounded-pill px-5 fw-semibold shadow-sm">
+                            <a href="<?php echo base_url('assignment/view/' . encode_id($course_assignment->id)); ?>" class="btn btn-success btn-lg rounded-pill px-5 fw-semibold shadow-sm">
                                 <i class="fas fa-upload me-2"></i> <?php echo t('Lihat & Kumpulkan', 'View & Submit'); ?>
                             </a>
                         <?php else: ?>
@@ -137,7 +137,7 @@
                 <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
                     <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
                 <?php else: ?>
-                    <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . $active_lesson->id); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
+                    <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . encode_id($active_lesson->id)); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
                         <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
                     </a>
                 <?php endif; ?>
@@ -180,7 +180,7 @@
                 </div>
                 <div class="scroll-area" style="max-height: 500px; overflow-y: auto;">
                     <?php foreach ($lessons as $i => $lesson): ?>
-                        <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $lesson->id); ?>" class="text-decoration-none d-flex align-items-center gap-3 p-3 p-xl-4 border-bottom border-light <?php echo $lesson->id == $active_lesson->id ? 'bg-primary-subtle' : 'bg-white'; ?>" style="transition: all 0.15s ease;">
+                        <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($lesson->id)); ?>" class="text-decoration-none d-flex align-items-center gap-3 p-3 p-xl-4 border-bottom border-light <?php echo $lesson->id == $active_lesson->id ? 'bg-primary-subtle' : 'bg-white'; ?>" style="transition: all 0.15s ease;">
                             <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width: 32px; height: 32px; font-size: 0.75rem; <?php echo in_array($lesson->id, $completed_lessons) ? 'background: #d1fae5; color: #059669;' : ($lesson->id == $active_lesson->id ? 'background: #0f172a; color: #fff;' : 'background: #f1f5f9; color: #64748b;'); ?>">
                                 <?php if (in_array($lesson->id, $completed_lessons)): ?>
                                     <i class="fas fa-check"></i>

@@ -208,7 +208,7 @@
                     <?php else: ?>
                         <div class="d-flex flex-wrap gap-2">
                             <?php foreach ($certificates as $cert): ?>
-                                <a href="<?php echo base_url('certificate/view/' . $cert->id); ?>" class="text-decoration-none d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="border: 1px solid #e7e5e4; color: #1c1917; font-size: 0.75rem; font-weight: 600;">
+                                <a href="<?php echo base_url('certificate/view/' . encode_id($cert->id)); ?>" class="text-decoration-none d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="border: 1px solid #e7e5e4; color: #1c1917; font-size: 0.75rem; font-weight: 600;">
                                     <i class="fas fa-file-alt" style="color: #14b8a6; font-size: 0.65rem;"></i>
                                     <?php echo htmlspecialchars($cert->title); ?>
                                 </a>

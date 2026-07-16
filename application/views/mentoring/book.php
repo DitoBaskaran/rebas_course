@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb" class="mb-4" style="font-size: 0.8rem;">
         <ol class="breadcrumb" style="background: none; padding: 0;">
             <li class="breadcrumb-item"><a href="<?php echo base_url('mentoring'); ?>" style="color: #525252; text-decoration: none; font-weight: 500;"><?php echo t('Mentoring', 'Mentoring'); ?></a></li>
-            <li class="breadcrumb-item"><a href="<?php echo base_url('mentoring/detail/' . $mentor->id); ?>" style="color: #525252; text-decoration: none; font-weight: 500;"><?php echo htmlspecialchars($mentor->name); ?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" style="color: #525252; text-decoration: none; font-weight: 500;"><?php echo htmlspecialchars($mentor->name); ?></a></li>
             <li class="breadcrumb-item active" style="color: #737373; font-weight: 500;"><?php echo t('Booking', 'Booking'); ?></li>
         </ol>
     </nav>

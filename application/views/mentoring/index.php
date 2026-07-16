@@ -86,7 +86,7 @@
         <div class="row g-3">
             <?php foreach ($mentors as $mentor): ?>
                 <div class="col-md-6 col-lg-4">
-                    <a href="<?php echo base_url('mentoring/detail/' . $mentor->id); ?>" class="text-decoration-none">
+                    <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="text-decoration-none">
                         <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s;">
                             <div class="card-body p-3">
                                 <!-- Mentor Header -->

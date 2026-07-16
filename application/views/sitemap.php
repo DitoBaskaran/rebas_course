@@ -13,7 +13,7 @@
     <url><loc><?php echo base_url('courses/detail/' . $c->slug); ?></loc><priority>0.6</priority></url>
     <?php endforeach; endif; ?>
     <?php if (!empty($seminars)): foreach ($seminars as $s): ?>
-    <url><loc><?php echo base_url('seminars/detail/' . $s->id); ?></loc><priority>0.5</priority></url>
+    <url><loc><?php echo base_url('seminars/detail/' . encode_id($s->id)); ?></loc><priority>0.5</priority></url>
     <?php endforeach; endif; ?>
     <?php if (!empty($categories)): foreach ($categories as $cat): ?>
     <url><loc><?php echo base_url('courses?category=' . $cat->id); ?></loc><priority>0.4</priority></url>

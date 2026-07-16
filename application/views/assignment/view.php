@@ -49,7 +49,7 @@
                 <?php endif; ?>
 
                 <?php if (!$submission || $submission->status === 'returned'): ?>
-                    <?php echo form_open_multipart('assignment/submit/' . $assignment->id, array('class' => 'd-flex flex-column gap-3 mt-4', 'id' => 'assignmentForm')); ?>
+                    <?php echo form_open_multipart('assignment/submit/' . encode_id($assignment->id), array('class' => 'd-flex flex-column gap-3 mt-4', 'id' => 'assignmentForm')); ?>
                         
                         <!-- Tab style: File Upload OR Online Text -->
                         <div class="d-flex gap-2 mb-3">

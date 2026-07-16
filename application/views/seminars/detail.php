@@ -71,7 +71,7 @@
                         <?php if ($attendee_count >= $seminar->quota): ?>
                             <button class="btn btn-secondary w-100 py-2.5" disabled>Kuota Penuh</button>
                         <?php else: ?>
-                            <a href="<?php echo base_url('seminars/register/' . $seminar->id); ?>" class="btn btn-warning w-100 py-2.5 shadow-sm">
+                            <a href="<?php echo base_url('seminars/register/' . encode_id($seminar->id)); ?>" class="btn btn-warning w-100 py-2.5 shadow-sm">
                                 <?php if ($seminar->price > 0): ?>
                                     <i class="fas fa-ticket-alt me-2"></i> Beli Tiket
                                 <?php else: ?>

@@ -33,7 +33,7 @@
                     </div>
                     <div class="d-flex gap-1">
                         <?php if ($s->status === 'scheduled'): ?>
-                            <a href="<?php echo base_url('mentoring/cancel/' . $s->id); ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('<?php echo t('Batalkan sesi ini?', 'Cancel this session?'); ?>')"><?php echo t('Batal', 'Cancel'); ?></a>
+                            <a href="<?php echo base_url('mentoring/cancel/' . encode_id($s->id)); ?>" class="btn btn-outline-danger btn-sm" onclick="return confirm('<?php echo t('Batalkan sesi ini?', 'Cancel this session?'); ?>')"><?php echo t('Batal', 'Cancel'); ?></a>
                         <?php endif; ?>
                     </div>
                 </div>

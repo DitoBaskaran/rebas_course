@@ -57,7 +57,7 @@
 
             <div class="text-center mt-4">
                 <?php if (!$enrollment): ?>
-                    <a href="<?php echo base_url('learning_paths/enroll/' . $path->id); ?>" class="btn btn-primary px-5 py-2.5">
+                    <a href="<?php echo base_url('learning_paths/enroll/' . encode_id($path->id)); ?>" class="btn btn-primary px-5 py-2.5">
                         <i class="fas fa-play me-2"></i> <?php echo t('Mulai Learning Path Ini', 'Start This Learning Path'); ?>
                     </a>
                 <?php endif; ?>

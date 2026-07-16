@@ -71,7 +71,7 @@
                                     <?php endif; ?>
                                 </div>
                                 <?php if (!$slot->is_booked): ?>
-                                    <a href="<?php echo base_url('mentor/delete-slot/' . $slot->id); ?>" class="btn btn-sm btn-outline-danger rounded-pill" onclick="return confirm('<?php echo t('Hapus slot?', 'Delete slot?'); ?>')">
+                                    <a href="<?php echo base_url('mentor/delete-slot/' . encode_id($slot->id)); ?>" class="btn btn-sm btn-outline-danger rounded-pill" onclick="return confirm('<?php echo t('Hapus slot?', 'Delete slot?'); ?>')">
                                         <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
                                     </a>
                                 <?php endif; ?>

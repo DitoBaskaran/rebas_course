@@ -42,7 +42,7 @@
                     </div>
                     <p class="small text-dark mb-2 mt-2"><?php echo nl2br(htmlspecialchars($reply->content)); ?></p>
                     <?php if ($discussion->user_id == $this->session->userdata('user_id') && !$reply->is_best_answer && !$has_best_answer): ?>
-                        <a href="<?php echo base_url('forum/mark_best/' . $reply->id); ?>" class="text-success small text-decoration-none"><?php echo t('Tandai sebagai jawaban terbaik', 'Mark as best answer'); ?></a>
+                        <a href="<?php echo base_url('forum/mark_best/' . encode_id($reply->id)); ?>" class="text-success small text-decoration-none"><?php echo t('Tandai sebagai jawaban terbaik', 'Mark as best answer'); ?></a>
                     <?php endif; ?>
                 </div>
             </div>
@@ -51,7 +51,7 @@
 
     <div class="card-flat p-4">
         <h6 class="fw-bold text-dark mb-3"><?php echo t('Tulis Balasan', 'Write a Reply'); ?></h6>
-        <?php echo form_open('forum/reply/' . $discussion->id); ?>
+        <?php echo form_open('forum/reply/' . encode_id($discussion->id)); ?>
             <textarea name="content" rows="3" class="form-control mb-3" placeholder="<?php echo t('Tulis balasan...', 'Write your reply...'); ?>" required></textarea>
             <button type="submit" class="btn btn-primary btn-sm px-4 rounded-pill"><?php echo t('Kirim', 'Send'); ?></button>
         <?php echo form_close(); ?>

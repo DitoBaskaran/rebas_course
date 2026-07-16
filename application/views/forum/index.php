@@ -25,7 +25,7 @@
             </div>
         <?php else: ?>
             <?php foreach ($discussions as $d): ?>
-                <a href="<?php echo base_url('forum/view/' . $d->id); ?>" class="text-decoration-none card border-0 shadow-sm rounded-4 p-4 d-flex gap-3 align-items-start hover-zoom" style="transition: all 0.2s;">
+                <a href="<?php echo base_url('forum/view/' . encode_id($d->id)); ?>" class="text-decoration-none card border-0 shadow-sm rounded-4 p-4 d-flex gap-3 align-items-start hover-zoom" style="transition: all 0.2s;">
                     <img src="<?php echo base_url('uploads/avatars/' . ($d->avatar ?: 'default_avatar.png')); ?>" onerror="this.src='https://ui-avatars.com/api/?name=<?php echo urlencode($d->user_name); ?>&background=4361ee&color=fff&size=40';" alt="" class="rounded-circle flex-shrink-0" style="width: 40px; height: 40px; object-fit: cover;">
                     <div class="flex-fill min-w-0">
                         <div class="d-flex justify-content-between align-items-start gap-3">

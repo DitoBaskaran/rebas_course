@@ -45,7 +45,7 @@
                         <div class="fw-bold mb-3" style="color: #111827; font-size: 1.6rem;">
                             Rp <?php echo number_format($pkg->price, 0, ',', '.'); ?>
                         </div>
-                        <a href="<?php echo base_url('mentoring/buy-package/' . $pkg->id); ?>" class="btn py-2 fw-bold rounded-pill w-100 mt-auto" style="background: <?php echo $i === 1 ? '#111827' : '#f5f5f5'; ?>; color: <?php echo $i === 1 ? '#fff' : '#111827'; ?>; font-size: 0.85rem;">
+                        <a href="<?php echo base_url('mentoring/buy-package/' . encode_id($pkg->id)); ?>" class="btn py-2 fw-bold rounded-pill w-100 mt-auto" style="background: <?php echo $i === 1 ? '#111827' : '#f5f5f5'; ?>; color: <?php echo $i === 1 ? '#fff' : '#111827'; ?>; font-size: 0.85rem;">
                             <?php echo t('Pilih Paket', 'Choose Package'); ?>
                         </a>
                     </div>

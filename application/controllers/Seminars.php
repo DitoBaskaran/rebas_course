@@ -30,7 +30,9 @@ class Seminars extends CI_Controller {
         $this->load->view('templates/student_footer');
     }
 
-    public function detail($id) {
+    public function detail($encoded_id) {
+        $id = decode_id($encoded_id);
+        if (!$id) show_404();
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
 
@@ -48,7 +50,9 @@ class Seminars extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function register($id) {
+    public function register($encoded_id) {
+        $id = decode_id($encoded_id);
+        if (!$id) show_404();
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login terlebih dahulu.', 'Please login first.'));
             redirect('auth/login');

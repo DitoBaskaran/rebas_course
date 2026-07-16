@@ -25,7 +25,7 @@
         <div class="row g-3">
             <?php foreach($seminars as $seminar): ?>
                 <div class="col-md-6 col-lg-4">
-                    <a href="<?php echo base_url('seminars/detail/' . $seminar->id); ?>" class="text-decoration-none">
+                    <a href="<?php echo base_url('seminars/detail/' . encode_id($seminar->id)); ?>" class="text-decoration-none">
                         <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s;">
                             <!-- Thumbnail -->
                             <div class="position-relative overflow-hidden" style="aspect-ratio: 16/9; border-radius: 12px 12px 0 0;">

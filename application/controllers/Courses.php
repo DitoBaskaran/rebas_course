@@ -150,7 +150,7 @@ class Courses extends CI_Controller {
         redirect('checkout/initiate/' . $course->content_type . '/' . $course->id);
     }
 
-    public function learn($course_slug_or_id, $lesson_id = NULL) {
+    public function learn($course_slug_or_id, $encoded_lesson_id = NULL) {
         $user_id = $this->session->userdata('user_id');
         $course_id = is_numeric($course_slug_or_id) ? $course_slug_or_id : null;
         $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
@@ -165,11 +165,13 @@ class Courses extends CI_Controller {
             redirect('courses/detail/' . $course->slug);
         }
 
-        // If no lesson_id specified, use first lesson
-        if (!$lesson_id) {
-            redirect('courses/learn/' . $course->slug . '/' . $lessons[0]->id);
+        // If no lesson specified, use first lesson
+        if (!$encoded_lesson_id) {
+            redirect('courses/learn/' . $course->slug . '/' . encode_id($lessons[0]->id));
         }
 
+        $lesson_id = decode_id($encoded_lesson_id);
+        if (!$lesson_id) show_404();
         $lesson = $this->Course_model->get_lesson_by_id($lesson_id);
         if (!$lesson) show_404();
 
@@ -213,7 +215,9 @@ class Courses extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function complete_lesson($course_slug_or_id, $lesson_id) {
+    public function complete_lesson($course_slug_or_id, $encoded_lesson_id) {
+        $lesson_id = decode_id($encoded_lesson_id);
+        if (!$lesson_id) show_404();
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login.', 'Please login.'));
             redirect('auth/login');

@@ -130,6 +130,7 @@ CREATE TABLE IF NOT EXISTS `progress` (
 -- 9. Seminars
 CREATE TABLE IF NOT EXISTS `seminars` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `uuid` VARCHAR(36) UNIQUE DEFAULT NULL,
   `speaker_id` INT NOT NULL,
   `title` VARCHAR(255) NOT NULL,
   `title_en` VARCHAR(255) DEFAULT '',
