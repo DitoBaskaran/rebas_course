@@ -167,55 +167,73 @@
         </div>
 
         <script>
-        $(document).ready(function() {
-            $('.lesson-complete-btn').on('click', function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const completeBtn = document.querySelector('.lesson-complete-btn');
+            if (!completeBtn) return;
+
+            completeBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                var btn = $(this);
-                var lessonId = btn.data('lesson-id');
-                var courseId = btn.data('course-id');
-                var originalText = btn.html();
+                const lessonId = this.getAttribute('data-lesson-id');
+                const courseId = this.getAttribute('data-course-id');
+                const btn = this;
+                const originalText = btn.innerHTML;
 
                 // Disable button and show loading
-                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Sedang memproses...');
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Sedang memproses...';
 
-                $.ajax({
-                    url: '<?php echo base_url('courses/ajax_complete_lesson'); ?>',
-                    type: 'POST',
-                    data: { lesson_id: lessonId, course_id: courseId },
-                    dataType: 'json',
-                    success: function(res) {
-                        if (res.ok) {
-                            // Update UI
-                            btn.removeClass('btn-dark').addClass('btn-success').html('<i class="fas fa-check me-2"></i> Selesai!');
-                            
-                            // Update progress bar
-                            $('#progress-bar').css('width', res.pct + '%');
-                            $('#progress-text').text(res.pct + '%');
-                            
-                            // Show completion message
-                            if (res.cert_msg) {
-                                $('#cert-message').show().text(res.cert_msg);
-                            }
-                            
-                            // Auto-redirect to next lesson or detail page
-                            if (res.next_lesson_id) {
-                                setTimeout(function() {
-                                    window.location.href = '<?php echo base_url('courses/learn/' . $course->slug . '/'); ?>' + res.next_lesson_id;
-                                }, 1500);
-                            } else {
-                                setTimeout(function() {
-                                    window.location.href = '<?php echo base_url('courses/detail/' . $course->slug); ?>';
-                                }, 1500);
-                            }
-                        } else {
-                            alert('Error: ' + res.msg);
-                            btn.prop('disabled', false).html(originalText);
+                const formData = new FormData();
+                formData.append('lesson_id', lessonId);
+                formData.append('course_id', courseId);
+
+                fetch('<?php echo base_url('courses/ajax_complete_lesson'); ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.ok) {
+                        // Update button to success state
+                        btn.classList.remove('btn-dark');
+                        btn.classList.add('btn-success');
+                        btn.innerHTML = '<i class="fas fa-check me-2"></i> Selesai!';
+                        
+                        // Update progress bar if exists
+                        const progressBar = document.getElementById('progress-bar');
+                        const progressText = document.getElementById('progress-text');
+                        if (progressBar && progressText) {
+                            progressBar.style.width = data.pct + '%';
+                            progressText.textContent = data.pct + '%';
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('AJAX Error: ' + error);
-                        btn.prop('disabled', false).html(originalText);
+                        
+                        // Show certificate message if exists
+                        if (data.cert_msg) {
+                            const certDiv = document.getElementById('cert-message');
+                            if (certDiv) {
+                                certDiv.style.display = 'block';
+                                certDiv.textContent = data.cert_msg;
+                            }
+                        }
+                        
+                        // Auto-redirect to next lesson or detail page
+                        setTimeout(function() {
+                            if (data.next_lesson_id) {
+                                window.location.href = '<?php echo base_url('courses/learn/' . $course->slug . '/'); ?>' + data.next_lesson_id;
+                            } else {
+                                window.location.href = '<?php echo base_url('courses/detail/' . $course->slug); ?>';
+                            }
+                        }, 1500);
+                    } else {
+                        alert('Error: ' + data.msg);
+                        btn.disabled = false;
+                        btn.innerHTML = originalText;
                     }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                    btn.disabled = false;
+                    btn.innerHTML = originalText;
                 });
             });
         });
