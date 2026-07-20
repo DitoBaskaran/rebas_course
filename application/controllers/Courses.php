@@ -299,7 +299,11 @@ class Courses extends CI_Controller {
 
         $this->load->helper('gamification');
         $this->load->helper('uuid');
-        $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
+        $saved = $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
+        if (!$saved) {
+            echo json_encode(['ok' => false, 'msg' => 'Gagal menyimpan ke database: ' . $this->db->error()['message']]);
+            exit;
+        }
         award_points($user_id, 10, 'lesson_complete', $lesson_id);
 
         $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
