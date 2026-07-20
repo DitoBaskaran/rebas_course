@@ -317,43 +317,6 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
     </div>
 </div>
 
-<!-- Sticky Sidebar (Mobile bottom bar) -->
-<div class="d-block d-lg-block" style="position: static; z-index: 1040; background: #fff; border-top: 1px solid #e5e5e5; box-shadow: 0 -2px 8px rgba(0,0,0,0.04);" id="ctaBar">
-    <div class="container d-flex justify-content-between align-items-center py-2 py-lg-3" style="max-width: 960px;">
-        <div class="d-flex align-items-center gap-4">
-            <div>
-                <div class="fw-bold" style="color: #111827; font-size: 1.1rem;">
-                    <?php if ($course->price > 0): ?>
-                        Rp <?php echo number_format($course->price, 0, ',', '.'); ?>
-                    <?php else: ?>
-                        <?php echo t('Gratis', 'Free'); ?>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <div class="d-none d-lg-flex align-items-center gap-3" style="color: #737373; font-size: 0.8rem;">
-                <span class="d-flex align-items-center gap-1"><i class="fas fa-star" style="color: #eab308; font-size: 0.7rem;"></i> <?php echo $avg_rating; ?></span>
-                <span>·</span>
-                <span class="d-flex align-items-center gap-1"><i class="fas fa-users" style="font-size: 0.7rem;"></i> <?php echo $enrolled_count; ?> siswa</span>
-                <span>·</span>
-                <span class="d-flex align-items-center gap-1"><i class="far fa-clock" style="font-size: 0.7rem;"></i> <?php echo $course->duration_total; ?>m</span>
-            </div>
-        </div>
-        <?php if ($is_enrolled): ?>
-            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem;">
-                <i class="fas fa-play me-1"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
-            </a>
-        <?php else: ?>
-            <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem;">
-                <?php if ($course->price <= 0): ?>
-                    <i class="fas fa-graduation-cap me-1"></i> <?php echo t('Daftar Gratis', 'Enroll Free'); ?>
-                <?php else: ?>
-                    <i class="fas fa-shopping-cart me-1"></i> Beli Sekarang
-                <?php endif; ?>
-            </a>
-        <?php endif; ?>
-    </div>
-</div>
-
 <!-- Course Info Section (below tabs, above footer) -->
 <div class="container border-top" style="max-width: 960px; border-color: #e5e5e5 !important; padding-top: 2rem; padding-bottom: 3rem;">
     <div class="row g-4">
@@ -395,11 +358,78 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                     <small style="color: #a3a3a3; font-size: 0.75rem;"><?php echo t('Instruktur', 'Instructor'); ?></small>
                 </div>
             </div>
+
+            <!-- CTA below instructor on mobile -->
+            <div id="ctaBar" class="mt-3 p-3 rounded-3" style="background: #fff; border: 1px solid #e5e5e5; border-radius: 12px;">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <div class="fw-bold" style="color: #111827; font-size: 1.1rem;">
+                        <?php if ($course->price > 0): ?>
+                            Rp <?php echo number_format($course->price, 0, ',', '.'); ?>
+                        <?php else: ?>
+                            <?php echo t('Gratis', 'Free'); ?>
+                        <?php endif; ?>
+                    </div>
+                    <div class="d-flex align-items-center gap-2" style="color: #737373; font-size: 0.75rem;">
+                        <span><i class="fas fa-star" style="color: #eab308; font-size: 0.65rem;"></i> <?php echo $avg_rating; ?></span>
+                        <span>·</span>
+                        <span><i class="fas fa-users" style="font-size: 0.65rem;"></i> <?php echo $enrolled_count; ?></span>
+                    </div>
+                </div>
+                <?php if ($is_enrolled): ?>
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn w-100 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem; padding: 0.6rem;">
+                        <i class="fas fa-play me-1"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
+                    </a>
+                <?php else: ?>
+                    <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn w-100 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem; padding: 0.6rem;">
+                        <?php if ($course->price <= 0): ?>
+                            <i class="fas fa-graduation-cap me-1"></i> <?php echo t('Daftar Gratis', 'Enroll Free'); ?>
+                        <?php else: ?>
+                            <i class="fas fa-shopping-cart me-1"></i> Beli Sekarang
+                        <?php endif; ?>
+                    </a>
+                <?php endif; ?>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-@media (min-width: 992px) { /* Adjust for desktop */
-    #ctaBar { position: fixed; bottom: 0; left: 0; right: 0; }
-}</style>
+@media (min-width: 992px) {
+    #ctaBar { display: none !important; }
+}
+</style>
+
+<!-- Desktop sticky CTA bar -->
+<div class="d-none d-lg-block position-fixed" style="bottom: 0; left: 0; right: 0; z-index: 1040; background: #fff; border-top: 1px solid #e5e5e5; box-shadow: 0 -2px 8px rgba(0,0,0,0.04);">
+    <div class="container d-flex justify-content-between align-items-center py-3" style="max-width: 960px;">
+        <div class="d-flex align-items-center gap-4">
+            <div class="fw-bold" style="color: #111827; font-size: 1.1rem;">
+                <?php if ($course->price > 0): ?>
+                    Rp <?php echo number_format($course->price, 0, ',', '.'); ?>
+                <?php else: ?>
+                    <?php echo t('Gratis', 'Free'); ?>
+                <?php endif; ?>
+            </div>
+            <div class="d-flex align-items-center gap-3" style="color: #737373; font-size: 0.8rem;">
+                <span><i class="fas fa-star" style="color: #eab308; font-size: 0.7rem;"></i> <?php echo $avg_rating; ?></span>
+                <span>·</span>
+                <span><i class="fas fa-users" style="font-size: 0.7rem;"></i> <?php echo $enrolled_count; ?> siswa</span>
+                <span>·</span>
+                <span><i class="far fa-clock" style="font-size: 0.7rem;"></i> <?php echo $course->duration_total; ?>m</span>
+            </div>
+        </div>
+        <?php if ($is_enrolled): ?>
+            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem;">
+                <i class="fas fa-play me-1"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
+            </a>
+        <?php else: ?>
+            <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem;">
+                <?php if ($course->price <= 0): ?>
+                    <i class="fas fa-graduation-cap me-1"></i> <?php echo t('Daftar Gratis', 'Enroll Free'); ?>
+                <?php else: ?>
+                    <i class="fas fa-shopping-cart me-1"></i> Beli Sekarang
+                <?php endif; ?>
+            </a>
+        <?php endif; ?>
+    </div>
+</div>
