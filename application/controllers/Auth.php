@@ -6,6 +6,8 @@ class Auth extends CI_Controller {
     public function __construct() {
         parent::__construct();
         $this->load->model('User_model');
+        $this->load->helper('oauth');
+        $this->load->helper('cookie');
     }
 
     public function login() {
@@ -23,8 +25,9 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'required');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('templates/header', array('title' => t('Login - REBAS COURSE', 'Login - REBAS COURSE')));
-            $this->load->view('auth/login');
+            $data['google_login_url'] = google_login_url();
+            $this->load->view('templates/header', array('title' => t('Login - BISATUNTAS', 'Login - BISATUNTAS')));
+            $this->load->view('auth/login', $data);
             $this->load->view('templates/footer');
         } else {
             $user = $this->User_model->login($this->input->post('email'), $this->input->post('password'));
@@ -46,12 +49,10 @@ class Auth extends CI_Controller {
 
                 $this->session->set_flashdata('success', t('Selamat datang kembali, ', 'Welcome back, ') . $user->name);
 
-                if ($user->role === 'mentor') {
-                    redirect('mentor');
-                } else                if ($user->role === 'mentor') {
-                    redirect('mentor');
-                } elseif (in_array($user->role, ['admin', 'teacher'])) {
+                if (in_array($user->role, ['admin', 'teacher'])) {
                     redirect('admin/dashboard');
+                } elseif ($user->role === 'mentor') {
+                    redirect('mentor');
                 } else {
                     redirect('dashboard');
                 }
@@ -79,8 +80,9 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('confirm_password', t('Konfirmasi Password', 'Confirm Password'), 'required|matches[password]');
 
         if ($this->form_validation->run() === FALSE) {
-            $this->load->view('templates/header', array('title' => t('Daftar Akun - REBAS COURSE', 'Register - REBAS COURSE')));
-            $this->load->view('auth/register');
+            $data['google_login_url'] = google_login_url();
+            $this->load->view('templates/header', array('title' => t('Daftar Akun - BISATUNTAS', 'Register - BISATUNTAS')));
+            $this->load->view('auth/register', $data);
             $this->load->view('templates/footer');
         } else {
             $data = array(
@@ -119,6 +121,11 @@ class Auth extends CI_Controller {
                     ));
                 }
 
+                // Send welcome email
+                $this->load->helper('notification');
+                $new_user = $this->User_model->get_user_by_id($user_id);
+                notify_welcome($new_user);
+
                 $this->session->set_flashdata('success', t('Akun berhasil dibuat! Silakan login.', 'Account created! Please login.'));
                 redirect('auth/login');
             } else {
@@ -128,6 +135,93 @@ class Auth extends CI_Controller {
         }
     }
 
+    // ===== GOOGLE OAUTH =====
+    public function google() {
+        $this->load->helper('oauth');
+        $url = google_login_url();
+        if (empty($url)) {
+            $this->session->set_flashdata('error', t('Google Login tidak tersedia.', 'Google Login is not available.'));
+            redirect('auth/login');
+        }
+        redirect($url);
+    }
+
+    public function google_callback() {
+        $this->load->helper('oauth');
+
+        $error = $this->input->get('error');
+        if ($error) {
+            $this->session->set_flashdata('error', t('Login Google dibatalkan.', 'Google Login cancelled.'));
+            redirect('auth/login');
+        }
+
+        $code = $this->input->get('code');
+        if (!$code) {
+            $this->session->set_flashdata('error', t('Kode otorisasi tidak valid.', 'Invalid authorization code.'));
+            redirect('auth/login');
+        }
+
+        $access_token = google_exchange_code($code);
+        if (!$access_token) {
+            $this->session->set_flashdata('error', t('Gagal mendapatkan token akses.', 'Failed to get access token.'));
+            redirect('auth/login');
+        }
+
+        $google_user = google_get_user_info($access_token);
+        if (!$google_user || empty($google_user['email'])) {
+            $this->session->set_flashdata('error', t('Gagal mendapatkan data pengguna.', 'Failed to get user data.'));
+            redirect('auth/login');
+        }
+
+        // Find existing user by email or google_id
+        $user = $this->db->where('google_id', $google_user['google_id'])->or_where('email', $google_user['email'])->get('users')->row();
+
+        if ($user) {
+            // Update google_id if not linked yet
+            if (empty($user->google_id) && !empty($google_user['google_id'])) {
+                $this->db->where('id', $user->id)->update('users', array('google_id' => $google_user['google_id']));
+            }
+        } else {
+            // Register new user via Google
+            $random_pass = bin2hex(random_bytes(16));
+            $insert_data = array(
+                'name'       => $google_user['name'],
+                'email'      => $google_user['email'],
+                'password'   => password_hash($random_pass, PASSWORD_BCRYPT),
+                'google_id'  => $google_user['google_id'],
+                'role'       => 'student',
+                'language'   => current_lang(),
+            );
+            $this->db->insert('users', $insert_data);
+            $user = $this->db->where('email', $google_user['email'])->get('users')->row();
+
+            // Send welcome notification
+            $this->load->helper('notification');
+            notify_welcome($user);
+        }
+
+        if (!$user || $user->status === 'banned') {
+            $this->session->set_flashdata('error', t('Akun tidak aktif.', 'Account is not active.'));
+            redirect('auth/login');
+        }
+
+        // Log in
+        $session_data = array(
+            'user_id' => $user->id,
+            'name'    => $user->name,
+            'email'   => $user->email,
+            'role'    => $user->role,
+            'logged_in' => TRUE,
+        );
+        $this->session->set_userdata($session_data);
+        if (!empty($user->language)) {
+            $this->session->set_userdata('site_lang', $user->language);
+        }
+
+        $this->session->set_flashdata('success', t('Selamat datang, ', 'Welcome, ') . $user->name);
+        redirect('dashboard');
+    }
+
     // ===== PASSWORD RESET =====
     public function forgot_password() {
         if ($this->session->userdata('logged_in')) redirect('dashboard');
@@ -135,7 +229,7 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
 
         if ($this->form_validation->run() === FALSE) {
-            $data['title'] = t('Lupa Password - REBAS COURSE', 'Forgot Password - REBAS COURSE');
+            $data['title'] = t('Lupa Password - BISATUNTAS', 'Forgot Password - BISATUNTAS');
             $this->load->view('templates/header', $data);
             $this->load->view('auth/forgot_password');
             $this->load->view('templates/footer');
@@ -153,7 +247,7 @@ class Auth extends CI_Controller {
                 $this->load->helper('mail');
                 $reset_link = base_url('auth/reset_password/' . $token);
                 $body = 'Klik tombol di bawah untuk mereset password Anda. Link ini berlaku 1 jam.<br><br>Click the button below to reset your password. This link expires in 1 hour.';
-                send_email($email, 'Reset Password - ' . setting('general_site_name', 'REBAS COURSE'),
+                send_email($email, 'Reset Password - ' . setting('general_site_name', 'BISATUNTAS'),
                     email_template('Reset Password', $body, 'Reset Password', $reset_link));
             }
 
@@ -170,7 +264,7 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('confirm_password', t('Konfirmasi Password', 'Confirm Password'), 'required|matches[password]');
 
         if ($this->form_validation->run() === FALSE) {
-            $data['title'] = t('Reset Password - REBAS COURSE', 'Reset Password - REBAS COURSE');
+            $data['title'] = t('Reset Password - BISATUNTAS', 'Reset Password - BISATUNTAS');
             $data['token'] = $token;
             $this->load->view('templates/header', $data);
             $this->load->view('auth/reset_password', $data);

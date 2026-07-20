@@ -1,13 +1,13 @@
 /**
- * REBAS COURSE — Universal Event Tracker
+ * BISATUNTAS — Universal Event Tracker
  * Tracks key user events to GA4 + Facebook Pixel
  */
 (function() {
   'use strict';
 
-  window.REBAS = window.REBAS || {};
+  window.BISATUNTAS = window.BISATUNTAS || {};
 
-  REBAS.track = function(eventName, params) {
+  BISATUNTAS.track = function(eventName, params) {
     params = params || {};
 
     // GA4 Event
@@ -22,7 +22,7 @@
 
     // Console log in development
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      console.log('[REBAS Track]', eventName, params);
+      console.log('[BISATUNTAS Track]', eventName, params);
     }
   };
 
@@ -38,13 +38,13 @@
     pageData.content_type = 'course';
   }
 
-  REBAS.track('page_view', pageData);
+  BISATUNTAS.track('page_view', pageData);
 
   // Track enrollment button clicks
   document.addEventListener('click', function(e) {
     var enrollBtn = e.target.closest('[data-track-enroll]');
     if (enrollBtn) {
-      REBAS.track('begin_checkout', {
+      BISATUNTAS.track('begin_checkout', {
         course_id: enrollBtn.getAttribute('data-track-enroll'),
         price: enrollBtn.getAttribute('data-track-price') || '0',
       });
@@ -52,7 +52,7 @@
 
     var shareBtn = e.target.closest('[data-track-share]');
     if (shareBtn) {
-      REBAS.track('share', {
+      BISATUNTAS.track('share', {
         content_id: shareBtn.getAttribute('data-track-share'),
         platform: shareBtn.getAttribute('data-track-platform') || 'unknown',
       });
@@ -61,14 +61,14 @@
 
   // Track purchase complete (check for URL parameter)
   if (window.location.search.indexOf('purchase=success') !== -1) {
-    REBAS.track('purchase', {
+    BISATUNTAS.track('purchase', {
       transaction_id: new URLSearchParams(window.location.search).get('tx_id') || '',
     });
   }
 
   // Track registration complete
   if (window.location.search.indexOf('registered=true') !== -1) {
-    REBAS.track('complete_registration', {});
+    BISATUNTAS.track('complete_registration', {});
   }
 
   // UTM Capture — store in cookie/session via AJAX
@@ -87,7 +87,7 @@
 
     if (hasUtm) {
       // Save to cookie for 30 days
-      document.cookie = 'rebas_utm=' + encodeURIComponent(JSON.stringify(utmData)) +
+      document.cookie = 'bisatuntas_utm=' + encodeURIComponent(JSON.stringify(utmData)) +
         '; path=/; max-age=' + (30 * 24 * 60 * 60);
 
       // Send to server via beacon

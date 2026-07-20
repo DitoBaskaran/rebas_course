@@ -3,7 +3,7 @@
         <div class="col-lg-7">
             <div class="text-center mb-5 animate-fade-in-up">
                 <h1 class="display-5 fw-extrabold text-dark mb-2 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Verifikasi Sertifikat', 'Certificate Verification'); ?></h1>
-                <p class="text-secondary lead mb-0" style="font-size: 1.1rem;"><?php echo t('Verifikasi keaslian sertifikat REBAS COURSE.', 'Verify the authenticity of REBAS COURSE certificates.'); ?></p>
+                <p class="text-secondary lead mb-0" style="font-size: 1.1rem;"><?php echo t('Verifikasi keaslian sertifikat BISATUNTAS.', 'Verify the authenticity of BISATUNTAS certificates.'); ?></p>
             </div>
 
             <?php if ($error): ?>

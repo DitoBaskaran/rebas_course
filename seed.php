@@ -1,5 +1,5 @@
 <?php
-// Seed database untuk REBAS COURSE
+// Seed database untuk BISATUNTAS
 // Database credentials loaded from CI config (per-environment, not tracked by git)
 if (!defined('BASEPATH')) {
     define('BASEPATH', '');
@@ -56,13 +56,13 @@ try {
 
     // ========== USERS ==========
     $stmt = $pdo->prepare("INSERT INTO users (name, email, password, role, bio, avatar, phone, language, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())");
-    $stmt->execute(['Administrator', 'admin@rebas.com', $pw, 'admin', 'Founder & Lead Developer REBAS COURSE', '', '081234567890', 'id']);
-    $stmt->execute(['Dimas Pratama, S.Kom.', 'dimas@rebas.com', $pw, 'teacher', 'Full-stack developer & mentor pemrograman sejak 2018', '', '081234567891', 'id']);
-    $stmt->execute(['Sarah Wijaya, M.Pd.', 'sarah@rebas.com', $pw, 'teacher', 'Guru matematika & sains dengan pengalaman 10 tahun', '', '081234567892', 'id']);
-    $stmt->execute(['Bryan Kusuma', 'bryan@rebas.com', $pw, 'teacher', 'Content creator & graphic designer profesional', '', '081234567893', 'id']);
-    $stmt->execute(['Rian Pratama', 'rian@rebas.com', $pw, 'student', 'Mahasiswa yang suka belajar hal baru', '', '', 'id']);
-    $stmt->execute(['Siti Nurhaliza', 'siti@rebas.com', $pw, 'student', 'Pelajar SMA yang ingin masuk PTN', '', '', 'id']);
-    $stmt->execute(['John Doe', 'john@rebas.com', $pw, 'student', 'English learner interested in tech', '', '', 'en']);
+    $stmt->execute(['Administrator', 'admin@bisatuntas.com', $pw, 'admin', 'Founder & Lead Developer BISATUNTAS', '', '081234567890', 'id']);
+    $stmt->execute(['Dimas Pratama, S.Kom.', 'dimas@bisatuntas.com', $pw, 'teacher', 'Full-stack developer & mentor pemrograman sejak 2018', '', '081234567891', 'id']);
+    $stmt->execute(['Sarah Wijaya, M.Pd.', 'sarah@bisatuntas.com', $pw, 'teacher', 'Guru matematika & sains dengan pengalaman 10 tahun', '', '081234567892', 'id']);
+    $stmt->execute(['Bryan Kusuma', 'bryan@bisatuntas.com', $pw, 'teacher', 'Content creator & graphic designer profesional', '', '081234567893', 'id']);
+    $stmt->execute(['Rian Pratama', 'rian@bisatuntas.com', $pw, 'student', 'Mahasiswa yang suka belajar hal baru', '', '', 'id']);
+    $stmt->execute(['Siti Nurhaliza', 'siti@bisatuntas.com', $pw, 'student', 'Pelajar SMA yang ingin masuk PTN', '', '', 'id']);
+    $stmt->execute(['John Doe', 'john@bisatuntas.com', $pw, 'student', 'English learner interested in tech', '', '', 'en']);
     echo "Users OK.\n";
 
     $teachers = $pdo->query("SELECT id FROM users WHERE role='teacher'")->fetchAll();
@@ -527,13 +527,13 @@ try {
 
     $seed_settings = [
         // General
-        ['general_site_name', 'REBAS COURSE', 'text', 'general', 'Site Name', 1],
+        ['general_site_name', 'BISATUNTAS', 'text', 'general', 'Site Name', 1],
         ['general_site_description', 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.', 'textarea', 'general', 'Site Description', 2],
         ['general_site_keywords', 'belajar online, kursus, seminar, workshop, bootcamp, e-book', 'text', 'general', 'Site Keywords', 3],
         ['general_site_logo', '', 'image', 'general', 'Site Logo', 4],
         ['general_site_favicon', '', 'image', 'general', 'Favicon', 5],
-        ['general_admin_email', 'admin@rebas.com', 'email', 'general', 'Admin Email', 6],
-        ['general_contact_email', 'support@rebascourse.com', 'email', 'general', 'Contact Email', 7],
+        ['general_admin_email', 'admin@bisatuntas.com', 'email', 'general', 'Admin Email', 6],
+        ['general_contact_email', 'support@bisatuntas.com', 'email', 'general', 'Contact Email', 7],
         ['general_contact_phone', '021-1234-5678', 'text', 'general', 'Contact Phone', 8],
         ['general_contact_address', 'Jakarta, Indonesia', 'textarea', 'general', 'Address', 9],
 
@@ -589,7 +589,7 @@ try {
         // Footer
         ['footer_about_text', 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.', 'textarea', 'footer', 'Footer About Text', 1],
         ['footer_about_text_en', 'Modern online learning platform with structured classes and interactive seminars from Indonesia\'s best experts.', 'textarea', 'footer', 'Footer About Text (English)', 2],
-        ['footer_copyright', 'REBAS COURSE. All rights reserved.', 'text', 'footer', 'Copyright Text', 3],
+        ['footer_copyright', 'BISATUNTAS. All rights reserved.', 'text', 'footer', 'Copyright Text', 3],
 
         // Analytics
         ['analytics_ga4_id', '', 'text', 'general', 'Google Analytics 4 Measurement ID', 50],
@@ -636,6 +636,10 @@ try {
         ['pakasir_slug', '', 'text', 'payment', 'Pakasir Project Slug', 1],
         ['pakasir_api_key', '', 'text', 'payment', 'Pakasir API Key', 2],
         ['pakasir_sandbox', '1', 'boolean', 'payment', 'Pakasir Sandbox Mode', 3],
+
+        // Google OAuth (Social Login)
+        ['google_client_id', '', 'text', 'social_login', 'Google Client ID', 1],
+        ['google_client_secret', '', 'text', 'social_login', 'Google Client Secret', 2],
     ];
 
     foreach ($seed_settings as $s) {
@@ -653,9 +657,9 @@ try {
     echo "Mentor Categories OK.\n";
 
     // ========== MENTORS ==========
-    $mentor_dimas = (int)$pdo->query("SELECT id FROM users WHERE email='dimas@rebas.com'")->fetchColumn();
-    $mentor_sarah = (int)$pdo->query("SELECT id FROM users WHERE email='sarah@rebas.com'")->fetchColumn();
-    $mentor_bryan = (int)$pdo->query("SELECT id FROM users WHERE email='bryan@rebas.com'")->fetchColumn();
+    $mentor_dimas = (int)$pdo->query("SELECT id FROM users WHERE email='dimas@bisatuntas.com'")->fetchColumn();
+    $mentor_sarah = (int)$pdo->query("SELECT id FROM users WHERE email='sarah@bisatuntas.com'")->fetchColumn();
+    $mentor_bryan = (int)$pdo->query("SELECT id FROM users WHERE email='bryan@bisatuntas.com'")->fetchColumn();
 
     $stmt = $pdo->prepare("INSERT INTO mentors (user_id, title, title_en, bio, bio_en, avatar, price_per_session, durations_available, meeting_platforms, is_active, avg_rating, total_reviews, total_sessions) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $stmt->execute([$mentor_dimas, 'Full-stack Developer', 'Full-stack Developer', 'Berpengalaman 10 tahun di pengembangan web dan aplikasi mobile. Siap bantu kamu belajar coding dari nol hingga mahir!', '10 years experience in web and mobile app development. Ready to help you learn coding from scratch to advanced!', 'mentor_dimas.png', 100000.00, '30,60', 'zoom,gmeet', 1, 4.9, 25, 120]);
@@ -689,7 +693,7 @@ try {
     echo "Mentoring Packages OK.\n";
 
     // ========== USER MENTORING BALANCES (sample) ==========
-    $student_rian_id = (int)$pdo->query("SELECT id FROM users WHERE email='rian@rebas.com'")->fetchColumn();
+    $student_rian_id = (int)$pdo->query("SELECT id FROM users WHERE email='rian@bisatuntas.com'")->fetchColumn();
     $pkg_3x30_id = (int)$pdo->query("SELECT id FROM mentoring_packages WHERE slug='paket-3x30-menit'")->fetchColumn();
     $stmt = $pdo->prepare("INSERT INTO user_mentoring_balances (user_id, package_id, total_sessions, remaining_sessions, session_duration, expired_at, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
     $stmt->execute([$student_rian_id, $pkg_3x30_id, 3, 2, 30, date('Y-m-d', strtotime('+3 months'))]);
@@ -724,13 +728,13 @@ try {
 
 
     echo "\n✓ SEMUA DATA SEEDER BERHASIL!\n";
-    echo "  Admin: admin@rebas.com / password123\n";
-    echo "  Teacher: dimas@rebas.com / password123\n";
-    echo "  Teacher: sarah@rebas.com / password123\n";
-    echo "  Teacher: bryan@rebas.com / password123\n";
-    echo "  Student: rian@rebas.com / password123\n";
-    echo "  Student: siti@rebas.com / password123\n";
-    echo "  Student: john@rebas.com / password123\n";
+    echo "  Admin: admin@bisatuntas.com / password123\n";
+    echo "  Teacher: dimas@bisatuntas.com / password123\n";
+    echo "  Teacher: sarah@bisatuntas.com / password123\n";
+    echo "  Teacher: bryan@bisatuntas.com / password123\n";
+    echo "  Student: rian@bisatuntas.com / password123\n";
+    echo "  Student: siti@bisatuntas.com / password123\n";
+    echo "  Student: john@bisatuntas.com / password123\n";
 
 } catch (PDOException $e) {
     echo "Kesalahan database: " . $e->getMessage() . "\n";

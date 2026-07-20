@@ -2,7 +2,7 @@
     <div class="text-center mb-5">
         <span class="badge bg-primary-subtle text-primary badge-modern mb-3"><?php echo t('Affiliate', 'Affiliate'); ?></span>
         <h1 class="display-5 fw-extrabold text-dark mb-3" style="letter-spacing:-0.03em;"><?php echo t('Program Affiliate', 'Affiliate Program'); ?></h1>
-        <p class="text-secondary mx-auto" style="max-width:550px;"><?php echo t('Dapatkan komisi dengan merekomendasikan REBAS COURSE ke teman Anda!', 'Earn commissions by recommending REBAS COURSE to your friends!'); ?></p>
+        <p class="text-secondary mx-auto" style="max-width:550px;"><?php echo t('Dapatkan komisi dengan merekomendasikan BISATUNTAS ke teman Anda!', 'Earn commissions by recommending BISATUNTAS to your friends!'); ?></p>
     </div>
 
     <div class="row g-4 mb-5">

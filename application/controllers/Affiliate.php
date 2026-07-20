@@ -28,7 +28,7 @@ class Affiliate extends CI_Controller {
         $data['clicks'] = $this->db->where('affiliate_id', $affiliate->id)->count_all_results('affiliate_clicks');
         $data['conversions'] = $this->db->where('affiliate_id', $affiliate->id)->get('affiliate_conversions')->result();
         $data['referral_link'] = base_url('?ref=' . $affiliate->referral_code);
-        $data['title'] = t('Affiliate - REBAS COURSE', 'Affiliate - REBAS COURSE');
+        $data['title'] = t('Affiliate - BISATUNTAS', 'Affiliate - BISATUNTAS');
         $data['active_page'] = 'affiliate';
 
         $this->load->view('templates/student_header', $data);

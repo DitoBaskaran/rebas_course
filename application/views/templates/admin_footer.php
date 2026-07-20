@@ -25,7 +25,7 @@
     <?php if (isset($load_chartjs) && $load_chartjs): ?>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <?php endif; ?>
-    <!-- REBAS JS -->
-    <script src="<?php echo base_url('assets/js/rebas.js'); ?>"></script>
+    <!-- BISATUNTAS JS -->
+    <script src="<?php echo base_url('assets/js/bisatuntas.js'); ?>"></script>
 </body>
 </html>

@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <!-- REBAS Design System -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/rebas.css'); ?>">
+    <!-- BISATUNTAS Design System -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css'); ?>">
     <?php if (!isset($is_homepage) || !$is_homepage): ?>
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/rebas-playful-alt.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas-playful-alt.css'); ?>">
     <?php endif; ?>
     <style>
         :root { <?php echo settings_css_vars(); ?> }
@@ -64,40 +64,6 @@
                 BISATUNTAS
             </a>
 
-            <!-- Mobile offcanvas -->
-            <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-                <div class="offcanvas-header" style="border-bottom: 1px solid #f0f0f0;">
-                    <h5 class="offcanvas-title d-flex align-items-center gap-2 fw-bold">BISATUNTAS</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body p-0">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link-home d-block px-3 py-2 active" href="<?php echo base_url(); ?>"><?php echo t('Beranda', 'Home'); ?></a></li>
-                        <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('courses'); ?>"><?php echo t('Kelas', 'Courses'); ?></a></li>
-                        <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('seminars'); ?>"><?php echo t('Seminar', 'Seminars'); ?></a></li>
-                        <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('learning_paths'); ?>"><?php echo t('Learning Paths', 'Paths'); ?></a></li>
-                        <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('mentoring'); ?>"><?php echo t('Mentoring', 'Mentoring'); ?></a></li>
-                        <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('subscription'); ?>"><?php echo t('Langganan', 'Subscription'); ?></a></li>
-                    </ul>
-                    <hr class="my-0">
-                    <div class="p-3 d-flex flex-column gap-2">
-                        <?php if ($this->session->userdata('logged_in')): ?>
-                            <a href="<?php echo base_url('dashboard'); ?>" class="btn btn-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Dashboard', 'Dashboard'); ?></a>
-                            <?php if (in_array($this->session->userdata('role'), ['admin', 'teacher', 'mentor'])): ?>
-                                <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Panel Admin', 'Admin Panel'); ?></a>
-                            <?php endif; ?>
-                            <a href="<?php echo base_url('profile'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Profil', 'Profile'); ?></a>
-                            <div class="border-top pt-2 mt-1">
-                                <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-outline-danger btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Keluar', 'Logout'); ?></a>
-                            </div>
-                        <?php else: ?>
-                            <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Masuk', 'Login'); ?></a>
-                            <a href="<?php echo base_url('auth/register'); ?>" class="btn btn-sm w-100 rounded-pill fw-semibold" style="background: #eab308; color: #111827;"><?php echo t('Daftar', 'Register'); ?></a>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
             <!-- Desktop -->
             <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
@@ -137,6 +103,40 @@
             </div>
         </div>
     </nav>
+
+    <!-- Mobile offcanvas (outside nav to avoid backdrop-filter containing block issue) -->
+    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header" style="border-bottom: 1px solid #f0f0f0;">
+            <h5 class="offcanvas-title d-flex align-items-center gap-2 fw-bold">BISATUNTAS</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body p-0">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2 active" href="<?php echo base_url(); ?>"><?php echo t('Beranda', 'Home'); ?></a></li>
+                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('courses'); ?>"><?php echo t('Kelas', 'Courses'); ?></a></li>
+                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('seminars'); ?>"><?php echo t('Seminar', 'Seminars'); ?></a></li>
+                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('learning_paths'); ?>"><?php echo t('Learning Paths', 'Paths'); ?></a></li>
+                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('mentoring'); ?>"><?php echo t('Mentoring', 'Mentoring'); ?></a></li>
+                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('subscription'); ?>"><?php echo t('Langganan', 'Subscription'); ?></a></li>
+            </ul>
+            <hr class="my-0">
+            <div class="p-3 d-flex flex-column gap-2">
+                <?php if ($this->session->userdata('logged_in')): ?>
+                    <a href="<?php echo base_url('dashboard'); ?>" class="btn btn-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Dashboard', 'Dashboard'); ?></a>
+                    <?php if (in_array($this->session->userdata('role'), ['admin', 'teacher', 'mentor'])): ?>
+                        <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Panel Admin', 'Admin Panel'); ?></a>
+                    <?php endif; ?>
+                    <a href="<?php echo base_url('profile'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Profil', 'Profile'); ?></a>
+                    <div class="border-top pt-2 mt-1">
+                        <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-outline-danger btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Keluar', 'Logout'); ?></a>
+                    </div>
+                <?php else: ?>
+                    <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Masuk', 'Login'); ?></a>
+                    <a href="<?php echo base_url('auth/register'); ?>" class="btn btn-sm w-100 rounded-pill fw-semibold" style="background: #eab308; color: #111827;"><?php echo t('Daftar', 'Register'); ?></a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
 
     <!-- Flash Messages -->
     <div class="container mt-3">

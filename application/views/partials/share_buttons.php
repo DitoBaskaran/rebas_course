@@ -2,7 +2,7 @@
     <span class="small text-muted fw-semibold me-1"><?php echo t('Bagikan:', 'Share:'); ?></span>
     <?php
     $share_url = isset($share_url) ? urlencode($share_url) : urlencode(current_url());
-    $share_text = isset($share_text) ? urlencode($share_text) : urlencode($title ?? setting('general_site_name', 'REBAS COURSE'));
+    $share_text = isset($share_text) ? urlencode($share_text) : urlencode($title ?? setting('general_site_name', 'BISATUNTAS'));
     $share_image = isset($share_image) ? urlencode($share_image) : '';
     ?>
     <a href="https://www.facebook.com/sharer.php?u=<?php echo $share_url; ?>" target="_blank" class="btn btn-sm btn-outline-secondary rounded-circle" style="width:32px;height:32px;" data-track-share="<?php echo $share_url; ?>" data-track-platform="facebook" title="Facebook">

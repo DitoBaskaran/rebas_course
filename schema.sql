@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `avatar` VARCHAR(255) DEFAULT 'default_avatar.png',
   `phone` VARCHAR(20) DEFAULT '',
   `language` ENUM('id', 'en') DEFAULT 'id',
+  `google_id` VARCHAR(100) DEFAULT NULL,
   `last_login` DATETIME NULL,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

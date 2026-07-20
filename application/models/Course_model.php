@@ -214,7 +214,19 @@ class Course_model extends CI_Model {
             'user_id' => $user_id,
             'course_id' => $course_id
         );
-        return $this->db->insert('enrollments', $data);
+        $inserted = $this->db->insert('enrollments', $data);
+
+        if ($inserted) {
+            $ci =& get_instance();
+            $ci->load->helper('notification');
+            $user = $ci->User_model->get_user_by_id($user_id);
+            $course = $this->get_course_by_id($course_id);
+            if ($user && $course) {
+                notify_enrollment($user, $course);
+            }
+        }
+
+        return $inserted;
     }
 
     public function get_user_enrolled_courses($user_id) {

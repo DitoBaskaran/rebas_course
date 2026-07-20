@@ -21,8 +21,8 @@ function send_email($to, $subject, $html_body, $from = null) {
 
 function _send_mailgun($api_key, $domain, $to, $subject, $html_body, $from = null) {
     $CI =& get_instance();
-    $from = $from ?: setting('general_admin_email', 'admin@rebas-course.com');
-    $from_name = setting('general_site_name', 'REBAS COURSE');
+    $from = $from ?: setting('general_admin_email', 'admin@bisatuntas.com');
+    $from_name = setting('general_site_name', 'BISATUNTAS');
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "https://api.mailgun.net/v3/{$domain}/messages");
@@ -45,8 +45,8 @@ function _send_mailgun($api_key, $domain, $to, $subject, $html_body, $from = nul
 
 function _send_smtp($to, $subject, $html_body, $from = null) {
     $CI =& get_instance();
-    $from = $from ?: setting('general_admin_email', 'admin@rebas-course.com');
-    $from_name = setting('general_site_name', 'REBAS COURSE');
+    $from = $from ?: setting('general_admin_email', 'admin@bisatuntas.com');
+    $from_name = setting('general_site_name', 'BISATUNTAS');
 
     $headers = "MIME-Version: 1.0\r\n";
     $headers .= "Content-type: text/html; charset=UTF-8\r\n";
@@ -57,7 +57,7 @@ function _send_smtp($to, $subject, $html_body, $from = null) {
 }
 
 function email_template($title, $body, $cta_text = '', $cta_link = '') {
-    $site_name = setting('general_site_name', 'REBAS COURSE');
+    $site_name = setting('general_site_name', 'BISATUNTAS');
     $logo = site_logo_url();
     $logo_html = $logo ? "<img src=\"{$logo}\" alt=\"{$site_name}\" style=\"height:32px;\">" : "<strong>{$site_name}</strong>";
 

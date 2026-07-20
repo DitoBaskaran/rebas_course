@@ -98,8 +98,8 @@
     <script src="<?php echo base_url('assets/js/analytics.js'); ?>"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <!-- REBAS JS -->
-    <script src="<?php echo base_url('assets/js/rebas.js'); ?>"></script>
+    <!-- BISATUNTAS JS -->
+    <script src="<?php echo base_url('assets/js/bisatuntas.js'); ?>"></script>
     <script>
     // Auto-mark video lesson as complete when video ends
     document.addEventListener('DOMContentLoaded', function() {
@@ -120,7 +120,7 @@
 (function() {
     var btn = document.getElementById('frontendThemeToggle');
     var html = document.documentElement;
-    var saved = localStorage.getItem('rebas-theme');
+    var saved = localStorage.getItem('bisatuntas-theme');
     if (saved === 'dark') {
         html.setAttribute('data-theme', 'dark');
         document.querySelector('#frontendThemeToggle .moon-icon').style.display = 'none';
@@ -131,12 +131,12 @@
             var isDark = html.getAttribute('data-theme') === 'dark';
             if (isDark) {
                 html.removeAttribute('data-theme');
-                localStorage.setItem('rebas-theme', 'light');
+                localStorage.setItem('bisatuntas-theme', 'light');
                 document.querySelector('#frontendThemeToggle .moon-icon').style.display = 'block';
                 document.querySelector('#frontendThemeToggle .sun-icon').style.display = 'none';
             } else {
                 html.setAttribute('data-theme', 'dark');
-                localStorage.setItem('rebas-theme', 'dark');
+                localStorage.setItem('bisatuntas-theme', 'dark');
                 document.querySelector('#frontendThemeToggle .moon-icon').style.display = 'none';
                 document.querySelector('#frontendThemeToggle .sun-icon').style.display = 'block';
             }

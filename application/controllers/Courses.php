@@ -49,9 +49,10 @@ class Courses extends CI_Controller {
         $this->load->view('templates/student_footer');
     }
 
-    public function detail($id) {
-        $course = $this->Course_model->get_course_by_id($id);
+    public function detail($id_or_slug) {
+        $course = is_numeric($id_or_slug) ? $this->Course_model->get_course_by_id($id_or_slug) : $this->Course_model->get_course_by_slug($id_or_slug);
         if (!$course) show_404();
+        $id = $course->id;
 
         $data['title'] = $course->title;
         $data['course'] = $course;
@@ -261,6 +262,11 @@ class Courses extends CI_Controller {
                 $cert = $this->Certificate_model->issue_certificate($user_id, $course_id);
                 award_points($user_id, 100, 'course_completed', $course_id);
                 $this->session->set_flashdata('success', t('Selamat! Anda lulus! Sertifikat telah diterbitkan.', 'Congratulations! Certificate issued.'));
+
+                // Send certificate notification
+                $this->load->helper('notification');
+                $user_obj = $this->User_model->get_user_by_id($user_id);
+                notify_certificate_issued($user_obj, $course, $cert->certificate_code);
             } else {
                 $this->session->set_flashdata('success', t('Materi terakhir selesai!', 'Final lesson completed!'));
             }

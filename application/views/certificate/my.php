@@ -25,12 +25,15 @@
                                 <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($cert->title ?: $cert->course_title); ?></h5>
                                 <p class="small text-muted mb-2"><?php echo t('Diterbitkan:', 'Issued:'); ?> <?php echo date('d M Y', strtotime($cert->issued_at)); ?></p>
                                 <div class="d-flex gap-2 flex-wrap">
+                                    <a href="<?php echo base_url('certificate/download/' . encode_id($cert->id)); ?>" class="btn btn-sm btn-dark rounded-pill px-3">
+                                        <i data-lucide="download" style="width:14px;height:14px;"></i> <?php echo t('Unduh PDF', 'Download PDF'); ?>
+                                    </a>
                                     <a href="<?php echo base_url('certificate/verify/' . $cert->certificate_code); ?>" class="btn btn-sm btn-outline-dark rounded-pill px-3">
                                         <i data-lucide="external-link" style="width:14px;height:14px;"></i> <?php echo t('Verifikasi', 'Verify'); ?>
                                     </a>
                                     <?php
                                     $share_url = base_url('certificate/verify/' . $cert->certificate_code);
-                                    $share_text = t('Saya telah menyelesaikan ', 'I completed ') . $cert->title . ' di REBAS COURSE!';
+                                    $share_text = t('Saya telah menyelesaikan ', 'I completed ') . $cert->title . ' di BISATUNTAS!';
                                     $share_image = '';
                                     ?>
                                     <div class="d-flex align-items-center gap-1 ms-2">

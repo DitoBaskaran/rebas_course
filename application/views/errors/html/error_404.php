@@ -30,7 +30,7 @@
                 </a>
             </div>
         </div>
-        <p style="color: var(--gray-500); font-size: 0.8rem; margin-top: 1.5rem;">&copy; <?php echo date('Y'); ?> REBAS COURSE</p>
+        <p style="color: var(--gray-500); font-size: 0.8rem; margin-top: 1.5rem;">&copy; <?php echo date('Y'); ?> BISATUNTAS</p>
     </div>
 </body>
 </html>

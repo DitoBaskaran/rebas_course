@@ -257,13 +257,13 @@ if (!function_exists('seed_default_settings')) {
     $defaults = array(
 
       // General
-      array('key' => 'general_site_name',        'value' => 'REBAS COURSE',             'type' => 'text',     'group' => 'general', 'label' => 'Site Name', 'sort_order' => 1),
+      array('key' => 'general_site_name',        'value' => 'BISATUNTAS',             'type' => 'text',     'group' => 'general', 'label' => 'Site Name', 'sort_order' => 1),
       array('key' => 'general_site_description', 'value' => 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.', 'type' => 'textarea', 'group' => 'general', 'label' => 'Site Description', 'sort_order' => 2),
       array('key' => 'general_site_keywords',    'value' => 'belajar online, kursus, seminar, workshop, bootcamp, e-book', 'type' => 'text', 'group' => 'general', 'label' => 'Site Keywords', 'sort_order' => 3),
       array('key' => 'general_site_logo',        'value' => '',                          'type' => 'image',    'group' => 'general', 'label' => 'Site Logo', 'sort_order' => 4),
       array('key' => 'general_site_favicon',     'value' => '',                          'type' => 'image',    'group' => 'general', 'label' => 'Favicon', 'sort_order' => 5),
-      array('key' => 'general_admin_email',      'value' => 'admin@rebascourse.com',      'type' => 'email',    'group' => 'general', 'label' => 'Admin Email', 'sort_order' => 6),
-      array('key' => 'general_contact_email',    'value' => 'support@rebascourse.com',   'type' => 'email',    'group' => 'general', 'label' => 'Contact Email', 'sort_order' => 7),
+      array('key' => 'general_admin_email',      'value' => 'admin@bisatuntas.com',      'type' => 'email',    'group' => 'general', 'label' => 'Admin Email', 'sort_order' => 6),
+      array('key' => 'general_contact_email',    'value' => 'support@bisatuntas.com',   'type' => 'email',    'group' => 'general', 'label' => 'Contact Email', 'sort_order' => 7),
       array('key' => 'general_contact_phone',    'value' => '021-1234-5678',             'type' => 'text',     'group' => 'general', 'label' => 'Contact Phone', 'sort_order' => 8),
       array('key' => 'general_contact_address',  'value' => 'Jakarta, Indonesia',        'type' => 'textarea', 'group' => 'general', 'label' => 'Address', 'sort_order' => 9),
 
@@ -319,7 +319,7 @@ if (!function_exists('seed_default_settings')) {
       // Footer
       array('key' => 'footer_about_text',     'value' => 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.', 'type' => 'textarea', 'group' => 'footer', 'label' => 'Footer About Text', 'sort_order' => 1),
       array('key' => 'footer_about_text_en',  'value' => 'Modern online learning platform with structured classes and interactive seminars from Indonesia\'s best experts.', 'type' => 'textarea', 'group' => 'footer', 'label' => 'Footer About Text (English)', 'sort_order' => 2),
-      array('key' => 'footer_copyright',      'value' => 'REBAS COURSE. All rights reserved.', 'type' => 'text', 'group' => 'footer', 'label' => 'Copyright Text', 'sort_order' => 3),
+      array('key' => 'footer_copyright',      'value' => 'BISATUNTAS. All rights reserved.', 'type' => 'text', 'group' => 'footer', 'label' => 'Copyright Text', 'sort_order' => 3),
 
       // Analytics
       array('key' => 'analytics_ga4_id',      'value' => '', 'type' => 'text', 'group' => 'general', 'label' => 'Google Analytics 4 Measurement ID', 'sort_order' => 50),

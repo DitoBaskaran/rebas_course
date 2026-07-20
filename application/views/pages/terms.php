@@ -6,7 +6,7 @@
         <div class="col-lg-8">
             <div class="bento-card p-4 p-lg-5">
                 <h5 class="fw-bold mb-3">1. <?php echo t('Penerimaan', 'Acceptance'); ?></h5>
-                <p class="small text-secondary"><?php echo t('Dengan menggunakan platform REBAS COURSE, Anda menyetujui syarat dan ketentuan ini.', 'By using the REBAS COURSE platform, you agree to these terms and conditions.'); ?></p>
+                <p class="small text-secondary"><?php echo t('Dengan menggunakan platform BISATUNTAS, Anda menyetujui syarat dan ketentuan ini.', 'By using the BISATUNTAS platform, you agree to these terms and conditions.'); ?></p>
                 <h5 class="fw-bold mb-3 mt-4">2. <?php echo t('Akun Pengguna', 'User Accounts'); ?></h5>
                 <p class="small text-secondary"><?php echo t('Anda bertanggung jawab penuh atas keamanan akun Anda. Berbagi akun dengan pihak lain tidak diperbolehkan.', 'You are fully responsible for your account security. Sharing accounts with others is not allowed.'); ?></p>
                 <h5 class="fw-bold mb-3 mt-4">3. <?php echo t('Pembayaran', 'Payments'); ?></h5>

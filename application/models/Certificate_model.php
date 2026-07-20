@@ -40,6 +40,15 @@ class Certificate_model extends CI_Model {
         return $this->db->get()->row();
     }
 
+    public function get_certificate_by_id($id) {
+        $this->db->select('certificates.*, users.name as user_name, users.email as user_email, courses.title, courses.title_en');
+        $this->db->from('certificates');
+        $this->db->join('users', 'users.id = certificates.user_id');
+        $this->db->join('courses', 'courses.id = certificates.course_id');
+        $this->db->where('certificates.id', $id);
+        return $this->db->get()->row();
+    }
+
     public function has_certificate($user_id, $course_id) {
         return $this->db->get_where('certificates', array('user_id' => $user_id, 'course_id' => $course_id))->num_rows() > 0;
     }

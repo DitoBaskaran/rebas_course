@@ -13,7 +13,7 @@ class Home extends CI_Controller {
     }
 
     public function index() {
-        $site_name = setting('general_site_name', 'REBAS COURSE');
+        $site_name = setting('general_site_name', 'BISATUNTAS');
         $data['title'] = t($site_name . ' - Platform Belajar & Seminar Online', $site_name . ' - Online Learning & Seminar Platform');
         $data['is_homepage'] = true;
         $featured_count = (int)(setting('home_featured_count', 4));

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($title) ? $title . ' — ' . setting('general_site_name', 'REBAS COURSE') : setting('general_site_name', 'REBAS COURSE'); ?></title>
+    <title><?php echo isset($title) ? $title . ' — ' . setting('general_site_name', 'BISATUNTAS') : setting('general_site_name', 'BISATUNTAS'); ?></title>
     <meta name="description" content="<?php echo htmlspecialchars(setting('general_site_description', '')); ?>">
     <meta name="keywords" content="<?php echo htmlspecialchars(setting('general_site_keywords', '')); ?>">
     <?php $favicon = site_favicon_url(); if ($favicon): ?>
@@ -19,10 +19,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-    <!-- REBAS Design System v3.0 -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/rebas.css'); ?>">
+    <!-- BISATUNTAS Design System v3.0 -->
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css'); ?>">
     <!-- BISATUNTAS Colorful Playful Override -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/rebas-playful-alt.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas-playful-alt.css'); ?>">
     <!-- TinyMCE for rich text editing -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>
@@ -49,7 +49,7 @@
     </style>
 
     <!-- Open Graph -->
-    <meta property="og:title" content="<?php echo isset($title) ? $title : setting('general_site_name', 'REBAS COURSE'); ?>">
+    <meta property="og:title" content="<?php echo isset($title) ? $title : setting('general_site_name', 'BISATUNTAS'); ?>">
     <meta property="og:description" content="<?php echo htmlspecialchars(setting('general_site_description', '')); ?>">
     <meta property="og:image" content="<?php echo base_url('assets/img/og-default.png'); ?>">
     <meta property="og:url" content="<?php echo current_url(); ?>">

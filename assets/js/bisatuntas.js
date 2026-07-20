@@ -1,5 +1,5 @@
 /**
- * REBAS COURSE — Main JavaScript v3.0 (2026)
+ * BISATUNTAS — Main JavaScript v3.0 (2026)
  * Bento Morph Admin + Dark Mode + Command Palette
  */
 (function() {
@@ -15,7 +15,7 @@
     /* ---- Dark Mode ---- */
     var themeToggle = document.getElementById('themeToggle');
     var html = document.documentElement;
-    var savedTheme = localStorage.getItem('rebas-theme');
+    var savedTheme = localStorage.getItem('bisatuntas-theme');
     if (savedTheme === 'dark') {
       html.setAttribute('data-theme', 'dark');
     }
@@ -24,10 +24,10 @@
         var isDark = html.getAttribute('data-theme') === 'dark';
         if (isDark) {
           html.removeAttribute('data-theme');
-          localStorage.setItem('rebas-theme', 'light');
+          localStorage.setItem('bisatuntas-theme', 'light');
         } else {
           html.setAttribute('data-theme', 'dark');
-          localStorage.setItem('rebas-theme', 'dark');
+          localStorage.setItem('bisatuntas-theme', 'dark');
         }
         if (typeof lucide !== 'undefined') {
           lucide.createIcons();
@@ -44,7 +44,7 @@
     var sidebar = document.getElementById('adminSidebar');
     var sidebarToggle = document.getElementById('sidebarToggle');
     var sidebarCollapseBtn = document.querySelector('.sidebar-collapse-btn');
-    var sidebarCollapsed = localStorage.getItem('rebas-sidebar') === 'collapsed';
+    var sidebarCollapsed = localStorage.getItem('bisatuntas-sidebar') === 'collapsed';
 
     if (sidebar && sidebarCollapsed) {
       sidebar.classList.add('is-collapsed');
@@ -54,10 +54,10 @@
       var isCollapsed = sidebar.classList.contains('is-collapsed');
       if (isCollapsed) {
         sidebar.classList.remove('is-collapsed');
-        localStorage.setItem('rebas-sidebar', 'expanded');
+        localStorage.setItem('bisatuntas-sidebar', 'expanded');
       } else {
         sidebar.classList.add('is-collapsed');
-        localStorage.setItem('rebas-sidebar', 'collapsed');
+        localStorage.setItem('bisatuntas-sidebar', 'collapsed');
       }
       updateSidebarToggleIcon();
     }

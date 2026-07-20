@@ -19,7 +19,7 @@ class Dashboard extends CI_Controller {
 
     public function index() {
         $user_id = $this->session->userdata('user_id');
-        $data['title'] = t('Dashboard - REBAS COURSE', 'Dashboard - REBAS COURSE');
+        $data['title'] = t('Dashboard - BISATUNTAS', 'Dashboard - BISATUNTAS');
         $data['enrolled_courses'] = $this->Course_model->get_user_enrolled_courses($user_id);
         $data['registered_seminars'] = $this->Seminar_model->get_user_registered_seminars($user_id);
         $data['transactions'] = $this->Transaction_model->get_user_transactions($user_id);

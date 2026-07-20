@@ -10,8 +10,8 @@ class Pages extends CI_Controller {
     }
 
     public function about() {
-        $data['title'] = t('Tentang Kami - REBAS COURSE', 'About Us - REBAS COURSE');
-        $data['og_title'] = t('Tentang REBAS COURSE', 'About REBAS COURSE');
+        $data['title'] = t('Tentang Kami - BISATUNTAS', 'About Us - BISATUNTAS');
+        $data['og_title'] = t('Tentang BISATUNTAS', 'About BISATUNTAS');
         $data['total_courses'] = $this->Course_model->count_all(array('status' => 'published'));
         $data['total_students'] = $this->User_model->count_all('student');
         $data['total_teachers'] = $this->User_model->count_all('teacher');
@@ -21,7 +21,7 @@ class Pages extends CI_Controller {
     }
 
     public function contact() {
-        $data['title'] = t('Kontak - REBAS COURSE', 'Contact - REBAS COURSE');
+        $data['title'] = t('Kontak - BISATUNTAS', 'Contact - BISATUNTAS');
         $data['og_title'] = t('Hubungi Kami', 'Contact Us');
         $this->load->view('templates/header', $data);
         $this->load->view('pages/contact');
@@ -44,7 +44,7 @@ class Pages extends CI_Controller {
     }
 
     public function faq() {
-        $data['title'] = t('FAQ - REBAS COURSE', 'FAQ - REBAS COURSE');
+        $data['title'] = t('FAQ - BISATUNTAS', 'FAQ - BISATUNTAS');
         $data['og_title'] = t('Pertanyaan Umum', 'Frequently Asked Questions');
         $this->load->view('templates/header', $data);
         $this->load->view('pages/faq');
@@ -52,7 +52,7 @@ class Pages extends CI_Controller {
     }
 
     public function pricing() {
-        $data['title'] = t('Harga - REBAS COURSE', 'Pricing - REBAS COURSE');
+        $data['title'] = t('Harga - BISATUNTAS', 'Pricing - BISATUNTAS');
         $data['og_title'] = t('Pilih Paket Belajar', 'Choose Your Plan');
         $this->load->view('templates/header', $data);
         $this->load->view('pages/pricing');
@@ -60,14 +60,14 @@ class Pages extends CI_Controller {
     }
 
     public function terms() {
-        $data['title'] = t('Syarat & Ketentuan - REBAS COURSE', 'Terms & Conditions - REBAS COURSE');
+        $data['title'] = t('Syarat & Ketentuan - BISATUNTAS', 'Terms & Conditions - BISATUNTAS');
         $this->load->view('templates/header', $data);
         $this->load->view('pages/terms');
         $this->load->view('templates/footer');
     }
 
     public function privacy() {
-        $data['title'] = t('Kebijakan Privasi - REBAS COURSE', 'Privacy Policy - REBAS COURSE');
+        $data['title'] = t('Kebijakan Privasi - BISATUNTAS', 'Privacy Policy - BISATUNTAS');
         $this->load->view('templates/header', $data);
         $this->load->view('pages/privacy');
         $this->load->view('templates/footer');

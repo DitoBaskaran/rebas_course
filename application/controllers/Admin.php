@@ -27,7 +27,7 @@ class Admin extends CI_Controller {
 
     // ================ DASHBOARD ================
     public function dashboard() {
-        $data['title'] = t('Panel Admin - REBAS COURSE', 'Admin Panel - REBAS COURSE');
+        $data['title'] = t('Panel Admin - BISATUNTAS', 'Admin Panel - BISATUNTAS');
         $data['load_chartjs'] = true;
         $data['active_page'] = 'dashboard';
         // Real analytics: enrollment data for last 6 months

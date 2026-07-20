@@ -36,7 +36,7 @@ class Wishlist extends CI_Controller {
             ->where('wishlists.user_id', $user_id)
             ->order_by('wishlists.created_at', 'DESC')
             ->get()->result();
-        $data['title'] = t('Wishlist - REBAS COURSE', 'Wishlist - REBAS COURSE');
+        $data['title'] = t('Wishlist - BISATUNTAS', 'Wishlist - BISATUNTAS');
         $data['active_page'] = 'wishlist';
         $this->load->view('templates/student_header', $data);
         $this->load->view('wishlist/index', $data);

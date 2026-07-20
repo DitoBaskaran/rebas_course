@@ -10,7 +10,7 @@ class Install extends CI_Controller {
             show_error('Access denied. Localhost only.', 403);
         }
 
-        echo "<h1>REBAS COURSE — Database Installation</h1>";
+        echo "<h1>BISATUNTAS — Database Installation</h1>";
         echo "<pre>";
 
         $this->load->dbforge();

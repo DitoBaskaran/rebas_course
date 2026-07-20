@@ -2,7 +2,7 @@
     <div class="text-center mb-5">
         <span class="badge bg-primary-subtle text-primary badge-modern mb-3">Tentang Kami</span>
         <h1 class="display-5 fw-extrabold text-dark mb-3" style="letter-spacing:-0.03em;"><?php echo t('Membangun Masa Depan Melalui Pendidikan', 'Building the Future Through Education'); ?></h1>
-        <p class="text-secondary mx-auto" style="max-width:600px;"><?php echo t('REBAS COURSE adalah platform belajar online yang berkomitmen untuk menyediakan pendidikan berkualitas tinggi untuk semua orang, di mana pun mereka berada.', 'REBAS COURSE is an online learning platform committed to providing quality education for everyone, everywhere.'); ?></p>
+        <p class="text-secondary mx-auto" style="max-width:600px;"><?php echo t('BISATUNTAS adalah platform belajar online yang berkomitmen untuk menyediakan pendidikan berkualitas tinggi untuk semua orang, di mana pun mereka berada.', 'BISATUNTAS is an online learning platform committed to providing quality education for everyone, everywhere.'); ?></p>
     </div>
 
     <div class="row g-4 mb-5">
