@@ -283,6 +283,7 @@ class Courses extends CI_Controller {
     }
 
     public function ajax_complete_lesson() {
+        $this->db->db_debug = FALSE;
         if (!$this->session->userdata('logged_in')) {
             echo json_encode(['ok' => false, 'msg' => 'Login required.']);
             exit;
@@ -304,25 +305,27 @@ class Courses extends CI_Controller {
 
         $this->load->helper('gamification');
         $this->load->helper('uuid');
-        $saved = $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
-        if (!$saved) {
-            echo json_encode(['ok' => false, 'msg' => 'Gagal menyimpan ke database: ' . $this->db->error()['message']]);
+        $result = $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
+        if (!$result) {
+            echo json_encode(['ok' => false, 'msg' => 'Gagal menyimpan.']);
             exit;
         }
         award_points($user_id, 10, 'lesson_complete', $lesson_id);
 
         // Update learning path progress for this course
-        try {
-            $this->load->model('Learning_path_model');
-            $path_contents = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get()->result();
+        $this->db->db_debug = FALSE;
+        $this->load->model('Learning_path_model');
+        $path_contents = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get()->result();
+        if ($path_contents) {
             foreach ($path_contents as $pc) {
                 $this->db->where('user_id', $user_id)->where('path_id', $pc->path_id);
                 if ($this->db->get('path_enrollments')->num_rows() > 0) {
                     $this->Learning_path_model->update_progress($user_id, $pc->path_id);
                 }
             }
-        } catch (Exception $e) {}
+        }
 
+        $this->db->db_debug = TRUE;
         $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
         $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
 
@@ -336,13 +339,13 @@ class Courses extends CI_Controller {
 
         $cert_msg = null;
         if ($pct >= 100 && $next_lesson_id === null) {
-            try {
-                $this->Certificate_model->issue_certificate($user_id, $course_id);
+            $this->db->db_debug = FALSE;
+            $cert_result = $this->Certificate_model->issue_certificate($user_id, $course_id);
+            if ($cert_result) {
                 award_points($user_id, 100, 'course_completed', $course_id);
                 $cert_msg = t('Sertifikat telah diterbitkan!', 'Certificate issued!');
-            } catch (Exception $e) {
-                $cert_msg = null;
             }
+            $this->db->db_debug = TRUE;
         }
 
         while (ob_get_level()) ob_end_clean();
