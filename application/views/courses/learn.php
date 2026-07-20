@@ -1,4 +1,4 @@
-<div class="container-fluid py-4" style="padding-top: 86px !important;">
+<div class="container-fluid py-4" style="padding-top: 56px !important;">
     <div class="row g-4">
         <!-- Main Content -->
         <div class="col-lg-8">
@@ -185,6 +185,7 @@
                 const formData = new FormData();
                 formData.append('lesson_id', lessonId);
                 formData.append('course_id', courseId);
+                formData.append('csrf_test_name', '<?php echo $this->security->get_csrf_hash(); ?>');
 
                 fetch('<?php echo base_url('courses/ajax_complete_lesson'); ?>', {
                     method: 'POST',
