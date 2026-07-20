@@ -5,18 +5,17 @@
 .crs-search-icon { left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem; z-index: 1; }
 .crs-input { padding-left: 36px; border-radius: 100px; border-color: #e5e5e5; font-size: 0.85rem; height: 44px; }
 .crs-btn-search { background: #111827; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 44px; white-space: nowrap; }
-.crs-pill { font-size: 0.78rem; border-radius: 100px; padding: 0.5rem 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.15s; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
-.crs-pill:hover { transform: scale(1.05); }
-.crs-pill-sm { font-size: 0.78rem; border-radius: 100px; padding: 0.35rem 0.75rem; font-weight: 600; text-decoration: none; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.25rem; }
-.crs-pill-sm:hover { transform: scale(1.05); }
-.crs-scroll { display: flex; gap: 0.75rem; margin-top: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none; -ms-overflow-style: none; }
+.crs-scroll { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none; -ms-overflow-style: none; }
 .crs-scroll::-webkit-scrollbar { display: none; }
+.crs-scroll + .crs-scroll { margin-top: 0.75rem; }
 .crs-card { width: 85px; padding: 0.7rem 0.25rem 0.6rem; border-radius: 14px; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; font-weight: 600; flex-shrink: 0; transition: all 0.25s cubic-bezier(.4,0,.2,1); border: 2px solid transparent; background: #f9fafb; }
 .crs-card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
 .crs-card:active { transform: translateY(-2px) scale(0.98); }
 .crs-card-icon-wrap { width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; transition: all 0.25s cubic-bezier(.4,0,.2,1); }
 .crs-card:hover .crs-card-icon-wrap { transform: scale(1.1) rotate(-4deg); }
 .crs-card-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.01em; text-align: center; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.crs-section-title { font-size: 0.7rem; font-weight: 700; color: #a3a3a3; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+.crs-filters { margin-top: 1rem; }
 </style>
 
 <div class="crs-header">
@@ -47,27 +46,54 @@
             $query_cat = $selected_category ? 'category_id=' . $selected_category : '';
             $query_parts = array_filter(array($query_type, $query_level, $query_cat));
             $query_all = $query_parts ? '?' . implode('&', $query_parts) : '';
+            $cat_colors = array(
+                array('#fef3c7','#d97706'),
+                array('#dbeafe','#2563eb'),
+                array('#fce7f3','#db2777'),
+                array('#dcfce7','#16a34a'),
+                array('#ede9fe','#7c3aed'),
+            );
         ?>
 
-        <div class="crs-scroll mt-3">
-            <a href="<?php echo base_url('courses'); ?>" class="crs-card" style="<?php echo $is_all ? 'background:#111827;border-color:#111827;' : ''; ?>"><div class="crs-card-icon-wrap" style="background: <?php echo $is_all ? 'rgba(255,255,255,0.15)' : '#e5e7eb'; ?>;"><i class="fas fa-th-large" style="color: <?php echo $is_all ? '#fff' : '#6b7280'; ?>;"></i></div><span class="crs-card-label" style="color: <?php echo $is_all ? '#fff' : '#374151'; ?>;"><?php echo t('Semua', 'All'); ?></span></a>
-            <?php $ct_icons = array('course' => 'fa-book-open', 'seminar' => 'fa-video', 'learning_path' => 'fa-route', 'mentoring' => 'fa-users', 'subscription' => 'fa-crown'); $ci = 0; foreach ($content_types as $ct): $cc = $cat_colors[$ci % 5]; $act = ($selected_type == $ct); ?>
-            <a href="<?php echo base_url('courses?type=' . $ct . ($query_level ? '&' . $query_level : '') . ($query_cat ? '&' . $query_cat : '')); ?>" class="crs-card" style="<?php echo $act ? 'background:' . $cc[0] . ';border-color:#111827;' : ''; ?>"><div class="crs-card-icon-wrap" style="background: <?php echo $act ? $cc[0] : '#f3f4f6'; ?>;"><i class="fas <?php echo $ct_icons[$ct] ?? 'fa-folder-open'; ?>" style="color: <?php echo $act ? $cc[1] : '#6b7280'; ?>;"></i></div><span class="crs-card-label" style="color: <?php echo $act ? '#111827' : '#374151'; ?>;"><?php echo content_type_label($ct); ?></span></a>
-            <?php $ci++; endforeach; ?>
-        </div>
+        <div class="crs-filters">
+            <div class="crs-section-title"><?php echo t('Tipe Konten', 'Content Type'); ?></div>
+            <div class="crs-scroll">
+                <a href="<?php echo base_url('courses'); ?>" class="crs-card" style="<?php echo $is_all ? 'background:#111827;' : ''; ?>">
+                    <div class="crs-card-icon-wrap" style="background: <?php echo $is_all ? 'rgba(255,255,255,0.15)' : '#e5e7eb'; ?>;"><i class="fas fa-th-large" style="color: <?php echo $is_all ? '#fff' : '#6b7280'; ?>;"></i></div>
+                    <span class="crs-card-label" style="color: <?php echo $is_all ? '#fff' : '#374151'; ?>;"><?php echo t('Semua', 'All'); ?></span>
+                </a>
+                <?php $ct_icons = array('course'=>'fa-book-open','seminar'=>'fa-video','learning_path'=>'fa-route','mentoring'=>'fa-users','subscription'=>'fa-crown'); $ci = 0; foreach ($content_types as $ct): $cc = $cat_colors[$ci % 5]; $act = ($selected_type == $ct); ?>
+                <a href="<?php echo base_url('courses?type=' . $ct . ($query_level ? '&' . $query_level : '') . ($query_cat ? '&' . $query_cat : '')); ?>" class="crs-card" style="<?php echo $act ? 'background:' . $cc[0] : ''; ?>">
+                    <div class="crs-card-icon-wrap" style="background: <?php echo $act ? $cc[0] : '#f3f4f6'; ?>;"><i class="fas <?php echo $ct_icons[$ct] ?? 'fa-folder-open'; ?>" style="color: <?php echo $act ? $cc[1] : '#6b7280'; ?>;"></i></div>
+                    <span class="crs-card-label" style="color: <?php echo $act ? '#111827' : '#374151'; ?>;"><?php echo content_type_label($ct); ?></span>
+                </a>
+                <?php $ci++; endforeach; ?>
+            </div>
 
-        <div class="d-flex flex-wrap gap-2 justify-content-center mt-2">
-            <?php $levels = array('beginner' => array('Pemula','Beginner','fa-seedling','#bbf7d0','#166534','#86efac','#f0fdf4','#16a34a','#dcfce7'),'intermediate' => array('Menengah','Intermediate','fa-fire','#fde68a','#854d0e','#fcd34d','#fefce8','#ca8a04','#fef9c3'),'advanced' => array('Mahir','Advanced','fa-bolt','#fecdd3','#9f1239','#fda4af','#fff1f2','#e11d48','#fce4ec')); ?>
-            <?php foreach ($levels as $lk => $lv): $is_lvl = $selected_level === $lk; ?>
-            <a href="<?php echo base_url('courses' . ($query_all ? $query_all . '&' : '?') . 'skill_level=' . $lk); ?>" class="crs-pill-sm" style="background: <?php echo $is_lvl ? $lv[3] : $lv[6]; ?>; color: <?php echo $is_lvl ? $lv[4] : $lv[7]; ?>; border: 1px solid <?php echo $is_lvl ? $lv[5] : $lv[8]; ?>;"><i class="fas <?php echo $lv[2]; ?>" style="font-size: 0.65rem;"></i> <?php echo t($lv[0], $lv[1]); ?></a>
-            <?php endforeach; ?>
-        </div>
+            <div class="crs-section-title mt-3"><?php echo t('Level Skill', 'Skill Level'); ?></div>
+            <?php $lvl_cards = array('beginner'=>array('Pemula','Beginner','fa-seedling','#dcfce7','#16a34a'),'intermediate'=>array('Menengah','Intermediate','fa-fire','#fef9c3','#ca8a04'),'advanced'=>array('Mahir','Advanced','fa-bolt','#fce4ec','#e11d48')); ?>
+            <div class="crs-scroll">
+                <?php foreach ($lvl_cards as $lk => $lv): $is_lvl = ($selected_level === $lk); ?>
+                <a href="<?php echo base_url('courses' . ($query_all ? $query_all . '&' : '?') . 'skill_level=' . $lk); ?>" class="crs-card" style="<?php echo $is_lvl ? 'background:' . $lv[3] : ''; ?>">
+                    <div class="crs-card-icon-wrap" style="background: <?php echo $is_lvl ? $lv[3] : '#f3f4f6'; ?>;"><i class="fas <?php echo $lv[2]; ?>" style="color: <?php echo $is_lvl ? $lv[4] : '#6b7280'; ?>;"></i></div>
+                    <span class="crs-card-label" style="color: <?php echo $is_lvl ? '#111827' : '#374151'; ?>;"><?php echo t($lv[0], $lv[1]); ?></span>
+                </a>
+                <?php endforeach; ?>
+            </div>
 
-        <div class="crs-scroll">
-            <a href="<?php echo base_url('courses'); ?>" class="crs-card" style="<?php echo $is_all ? 'background:#111827;border-color:#111827;' : ''; ?>"><div class="crs-card-icon-wrap" style="background: <?php echo $is_all ? 'rgba(255,255,255,0.15)' : '#e5e7eb'; ?>;"><i class="fas fa-th-large" style="color: <?php echo $is_all ? '#fff' : '#6b7280'; ?>;"></i></div><span class="crs-card-label" style="color: <?php echo $is_all ? '#fff' : '#374151'; ?>;"><?php echo t('Semua', 'All'); ?></span></a>
-            <?php $cat_colors = array(array('#fef3c7','#d97706'),array('#dbeafe','#2563eb'),array('#fce7f3','#db2777'),array('#dcfce7','#16a34a'),array('#ede9fe','#7c3aed')); $ci = 0; foreach ($categories as $cat): $cc = $cat_colors[$ci % 5]; $act = ($selected_category == $cat->id); ?>
-            <a href="<?php echo base_url('courses?category_id=' . $cat->id . ($query_type ? '&' . $query_type : '') . ($query_level ? '&' . $query_level : '')); ?>" class="crs-card" style="<?php echo $act ? 'background:' . $cc[0] . ';border-color:#111827;' : ''; ?>"><div class="crs-card-icon-wrap" style="background: <?php echo $act ? $cc[0] : '#f3f4f6'; ?>;"><i class="fas fa-<?php echo htmlspecialchars($cat->icon ?: 'folder-open'); ?>" style="color: <?php echo $act ? $cc[1] : '#6b7280'; ?>;"></i></div><span class="crs-card-label" style="color: <?php echo $act ? '#111827' : '#374151'; ?>;"><?php echo htmlspecialchars($cat->name); ?></span></a>
-            <?php $ci++; endforeach; ?>
+            <div class="crs-section-title mt-3"><?php echo t('Kategori', 'Category'); ?></div>
+            <div class="crs-scroll">
+                <a href="<?php echo base_url('courses'); ?>" class="crs-card" style="<?php echo !$selected_category ? 'background:#111827;' : ''; ?>">
+                    <div class="crs-card-icon-wrap" style="background: <?php echo !$selected_category ? 'rgba(255,255,255,0.15)' : '#e5e7eb'; ?>;"><i class="fas fa-th-large" style="color: <?php echo !$selected_category ? '#fff' : '#6b7280'; ?>;"></i></div>
+                    <span class="crs-card-label" style="color: <?php echo !$selected_category ? '#fff' : '#374151'; ?>;"><?php echo t('Semua', 'All'); ?></span>
+                </a>
+                <?php $ci = 0; foreach ($categories as $cat): $cc = $cat_colors[$ci % 5]; $act = ($selected_category == $cat->id); ?>
+                <a href="<?php echo base_url('courses?category_id=' . $cat->id . ($query_type ? '&' . $query_type : '') . ($query_level ? '&' . $query_level : '')); ?>" class="crs-card" style="<?php echo $act ? 'background:' . $cc[0] : ''; ?>">
+                    <div class="crs-card-icon-wrap" style="background: <?php echo $act ? $cc[0] : '#f3f4f6'; ?>;"><i class="fas fa-<?php echo htmlspecialchars($cat->icon ?: 'folder-open'); ?>" style="color: <?php echo $act ? $cc[1] : '#6b7280'; ?>;"></i></div>
+                    <span class="crs-card-label" style="color: <?php echo $act ? '#111827' : '#374151'; ?>;"><?php echo htmlspecialchars($cat->name); ?></span>
+                </a>
+                <?php $ci++; endforeach; ?>
+            </div>
         </div>
     </div>
 </div>
