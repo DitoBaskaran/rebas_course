@@ -196,6 +196,13 @@
         </div>
 
         <script>
+        // Force reload when navigating back (bfcache fix)
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted || performance.navigation.type === 2) {
+                window.location.reload(true);
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const completeBtn = document.querySelector('.lesson-complete-btn');
             if (!completeBtn) return;
@@ -222,6 +229,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Complete lesson response:', data);
                     if (data.ok) {
                         // Update button to success state
                         btn.classList.remove('btn-dark');
