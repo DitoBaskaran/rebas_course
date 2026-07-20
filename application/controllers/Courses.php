@@ -152,6 +152,9 @@ class Courses extends CI_Controller {
     }
 
     public function learn($course_slug_or_id, $encoded_lesson_id = NULL) {
+        header('Cache-Control: no-cache, no-store, must-revalidate');
+        header('Pragma: no-cache');
+        header('Expires: 0');
         $user_id = $this->session->userdata('user_id');
         $course_id = is_numeric($course_slug_or_id) ? $course_slug_or_id : null;
         $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
