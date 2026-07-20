@@ -315,11 +315,13 @@ class Courses extends CI_Controller {
         // Update learning path progress for this course
         $this->db->db_debug = FALSE;
         $this->load->model('Learning_path_model');
-        $path_contents = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get()->result();
-        if ($path_contents) {
+        $path_query = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get();
+        if ($path_query !== FALSE && is_object($path_query)) {
+            $path_contents = $path_query->result();
             foreach ($path_contents as $pc) {
                 $this->db->where('user_id', $user_id)->where('path_id', $pc->path_id);
-                if ($this->db->get('path_enrollments')->num_rows() > 0) {
+                $enr = $this->db->get('path_enrollments');
+                if ($enr !== FALSE && $enr->num_rows() > 0) {
                     $this->Learning_path_model->update_progress($user_id, $pc->path_id);
                 }
             }
