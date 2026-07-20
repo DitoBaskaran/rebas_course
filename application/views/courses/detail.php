@@ -318,8 +318,8 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
 </div>
 
 <!-- Sticky Sidebar (Mobile bottom bar) -->
-<div class="d-none d-lg-block position-fixed" style="bottom: 0; left: 0; right: 0; z-index: 1040; background: #fff; border-top: 1px solid #e5e5e5; box-shadow: 0 -2px 8px rgba(0,0,0,0.04);">
-    <div class="container d-flex justify-content-between align-items-center py-3" style="max-width: 960px;">
+<div class="d-block position-fixed" style="bottom: 0; left: 0; right: 0; z-index: 1040; background: #fff; border-top: 1px solid #e5e5e5; box-shadow: 0 -2px 8px rgba(0,0,0,0.04);">
+    <div class="container d-flex justify-content-between align-items-center py-2 py-lg-3" style="max-width: 960px;">
         <div class="d-flex align-items-center gap-4">
             <div>
                 <div class="fw-bold" style="color: #111827; font-size: 1.1rem;">
@@ -330,7 +330,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="d-flex align-items-center gap-3" style="color: #737373; font-size: 0.8rem;">
+            <div class="d-none d-lg-flex align-items-center gap-3" style="color: #737373; font-size: 0.8rem;">
                 <span class="d-flex align-items-center gap-1"><i class="fas fa-star" style="color: #eab308; font-size: 0.7rem;"></i> <?php echo $avg_rating; ?></span>
                 <span>·</span>
                 <span class="d-flex align-items-center gap-1"><i class="fas fa-users" style="font-size: 0.7rem;"></i> <?php echo $enrolled_count; ?> siswa</span>
