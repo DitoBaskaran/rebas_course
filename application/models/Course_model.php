@@ -218,6 +218,7 @@ class Course_model extends CI_Model {
 
         if ($inserted) {
             $ci =& get_instance();
+            $ci->load->model('User_model');
             $ci->load->helper('notification');
             $user = $ci->User_model->get_user_by_id($user_id);
             $course = $this->get_course_by_id($course_id);
