@@ -295,6 +295,7 @@ class Courses extends CI_Controller {
         }
 
         $this->load->helper('gamification');
+        $this->load->helper('uuid');
         $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
         award_points($user_id, 10, 'lesson_complete', $lesson_id);
 
@@ -322,6 +323,7 @@ class Courses extends CI_Controller {
             'completed' => $completed_lessons,
             'pct' => $pct,
             'next_lesson_id' => $next_lesson_id,
+            'next_lesson_encoded' => $next_lesson_id ? encode_id($next_lesson_id) : null,
             'cert_msg' => $cert_msg,
         ]);
         exit;

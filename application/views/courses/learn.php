@@ -162,7 +162,7 @@
                     }
                 ?>
                 <?php if ($prev_id): ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $prev_id); ?>" class="flex-fill text-decoration-none">
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($prev_id)); ?>" class="flex-fill text-decoration-none">
                         <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: #f9fafb; border: 2px solid #e5e7eb; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#d1d5db'" onmouseout="this.style.background='#f9fafb';this.style.borderColor='#e5e7eb'">
                             <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb;">
                                 <i class="fas fa-chevron-left" style="color: #6b7280;"></i>
@@ -178,7 +178,7 @@
                 <?php endif; ?>
 
                 <?php if ($next_id): ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $next_id); ?>" class="flex-fill text-decoration-none">
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($next_id)); ?>" class="flex-fill text-decoration-none">
                         <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: #f9fafb; border: 2px solid #e5e7eb; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#d1d5db'" onmouseout="this.style.background='#f9fafb';this.style.borderColor='#e5e7eb'">
                             <div class="text-end flex-grow-1">
                                 <div style="font-size: 0.7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Selanjutnya', 'Next'); ?></div>
@@ -247,8 +247,8 @@
                         
                         // Auto-redirect to next lesson or detail page
                         setTimeout(function() {
-                            if (data.next_lesson_id) {
-                                window.location.href = '<?php echo base_url('courses/learn/' . $course->slug . '/'); ?>' + data.next_lesson_id;
+                            if (data.next_lesson_encoded) {
+                                window.location.href = '<?php echo base_url('courses/learn/' . $course->slug . '/'); ?>' + data.next_lesson_encoded;
                             } else {
                                 window.location.href = '<?php echo base_url('courses/detail/' . $course->slug); ?>';
                             }
