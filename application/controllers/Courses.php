@@ -43,7 +43,12 @@ class Courses extends CI_Controller {
         }
         $data['title'] = t('Kelas Saya', 'My Courses');
         $data['active_page'] = 'my_courses';
-        $data['enrolled_courses'] = $this->Course_model->get_user_enrolled_courses($this->session->userdata('user_id'));
+        $user_id = $this->session->userdata('user_id');
+        $courses = $this->Course_model->get_user_enrolled_courses($user_id);
+        foreach ($courses as $course) {
+            $course->progress_pct = $this->Course_model->get_course_progress_percentage($user_id, $course->id);
+        }
+        $data['enrolled_courses'] = $courses;
         $this->load->view('templates/student_header', $data);
         $this->load->view('courses/mine', $data);
         $this->load->view('templates/student_footer');
