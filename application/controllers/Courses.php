@@ -312,14 +312,16 @@ class Courses extends CI_Controller {
         award_points($user_id, 10, 'lesson_complete', $lesson_id);
 
         // Update learning path progress for this course
-        $this->load->model('Learning_path_model');
-        $path_contents = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get()->result();
-        foreach ($path_contents as $pc) {
-            $this->db->where('user_id', $user_id)->where('path_id', $pc->path_id);
-            if ($this->db->get('path_enrollments')->num_rows() > 0) {
-                $this->Learning_path_model->update_progress($user_id, $pc->path_id);
+        try {
+            $this->load->model('Learning_path_model');
+            $path_contents = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get()->result();
+            foreach ($path_contents as $pc) {
+                $this->db->where('user_id', $user_id)->where('path_id', $pc->path_id);
+                if ($this->db->get('path_enrollments')->num_rows() > 0) {
+                    $this->Learning_path_model->update_progress($user_id, $pc->path_id);
+                }
             }
-        }
+        } catch (Exception $e) {}
 
         $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
         $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
@@ -334,20 +336,27 @@ class Courses extends CI_Controller {
 
         $cert_msg = null;
         if ($pct >= 100 && $next_lesson_id === null) {
-            $this->Certificate_model->issue_certificate($user_id, $course_id);
-            award_points($user_id, 100, 'course_completed', $course_id);
-            $course = $this->Course_model->get_course_by_id($course_id);
-            $cert_msg = t('Sertifikat telah diterbitkan!', 'Certificate issued!');
+            try {
+                $this->Certificate_model->issue_certificate($user_id, $course_id);
+                award_points($user_id, 100, 'course_completed', $course_id);
+                $cert_msg = t('Sertifikat telah diterbitkan!', 'Certificate issued!');
+            } catch (Exception $e) {
+                $cert_msg = null;
+            }
         }
 
-        echo json_encode([
+        while (ob_get_level()) ob_end_clean();
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode([
             'ok' => true,
             'completed' => $completed_lessons,
             'pct' => $pct,
             'next_lesson_id' => $next_lesson_id,
             'next_lesson_encoded' => $next_lesson_id ? encode_id($next_lesson_id) : null,
             'cert_msg' => $cert_msg,
-        ]);
+        ]))
+            ->_display();
         exit;
     }
 
