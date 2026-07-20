@@ -254,7 +254,7 @@ class Courses extends CI_Controller {
 
         if ($next_lesson_id) {
             $this->session->set_flashdata('success', t('Materi selesai!', 'Lesson completed!'));
-            redirect('courses/learn/' . $course->slug . '/' . $next_lesson_id);
+            redirect('courses/learn/' . $course->slug . '/' . encode_id($next_lesson_id));
         } else {
             // Check if certificate should be issued
             $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);

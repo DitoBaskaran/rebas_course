@@ -132,17 +132,25 @@
             </div>
         <?php endif; ?>
 
-        <div class="d-flex justify-content-between align-items-center mt-4 pt-4 border-top">
-            <div>
+        <!-- Navigation Buttons - Redesigned -->
+        <div class="lesson-nav-wrapper mt-4 pt-4 border-top">
+            <!-- Complete Button -->
+            <div class="text-center mb-4">
                 <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
-                    <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
+                    <div class="d-inline-flex align-items-center gap-2 px-4 py-3 rounded-pill fw-semibold" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                        <i class="fas fa-check-circle" style="font-size: 1.1rem;"></i>
+                        <?php echo t('Materi Selesai', 'Lesson Completed'); ?>
+                    </div>
                 <?php else: ?>
-                    <a href="#" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
-                        <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
+                    <a href="#" class="lesson-complete-btn d-inline-flex align-items-center gap-2 px-5 py-3 rounded-pill fw-bold text-decoration-none" style="background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%); color: #111827; font-size: 0.95rem; box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(234, 179, 8, 0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(234, 179, 8, 0.4)'" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
+                        <i class="fas fa-check-circle" style="font-size: 1.1rem;"></i>
+                        <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
                     </a>
                 <?php endif; ?>
             </div>
-            <div class="d-flex gap-2">
+
+            <!-- Previous/Next Buttons -->
+            <div class="d-flex justify-content-between gap-3">
                 <?php
                     $prev_id = null;
                     $next_id = null;
@@ -154,14 +162,35 @@
                     }
                 ?>
                 <?php if ($prev_id): ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $prev_id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold">
-                        <i class="fas fa-chevron-left me-1"></i> <?php echo t('Sebelumnya', 'Previous'); ?>
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $prev_id); ?>" class="flex-fill text-decoration-none">
+                        <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: #f9fafb; border: 2px solid #e5e7eb; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#d1d5db'" onmouseout="this.style.background='#f9fafb';this.style.borderColor='#e5e7eb'">
+                            <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb;">
+                                <i class="fas fa-chevron-left" style="color: #6b7280;"></i>
+                            </div>
+                            <div class="text-start">
+                                <div style="font-size: 0.7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Sebelumnya', 'Previous'); ?></div>
+                                <div style="font-size: 0.85rem; color: #374151; font-weight: 600;"><?php echo t('Materi Sebelumnya', 'Previous Lesson'); ?></div>
+                            </div>
+                        </div>
                     </a>
+                <?php else: ?>
+                    <div class="flex-fill"></div>
                 <?php endif; ?>
+
                 <?php if ($next_id): ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $next_id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
-                        <?php echo t('Selanjutnya', 'Next'); ?> <i class="fas fa-chevron-right ms-1"></i>
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $next_id); ?>" class="flex-fill text-decoration-none">
+                        <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: #f9fafb; border: 2px solid #e5e7eb; transition: all 0.2s;" onmouseover="this.style.background='#f3f4f6';this.style.borderColor='#d1d5db'" onmouseout="this.style.background='#f9fafb';this.style.borderColor='#e5e7eb'">
+                            <div class="text-end flex-grow-1">
+                                <div style="font-size: 0.7rem; color: #9ca3af; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Selanjutnya', 'Next'); ?></div>
+                                <div style="font-size: 0.85rem; color: #374151; font-weight: 600;"><?php echo t('Materi Selanjutnya', 'Next Lesson'); ?></div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb;">
+                                <i class="fas fa-chevron-right" style="color: #6b7280;"></i>
+                            </div>
+                        </div>
                     </a>
+                <?php else: ?>
+                    <div class="flex-fill"></div>
                 <?php endif; ?>
             </div>
         </div>
