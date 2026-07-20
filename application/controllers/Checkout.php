@@ -36,7 +36,7 @@ class Checkout extends CI_Controller {
 
         $item = NULL;
         $item_name = '';
-        if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project'])) {
+        if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
             $item = $this->Course_model->get_course_by_id($tx->item_id);
             $item_name = $item ? $item->title : ucfirst($tx->item_type);
         } else if ($tx->item_type === 'seminar') {
@@ -347,10 +347,7 @@ class Checkout extends CI_Controller {
         $this->load->helper('midtrans');
 
         $item_name = '';
-        if ($tx->item_type === 'course') {
-            $item = $this->Course_model->get_course_by_id($tx->item_id);
-            $item_name = $item ? $item->title : 'Course';
-        } elseif ($tx->item_type === 'seminar') {
+        if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
             $item_name = $item ? $item->title : 'Seminar';
         } elseif ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') {
@@ -406,7 +403,7 @@ class Checkout extends CI_Controller {
                 $this->Coupon_model->increment_usage($tx->coupon_id);
             }
 
-            if ($tx->item_type === 'course') {
+            if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
                 $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
             } elseif ($tx->item_type === 'seminar') {
                 $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
@@ -426,6 +423,9 @@ class Checkout extends CI_Controller {
                     if (!empty($tx->notes)) {
                         $note = json_decode($tx->notes, true);
                         if (isset($note['duration_days'])) $duration_days = (int)$note['duration_days'];
+                    }
+                    $this->User_subscription_model->activate_subscription($tx->user_id, $pkg->id, $duration_days, $tx->id);
+                }
             } elseif ($tx->item_type === 'mentoring_package') {
                 $this->load->model('Mentoring_package_model');
                 $this->load->model('User_mentoring_balance_model');
@@ -437,11 +437,8 @@ class Checkout extends CI_Controller {
                         'total_sessions' => $package->session_count,
                         'remaining_sessions' => $package->session_count,
                         'session_duration' => $package->session_duration,
-                        'expired_at' => date('Y-m-d', strtotime('+1 year')), // Default 1 year expiry
+                        'expired_at' => date('Y-m-d', strtotime('+1 year')),
                     ));
-                }
-            }
-                    $this->User_subscription_model->activate_subscription($tx->user_id, $pkg->id, $duration_days, $tx->id);
                 }
             }
 
@@ -527,7 +524,7 @@ class Checkout extends CI_Controller {
         );
 
         $item = NULL;
-        if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project'])) {
+        if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
             $item = $this->Course_model->get_course_by_id($tx->item_id);
         } elseif ($tx->item_type === 'seminar') {
             $item = $this->Seminar_model->get_seminar_by_id($tx->item_id);
@@ -625,7 +622,7 @@ class Checkout extends CI_Controller {
             $this->Coupon_model->increment_usage($tx->coupon_id);
         }
 
-        if ($tx->item_type === 'course') {
+        if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
             $this->Course_model->enroll_user($tx->user_id, $tx->item_id);
         } elseif ($tx->item_type === 'seminar') {
             $this->Seminar_model->register_user($tx->user_id, $tx->item_id);
