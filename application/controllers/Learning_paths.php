@@ -56,11 +56,14 @@ class Learning_paths extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function enroll($path_id) {
+    public function enroll($encoded_id) {
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login.', 'Please login.'));
             redirect('auth/login');
         }
+
+        $path_id = decode_id($encoded_id);
+        if (!$path_id) show_404();
 
         $path = $this->Learning_path_model->get_by_id($path_id);
         if (!$path) show_404();

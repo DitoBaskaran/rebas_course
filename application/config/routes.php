@@ -274,6 +274,7 @@ $route['seminars/register/(:any)'] = 'seminars/register/$1';
 
 // Learning Paths
 $route['learning_paths/mine'] = 'learning_paths/mine';
+$route['learning_paths/enroll/(:any)'] = 'learning_paths/enroll/$1';
 
 // Subscription Routes
 $route['subscription'] = 'subscription/index';
