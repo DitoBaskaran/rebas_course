@@ -318,7 +318,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
 </div>
 
 <!-- Sticky Sidebar (Mobile bottom bar) -->
-<div class="d-block position-fixed" style="bottom: 0; left: 0; right: 0; z-index: 1040; background: #fff; border-top: 1px solid #e5e5e5; box-shadow: 0 -2px 8px rgba(0,0,0,0.04);">
+<div class="d-block d-lg-block" style="position: static; z-index: 1040; background: #fff; border-top: 1px solid #e5e5e5; box-shadow: 0 -2px 8px rgba(0,0,0,0.04);" id="ctaBar">
     <div class="container d-flex justify-content-between align-items-center py-2 py-lg-3" style="max-width: 960px;">
         <div class="d-flex align-items-center gap-4">
             <div>
@@ -398,3 +398,8 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
         </div>
     </div>
 </div>
+
+<style>
+@media (min-width: 992px) { /* Adjust for desktop */
+    #ctaBar { position: fixed; bottom: 0; left: 0; right: 0; }
+}</style>
