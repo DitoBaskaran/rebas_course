@@ -311,6 +311,16 @@ class Courses extends CI_Controller {
         }
         award_points($user_id, 10, 'lesson_complete', $lesson_id);
 
+        // Update learning path progress for this course
+        $this->load->model('Learning_path_model');
+        $path_contents = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get()->result();
+        foreach ($path_contents as $pc) {
+            $this->db->where('user_id', $user_id)->where('path_id', $pc->path_id);
+            if ($this->db->get('path_enrollments')->num_rows() > 0) {
+                $this->Learning_path_model->update_progress($user_id, $pc->path_id);
+            }
+        }
+
         $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
         $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
 

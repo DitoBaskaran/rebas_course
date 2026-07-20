@@ -87,8 +87,10 @@ class Learning_path_model extends CI_Model {
         $total = count($contents);
         if ($total == 0) return;
         $completed = 0;
+        $this->load->model('Course_model');
         foreach ($contents as $c) {
-            if ($this->db->get_where('enrollments', array('user_id' => $user_id, 'course_id' => $c->course_id))->num_rows() > 0) {
+            $pct = $this->Course_model->get_course_progress_percentage($user_id, $c->course_id);
+            if ($pct >= 100) {
                 $completed++;
             }
         }
@@ -98,5 +100,6 @@ class Learning_path_model extends CI_Model {
             $data['completed_at'] = date('Y-m-d H:i:s');
         }
         $this->db->where('user_id', $user_id)->where('path_id', $path_id)->update('path_enrollments', $data);
+        return $pct;
     }
 }
