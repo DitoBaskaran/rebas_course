@@ -274,6 +274,59 @@ class Courses extends CI_Controller {
         }
     }
 
+    public function ajax_complete_lesson() {
+        if (!$this->session->userdata('logged_in')) {
+            echo json_encode(['ok' => false, 'msg' => 'Login required.']);
+            exit;
+        }
+
+        $lesson_id = (int) $this->input->post('lesson_id');
+        $course_id = (int) $this->input->post('course_id');
+        if (!$lesson_id || !$course_id) {
+            echo json_encode(['ok' => false, 'msg' => 'Invalid request.']);
+            exit;
+        }
+
+        $user_id = $this->session->userdata('user_id');
+
+        if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
+            echo json_encode(['ok' => false, 'msg' => 'Not enrolled.']);
+            exit;
+        }
+
+        $this->load->helper('gamification');
+        $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
+        award_points($user_id, 10, 'lesson_complete', $lesson_id);
+
+        $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
+        $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
+
+        $lessons = $this->Course_model->get_lessons_by_course($course_id);
+        $next_lesson_id = null;
+        $found = false;
+        foreach ($lessons as $lesson) {
+            if ($found) { $next_lesson_id = $lesson->id; break; }
+            if ($lesson->id == $lesson_id) { $found = true; }
+        }
+
+        $cert_msg = null;
+        if ($pct >= 100 && $next_lesson_id === null) {
+            $this->Certificate_model->issue_certificate($user_id, $course_id);
+            award_points($user_id, 100, 'course_completed', $course_id);
+            $course = $this->Course_model->get_course_by_id($course_id);
+            $cert_msg = t('Sertifikat telah diterbitkan!', 'Certificate issued!');
+        }
+
+        echo json_encode([
+            'ok' => true,
+            'completed' => $completed_lessons,
+            'pct' => $pct,
+            'next_lesson_id' => $next_lesson_id,
+            'cert_msg' => $cert_msg,
+        ]);
+        exit;
+    }
+
     public function review($course_slug_or_id) {
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login.', 'Please login.'));

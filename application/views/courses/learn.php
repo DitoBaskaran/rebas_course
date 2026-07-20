@@ -137,34 +137,89 @@
                 <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
                     <span class="badge bg-success rounded-pill px-4 py-2 fw-semibold fs-7"><i class="fas fa-check me-1"></i> <?php echo t('Selesai', 'Completed'); ?></span>
                 <?php else: ?>
-                    <a href="<?php echo base_url('courses/complete_lesson/' . $course->slug . '/' . encode_id($active_lesson->id)); ?>" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn">
+                    <a href="#" class="btn btn-dark rounded-pill px-4 py-2 fw-semibold shadow-sm lesson-complete-btn" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
                         <i class="fas fa-check-circle me-2"></i> <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
                     </a>
                 <?php endif; ?>
             </div>
-                        <div class="d-flex gap-2">
-                            <?php
-                            $prev_id = null;
-                            $next_id = null;
-                            $found = false;
-                            foreach ($lessons as $lesson) {
-                                if ($found) { $next_id = $lesson->id; break; }
-                                if ($lesson->id == $active_lesson->id) { $found = true; continue; }
-                                if (!$found) $prev_id = $lesson->id;
+            <div class="d-flex gap-2">
+                <?php
+                    $prev_id = null;
+                    $next_id = null;
+                    $found = false;
+                    foreach ($lessons as $lesson) {
+                        if ($found) { $next_id = $lesson->id; break; }
+                        if ($lesson->id == $active_lesson->id) { $found = true; continue; }
+                        if (!$found) $prev_id = $lesson->id;
+                    }
+                ?>
+                <?php if ($prev_id): ?>
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $prev_id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold">
+                        <i class="fas fa-chevron-left me-1"></i> <?php echo t('Sebelumnya', 'Previous'); ?>
+                    </a>
+                <?php endif; ?>
+                <?php if ($next_id): ?>
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $next_id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
+                        <?php echo t('Selanjutnya', 'Next'); ?> <i class="fas fa-chevron-right ms-1"></i>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <script>
+        $(document).ready(function() {
+            $('.lesson-complete-btn').on('click', function(e) {
+                e.preventDefault();
+                var btn = $(this);
+                var lessonId = btn.data('lesson-id');
+                var courseId = btn.data('course-id');
+                var originalText = btn.html();
+
+                // Disable button and show loading
+                btn.prop('disabled', true).html('<i class="fas fa-spinner fa-spin me-2"></i> Sedang memproses...');
+
+                $.ajax({
+                    url: '<?php echo base_url('courses/ajax_complete_lesson'); ?>',
+                    type: 'POST',
+                    data: { lesson_id: lessonId, course_id: courseId },
+                    dataType: 'json',
+                    success: function(res) {
+                        if (res.ok) {
+                            // Update UI
+                            btn.removeClass('btn-dark').addClass('btn-success').html('<i class="fas fa-check me-2"></i> Selesai!');
+                            
+                            // Update progress bar
+                            $('#progress-bar').css('width', res.pct + '%');
+                            $('#progress-text').text(res.pct + '%');
+                            
+                            // Show completion message
+                            if (res.cert_msg) {
+                                $('#cert-message').show().text(res.cert_msg);
                             }
-                            ?>
-                            <?php if ($prev_id): ?>
-                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $prev_id); ?>" class="btn btn-outline-dark btn-sm rounded-pill px-3 fw-semibold">
-                                    <i class="fas fa-chevron-left me-1"></i> <?php echo t('Sebelumnya', 'Previous'); ?>
-                                </a>
-                            <?php endif; ?>
-                            <?php if ($next_id): ?>
-                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . $next_id); ?>" class="btn btn-dark btn-sm rounded-pill px-3 fw-semibold">
-                                    <?php echo t('Selanjutnya', 'Next'); ?> <i class="fas fa-chevron-right ms-1"></i>
-                                </a>
-                            <?php endif; ?>
-                        </div>
-                    </div>
+                            
+                            // Auto-redirect to next lesson or detail page
+                            if (res.next_lesson_id) {
+                                setTimeout(function() {
+                                    window.location.href = '<?php echo base_url('courses/learn/' . $course->slug . '/'); ?>' + res.next_lesson_id;
+                                }, 1500);
+                            } else {
+                                setTimeout(function() {
+                                    window.location.href = '<?php echo base_url('courses/detail/' . $course->slug); ?>';
+                                }, 1500);
+                            }
+                        } else {
+                            alert('Error: ' + res.msg);
+                            btn.prop('disabled', false).html(originalText);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        alert('AJAX Error: ' + error);
+                        btn.prop('disabled', false).html(originalText);
+                    }
+                });
+            });
+        });
+        </script>
                 </div>
             </div>
         </div>
