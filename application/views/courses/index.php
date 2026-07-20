@@ -1,10 +1,18 @@
 <style>
 .crs-header { border-bottom: 1px solid #e5e5e5; }
 .crs-header-inner { padding-top: 2rem; padding-bottom: 1.5rem; max-width: 960px; }
-.crs-search-form { max-width: 600px; margin: 0 auto; }
-.crs-search-icon { left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem; z-index: 1; }
-.crs-input { padding-left: 36px; border-radius: 100px; border-color: #e5e5e5; font-size: 0.85rem; height: 44px; }
-.crs-btn-search { background: #111827; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 44px; white-space: nowrap; }
+.crs-search-wrap { background: #f8fafc; border-radius: 20px; padding: 0.5rem 0.75rem 0.75rem; max-width: 640px; margin: 1.5rem auto 0; border: 1px solid #f0f0f0; }
+.crs-search-form { display: flex; flex-direction: column; gap: 0.5rem; }
+@media (min-width: 768px) { .crs-search-form { flex-direction: row; gap: 0.5rem; } }
+.crs-search-input-wrap { position: relative; flex: 1; }
+.crs-search-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.9rem; z-index: 1; pointer-events: none; transition: color 0.2s; }
+.crs-search-input-wrap:focus-within .crs-search-icon { color: #eab308; }
+.crs-input { width: 100%; padding: 0.75rem 1rem 0.75rem 42px; border-radius: 14px; border: 2px solid #e5e5e5; font-size: 0.85rem; height: 48px; background: #fff; transition: all 0.2s; outline: none; }
+.crs-input:focus { border-color: #eab308; box-shadow: 0 0 0 3px rgba(234,179,8,0.1); }
+.crs-input::placeholder { color: #cbd5e1; }
+.crs-btn-search { background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%); color: #111827; border: none; border-radius: 14px; font-size: 0.85rem; height: 48px; padding: 0 1.5rem; font-weight: 700; white-space: nowrap; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; justify-content: center; }
+.crs-btn-search:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(234,179,8,0.3); }
+.crs-btn-search:active { transform: translateY(0); }
 .crs-scroll { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none; -ms-overflow-style: none; }
 .crs-scroll::-webkit-scrollbar { display: none; }
 .crs-scroll + .crs-scroll { margin-top: 0.75rem; }
@@ -29,15 +37,17 @@
             </p>
         </div>
 
-        <form action="<?php echo base_url('courses'); ?>" method="GET" class="d-flex flex-column flex-md-row gap-2 crs-search-form">
-            <div class="flex-fill position-relative">
-                <i class="fas fa-search position-absolute crs-search-icon"></i>
-                <input type="text" name="search" class="form-control crs-input" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari kelas, materi, atau mentor...', 'Search classes, content, or mentors...'); ?>">
-            </div>
-            <button type="submit" class="btn px-4 fw-semibold crs-btn-search">
-                <i class="fas fa-search me-1"></i> <?php echo t('Cari', 'Search'); ?>
-            </button>
-        </form>
+        <div class="crs-search-wrap">
+            <form action="<?php echo base_url('courses'); ?>" method="GET" class="crs-search-form">
+                <div class="crs-search-input-wrap">
+                    <i class="fas fa-search crs-search-icon"></i>
+                    <input type="text" name="search" class="crs-input" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari kelas, materi, atau mentor...', 'Search classes, content, or mentors...'); ?>">
+                </div>
+                <button type="submit" class="crs-btn-search">
+                    <i class="fas fa-search"></i> <?php echo t('Cari', 'Search'); ?>
+                </button>
+            </form>
+        </div>
 
         <?php
             $is_all = !$selected_type && !$selected_level && !$selected_category;
