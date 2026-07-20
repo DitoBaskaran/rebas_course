@@ -118,26 +118,25 @@
             <?php foreach ($courses as $i => $course): ?>
                 <div class="col">
                     <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none">
-                        <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s;">
-                            <div class="position-relative overflow-hidden" style="aspect-ratio: 16/9; border-radius: 12px 12px 0 0;">
+                        <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s; display: flex; flex-direction: row; overflow: hidden;">
+                            <!-- Thumbnail kiri -->
+                            <div class="position-relative overflow-hidden" style="width: 140px; min-height: 140px; flex-shrink: 0;">
                                 <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100" style="object-fit: cover;">
                                 <div class="position-absolute top-0 start-0 m-2 d-flex gap-1 flex-wrap">
                                     <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #111827; color: #fff; font-size: 0.65rem;"><?php echo content_type_label($course->content_type); ?></span>
+                                </div>
+                            </div>
+                            <!-- Info kanan -->
+                            <div class="card-body p-3 d-flex flex-column flex-grow-1">
+                                <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+                                    <span style="color: #a3a3a3; font-size: 0.7rem; font-weight: 500;">
+                                        <i class="fas fa-folder-open me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
+                                    </span>
                                     <?php if ($course->price > 0): ?>
                                         <span class="px-2 py-1 rounded-pill fw-bold" style="background: #eab308; color: #111827; font-size: 0.65rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
                                     <?php else: ?>
                                         <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #22c55e; color: #fff; font-size: 0.65rem;"><?php echo t('Gratis', 'Free'); ?></span>
                                     <?php endif; ?>
-                                </div>
-                            </div>
-                            <div class="card-body p-3 d-flex flex-column">
-                                <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
-                                    <span style="color: #a3a3a3; font-size: 0.7rem; font-weight: 500;">
-                                        <i class="fas fa-folder-open me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
-                                    </span>
-                                    <span style="color: #a3a3a3; font-size: 0.7rem; font-weight: 500;">
-                                        <i class="fas fa-user me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?>
-                                    </span>
                                 </div>
                                 <h6 class="fw-bold mb-1 lh-sm" style="color: #111827; font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     <?php echo htmlspecialchars($course->title); ?>
@@ -146,8 +145,8 @@
                                     <?php echo htmlspecialchars($course->description); ?>
                                 </p>
                                 <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0f0f0;">
-                                    <span class="fw-semibold" style="color: #eab308; font-size: 0.8rem;">
-                                        <?php echo t('Lihat Detail', 'View Detail'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i>
+                                    <span style="color: #a3a3a3; font-size: 0.7rem; font-weight: 500;">
+                                        <i class="fas fa-user me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?>
                                     </span>
                                     <span class="px-2 py-1 rounded-pill" style="background: #f5f5f5; color: #525252; font-size: 0.65rem; font-weight: 600;">
                                         <?php echo skill_level_label($course->skill_level); ?>
