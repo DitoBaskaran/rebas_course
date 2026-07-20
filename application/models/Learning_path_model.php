@@ -50,7 +50,8 @@ class Learning_path_model extends CI_Model {
         $this->db->join('categories', 'categories.id = courses.category_id', 'left');
         $this->db->where('learning_path_contents.path_id', $path_id);
         $this->db->order_by('learning_path_contents.sort_order', 'ASC');
-        return $this->db->get()->result();
+        $q = $this->db->get();
+        return ($q !== FALSE) ? $q->result() : array();
     }
 
     public function add_content($data) {
@@ -84,12 +85,15 @@ class Learning_path_model extends CI_Model {
 
     public function update_progress($user_id, $path_id) {
         $contents = $this->get_contents($path_id);
+        if (!$contents || !is_array($contents)) return;
         $total = count($contents);
         if ($total == 0) return;
         $completed = 0;
-        $this->load->model('Course_model');
+        $CI =& get_instance();
+        $CI->load->model('Course_model');
         foreach ($contents as $c) {
-            $pct = $this->Course_model->get_course_progress_percentage($user_id, $c->course_id);
+            if (!isset($c->course_id)) continue;
+            $pct = $CI->Course_model->get_course_progress_percentage($user_id, $c->course_id);
             if ($pct >= 100) {
                 $completed++;
             }

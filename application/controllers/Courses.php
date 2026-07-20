@@ -312,21 +312,25 @@ class Courses extends CI_Controller {
         }
         award_points($user_id, 10, 'lesson_complete', $lesson_id);
 
-        // Update learning path progress for this course
+        // Cek apakah course ini ada di learning path
+        $lp_paths = array();
         $this->db->db_debug = FALSE;
-        $this->load->model('Learning_path_model');
-        $path_query = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get();
-        if ($path_query !== FALSE && is_object($path_query)) {
-            $path_contents = $path_query->result();
-            foreach ($path_contents as $pc) {
-                $this->db->where('user_id', $user_id)->where('path_id', $pc->path_id);
+        $lp_query = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get();
+        if ($lp_query !== FALSE && is_object($lp_query)) {
+            $lp_rows = $lp_query->result();
+            foreach ($lp_rows as $lr) {
+                $lp_paths[] = $lr->path_id;
+            }
+            // Update progress untuk setiap path
+            $this->load->model('Learning_path_model');
+            foreach ($lp_paths as $pid) {
+                $this->db->where('user_id', $user_id)->where('path_id', $pid);
                 $enr = $this->db->get('path_enrollments');
-                if ($enr !== FALSE && $enr->num_rows() > 0) {
-                    $this->Learning_path_model->update_progress($user_id, $pc->path_id);
+                if ($enr !== FALSE && is_object($enr) && $enr->num_rows() > 0) {
+                    $this->Learning_path_model->update_progress($user_id, $pid);
                 }
             }
         }
-
         $this->db->db_debug = TRUE;
         $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
         $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);

@@ -69,6 +69,7 @@ class Learning_paths extends CI_Controller {
         if (!$path) show_404();
 
         $this->Learning_path_model->enroll_user($this->session->userdata('user_id'), $path_id);
+        $this->Learning_path_model->update_progress($this->session->userdata('user_id'), $path_id);
         $this->session->set_flashdata('success', t('Anda terdaftar di learning path ini!', 'You are enrolled in this learning path!'));
         redirect('learning_paths/detail/' . $path->slug);
     }
