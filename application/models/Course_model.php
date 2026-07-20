@@ -248,16 +248,9 @@ class Course_model extends CI_Model {
     }
 
     public function mark_lesson_completed($user_id, $lesson_id) {
-        $data = array(
-            'user_id' => $user_id,
-            'lesson_id' => $lesson_id,
-            'status' => 'completed'
-        );
-        $exists = $this->db->get_where('progress', array('user_id' => $user_id, 'lesson_id' => $lesson_id))->num_rows() > 0;
-        if ($exists) {
-            return TRUE;
-        }
-        return $this->db->insert('progress', $data);
+        $sql = "INSERT INTO progress (user_id, lesson_id, status, completed_at) VALUES (?, ?, 'completed', NOW())
+                ON DUPLICATE KEY UPDATE status = 'completed', completed_at = NOW()";
+        return $this->db->query($sql, array($user_id, $lesson_id));
     }
 
     public function get_completed_lessons($user_id, $course_id) {
