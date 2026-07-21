@@ -1595,6 +1595,8 @@ h1, h2, h3, h4, h5, h6,
   .navbar { padding-top: 0.625rem; padding-bottom: 0.625rem; }
   .display-4 { font-size: 2rem !important; }
   .display-5 { font-size: 1.75rem !important; }
+  .h1-md { font-size: 2.25rem !important; }
+  .display-6-md { font-size: 2.5rem !important; }
   .hero-section::before, .hero-section::after { display: none; }
   .admin-sidebar { display: none; }
   .admin-content { padding: 1.25rem 1rem; }
