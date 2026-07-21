@@ -1,7 +1,7 @@
-<div>
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-4 mb-md-5">
+<div class="certificate-page">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 gap-md-3 mb-4 mb-md-5">
         <div>
-            <h1 class="h3 h1-md display-6-md fw-extrabold text-dark mb-1" style="letter-spacing:-0.03em;"><?php echo t('Sertifikat Saya', 'My Certificates'); ?></h1>
+            <h1 class="fw-extrabold text-dark mb-1 page-title" style="letter-spacing:-0.03em;"><?php echo t('Sertifikat Saya', 'My Certificates'); ?></h1>
             <p class="text-secondary mb-0 small"><?php echo t('Sertifikat yang telah Anda peroleh.', 'Certificates you have earned.'); ?></p>
         </div>
     </div>
@@ -9,13 +9,13 @@
     <?php if (empty($certificates)): ?>
         <div class="bento-card text-center py-5">
             <i data-lucide="award" style="width:48px;height:48px;color:var(--gray-300);margin-bottom:1rem;"></i>
-            <h5><?php echo t('Belum ada sertifikat.', 'No certificates yet.'); ?></h5>
+            <h5 class="mb-2"><?php echo t('Belum ada sertifikat.', 'No certificates yet.'); ?></h5>
             <p class="text-muted small mb-0"><?php echo t('Selesaikan kursus untuk mendapatkan sertifikat.', 'Complete courses to earn certificates.'); ?></p>
         </div>
     <?php else: ?>
-        <div class="row g-3 g-md-4">
+        <div class="row g-3 g-lg-4">
             <?php foreach ($certificates as $cert): ?>
-                <div class="col-12 col-lg-6 col-xxl-4 d-flex">
+                <div class="col-12 col-md-6 col-lg-6 col-xxl-4 d-flex">
                     <div class="bento-card w-100 d-flex flex-column">
                         <div class="d-flex align-items-start gap-3 mb-3">
                             <div class="d-flex align-items-center justify-content-center bg-warning-subtle text-warning rounded-3 flex-shrink-0" style="width:48px;height:48px;">
@@ -26,12 +26,12 @@
                                 <p class="small text-muted mb-0"><?php echo t('Diterbitkan:', 'Issued:'); ?> <?php echo date('d M Y', strtotime($cert->issued_at)); ?></p>
                             </div>
                         </div>
-                        <div class="d-flex flex-wrap gap-2 mt-auto">
-                            <a href="<?php echo base_url('certificate/download/' . encode_id($cert->id)); ?>" class="btn btn-sm btn-dark rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                        <div class="d-flex flex-column flex-sm-row flex-wrap gap-2 mt-auto">
+                            <a href="<?php echo base_url('certificate/download/' . encode_id($cert->id)); ?>" class="btn btn-sm btn-dark rounded-pill px-3 d-inline-flex align-items-center justify-content-center gap-1 flex-grow-1 flex-sm-grow-0">
                                 <i data-lucide="download" style="width:14px;height:14px;"></i>
                                 <span><?php echo t('Unduh PDF', 'Download PDF'); ?></span>
                             </a>
-                            <a href="<?php echo base_url('certificate/verify/' . $cert->certificate_code); ?>" class="btn btn-sm btn-outline-dark rounded-pill px-3 d-inline-flex align-items-center gap-1">
+                            <a href="<?php echo base_url('certificate/verify/' . $cert->certificate_code); ?>" class="btn btn-sm btn-outline-dark rounded-pill px-3 d-inline-flex align-items-center justify-content-center gap-1 flex-grow-1 flex-sm-grow-0">
                                 <i data-lucide="external-link" style="width:14px;height:14px;"></i>
                                 <span><?php echo t('Verifikasi', 'Verify'); ?></span>
                             </a>
@@ -54,3 +54,16 @@
         </div>
     <?php endif; ?>
 </div>
+
+<style>
+.certificate-page .page-title { font-size: 1.5rem; }
+@media (min-width: 576px) {
+    .certificate-page .page-title { font-size: 1.75rem; }
+}
+@media (min-width: 768px) {
+    .certificate-page .page-title { font-size: 2.25rem; }
+}
+@media (min-width: 992px) {
+    .certificate-page .page-title { font-size: 2.5rem; }
+}
+</style>

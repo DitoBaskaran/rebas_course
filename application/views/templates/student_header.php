@@ -64,7 +64,6 @@
                         <span class="admin-topbar-brand-text">BISATUNTAS</span>
                     <?php endif; ?>
                 </a>
-                <span class="admin-topbar-badge"><?php echo $this->session->userdata('role') === 'mentor' ? t('Mentor', 'Mentor') : t('Siswa', 'Student'); ?></span>
             </div>
             <div class="admin-topbar-end">
                 <a href="<?php echo base_url(); ?>" class="admin-topbar-action d-none d-md-inline-flex" target="_blank" title="<?php echo t('Lihat Website', 'View Website'); ?>">
