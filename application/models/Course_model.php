@@ -251,7 +251,35 @@ class Course_model extends CI_Model {
     public function mark_lesson_completed($user_id, $lesson_id) {
         $sql = "INSERT INTO progress (user_id, lesson_id, status, completed_at) VALUES (?, ?, 'completed', NOW())
                 ON DUPLICATE KEY UPDATE status = 'completed', completed_at = NOW()";
-        return $this->db->query($sql, array($user_id, $lesson_id));
+        $ok = $this->db->query($sql, array($user_id, $lesson_id));
+        if ($ok) {
+            $this->_update_learning_path_progress($user_id, $lesson_id);
+        }
+        return $ok;
+    }
+
+    private function _update_learning_path_progress($user_id, $lesson_id) {
+        $lesson = $this->db->select('course_id')->from('lessons')->where('id', $lesson_id)->get()->row();
+        if (!$lesson) return;
+        $course_id = $lesson->course_id;
+        if (!$course_id) return;
+        $lp_paths = $this->db->select('DISTINCT path_id')
+            ->from('learning_path_contents')
+            ->where('course_id', $course_id)
+            ->get()->result();
+        if (!$lp_paths) return;
+        $CI =& get_instance();
+        $CI->load->model('Learning_path_model');
+        $enrollments = $this->db->from('path_enrollments')
+            ->where('user_id', $user_id)
+            ->where_in('path_id', array_column($lp_paths, 'path_id'))
+            ->get()->result();
+        $enrolled_ids = array_map(function($e) { return $e->path_id; }, $enrollments);
+        foreach ($lp_paths as $lr) {
+            if (in_array($lr->path_id, $enrolled_ids)) {
+                $CI->Learning_path_model->update_progress($user_id, $lr->path_id);
+            }
+        }
     }
 
     public function get_completed_lessons($user_id, $course_id) {

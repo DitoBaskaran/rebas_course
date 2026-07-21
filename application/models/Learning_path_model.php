@@ -87,7 +87,15 @@ class Learning_path_model extends CI_Model {
         $contents = $this->get_contents($path_id);
         if (!$contents || !is_array($contents)) return;
         $total = count($contents);
-        if ($total == 0) return;
+        if ($total == 0) {
+            // If no contents, progress is 100% by default, and completed_at should be set if not already.
+            $enrollment = $this->get_user_enrollment($user_id, $path_id);
+            if ($enrollment && $enrollment->progress_pct < 100) {
+                $this->db->where('user_id', $user_id)->where('path_id', $path_id)
+                         ->update('path_enrollments', ['progress_pct' => 100, 'completed_at' => date('Y-m-d H:i:s')]);
+            }
+            return 100;
+        }
         $completed = 0;
         $CI =& get_instance();
         $CI->load->model('Course_model');
@@ -99,10 +107,24 @@ class Learning_path_model extends CI_Model {
             }
         }
         $pct = round(($completed / $total) * 100);
+
         $data = array('progress_pct' => $pct);
-        if ($pct >= 100) {
-            $data['completed_at'] = date('Y-m-d H:i:s');
+        
+        // Check existing enrollment to handle started_at and completed_at
+        $existing_enrollment = $this->get_user_enrollment($user_id, $path_id);
+
+        if (!$existing_enrollment->started_at) {
+            $data['started_at'] = date('Y-m-d H:i:s');
         }
+
+        if ($pct >= 100) {
+            if (!$existing_enrollment->completed_at) { // Only set if not already set
+                $data['completed_at'] = date('Y-m-d H:i:s');
+            }
+        } else {
+            $data['completed_at'] = NULL; // Reset if progress drops below 100
+        }
+
         $this->db->where('user_id', $user_id)->where('path_id', $path_id)->update('path_enrollments', $data);
         return $pct;
     }
