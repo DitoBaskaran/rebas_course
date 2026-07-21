@@ -1,6 +1,8 @@
 <div class="admin-sidebar playful" id="adminSidebar">
     <?php $active_page = isset($active_page) ? $active_page : ''; ?>
-    <div class="sidebar-heading"><?php echo t('Menu Utama', 'Main Menu'); ?></div>
+
+    <!-- Grup: Pembelajaran & Komunitas -->
+    <div class="sidebar-heading"><?php echo t('Pembelajaran & Komunitas', 'Learning & Community'); ?></div>
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url('dashboard'); ?>">
         <i data-lucide="layout-dashboard"></i> <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
     </a>
@@ -11,7 +13,7 @@
         <i data-lucide="calendar"></i> <span><?php echo t('Seminar', 'Seminars'); ?></span>
     </a>
     <a class="nav-link <?php echo $active_page === 'learning_paths' ? 'active' : ''; ?>" href="<?php echo base_url('learning_paths/mine'); ?>">
-        <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Paths'); ?></span>
+        <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Learning Paths'); ?></span>
     </a>
     <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>">
         <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
@@ -22,6 +24,12 @@
     <a class="nav-link <?php echo $active_page === 'wishlist' ? 'active' : ''; ?>" href="<?php echo base_url('wishlist'); ?>">
         <i data-lucide="heart"></i> <span><?php echo t('Wishlist', 'Wishlist'); ?></span>
     </a>
+
+    <!-- Divider -->
+    <div class="sidebar-section-divider"></div>
+
+    <!-- Grup: Akun & Keuangan -->
+    <div class="sidebar-heading"><?php echo t('Akun & Keuangan', 'Account & Finance'); ?></div>
     <a class="nav-link <?php echo $active_page === 'subscription' ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>">
         <i data-lucide="layers"></i> <span><?php echo t('Langganan', 'Subscription'); ?></span>
     </a>
@@ -31,9 +39,6 @@
     <a class="nav-link <?php echo $active_page === 'certificates' ? 'active' : ''; ?>" href="<?php echo base_url('certificate/my'); ?>">
         <i data-lucide="award"></i> <span><?php echo t('Sertifikat', 'Certificates'); ?></span>
     </a>
-
-    <div class="sidebar-section-divider"></div>
-    <div class="sidebar-heading"><?php echo t('Akun', 'Account'); ?></div>
     <a class="nav-link <?php echo $active_page === 'profile' ? 'active' : ''; ?>" href="<?php echo base_url('profile'); ?>">
         <i data-lucide="user"></i> <span><?php echo t('Profil Saya', 'My Profile'); ?></span>
     </a>
