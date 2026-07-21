@@ -106,39 +106,97 @@
         </div>
     </nav>
 
-    <!-- Mobile offcanvas (outside nav to avoid backdrop-filter containing block issue) -->
-    <div class="offcanvas offcanvas-start d-lg-none" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header" style="border-bottom: 1px solid #f0f0f0;">
-            <h5 class="offcanvas-title d-flex align-items-center gap-2 fw-bold">BISATUNTAS</h5>
+    <!-- Mobile offcanvas — sidebar style -->
+    <div class="offcanvas offcanvas-start d-lg-none border-0" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header px-3 py-3" style="border-bottom: 1px solid #f0eeeb;">
+            <div class="d-flex align-items-center gap-2">
+                <span class="d-inline-flex align-items-center justify-content-center fw-bold rounded-2" style="width: 30px; height: 30px; background: #eab308; color: #111827; font-size: 0.8rem;">B</span>
+                <span class="fw-bold" style="font-size: 1rem;">BISATUNTAS</span>
+            </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body p-0">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2 active" href="<?php echo base_url(); ?>"><?php echo t('Beranda', 'Home'); ?></a></li>
-                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('courses'); ?>"><?php echo t('Kelas', 'Courses'); ?></a></li>
-                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('seminars'); ?>"><?php echo t('Seminar', 'Seminars'); ?></a></li>
-                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('learning_paths'); ?>"><?php echo t('Learning Paths', 'Paths'); ?></a></li>
-                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('mentoring'); ?>"><?php echo t('Mentoring', 'Mentoring'); ?></a></li>
-                <li class="nav-item"><a class="nav-link-home d-block px-3 py-2" href="<?php echo base_url('subscription'); ?>"><?php echo t('Langganan', 'Subscription'); ?></a></li>
-            </ul>
-            <hr class="my-0">
-            <div class="p-3 d-flex flex-column gap-2">
+
+        <?php if ($this->session->userdata('logged_in')): ?>
+        <div class="px-3 py-3" style="border-bottom: 1px solid #f0eeeb;">
+            <div class="d-flex align-items-center gap-3">
+                <span class="d-inline-flex align-items-center justify-content-center fw-bold rounded-circle flex-shrink-0" style="width: 40px; height: 40px; background: #f5f5f5; color: #525252; font-size: 0.9rem;">
+                    <?php echo strtoupper(substr($this->session->userdata('name'), 0, 1)); ?>
+                </span>
+                <div class="min-w-0">
+                    <div class="fw-semibold text-dark small text-truncate"><?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?></div>
+                    <div class="text-muted" style="font-size: 0.7rem; text-transform: capitalize;"><?php echo $this->session->userdata('role'); ?></div>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <div class="offcanvas-body p-0 d-flex flex-column">
+            <div class="px-3 pt-3 pb-1" style="font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #a8a29e;"><?php echo t('Navigasi', 'Navigation'); ?></div>
+            <div class="nav flex-column" style="gap: 2px;">
+                <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo uri_string() === '' ? 'active' : ''; ?>" href="<?php echo base_url(); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
+                    <i class="fas fa-home" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <span><?php echo t('Beranda', 'Home'); ?></span>
+                </a>
+                <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo strpos(uri_string(), 'courses') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('courses'); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
+                    <i class="fas fa-book-open" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <span><?php echo t('Kelas', 'Courses'); ?></span>
+                </a>
+                <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo strpos(uri_string(), 'seminars') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('seminars'); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
+                    <i class="fas fa-calendar" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <span><?php echo t('Seminar', 'Seminars'); ?></span>
+                </a>
+                <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo strpos(uri_string(), 'learning_paths') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('learning_paths'); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
+                    <i class="fas fa-route" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <span><?php echo t('Learning Paths', 'Paths'); ?></span>
+                </a>
+                <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo strpos(uri_string(), 'mentoring') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
+                    <i class="fas fa-calendar-check" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
+                </a>
+                <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo strpos(uri_string(), 'subscription') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
+                    <i class="fas fa-layers" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <span><?php echo t('Langganan', 'Subscription'); ?></span>
+                </a>
+            </div>
+
+            <div class="mt-auto" style="border-top: 1px solid #f0eeeb;">
                 <?php if ($this->session->userdata('logged_in')): ?>
-                    <a href="<?php echo base_url('dashboard'); ?>" class="btn btn-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Dashboard', 'Dashboard'); ?></a>
+                <div class="p-3 d-flex flex-column gap-2">
+                    <a href="<?php echo base_url('dashboard'); ?>" class="btn btn-dark btn-sm w-100 rounded-pill fw-semibold d-flex align-items-center justify-content-center gap-2">
+                        <i class="fas fa-th-large" style="font-size: 0.75rem;"></i>
+                        <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
+                    </a>
                     <?php if (in_array($this->session->userdata('role'), ['admin', 'teacher', 'mentor'])): ?>
-                        <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Panel Admin', 'Admin Panel'); ?></a>
+                        <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold d-flex align-items-center justify-content-center gap-2">
+                            <i class="fas fa-user-shield" style="font-size: 0.75rem;"></i>
+                            <span><?php echo t('Panel Admin', 'Admin Panel'); ?></span>
+                        </a>
                     <?php endif; ?>
-                    <a href="<?php echo base_url('profile'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Profil', 'Profile'); ?></a>
-                    <div class="border-top pt-2 mt-1">
-                        <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-outline-danger btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Keluar', 'Logout'); ?></a>
-                    </div>
+                    <a href="<?php echo base_url('auth/logout'); ?>" class="btn btn-sm w-100 rounded-pill d-flex align-items-center justify-content-center gap-2" style="background: none; border: 1px solid #f0eeeb; color: #78716c;">
+                        <i class="fas fa-sign-out-alt" style="font-size: 0.75rem;"></i>
+                        <span><?php echo t('Keluar', 'Logout'); ?></span>
+                    </a>
+                </div>
                 <?php else: ?>
-                    <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-outline-dark btn-sm w-100 rounded-pill fw-semibold"><?php echo t('Masuk', 'Login'); ?></a>
-                    <a href="<?php echo base_url('auth/register'); ?>" class="btn btn-sm w-100 rounded-pill fw-semibold" style="background: #eab308; color: #111827;"><?php echo t('Daftar', 'Register'); ?></a>
+                <div class="p-3 d-flex flex-column gap-2">
+                    <a href="<?php echo base_url('auth/login'); ?>" class="btn btn-sm w-100 rounded-pill fw-semibold d-flex align-items-center justify-content-center gap-2" style="background: none; border: 1px solid #e5e5e5; color: #525252;">
+                        <i class="fas fa-sign-in-alt" style="font-size: 0.75rem;"></i>
+                        <span><?php echo t('Masuk', 'Login'); ?></span>
+                    </a>
+                    <a href="<?php echo base_url('auth/register'); ?>" class="btn btn-sm w-100 rounded-pill fw-semibold d-flex align-items-center justify-content-center gap-2" style="background: #eab308; color: #111827; border: none;">
+                        <i class="fas fa-user-plus" style="font-size: 0.75rem;"></i>
+                        <span><?php echo t('Daftar', 'Register'); ?></span>
+                    </a>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+
+    <style>
+    .offcanvas#offcanvasNavbar .nav a:hover { background: #f5f5f5 !important; color: #1c1917 !important; }
+    .offcanvas#offcanvasNavbar .nav a.active { background: #fefce8 !important; color: #eab308 !important; font-weight: 700 !important; }
+    </style>
 
     <!-- Flash Messages -->
     <div class="container mt-3">
