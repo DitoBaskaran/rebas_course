@@ -164,7 +164,7 @@ function copyQR() {
     if (input) {
         input.select();
         document.execCommand('copy');
-        alert('<?php echo t('QR string berhasil disalin!', 'QR string copied!'); ?>');
+        Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, icon: 'success', title: '<?php echo t('QR string berhasil disalin!', 'QR string copied!'); ?>' });
     }
 }
 

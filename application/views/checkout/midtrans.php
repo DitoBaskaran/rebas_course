@@ -42,10 +42,10 @@ document.getElementById('payBtn').addEventListener('click', function() {
             window.location.href = '<?php echo base_url('dashboard'); ?>?purchase=success&tx_id=<?php echo $tx->uuid; ?>';
         },
         onPending: function(result) {
-            alert('<?php echo t('Pembayaran sedang diproses.', 'Payment is being processed.'); ?>');
+            Swal.fire({ icon: 'info', text: '<?php echo t('Pembayaran sedang diproses.', 'Payment is being processed.'); ?>', showConfirmButton: false });
         },
         onError: function(result) {
-            alert('<?php echo t('Pembayaran gagal. Silakan coba lagi.', 'Payment failed. Please try again.'); ?>');
+            Swal.fire('Oops!', '<?php echo t('Pembayaran gagal. Silakan coba lagi.', 'Payment failed. Please try again.'); ?>', 'error');
         }
     });
 });

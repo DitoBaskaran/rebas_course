@@ -101,11 +101,11 @@ function copyRefLink() {
     input.setSelectionRange(0, 99999);
     try {
         document.execCommand('copy');
-        alert('<?php echo t('Link disalin!', 'Link copied!'); ?>');
+            Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, icon: 'success', title: '<?php echo t('Link disalin!', 'Link copied!'); ?>' });
     } catch (e) {
         if (navigator.clipboard) {
             navigator.clipboard.writeText(input.value);
-            alert('<?php echo t('Link disalin!', 'Link copied!'); ?>');
+        Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, icon: 'success', title: '<?php echo t('Link disalin!', 'Link copied!'); ?>' });
         }
     }
 }

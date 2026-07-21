@@ -262,14 +262,14 @@
                             }
                         }, 1500);
                     } else {
-                        alert('Error: ' + data.msg);
+                        Swal.fire('Error!', data.msg, 'error');
                         btn.disabled = false;
                         btn.innerHTML = originalText;
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Terjadi kesalahan. Silakan coba lagi.');
+                    Swal.fire('Error!', 'Terjadi kesalahan. Silakan coba lagi.', 'error');
                     btn.disabled = false;
                     btn.innerHTML = originalText;
                 });

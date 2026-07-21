@@ -22,6 +22,8 @@
     <?php if (!isset($is_homepage) || !$is_homepage): ?>
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas-playful-alt.css'); ?>">
     <?php endif; ?>
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         :root { <?php echo settings_css_vars(); ?> }
         body { padding-top: 72px; }

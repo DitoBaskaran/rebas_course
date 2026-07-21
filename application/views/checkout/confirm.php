@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (applyBtn) {
         applyBtn.addEventListener('click', function() {
             var code = codeInput.value.trim();
-            if (!code) { alert('<?php echo t('Masukkan kode kupon.', 'Enter coupon code.'); ?>'); return; }
+            if (!code) { Swal.fire({ icon: 'warning', text: '<?php echo t('Masukkan kode kupon.', 'Enter coupon code.'); ?>', showConfirmButton: false }); return; }
             applyBtn.disabled = true;
             applyBtn.innerHTML = '<span class="spinner-border spinner-border-sm"></span>';
             fetch('<?php echo base_url('checkout/apply_' . $coupon_method . '/' . $tx_ref); ?>', {
