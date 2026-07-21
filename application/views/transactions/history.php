@@ -1,4 +1,4 @@
-<div class="container-fluid py-4" style="padding-top: 86px !important; max-width: 1200px;">
+<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1200px;">
     <!-- Header -->
     <div class="mb-3">
         <h4 class="fw-extrabold mb-1" style="color: #1c1917; letter-spacing: -0.02em; font-size: 1.3rem;">
