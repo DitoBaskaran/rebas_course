@@ -67,10 +67,6 @@
                 <span class="admin-topbar-badge"><?php echo $this->session->userdata('role') === 'mentor' ? t('Mentor', 'Mentor') : t('Siswa', 'Student'); ?></span>
             </div>
             <div class="admin-topbar-end">
-                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                    <i data-lucide="moon" class="moon-icon" style="width:18px;height:18px;"></i>
-                    <i data-lucide="sun" class="sun-icon" style="width:18px;height:18px;"></i>
-                </button>
                 <a href="<?php echo base_url(); ?>" class="admin-topbar-action d-none d-md-inline-flex" target="_blank" title="<?php echo t('Lihat Website', 'View Website'); ?>">
                     <i data-lucide="external-link" style="width:18px;height:18px;"></i>
                 </a>
