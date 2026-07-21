@@ -34,6 +34,8 @@
         .nav-link-home.active { color: #eab308 !important; background: #fefce8 !important; background-image: none !important; }
         .nav-link-home::after, .nav-link-home::before, nav .nav-item a::after, nav .nav-item a::before, .navbar .nav-link::after, .navbar .nav-link::before, .offcanvas .nav-link::after, .offcanvas .nav-link::before { display: none !important; content: none !important; }
         .navbar-scrolled { box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .navbar-toggler { border: none !important; box-shadow: none !important; outline: none !important; padding: 0.375rem 0.5rem; }
+        .navbar-toggler:hover, .navbar-toggler:focus, .navbar-toggler:active, .navbar-toggler.active, .navbar-toggler:focus-visible { border: none !important; box-shadow: none !important; outline: none !important; background: transparent !important; }
         .social-bar { background: #111827; color: #d4d4d4; text-align: center; padding: 0.5rem; font-size: 0.75rem; font-weight: 500; border-bottom: 1px solid #1f1f1f; }
         .social-bar strong { color: #eab308; }
         .alert-flash { border-radius: 12px; border: none; padding: 0.75rem 1rem; }
