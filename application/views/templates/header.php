@@ -71,12 +71,12 @@
             <!-- Desktop -->
             <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo uri_string() === '' ? 'active' : ''; ?>" href="<?php echo base_url(); ?>"><i class="fas fa-home" style="font-size: 0.75rem;"></i> <?php echo t('Beranda', 'Home'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'courses') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('courses'); ?>"><i class="fas fa-book-open" style="font-size: 0.75rem;"></i> <?php echo t('Kelas', 'Courses'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'seminars') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('seminars'); ?>"><i class="fas fa-calendar" style="font-size: 0.75rem;"></i> <?php echo t('Seminar', 'Seminars'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'learning_paths') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('learning_paths'); ?>"><i class="fas fa-route" style="font-size: 0.75rem;"></i> <?php echo t('Learning Paths', 'Paths'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'mentoring') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>"><i class="fas fa-calendar-check" style="font-size: 0.75rem;"></i> <?php echo t('Mentoring', 'Mentoring'); ?></a></li>
-                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'subscription') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>"><i class="fas fa-layers" style="font-size: 0.75rem;"></i> <?php echo t('Langganan', 'Subscription'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo uri_string() === '' ? 'active' : ''; ?>" href="<?php echo base_url(); ?>"><i class="fas fa-home d-lg-none" style="font-size: 0.75rem;"></i> <?php echo t('Beranda', 'Home'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'courses') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('courses'); ?>"><i class="fas fa-book-open d-lg-none" style="font-size: 0.75rem;"></i> <?php echo t('Kelas', 'Courses'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'seminars') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('seminars'); ?>"><i class="fas fa-calendar d-lg-none" style="font-size: 0.75rem;"></i> <?php echo t('Seminar', 'Seminars'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'learning_paths') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('learning_paths'); ?>"><i class="fas fa-route d-lg-none" style="font-size: 0.75rem;"></i> <?php echo t('Learning Paths', 'Paths'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'mentoring') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>"><i class="fas fa-calendar-check d-lg-none" style="font-size: 0.75rem;"></i> <?php echo t('Mentoring', 'Mentoring'); ?></a></li>
+                    <li class="nav-item"><a class="nav-link-home d-inline-flex align-items-center gap-1-5 <?php echo strpos(uri_string(), 'subscription') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>"><i class="fas fa-cube d-lg-none" style="font-size: 0.75rem;"></i> <?php echo t('Langganan', 'Subscription'); ?></a></li>
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <?php if ($this->session->userdata('logged_in')): ?>
@@ -156,7 +156,7 @@
                     <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
                 </a>
                 <a class="d-flex align-items-center gap-3 px-3 py-2 text-decoration-none <?php echo strpos(uri_string(), 'subscription') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('subscription'); ?>" style="color: #78716c; font-weight: 500; font-size: 0.85rem; border-radius: 8px; margin: 0 0.5rem; transition: all 0.15s;">
-                    <i class="fas fa-layers" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
+                    <i class="fas fa-cube" style="width: 18px; flex-shrink: 0; text-align: center;"></i>
                     <span><?php echo t('Langganan', 'Subscription'); ?></span>
                 </a>
             </div>
