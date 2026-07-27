@@ -23,17 +23,33 @@ class Mentor_dashboard extends CI_Controller {
         return $mentor;
     }
 
+    private function _template_header($data) {
+        if ($this->session->userdata('is_teacher') || $this->session->userdata('role') === 'admin') {
+            $this->load->view('templates/admin_header', $data);
+        } else {
+            $this->load->view('templates/student_header', $data);
+        }
+    }
+
+    private function _template_footer($data) {
+        if ($this->session->userdata('is_teacher') || $this->session->userdata('role') === 'admin') {
+            $this->load->view('templates/admin_footer');
+        } else {
+            $this->load->view('templates/student_footer');
+        }
+    }
+
     public function index() {
         $mentor = $this->get_mentor_profile();
         $data['title'] = t('Dashboard Mentor', 'Mentor Dashboard');
-        $data['active_page'] = 'dashboard';
+        $data['active_page'] = 'dashboard_mentor';
         $data['mentor'] = $mentor;
         $data['upcoming'] = $this->Mentoring_bookings_model->get_upcoming_by_mentor($mentor->id);
         $data['total_pending'] = $this->Mentoring_bookings_model->count_by_mentor($mentor->id, 'pending');
         $data['total_completed'] = $this->Mentoring_bookings_model->count_by_mentor($mentor->id, 'completed');
-        $this->load->view('templates/student_header', $data);
+        $this->_template_header($data);
         $this->load->view('mentor/dashboard', $data);
-        $this->load->view('templates/student_footer');
+        $this->_template_footer($data);
     }
 
     public function create_profile() {
@@ -47,9 +63,9 @@ class Mentor_dashboard extends CI_Controller {
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Lengkapi Profil Mentor', 'Complete Mentor Profile');
             $data['active_page'] = 'create_profile';
-            $this->load->view('templates/student_header', $data);
+            $this->_template_header($data);
             $this->load->view('mentor/create_profile', $data);
-            $this->load->view('templates/student_footer');
+            $this->_template_footer($data);
         } else {
             $this->Mentor_model->create(array(
                 'user_id' => $this->session->userdata('user_id'),
@@ -71,9 +87,9 @@ class Mentor_dashboard extends CI_Controller {
         $data['active_page'] = 'availability';
         $data['mentor'] = $mentor;
         $data['slots'] = $this->Mentor_availability_model->get_by_mentor($mentor->id);
-        $this->load->view('templates/student_header', $data);
+        $this->_template_header($data);
         $this->load->view('mentor/availability', $data);
-        $this->load->view('templates/student_footer');
+        $this->_template_footer($data);
     }
 
     public function add_slot() {
@@ -113,9 +129,9 @@ class Mentor_dashboard extends CI_Controller {
         $data['active_page'] = 'sessions';
         $data['mentor'] = $mentor;
         $data['sessions'] = $this->Mentoring_bookings_model->get_by_mentor($mentor->id);
-        $this->load->view('templates/student_header', $data);
+        $this->_template_header($data);
         $this->load->view('mentor/sessions', $data);
-        $this->load->view('templates/student_footer');
+        $this->_template_footer($data);
     }
 
     public function confirm_session($encoded_id) {

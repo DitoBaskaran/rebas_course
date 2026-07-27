@@ -14,11 +14,6 @@
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url($_ss_dash_url); ?>">
         <i data-lucide="layout-dashboard"></i> <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
     </a>
-    <?php if ($_ss_is_mentor && $_ss_dash_url !== 'mentor'): ?>
-    <a class="nav-link" href="<?php echo base_url('mentor'); ?>">
-        <i data-lucide="calendar-check"></i> <span><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></span>
-    </a>
-    <?php endif; ?>
     <a class="nav-link <?php echo $active_page === 'my_courses' ? 'active' : ''; ?>" href="<?php echo base_url('courses/mine'); ?>">
         <i data-lucide="book-open"></i> <span><?php echo t('Kelas Saya', 'My Courses'); ?></span>
     </a>

@@ -39,6 +39,19 @@
     <a class="nav-link <?php echo $active_page === 'submissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/submissions'); ?>">
         <i data-lucide="code"></i> <span><?php echo t('Tugas', 'Submissions'); ?></span>
     </a>
+    <?php if ($this->session->userdata('is_mentor')): ?>
+    <div class="sidebar-section-divider"></div>
+    <div class="sidebar-heading"><?php echo t('Mentoring', 'Mentoring'); ?></div>
+    <a class="nav-link <?php echo $active_page === 'dashboard_mentor' ? 'active' : ''; ?>" href="<?php echo base_url('mentor'); ?>">
+        <i data-lucide="calendar-check"></i> <span><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></span>
+    </a>
+    <a class="nav-link <?php echo $active_page === 'availability' ? 'active' : ''; ?>" href="<?php echo base_url('mentor/availability'); ?>">
+        <i data-lucide="clock"></i> <span><?php echo t('Jadwal', 'Schedule'); ?></span>
+    </a>
+    <a class="nav-link <?php echo $active_page === 'sessions' ? 'active' : ''; ?>" href="<?php echo base_url('mentor/sessions'); ?>">
+        <i data-lucide="list"></i> <span><?php echo t('Sesi Masuk', 'Sessions'); ?></span>
+    </a>
+    <?php endif; ?>
     <?php if ($sidebar_role === 'admin'): ?>
     <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url('admin/mentoring'); ?>">
         <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
@@ -85,11 +98,6 @@
     <a class="nav-link <?php echo $active_page === 'affiliate' ? 'active' : ''; ?>" href="<?php echo base_url('affiliate'); ?>">
         <i data-lucide="gift"></i> <span><?php echo t('Affiliate', 'Affiliate'); ?></span>
     </a>
-    <?php if ($this->session->userdata('is_mentor')): ?>
-    <a class="nav-link" href="<?php echo base_url('mentor'); ?>">
-        <i data-lucide="calendar-check"></i> <span><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></span>
-    </a>
-    <?php endif; ?>
 
     <button class="sidebar-collapse-btn" title="Collapse sidebar">
         <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
