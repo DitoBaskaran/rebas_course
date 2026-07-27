@@ -14,11 +14,11 @@
                     </div>
                     <div>
                         <label class="form-label small fw-bold text-dark"><?php echo t('Bio', 'Bio'); ?></label>
-                        <textarea name="bio" rows="3" class="form-control"><?php echo set_value('bio', $user->bio); ?></textarea>
+                        <textarea name="bio" rows="3" class="form-control"><?php echo set_value('bio', $user->bio ?? ''); ?></textarea>
                     </div>
                     <div>
                         <label class="form-label small fw-bold text-dark"><?php echo t('No. HP', 'Phone'); ?></label>
-                        <input type="text" name="phone" class="form-control" value="<?php echo set_value('phone', $user->phone); ?>">
+                        <input type="text" name="phone" class="form-control" value="<?php echo set_value('phone', $user->phone ?? ''); ?>">
                     </div>
                     <button type="submit" class="btn btn-primary py-2.5"><?php echo t('Simpan', 'Save'); ?></button>
                 <?php echo form_close(); ?>

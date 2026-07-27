@@ -122,11 +122,11 @@
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small fw-bold"><?php echo t('Bio', 'Bio'); ?></label>
-                        <textarea name="bio" class="form-control" rows="3"><?php echo htmlspecialchars($mentor->bio); ?></textarea>
+                        <textarea name="bio" class="form-control" rows="3"><?php echo htmlspecialchars($mentor->bio ?? ''); ?></textarea>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small fw-bold">Bio (EN)</label>
-                        <textarea name="bio_en" class="form-control" rows="3"><?php echo htmlspecialchars($mentor->bio_en); ?></textarea>
+                        <textarea name="bio_en" class="form-control" rows="3"><?php echo htmlspecialchars($mentor->bio_en ?? ''); ?></textarea>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small fw-bold"><?php echo t('Durasi Tersedia', 'Available Durations'); ?></label>
