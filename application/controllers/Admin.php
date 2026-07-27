@@ -30,38 +30,76 @@ class Admin extends CI_Controller {
         $data['title'] = t('Panel Admin - BISATUNTAS', 'Admin Panel - BISATUNTAS');
         $data['load_chartjs'] = true;
         $data['active_page'] = 'dashboard';
-        // Real analytics: enrollment data for last 6 months
-        $chart_labels = '[]';
-        $chart_data = '[]';
-        $enrollments_by_month = $this->db
-            ->select("DATE_FORMAT(enrolled_at, '%Y-%m') as month, COUNT(*) as total")
-            ->from('enrollments')
-            ->where('enrolled_at >=', date('Y-m-d', strtotime('-6 months')))
-            ->group_by('month')
-            ->order_by('month', 'ASC')
-            ->get()->result();
+        $role = $this->session->userdata('role');
+        $user_id = $this->session->userdata('user_id');
+        $data['current_role'] = $role;
 
-        if (!empty($enrollments_by_month)) {
-            $labels = array();
-            $data = array();
-            foreach ($enrollments_by_month as $row) {
-                $labels[] = $row->month;
-                $data[] = (int)$row->total;
+        if ($role === 'teacher') {
+            // Enrollment chart: only teacher's own courses
+            $chart_labels = '[]';
+            $chart_data = '[]';
+            $teacher_courses = $this->db->select('id')->where('teacher_id', $user_id)->get('courses')->result();
+            if (!empty($teacher_courses)) {
+                $course_ids = array_column($teacher_courses, 'id');
+                $enrollments_by_month = $this->db
+                    ->select("DATE_FORMAT(enrolled_at, '%Y-%m') as month, COUNT(*) as total")
+                    ->from('enrollments')
+                    ->where_in('course_id', $course_ids)
+                    ->where('enrolled_at >=', date('Y-m-d', strtotime('-6 months')))
+                    ->group_by('month')
+                    ->order_by('month', 'ASC')
+                    ->get()->result();
+                if (!empty($enrollments_by_month)) {
+                    $labels = array();
+                    $chart_data_arr = array();
+                    foreach ($enrollments_by_month as $row) {
+                        $labels[] = $row->month;
+                        $chart_data_arr[] = (int)$row->total;
+                    }
+                    $chart_labels = json_encode($labels);
+                    $chart_data = json_encode($chart_data_arr);
+                }
             }
-            $chart_labels = json_encode($labels);
-            $chart_data = json_encode($data);
-        }
 
-        // Real stats from database
-        $data['total_courses'] = $this->Course_model->count_all(array());
-        $data['total_seminars'] = $this->Seminar_model->count_all();
-        $data['total_students'] = $this->db->where('role', 'student')->count_all_results('users');
-        $data['total_revenue'] = $this->db->select('COALESCE(SUM(amount),0) as total')
-            ->where('status', 'approved')
-            ->get('transactions')->row()->total;
-        $data['transactions'] = $this->Transaction_model->get_all_transactions();
-        $data['chart_labels'] = $chart_labels;
-        $data['chart_data'] = $chart_data;
+            $data['total_courses'] = $this->db->where('teacher_id', $user_id)->count_all_results('courses');
+            $data['total_seminars'] = $this->db->where('speaker_id', $user_id)->count_all_results('seminars');
+            $data['total_students'] = $this->db->where('role', 'student')->count_all_results('users');
+            $data['total_revenue'] = 0;
+            $data['transactions'] = array();
+            $data['chart_labels'] = $chart_labels;
+            $data['chart_data'] = $chart_data;
+        } else {
+            // Enrollment chart: all courses
+            $chart_labels = '[]';
+            $chart_data = '[]';
+            $enrollments_by_month = $this->db
+                ->select("DATE_FORMAT(enrolled_at, '%Y-%m') as month, COUNT(*) as total")
+                ->from('enrollments')
+                ->where('enrolled_at >=', date('Y-m-d', strtotime('-6 months')))
+                ->group_by('month')
+                ->order_by('month', 'ASC')
+                ->get()->result();
+            if (!empty($enrollments_by_month)) {
+                $labels = array();
+                $chart_data_arr = array();
+                foreach ($enrollments_by_month as $row) {
+                    $labels[] = $row->month;
+                    $chart_data_arr[] = (int)$row->total;
+                }
+                $chart_labels = json_encode($labels);
+                $chart_data = json_encode($chart_data_arr);
+            }
+
+            $data['total_courses'] = $this->Course_model->count_all(array());
+            $data['total_seminars'] = $this->Seminar_model->count_all();
+            $data['total_students'] = $this->db->where('role', 'student')->count_all_results('users');
+            $data['total_revenue'] = $this->db->select('COALESCE(SUM(amount),0) as total')
+                ->where('status', 'approved')
+                ->get('transactions')->row()->total;
+            $data['transactions'] = $this->Transaction_model->get_all_transactions();
+            $data['chart_labels'] = $chart_labels;
+            $data['chart_data'] = $chart_data;
+        }
 
         $this->load->view('templates/admin_header', $data);
         $this->load->view('admin/dashboard', $data);

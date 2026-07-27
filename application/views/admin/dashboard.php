@@ -7,7 +7,11 @@
                 <?php echo t('Dashboard', 'Dashboard'); ?>
             </h4>
             <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
-                <?php echo t('Kelola kelas, seminar, dan verifikasi pembayaran.', 'Manage courses, seminars, and payment verification.'); ?>
+                <?php if ($current_role === 'teacher'): ?>
+                    <?php echo t('Kelola kelas dan seminar Anda.', 'Manage your courses and seminars.'); ?>
+                <?php else: ?>
+                    <?php echo t('Kelola kelas, seminar, dan verifikasi pembayaran.', 'Manage courses, seminars, and payment verification.'); ?>
+                <?php endif; ?>
             </p>
         </div>
         <div class="d-flex gap-2">
@@ -17,9 +21,11 @@
             <a href="<?php echo base_url('admin/seminars'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.78rem;">
                 <i class="fas fa-calendar" style="font-size: 0.7rem;"></i> <?php echo t('Seminar', 'Seminars'); ?>
             </a>
+            <?php if ($current_role === 'admin'): ?>
             <a href="<?php echo base_url('admin/settings/general'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.78rem;">
                 <i class="fas fa-cog" style="font-size: 0.7rem;"></i>
             </a>
+            <?php endif; ?>
         </div>
     </div>
 
@@ -64,6 +70,7 @@
                 </div>
             </div>
         </div>
+        <?php if ($current_role === 'admin'): ?>
         <div class="col-6 col-md-3">
             <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
                 <div class="d-flex align-items-center gap-3">
@@ -77,6 +84,7 @@
                 </div>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 
     <!-- Chart + Quick Actions -->
@@ -109,6 +117,7 @@
                         <i class="fas fa-plus-circle" style="font-size: 0.85rem;"></i>
                         <span><?php echo t('Buat Seminar Baru', 'New Seminar'); ?></span>
                     </a>
+                    <?php if ($current_role === 'admin'): ?>
                     <a href="<?php echo base_url('admin/transactions'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none fw-semibold" style="background: #f5f5f4; color: #57534e; font-size: 0.8rem; transition: all 0.15s;">
                         <i class="fas fa-receipt" style="font-size: 0.85rem;"></i>
                         <span><?php echo t('Verifikasi Transaksi', 'Verify Trx'); ?></span>
@@ -117,12 +126,14 @@
                         <i class="fas fa-palette" style="font-size: 0.85rem;"></i>
                         <span><?php echo t('Ubah Tampilan', 'Appearance'); ?></span>
                     </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Transactions -->
+    <?php if ($current_role === 'admin'): ?>
     <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
         <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
             <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #1c1917; font-size: 0.88rem;">
@@ -208,6 +219,7 @@
         </div>
         <?php endif; ?>
     </div>
+    <?php endif; ?>
 </div>
 
 <!-- Chart.js -->
