@@ -272,6 +272,30 @@ $route['seminars/mine'] = 'seminars/mine';
 $route['seminars/detail/(:any)'] = 'seminars/detail/$1';
 $route['seminars/register/(:any)'] = 'seminars/register/$1';
 
+// Teacher Routes
+$route['teacher'] = 'teacher/dashboard';
+$route['teacher/dashboard'] = 'teacher/dashboard';
+$route['teacher/courses'] = 'teacher/courses';
+$route['teacher/create_course'] = 'teacher/create_course';
+$route['teacher/edit_course/(:num)'] = 'teacher/edit_course/$1';
+$route['teacher/delete_course/(:num)'] = 'teacher/delete_course/$1';
+$route['teacher/lessons/(:num)'] = 'teacher/lessons/$1';
+$route['teacher/create_lesson/(:num)'] = 'teacher/create_lesson/$1';
+$route['teacher/edit_lesson/(:num)'] = 'teacher/edit_lesson/$1';
+$route['teacher/delete_lesson/(:num)'] = 'teacher/delete_lesson/$1';
+$route['teacher/seminars'] = 'teacher/seminars';
+$route['teacher/create_seminar'] = 'teacher/create_seminar';
+$route['teacher/edit_seminar/(:num)'] = 'teacher/edit_seminar/$1';
+$route['teacher/delete_seminar/(:num)'] = 'teacher/delete_seminar/$1';
+$route['teacher/submissions'] = 'teacher/submissions';
+$route['teacher/grade_submission/(:num)'] = 'teacher/grade_submission/$1';
+$route['teacher/return_submission/(:num)'] = 'teacher/return_submission/$1';
+$route['teacher/assignments/(:num)'] = 'teacher/assignments/$1';
+$route['teacher/create_assignment/(:num)'] = 'teacher/create_assignment/$1';
+$route['teacher/delete_assignment/(:num)'] = 'teacher/delete_assignment/$1';
+$route['teacher/grade_essays/(:num)'] = 'teacher/grade_essays/$1';
+$route['teacher/save_essay_grade/(:num)/(:num)'] = 'teacher/save_essay_grade/$1/$2';
+
 // Learning Paths
 $route['learning_paths/mine'] = 'learning_paths/mine';
 $route['learning_paths/enroll/(:any)'] = 'learning_paths/enroll/$1';

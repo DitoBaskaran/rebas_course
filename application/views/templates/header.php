@@ -104,14 +104,19 @@
                                 $_is_teacher = $this->session->userdata('is_teacher');
                                 $_is_mentor = $this->session->userdata('is_mentor');
                             ?>
-                            <?php if ($_role_admin || $_is_teacher): ?>
+                            <?php if ($_role_admin): ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('admin/dashboard'); ?>"><i class="fas fa-th-large me-2" style="width:14px;opacity:.5;"></i><?php echo t('Panel Admin', 'Admin Panel'); ?></a></li>
+                            <?php elseif ($_is_teacher): ?>
+                                <li><a class="dropdown-item" href="<?php echo base_url('teacher/dashboard'); ?>"><i class="fas fa-chalkboard-teacher me-2" style="width:14px;opacity:.5;"></i><?php echo t('Panel Guru', 'Teacher Panel'); ?></a></li>
                             <?php elseif ($_is_mentor): ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('mentor'); ?>"><i class="fas fa-calendar-check me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></a></li>
                             <?php else: ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('dashboard'); ?>"><i class="fas fa-th-large me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard', 'Dashboard'); ?></a></li>
                             <?php endif; ?>
-                            <?php if (($_role_admin || $_is_teacher) && $_is_mentor): ?>
+                            <?php if ($_role_admin && $_is_mentor): ?>
+                                <li><a class="dropdown-item" href="<?php echo base_url('mentor'); ?>"><i class="fas fa-calendar-check me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></a></li>
+                            <?php endif; ?>
+                            <?php if ($_is_teacher && $_is_mentor): ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('mentor'); ?>"><i class="fas fa-calendar-check me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></a></li>
                             <?php endif; ?>
                             <li><a class="dropdown-item" href="<?php echo base_url('profile'); ?>"><i class="fas fa-user me-2" style="width:14px;opacity:.5;"></i><?php echo t('Profil', 'Profile'); ?></a></li>

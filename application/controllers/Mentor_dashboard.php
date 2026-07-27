@@ -24,16 +24,20 @@ class Mentor_dashboard extends CI_Controller {
     }
 
     private function _template_header($data) {
-        if ($this->session->userdata('is_teacher') || $this->session->userdata('role') === 'admin') {
+        if ($this->session->userdata('role') === 'admin') {
             $this->load->view('templates/admin_header', $data);
+        } elseif ($this->session->userdata('is_teacher')) {
+            $this->load->view('templates/teacher_header', $data);
         } else {
             $this->load->view('templates/student_header', $data);
         }
     }
 
     private function _template_footer($data) {
-        if ($this->session->userdata('is_teacher') || $this->session->userdata('role') === 'admin') {
+        if ($this->session->userdata('role') === 'admin') {
             $this->load->view('templates/admin_footer');
+        } elseif ($this->session->userdata('is_teacher')) {
+            $this->load->view('templates/teacher_footer');
         } else {
             $this->load->view('templates/student_footer');
         }

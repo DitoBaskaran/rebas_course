@@ -21,8 +21,10 @@ class Dashboard extends CI_Controller {
         $role = $this->session->userdata('role');
         if ($this->session->userdata('is_mentor')) {
             redirect('mentor');
-        } elseif ($role === 'admin' || $this->session->userdata('is_teacher')) {
+        } elseif ($role === 'admin') {
             redirect('admin/dashboard');
+        } elseif ($this->session->userdata('is_teacher')) {
+            redirect('teacher/dashboard');
         }
         $user_id = $this->session->userdata('user_id');
         $data['title'] = t('Dashboard - BISATUNTAS', 'Dashboard - BISATUNTAS');

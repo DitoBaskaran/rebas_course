@@ -32,9 +32,11 @@ class Affiliate extends CI_Controller {
         $data['active_page'] = 'affiliate';
 
         $role = $this->session->userdata('role');
-        $is_admin = ($role === 'admin' || $this->session->userdata('is_teacher'));
-        $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
+        $_atpl = 'templates/student';
+        if ($role === 'admin') $_atpl = 'templates/admin';
+        elseif ($this->session->userdata('is_teacher')) $_atpl = 'templates/teacher';
+        $this->load->view($_atpl . '_header', $data);
         $this->load->view('affiliate/index', $data);
-        $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');
+        $this->load->view($_atpl . '_footer');
     }
 }

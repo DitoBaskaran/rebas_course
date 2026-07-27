@@ -5,7 +5,8 @@
     <?php $_ss_is_mentor = $this->session->userdata('is_mentor'); ?>
     <?php
         if ($_ss_is_mentor) $_ss_dash_url = 'mentor';
-        elseif ($_ss_role === 'admin' || $_ss_is_teacher) $_ss_dash_url = 'admin/dashboard';
+        elseif ($_ss_role === 'admin') $_ss_dash_url = 'admin/dashboard';
+        elseif ($_ss_is_teacher) $_ss_dash_url = 'teacher/dashboard';
         else $_ss_dash_url = 'dashboard';
     ?>
 

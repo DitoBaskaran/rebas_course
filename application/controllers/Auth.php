@@ -51,8 +51,10 @@ class Auth extends CI_Controller {
 
                 $this->session->set_flashdata('success', t('Selamat datang kembali, ', 'Welcome back, ') . $user->name);
 
-                if ($user->role === 'admin' || $user->is_teacher) {
+                if ($user->role === 'admin') {
                     redirect('admin/dashboard');
+                } elseif ($user->is_teacher) {
+                    redirect('teacher/dashboard');
                 } elseif ($user->is_mentor) {
                     redirect('mentor');
                 } else {
@@ -223,8 +225,10 @@ class Auth extends CI_Controller {
         }
 
         $this->session->set_flashdata('success', t('Selamat datang, ', 'Welcome, ') . $user->name);
-        if ($user->role === 'admin' || $user->is_teacher) {
+        if ($user->role === 'admin') {
             redirect('admin/dashboard');
+        } elseif ($user->is_teacher) {
+            redirect('teacher/dashboard');
         } elseif ($user->is_mentor) {
             redirect('mentor');
         } else {
