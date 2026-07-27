@@ -23,12 +23,21 @@ if (!$conn) {
 
 echo "<pre>Starting migration: role → is_teacher / is_mentor flags\n\n";
 
-// 1. Add new columns
-$sql = "ALTER TABLE `users`
-  ADD COLUMN IF NOT EXISTS `is_teacher` TINYINT(1) DEFAULT 0 AFTER `role`,
-  ADD COLUMN IF NOT EXISTS `is_mentor` TINYINT(1) DEFAULT 0 AFTER `is_teacher`";
-mysqli_query($conn, $sql);
-echo "✓ Columns is_teacher / is_mentor added\n";
+// 1. Add new columns (check existence first)
+$check_t = mysqli_query($conn, "SHOW COLUMNS FROM `users` LIKE 'is_teacher'");
+if (mysqli_num_rows($check_t) === 0) {
+    mysqli_query($conn, "ALTER TABLE `users` ADD COLUMN `is_teacher` TINYINT(1) DEFAULT 0 AFTER `role`");
+    echo "✓ Column is_teacher added\n";
+} else {
+    echo "✓ Column is_teacher already exists\n";
+}
+$check_m = mysqli_query($conn, "SHOW COLUMNS FROM `users` LIKE 'is_mentor'");
+if (mysqli_num_rows($check_m) === 0) {
+    mysqli_query($conn, "ALTER TABLE `users` ADD COLUMN `is_mentor` TINYINT(1) DEFAULT 0 AFTER `is_teacher`");
+    echo "✓ Column is_mentor added\n";
+} else {
+    echo "✓ Column is_mentor already exists\n";
+}
 
 // 2. Migrate existing data
 mysqli_query($conn, "UPDATE `users` SET `is_teacher` = 1 WHERE `role` = 'teacher'");
@@ -39,11 +48,20 @@ mysqli_query($conn, "UPDATE `users` SET `is_mentor` = 1 WHERE `role` = 'mentor'"
 $m = mysqli_affected_rows($conn);
 echo "✓ Migrated {$m} mentor(s)\n";
 
-// 3. Alter role column
-$sql = "ALTER TABLE `users`
-  MODIFY COLUMN `role` ENUM('student', 'admin') DEFAULT 'student'";
-mysqli_query($conn, $sql);
-echo "✓ Role column simplified to ENUM('student', 'admin')\n";
+// 3. Ensure no old role values remain before altering column
+mysqli_query($conn, "UPDATE `users` SET `role` = 'student' WHERE `role` NOT IN ('student', 'admin')");
+
+// 4. Alter role column
+$check_role = mysqli_query($conn, "SHOW COLUMNS FROM `users` LIKE 'role'");
+$role_row = mysqli_fetch_assoc($check_role);
+if (strpos($role_row['Type'], 'admin') !== false && strpos($role_row['Type'], 'teacher') === false) {
+    echo "✓ Role column already simplified\n";
+} else {
+    $sql = "ALTER TABLE `users`
+      MODIFY COLUMN `role` ENUM('student', 'admin') DEFAULT 'student'";
+    mysqli_query($conn, $sql);
+    echo "✓ Role column simplified to ENUM('student', 'admin')\n";
+}
 
 echo "\nMigration complete!</pre>";
 
