@@ -18,8 +18,7 @@ class Mentor_dashboard extends CI_Controller {
     private function get_mentor_profile() {
         $mentor = $this->Mentor_model->get_by_user_id($this->session->userdata('user_id'));
         if (!$mentor) {
-            $this->session->set_flashdata('error', t('Profil mentor tidak ditemukan.', 'Mentor profile not found.'));
-            redirect('dashboard');
+            redirect('mentor/create-profile');
         }
         return $mentor;
     }
@@ -35,6 +34,35 @@ class Mentor_dashboard extends CI_Controller {
         $this->load->view('templates/student_header', $data);
         $this->load->view('mentor/dashboard', $data);
         $this->load->view('templates/student_footer');
+    }
+
+    public function create_profile() {
+        $existing = $this->Mentor_model->get_by_user_id($this->session->userdata('user_id'));
+        if ($existing) {
+            redirect('mentor');
+        }
+
+        $this->form_validation->set_rules('title', t('Judul/Gelar', 'Title'), 'required|trim');
+
+        if ($this->form_validation->run() === FALSE) {
+            $data['title'] = t('Lengkapi Profil Mentor', 'Complete Mentor Profile');
+            $data['active_page'] = 'create_profile';
+            $this->load->view('templates/student_header', $data);
+            $this->load->view('mentor/create_profile', $data);
+            $this->load->view('templates/student_footer');
+        } else {
+            $this->Mentor_model->create(array(
+                'user_id' => $this->session->userdata('user_id'),
+                'title' => $this->input->post('title'),
+                'title_en' => $this->input->post('title_en') ?: '',
+                'bio' => $this->input->post('bio') ?: '',
+                'bio_en' => $this->input->post('bio_en') ?: '',
+                'durations_available' => $this->input->post('durations_available') ?: '15,30,45,60',
+                'meeting_platforms' => $this->input->post('meeting_platforms') ?: 'zoom,gmeet,whatsapp',
+            ));
+            $this->session->set_flashdata('success', t('Profil mentor berhasil dibuat!', 'Mentor profile created!'));
+            redirect('mentor');
+        }
     }
 
     public function availability() {

@@ -1142,6 +1142,15 @@ class Admin extends CI_Controller {
             $update_data['is_mentor'] = 0;
         }
         $this->User_model->update_user($id, $update_data);
+
+        // Auto-create mentor profile if mentor flag is set
+        if ($update_data['is_mentor']) {
+            $this->load->model('Mentor_model');
+            if (!$this->Mentor_model->get_by_user_id($id)) {
+                $this->Mentor_model->create(array('user_id' => $id));
+            }
+        }
+
         $this->session->set_flashdata('success', t('User berhasil diperbarui.', 'User updated.'));
         redirect('admin/users');
     }

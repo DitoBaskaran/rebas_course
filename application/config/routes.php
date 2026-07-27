@@ -342,6 +342,7 @@ $route['mentoring/toggle-favorite/(:any)'] = 'mentoring/toggle_favorite/$1';
 $route['mentoring/slots/(:any)'] = 'mentoring/get_slots_json/$1';
 
 // Mentor Dashboard Routes (use encoded IDs)
+$route['mentor/create-profile'] = 'mentor_dashboard/create_profile';
 $route['mentor'] = 'mentor_dashboard/index';
 $route['mentor/availability'] = 'mentor_dashboard/availability';
 $route['mentor/add-slot'] = 'mentor_dashboard/add_slot';
