@@ -5,7 +5,9 @@ class Admin extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        if (!$this->session->userdata('logged_in') || !in_array($this->session->userdata('role'), ['admin', 'teacher'])) {
+        $admin_role = $this->session->userdata('role');
+        $admin_is_teacher = $this->session->userdata('is_teacher');
+        if (!$this->session->userdata('logged_in') || !($admin_role === 'admin' || $admin_is_teacher)) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('home');
         }
@@ -32,9 +34,11 @@ class Admin extends CI_Controller {
         $data['active_page'] = 'dashboard';
         $role = $this->session->userdata('role');
         $user_id = $this->session->userdata('user_id');
+        $is_teacher = $this->session->userdata('is_teacher');
         $data['current_role'] = $role;
+        $data['is_teacher'] = $is_teacher;
 
-        if ($role === 'teacher') {
+        if ($is_teacher) {
             // Enrollment chart: only teacher's own courses
             $chart_labels = '[]';
             $chart_data = '[]';
@@ -246,9 +250,8 @@ class Admin extends CI_Controller {
     public function courses() {
         $data['active_page'] = 'courses';
         $data['title'] = t('Kelola Konten', 'Manage Content');
-        $role = $this->session->userdata('role');
         $user_id = $this->session->userdata('user_id');
-        if ($role === 'teacher') {
+        if ($this->session->userdata('is_teacher')) {
             $data['courses'] = $this->Course_model->get_courses(array('teacher_id' => $user_id, 'status' => 'all'));
         } else {
             $data['courses'] = $this->Course_model->get_courses(array('status' => 'all'));
@@ -321,7 +324,7 @@ class Admin extends CI_Controller {
     public function edit_course($id) {
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak. Bukan konten Anda.', 'Access denied. Not your content.'));
             redirect('admin/courses');
         }
@@ -381,7 +384,7 @@ class Admin extends CI_Controller {
     public function delete_course($id) {
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak. Bukan konten Anda.', 'Access denied. Not your content.'));
             redirect('admin/courses');
         }
@@ -394,7 +397,7 @@ class Admin extends CI_Controller {
     public function lessons($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -412,7 +415,7 @@ class Admin extends CI_Controller {
     public function create_lesson($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -452,7 +455,7 @@ class Admin extends CI_Controller {
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -492,7 +495,7 @@ class Admin extends CI_Controller {
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -506,9 +509,8 @@ class Admin extends CI_Controller {
     public function seminars() {
         $data['active_page'] = 'seminars';
         $data['title'] = t('Kelola Seminar', 'Manage Seminars');
-        $role = $this->session->userdata('role');
         $user_id = $this->session->userdata('user_id');
-        if ($role === 'teacher') {
+        if ($this->session->userdata('is_teacher')) {
             $data['seminars'] = $this->Seminar_model->get_seminars(array('speaker_id' => $user_id));
         } else {
             $data['seminars'] = $this->Seminar_model->get_seminars();
@@ -571,7 +573,7 @@ class Admin extends CI_Controller {
     public function edit_seminar($id) {
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $seminar->speaker_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $seminar->speaker_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak. Bukan seminar Anda.', 'Access denied. Not your seminar.'));
             redirect('admin/seminars');
         }
@@ -622,7 +624,7 @@ class Admin extends CI_Controller {
     public function delete_seminar($id) {
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $seminar->speaker_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $seminar->speaker_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak. Bukan seminar Anda.', 'Access denied. Not your seminar.'));
             redirect('admin/seminars');
         }
@@ -854,7 +856,7 @@ class Admin extends CI_Controller {
     public function assignments($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -870,7 +872,7 @@ class Admin extends CI_Controller {
     public function create_assignment($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -910,7 +912,7 @@ class Admin extends CI_Controller {
         $a = $this->Assignment_model->get_assignment_by_id($id);
         if (!$a) show_404();
         $course = $this->Course_model->get_course_by_id($a->course_id);
-        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+        if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/courses');
         }
@@ -1078,11 +1080,13 @@ class Admin extends CI_Controller {
             redirect('admin/dashboard');
         }
         $this->load->model('User_model');
-        $role = $this->input->get('role');
+        $role_filter = $this->input->get('role');
         $status = $this->input->get('status');
         $search = $this->input->get('search');
-        $data['users'] = $this->User_model->get_filtered($role, $status, $search);
-        $data['total'] = $this->User_model->count_all($role, $status, $search);
+        $is_teacher_filter = $this->input->get('is_teacher');
+        $is_mentor_filter = $this->input->get('is_mentor');
+        $data['users'] = $this->User_model->get_filtered($role_filter, $status, $search, 50, 0, $is_teacher_filter, $is_mentor_filter);
+        $data['total'] = $this->User_model->count_all($role_filter, $status, $search, $is_teacher_filter, $is_mentor_filter);
         $data['active_page'] = 'users';
         $this->load->view('templates/admin_header', $data);
         $this->load->view('admin/users/list', $data);
@@ -1112,12 +1116,19 @@ class Admin extends CI_Controller {
         $this->load->model('User_model');
         $user = $this->User_model->get_user_by_id($id);
         if (!$user) show_404();
+        $role = $this->input->post('role') ?: 'student';
         $update_data = array(
             'name' => $this->input->post('name'),
             'email' => $this->input->post('email'),
-            'role' => $this->input->post('role'),
+            'role' => $role === 'admin' ? 'admin' : 'student',
+            'is_teacher' => $this->input->post('is_teacher') ? 1 : 0,
+            'is_mentor' => $this->input->post('is_mentor') ? 1 : 0,
             'status' => $this->input->post('status'),
         );
+        if ($role === 'admin') {
+            $update_data['is_teacher'] = 0;
+            $update_data['is_mentor'] = 0;
+        }
         $this->User_model->update_user($id, $update_data);
         $this->session->set_flashdata('success', t('User berhasil diperbarui.', 'User updated.'));
         redirect('admin/users');

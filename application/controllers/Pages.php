@@ -13,8 +13,8 @@ class Pages extends CI_Controller {
         $data['title'] = t('Tentang Kami - BISATUNTAS', 'About Us - BISATUNTAS');
         $data['og_title'] = t('Tentang BISATUNTAS', 'About BISATUNTAS');
         $data['total_courses'] = $this->Course_model->count_all(array('status' => 'published'));
-        $data['total_students'] = $this->User_model->count_all('student');
-        $data['total_teachers'] = $this->User_model->count_all('teacher');
+        $data['total_students'] = $this->db->where('role', 'student')->count_all_results('users');
+        $data['total_teachers'] = $this->db->where('is_teacher', 1)->count_all_results('users');
         $this->load->view('templates/header', $data);
         $this->load->view('pages/about', $data);
         $this->load->view('templates/footer');

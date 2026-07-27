@@ -24,7 +24,7 @@ class Home extends CI_Controller {
         $data['categories'] = $this->Course_model->get_root_categories();
         $data['popular_tags'] = $this->Tag_model->get_popular(10);
         $data['total_courses_count'] = $this->db->count_all('courses');
-        $data['total_teachers_count'] = $this->db->where('role', 'teacher')->count_all_results('users');
+        $data['total_teachers_count'] = $this->db->where('is_teacher', 1)->count_all_results('users');
         $data['total_students_count'] = $this->db->where('role', 'student')->count_all_results('users');
 
         $this->db->select('COUNT(*) as count');

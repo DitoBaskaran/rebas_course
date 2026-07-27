@@ -38,6 +38,8 @@ class Auth extends CI_Controller {
                     'name' => $user->name,
                     'email' => $user->email,
                     'role' => $user->role,
+                    'is_teacher' => $user->is_teacher,
+                    'is_mentor' => $user->is_mentor,
                     'logged_in' => TRUE
                 );
                 $this->session->set_userdata($session_data);
@@ -49,9 +51,9 @@ class Auth extends CI_Controller {
 
                 $this->session->set_flashdata('success', t('Selamat datang kembali, ', 'Welcome back, ') . $user->name);
 
-                if (in_array($user->role, ['admin', 'teacher'])) {
+                if ($user->role === 'admin' || $user->is_teacher) {
                     redirect('admin/dashboard');
-                } elseif ($user->role === 'mentor') {
+                } elseif ($user->is_mentor) {
                     redirect('mentor');
                 } else {
                     redirect('dashboard');
@@ -211,6 +213,8 @@ class Auth extends CI_Controller {
             'name'    => $user->name,
             'email'   => $user->email,
             'role'    => $user->role,
+            'is_teacher' => $user->is_teacher,
+            'is_mentor' => $user->is_mentor,
             'logged_in' => TRUE,
         );
         $this->session->set_userdata($session_data);
@@ -219,7 +223,13 @@ class Auth extends CI_Controller {
         }
 
         $this->session->set_flashdata('success', t('Selamat datang, ', 'Welcome, ') . $user->name);
-        redirect('dashboard');
+        if ($user->role === 'admin' || $user->is_teacher) {
+            redirect('admin/dashboard');
+        } elseif ($user->is_mentor) {
+            redirect('mentor');
+        } else {
+            redirect('dashboard');
+        }
     }
 
     // ===== PASSWORD RESET =====

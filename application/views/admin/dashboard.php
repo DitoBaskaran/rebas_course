@@ -7,7 +7,7 @@
                 <?php echo t('Dashboard', 'Dashboard'); ?>
             </h4>
             <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
-                <?php if ($current_role === 'teacher'): ?>
+                <?php if ($is_teacher): ?>
                     <?php echo t('Kelola kelas dan seminar Anda.', 'Manage your courses and seminars.'); ?>
                 <?php else: ?>
                     <?php echo t('Kelola kelas, seminar, dan verifikasi pembayaran.', 'Manage courses, seminars, and payment verification.'); ?>

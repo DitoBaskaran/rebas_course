@@ -10,7 +10,7 @@ class Api_Mentor_Dashboard extends Api_Controller {
         $this->require_auth();
         
         // Check if user is mentor
-        if ($this->current_user->role !== 'mentor') {
+        if (!$this->current_user->is_mentor) {
             $this->response_error('Access denied. Mentor role required.', 403);
         }
         

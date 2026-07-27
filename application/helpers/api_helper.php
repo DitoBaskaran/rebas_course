@@ -71,6 +71,8 @@ if (!function_exists('format_user_for_api')) {
             'email' => $user->email,
             'avatar' => $user->avatar,
             'role' => $user->role,
+            'is_teacher' => (bool)$user->is_teacher,
+            'is_mentor' => (bool)$user->is_mentor,
             'phone' => $user->phone,
             'bio' => $user->bio,
             'created_at' => $user->created_at

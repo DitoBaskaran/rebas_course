@@ -7,7 +7,14 @@
                     <span class="position-absolute bottom-0 end-0 bg-success border border-2 border-white rounded-circle p-2"></span>
                 </div>
                 <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($user->name); ?></h5>
-                <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-medium mb-3"><?php echo t(ucfirst($user->role), ucfirst($user->role)); ?></span>
+                <?php
+                    $role_labels = array();
+                    if ($user->role === 'admin') $role_labels[] = '<span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-2 fw-medium">Admin</span>';
+                    if ($user->is_teacher) $role_labels[] = '<span class="badge bg-warning-subtle text-warning rounded-pill px-3 py-2 fw-medium">Teacher</span>';
+                    if ($user->is_mentor) $role_labels[] = '<span class="badge bg-purple-subtle text-purple rounded-pill px-3 py-2 fw-medium">Mentor</span>';
+                    if (empty($role_labels)) $role_labels[] = '<span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-medium">Student</span>';
+                    echo implode(' ', $role_labels);
+                ?>
                 <?php if ($user->bio): ?>
                     <p class="text-secondary small mb-4"><?php echo htmlspecialchars($user->bio); ?></p>
                 <?php endif; ?>
@@ -21,7 +28,7 @@
         </div>
 
         <div class="col-lg-8 animate-fade-in-up stagger-1">
-            <?php if ($user->role === 'teacher' && !empty($courses)): ?>
+            <?php if ($user->is_teacher && !empty($courses)): ?>
                 <div class="card border-0 shadow-sm rounded-4 p-4 p-xl-5 mb-4">
                     <h5 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
                         <span class="icon-32 bg-primary-subtle text-primary rounded-2 d-inline-flex align-items-center justify-content-center"><i class="fas fa-chalkboard-teacher"></i></span>

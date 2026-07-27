@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Mentoring_model extends CI_Model {
 
     public function get_mentors() {
-        return $this->db->get_where('users', array('role' => 'teacher'))->result();
+        return $this->db->get_where('users', array('is_mentor' => 1))->result();
     }
 
     public function get_mentor_sessions($mentor_id) {
@@ -52,7 +52,7 @@ class Mentoring_model extends CI_Model {
     public function get_available_mentors($course_id = null) {
         $this->db->select('users.id, users.name, users.email, users.avatar, users.bio');
         $this->db->from('users');
-        $this->db->where('users.role', 'teacher');
+        $this->db->where('users.is_mentor', 1);
         return $this->db->get()->result();
     }
 }

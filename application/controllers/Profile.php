@@ -29,11 +29,11 @@ class Profile extends CI_Controller {
             ->limit(10)
             ->get()->result();
         $data['recent_activity'] = $recent_activity;
-        if ($user->role === 'teacher') {
+        if ($user->is_teacher) {
             $data['courses'] = $this->Course_model->get_courses(array('teacher_id' => $user_id));
         }
         $data['active_page'] = 'profile';
-        $is_admin = in_array($user->role, ['admin', 'teacher']);
+        $is_admin = ($user->role === 'admin' || $user->is_teacher);
         $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
         $this->load->view('profile/index', $data);
         $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');
@@ -49,7 +49,7 @@ class Profile extends CI_Controller {
             $data['title'] = t('Edit Profil', 'Edit Profile');
             $data['active_page'] = 'profile';
             $data['user'] = $this->User_model->get_user_by_id($user_id);
-            $is_admin = in_array($data['user']->role, ['admin', 'teacher']);
+            $is_admin = ($data['user']->role === 'admin' || $data['user']->is_teacher);
             $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
             $this->load->view('profile/edit', $data);
             $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');
@@ -79,7 +79,7 @@ class Profile extends CI_Controller {
             $data['title'] = t('Ganti Password', 'Change Password');
             $data['active_page'] = 'profile';
             $data['user'] = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
-            $is_admin = in_array($data['user']->role, ['admin', 'teacher']);
+            $is_admin = ($data['user']->role === 'admin' || $data['user']->is_teacher);
             $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
             $this->load->view('profile/change_password', $data);
             $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');

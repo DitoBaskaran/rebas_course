@@ -32,7 +32,7 @@ class Affiliate extends CI_Controller {
         $data['active_page'] = 'affiliate';
 
         $role = $this->session->userdata('role');
-        $is_admin = in_array($role, ['admin', 'teacher']);
+        $is_admin = ($role === 'admin' || $this->session->userdata('is_teacher'));
         $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
         $this->load->view('affiliate/index', $data);
         $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');

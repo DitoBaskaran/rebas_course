@@ -41,7 +41,9 @@ class Api_Auth extends Api_Controller {
         // Generate JWT
         $token = $this->jwt_library->encode([
             'user_id' => $user->id,
-            'role' => $user->role
+            'role' => $user->role,
+            'is_teacher' => $user->is_teacher,
+            'is_mentor' => $user->is_mentor
         ]);
         
         $this->response([
@@ -130,7 +132,9 @@ class Api_Auth extends Api_Controller {
         
         $jwt = $this->jwt_library->encode([
             'user_id' => $user->id,
-            'role' => $user->role
+            'role' => $user->role,
+            'is_teacher' => $user->is_teacher,
+            'is_mentor' => $user->is_mentor
         ]);
         
         $this->response([

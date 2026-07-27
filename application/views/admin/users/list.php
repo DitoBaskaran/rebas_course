@@ -17,6 +17,7 @@
             <option value=""><?php echo t('Semua Role', 'All Roles'); ?></option>
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
+            <option value="mentor">Mentor</option>
             <option value="admin">Admin</option>
         </select>
         <select class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="filterTable()" id="statusFilter">
@@ -47,7 +48,14 @@
                             <tr>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-weight: 700; color: #1c1917; font-size: 0.78rem;"><?php echo htmlspecialchars($u->name); ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; color: #57534e; font-size: 0.78rem;"><?php echo htmlspecialchars($u->email); ?></td>
-                                <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;"><span class="px-2 py-1 rounded-pill fw-semibold" style="background: <?php echo $u->role === 'admin' ? '#fef2f2' : ($u->role === 'teacher' ? '#fff7ed' : '#f0fdfa'); ?>; color: <?php echo $u->role === 'admin' ? '#f43f5e' : ($u->role === 'teacher' ? '#f97316' : '#10b981'); ?>; font-size: 0.6rem;"><?php echo ucfirst($u->role); ?></span></td>
+                                <?php
+                                    $role_badges = array();
+                                    if ($u->role === 'admin') { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.6rem;">Admin</span>'; }
+                                    if ($u->is_teacher) { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;">Teacher</span>'; }
+                                    if ($u->is_mentor) { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #faf5ff; color: #a855f7; font-size: 0.6rem;">Mentor</span>'; }
+                                    if (empty($role_badges)) { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;">Student</span>'; }
+                                    echo implode(' ', $role_badges);
+                                ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;"><?php if ($u->status === 'active' || !$u->status): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;">Active</span><?php elseif ($u->status === 'suspended'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;">Suspended</span><?php else: ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.6rem;">Banned</span><?php endif; ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; color: #a8a29e; font-size: 0.72rem;"><?php echo date('d M Y', strtotime($u->created_at)); ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; text-align: center;"><a href="<?php echo base_url('admin/edit_user/' . $u->id); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="background: #f97316; color: #fff; font-size: 0.68rem;" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit" style="font-size: 0.65rem;"></i></a></td>
@@ -59,4 +67,4 @@
         </div>
     </div>
 </div>
-<script>function filterTable(){var q = document.getElementById('searchInput')?.value.toLowerCase() || ''; var role = document.getElementById('roleFilter')?.value || ''; var status = document.getElementById('statusFilter')?.value || ''; var rows = document.querySelectorAll('#userTable tbody tr'); rows.forEach(function(row){if (row.cells.length < 6) return; var text = row.textContent.toLowerCase(); var r = row.cells[2].textContent.trim().toLowerCase(); var s = row.cells[3].textContent.trim().toLowerCase(); var match = text.indexOf(q) !== -1; var roleMatch = !role || r === role; var statusMatch = !status || s === status; row.style.display = (match && roleMatch && statusMatch) ? '' : 'none';});}</script>
+<script>function filterTable(){var q = document.getElementById('searchInput')?.value.toLowerCase() || ''; var role = document.getElementById('roleFilter')?.value || ''; var status = document.getElementById('statusFilter')?.value || ''; var rows = document.querySelectorAll('#userTable tbody tr'); rows.forEach(function(row){if (row.cells.length < 6) return; var text = row.textContent.toLowerCase(); var r = row.cells[2].textContent.trim().toLowerCase(); var s = row.cells[3].textContent.trim().toLowerCase(); var match = text.indexOf(q) !== -1; var roleMatch = !role || r.indexOf(role) !== -1; var statusMatch = !status || s === status; row.style.display = (match && roleMatch && statusMatch) ? '' : 'none';});}</script>

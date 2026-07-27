@@ -28,8 +28,8 @@ class Api_Admin extends Api_Controller {
         $stats = [
             'total_users' => $this->db->count_all_results('users'),
             'total_students' => $this->db->where('role', 'student')->count_all_results('users'),
-            'total_teachers' => $this->db->where('role', 'teacher')->count_all_results('users'),
-            'total_mentors' => $this->db->where('role', 'mentor')->count_all_results('users'),
+            'total_teachers' => $this->db->where('is_teacher', 1)->count_all_results('users'),
+            'total_mentors' => $this->db->where('is_mentor', 1)->count_all_results('users'),
             'total_courses' => $this->Course_model->count_all_courses(),
             'total_seminars' => $this->Seminar_model->count_seminars(),
             'total_enrollments' => $this->db->count_all_results('enrollments'),
@@ -107,7 +107,15 @@ class Api_Admin extends Api_Controller {
             $this->response_error('Invalid role');
         }
         
-        $this->db->where('id', $id)->update('users', ['role' => $role]);
+        $update = ['role' => ($role === 'admin' ? 'admin' : 'student')];
+        $update['is_teacher'] = ($role === 'teacher') ? 1 : 0;
+        $update['is_mentor'] = ($role === 'mentor') ? 1 : 0;
+        if ($role === 'admin') {
+            $update['is_teacher'] = 0;
+            $update['is_mentor'] = 0;
+        }
+        
+        $this->db->where('id', $id)->update('users', $update);
         $this->response(null, 200, 'User role updated');
     }
     

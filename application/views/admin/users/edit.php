@@ -40,11 +40,21 @@
                         <div class="row g-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold"><?php echo t('Role', 'Role'); ?></label>
-                                <select name="role" class="form-select">
-                                    <option value="student" <?php echo $user->role === 'student' ? 'selected' : ''; ?>>Student</option>
-                                    <option value="teacher" <?php echo $user->role === 'teacher' ? 'selected' : ''; ?>>Teacher</option>
-                                    <option value="admin" <?php echo $user->role === 'admin' ? 'selected' : ''; ?>>Admin</option>
+                                <?php $is_super_admin = ($user->role === 'admin' && !$user->is_teacher && !$user->is_mentor); ?>
+                                <select name="role" class="form-select mb-2">
+                                    <option value="student" <?php echo (!$is_super_admin && $user->role !== 'admin') ? 'selected' : ''; ?>>Student</option>
+                                    <option value="admin" <?php echo $is_super_admin ? 'selected' : ''; ?>>Admin</option>
                                 </select>
+                                <div class="d-flex gap-3 mt-2">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="is_teacher" value="1" class="form-check-input" id="isTeacher" <?php echo $user->is_teacher ? 'checked' : ''; ?>>
+                                        <label class="form-check-label fw-semibold small" for="isTeacher"><?php echo t('Juga Teacher', 'Also Teacher'); ?></label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input type="checkbox" name="is_mentor" value="1" class="form-check-input" id="isMentor" <?php echo $user->is_mentor ? 'checked' : ''; ?>>
+                                        <label class="form-check-label fw-semibold small" for="isMentor"><?php echo t('Juga Mentor', 'Also Mentor'); ?></label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-semibold"><?php echo t('Status', 'Status'); ?></label>

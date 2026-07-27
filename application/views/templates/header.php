@@ -99,7 +99,7 @@
                             <i class="fas fa-chevron-down fe-chevron"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end fe-dropdown">
-                            <?php if (in_array($this->session->userdata('role'), ['admin', 'teacher', 'mentor'])): ?>
+                            <?php if ($this->session->userdata('role') === 'admin' || $this->session->userdata('is_teacher') || $this->session->userdata('is_mentor')): ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('admin/dashboard'); ?>"><i class="fas fa-th-large me-2" style="width:14px;opacity:.5;"></i><?php echo t('Panel Admin', 'Admin Panel'); ?></a></li>
                             <?php else: ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('dashboard'); ?>"><i class="fas fa-th-large me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard', 'Dashboard'); ?></a></li>
@@ -131,7 +131,15 @@
                 <span class="fe-avatar" style="width:32px;height:32px;font-size:0.75rem;"><?php echo strtoupper(substr($this->session->userdata('name'), 0, 1)); ?></span>
                 <div>
                     <div style="font-size:0.8125rem;font-weight:600;color:#171717;"><?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?></div>
-                    <div style="font-size:0.7rem;color:#a3a3a3;text-transform:capitalize;"><?php echo $this->session->userdata('role'); ?></div>
+                    <div style="font-size:0.7rem;color:#a3a3a3;text-transform:capitalize;">
+                        <?php
+                            $_role = $this->session->userdata('role');
+                            if ($_role === 'admin') echo 'Admin';
+                            elseif ($this->session->userdata('is_teacher')) echo 'Teacher';
+                            elseif ($this->session->userdata('is_mentor')) echo 'Mentor';
+                            else echo 'Student';
+                        ?>
+                    </div>
                 </div>
             </div>
         </div>

@@ -21,7 +21,7 @@ class User_model extends CI_Model {
     }
 
     public function get_teachers() {
-        return $this->db->get_where('users', array('role' => 'teacher'))->result();
+        return $this->db->get_where('users', array('is_teacher' => 1))->result();
     }
 
     public function get_students() {
@@ -33,7 +33,7 @@ class User_model extends CI_Model {
         return $this->db->update('users', $data);
     }
 
-    public function get_filtered($role = null, $status = null, $search = null, $limit = 50, $offset = 0) {
+    public function get_filtered($role = null, $status = null, $search = null, $limit = 50, $offset = 0, $is_teacher = null, $is_mentor = null) {
         if ($role) $this->db->where('role', $role);
         if ($status) $this->db->where('status', $status);
         if ($search) {
@@ -42,12 +42,14 @@ class User_model extends CI_Model {
             $this->db->or_like('email', $search);
             $this->db->group_end();
         }
+        if ($is_teacher !== null) $this->db->where('is_teacher', $is_teacher);
+        if ($is_mentor !== null) $this->db->where('is_mentor', $is_mentor);
         $this->db->order_by('created_at', 'DESC');
         $this->db->limit($limit, $offset);
         return $this->db->get('users')->result();
     }
 
-    public function count_all($role = null, $status = null, $search = null) {
+    public function count_all($role = null, $status = null, $search = null, $is_teacher = null, $is_mentor = null) {
         if ($role) $this->db->where('role', $role);
         if ($status) $this->db->where('status', $status);
         if ($search) {
@@ -56,6 +58,8 @@ class User_model extends CI_Model {
             $this->db->or_like('email', $search);
             $this->db->group_end();
         }
+        if ($is_teacher !== null) $this->db->where('is_teacher', $is_teacher);
+        if ($is_mentor !== null) $this->db->where('is_mentor', $is_mentor);
         return $this->db->count_all_results('users');
     }
 
