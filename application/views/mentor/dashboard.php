@@ -110,7 +110,7 @@
             <h6 class="fw-bold mb-0"><?php echo t('Profil Mentor', 'Mentor Profile'); ?></h6>
         </div>
         <div class="card-body p-4">
-            <form method="post" action="<?php echo base_url('mentor/update-schedule/' . $mentor->id); ?>">
+            <?php echo form_open('mentor/update-schedule/' . $mentor->id); ?>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label small fw-bold"><?php echo t('Judul/Gelar', 'Title'); ?></label>
@@ -140,7 +140,7 @@
                         <button type="submit" class="btn btn-dark rounded-pill px-5 fw-semibold"><?php echo t('Simpan', 'Save'); ?></button>
                     </div>
                 </div>
-            </form>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>
