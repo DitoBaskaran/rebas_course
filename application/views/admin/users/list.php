@@ -8,25 +8,27 @@
         <div><span class="px-3 py-2 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.78rem;"><?php echo $total; ?> <?php echo t('pengguna', 'users'); ?></span></div>
     </div>
 
-    <div class="d-flex gap-2 mb-4 flex-wrap">
+    <?php $selected_role = $this->input->get('role'); ?>
+    <?php $selected_status = $this->input->get('status'); ?>
+    <?php $search_val = $this->input->get('search'); ?>
+    <form method="get" class="d-flex gap-2 mb-4 flex-wrap" id="filterForm">
         <div class="position-relative flex-fill" style="min-width: 200px; max-width: 320px;">
             <i class="fas fa-search" style="font-size: 0.75rem; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a8a29e; pointer-events: none;"></i>
-            <input type="text" class="form-control rounded-pill" style="padding-left: 36px; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" placeholder="<?php echo t('Cari pengguna...', 'Search users...'); ?>" id="searchInput" onkeyup="filterTable()">
+            <input type="text" name="search" class="form-control rounded-pill" style="padding-left: 36px; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" placeholder="<?php echo t('Cari pengguna...', 'Search users...'); ?>" id="searchInput" value="<?php echo htmlspecialchars($search_val ?: ''); ?>">
         </div>
-        <select class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="filterTable()" id="roleFilter">
+        <select name="role" class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="this.form.submit()" id="roleFilter">
             <option value=""><?php echo t('Semua Role', 'All Roles'); ?></option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="mentor">Mentor</option>
-            <option value="admin">Admin</option>
+            <option value="student" <?php echo $selected_role === 'student' ? 'selected' : ''; ?>>Student</option>
+            <option value="teacher" <?php echo $selected_role === 'teacher' ? 'selected' : ''; ?>>Teacher</option>
+            <option value="mentor" <?php echo $selected_role === 'mentor' ? 'selected' : ''; ?>>Mentor</option>
+            <option value="admin" <?php echo $selected_role === 'admin' ? 'selected' : ''; ?>>Admin</option>
         </select>
-        <select class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="filterTable()" id="statusFilter">
+        <select name="status" class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="this.form.submit()" id="statusFilter">
             <option value=""><?php echo t('Semua Status', 'All Status'); ?></option>
-            <option value="active">Active</option>
-            <option value="suspended">Suspended</option>
-            <option value="banned">Banned</option>
+            <option value="active" <?php echo $selected_status === 'active' ? 'selected' : ''; ?>>Active</option>
+            <option value="banned" <?php echo $selected_status === 'banned' ? 'selected' : ''; ?>>Banned</option>
         </select>
-    </div>
+    </form>
 
     <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
         <div class="table-responsive p-0">
@@ -67,4 +69,8 @@
         </div>
     </div>
 </div>
-<script>function filterTable(){var q = document.getElementById('searchInput')?.value.toLowerCase() || ''; var role = document.getElementById('roleFilter')?.value || ''; var status = document.getElementById('statusFilter')?.value || ''; var rows = document.querySelectorAll('#userTable tbody tr'); rows.forEach(function(row){if (row.cells.length < 6) return; var text = row.textContent.toLowerCase(); var r = row.cells[2].textContent.trim().toLowerCase(); var s = row.cells[3].textContent.trim().toLowerCase(); var match = text.indexOf(q) !== -1; var roleMatch = !role || r.indexOf(role) !== -1; var statusMatch = !status || s === status; row.style.display = (match && roleMatch && statusMatch) ? '' : 'none';});}</script>
+<script>
+document.getElementById('searchInput')?.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { e.preventDefault(); this.form.submit(); }
+});
+</script>
