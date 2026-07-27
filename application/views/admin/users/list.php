@@ -52,10 +52,10 @@
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; color: #57534e; font-size: 0.78rem;"><?php echo htmlspecialchars($u->email); ?></td>
                                 <?php
                                     $role_badges = array();
-                                    if ($u->role === 'admin') { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.6rem;">Admin</span>'; }
-                                    if ($u->is_teacher) { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;">Teacher</span>'; }
-                                    if ($u->is_mentor) { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #faf5ff; color: #a855f7; font-size: 0.6rem;">Mentor</span>'; }
-                                    if (empty($role_badges)) { $role_badges[] = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;">Student</span>'; }
+                                    if ($u->role === 'admin') { $role_badges[] = '<span class="role-badge role-badge-admin">Admin</span>'; }
+                                    if ($u->is_teacher) { $role_badges[] = '<span class="role-badge role-badge-teacher">Teacher</span>'; }
+                                    if ($u->is_mentor) { $role_badges[] = '<span class="role-badge role-badge-mentor">Mentor</span>'; }
+                                    if (empty($role_badges)) { $role_badges[] = '<span class="role-badge role-badge-student">Student</span>'; }
                                     echo implode(' ', $role_badges);
                                 ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;"><?php if ($u->status === 'active' || !$u->status): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;">Active</span><?php elseif ($u->status === 'suspended'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;">Suspended</span><?php else: ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.6rem;">Banned</span><?php endif; ?></td>

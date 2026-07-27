@@ -9,10 +9,10 @@
                 <h5 class="fw-bold text-dark mb-1"><?php echo htmlspecialchars($user->name); ?></h5>
                 <?php
                     $role_labels = array();
-                    if ($user->role === 'admin') $role_labels[] = '<span class="badge bg-danger-subtle text-danger rounded-pill px-3 py-2 fw-medium">Admin</span>';
-                    if ($user->is_teacher) $role_labels[] = '<span class="badge bg-warning-subtle text-warning rounded-pill px-3 py-2 fw-medium">Teacher</span>';
-                    if ($user->is_mentor) $role_labels[] = '<span class="badge bg-purple-subtle text-purple rounded-pill px-3 py-2 fw-medium">Mentor</span>';
-                    if (empty($role_labels)) $role_labels[] = '<span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-2 fw-medium">Student</span>';
+                    if ($user->role === 'admin') $role_labels[] = '<span class="role-badge role-badge-admin" style="font-size:0.75rem;padding:0.3rem 0.75rem;">Admin</span>';
+                    if ($user->is_teacher) $role_labels[] = '<span class="role-badge role-badge-teacher" style="font-size:0.75rem;padding:0.3rem 0.75rem;">Teacher</span>';
+                    if ($user->is_mentor) $role_labels[] = '<span class="role-badge role-badge-mentor" style="font-size:0.75rem;padding:0.3rem 0.75rem;">Mentor</span>';
+                    if (empty($role_labels)) $role_labels[] = '<span class="role-badge role-badge-student" style="font-size:0.75rem;padding:0.3rem 0.75rem;">Student</span>';
                     echo implode(' ', $role_labels);
                 ?>
                 <?php if ($user->bio): ?>

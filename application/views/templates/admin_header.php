@@ -46,6 +46,11 @@
         :root {
             <?php echo settings_css_vars(); ?>
         }
+        .role-badge { padding: 0.25rem 0.5rem; border-radius: 999px; font-size: 0.6rem; font-weight: 600; display: inline-block; line-height: 1.4; }
+        .role-badge-admin { background: #fef2f2; color: #f43f5e; }
+        .role-badge-teacher { background: #fff7ed; color: #f97316; }
+        .role-badge-mentor { background: #faf5ff; color: #a855f7; }
+        .role-badge-student { background: #f0fdfa; color: #10b981; }
     </style>
 
     <!-- Open Graph -->
