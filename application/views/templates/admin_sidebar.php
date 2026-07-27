@@ -1,18 +1,22 @@
 <div class="admin-sidebar playful" id="adminSidebar">
     <?php $active_page = isset($active_page) ? $active_page : ''; ?>
+    <?php $sidebar_role = $this->session->userdata('role'); ?>
     <div class="sidebar-heading"><?php echo t('Menu Utama', 'Main Menu'); ?></div>
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url('admin/dashboard'); ?>">
         <i data-lucide="layout-dashboard"></i> <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
     </a>
+    <?php if ($sidebar_role === 'admin'): ?>
     <a class="nav-link <?php echo $active_page === 'analytics' ? 'active' : ''; ?>" href="<?php echo base_url('admin/analytics'); ?>">
         <i data-lucide="bar-chart-3"></i> <span><?php echo t('Analitik', 'Analytics'); ?></span>
     </a>
+    <?php endif; ?>
     <a class="nav-link <?php echo strpos($active_page, 'courses') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('admin/courses'); ?>">
         <i data-lucide="book-open"></i> <span><?php echo t('Kelas', 'Courses'); ?></span>
     </a>
     <a class="nav-link <?php echo $active_page === 'seminars' ? 'active' : ''; ?>" href="<?php echo base_url('admin/seminars'); ?>">
         <i data-lucide="calendar"></i> <span><?php echo t('Seminar', 'Seminars'); ?></span>
     </a>
+    <?php if ($sidebar_role === 'admin'): ?>
     <a class="nav-link <?php echo $active_page === 'learning_paths' ? 'active' : ''; ?>" href="<?php echo base_url('admin/learning_paths'); ?>">
         <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Paths'); ?></span>
     </a>
@@ -31,9 +35,11 @@
     <a class="nav-link <?php echo $active_page === 'users' ? 'active' : ''; ?>" href="<?php echo base_url('admin/users'); ?>">
         <i data-lucide="users"></i> <span><?php echo t('Pengguna', 'Users'); ?></span>
     </a>
+    <?php endif; ?>
     <a class="nav-link <?php echo $active_page === 'submissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/submissions'); ?>">
         <i data-lucide="code"></i> <span><?php echo t('Tugas', 'Submissions'); ?></span>
     </a>
+    <?php if ($sidebar_role === 'admin'): ?>
     <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url('admin/mentoring'); ?>">
         <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
     </a>
@@ -43,7 +49,9 @@
     <a class="nav-link <?php echo $active_page === 'documents' ? 'active' : ''; ?>" href="<?php echo base_url('admin/documents'); ?>">
         <i data-lucide="file-text"></i> <span><?php echo t('Dokumen', 'Documents'); ?></span>
     </a>
+    <?php endif; ?>
 
+    <?php if ($sidebar_role === 'admin'): ?>
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Pengaturan', 'Settings'); ?></div>
     <a class="nav-link <?php echo strpos($active_page, 'settings-general') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('admin/settings/general'); ?>">
@@ -67,6 +75,7 @@
     <a class="nav-link <?php echo strpos($active_page, 'settings-payment') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('admin/settings/payment'); ?>">
         <i data-lucide="credit-card"></i> <span><?php echo t('Pembayaran', 'Payment'); ?></span>
     </a>
+    <?php endif; ?>
 
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Akun', 'Account'); ?></div>

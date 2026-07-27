@@ -65,19 +65,19 @@ class Seminars extends CI_Controller {
 
         if ($this->Seminar_model->check_registration($user_id, $id)) {
             $this->session->set_flashdata('error', t('Anda sudah terdaftar di seminar ini.', 'Already registered.'));
-            redirect('seminars/detail/' . $id);
+            redirect('seminars/detail/' . encode_id($id));
         }
 
         $attendee_count = $this->Seminar_model->get_attendee_count($id);
         if ($attendee_count >= $seminar->quota) {
             $this->session->set_flashdata('error', t('Maaf, kuota seminar sudah penuh.', 'Sorry, quota is full.'));
-            redirect('seminars/detail/' . $id);
+            redirect('seminars/detail/' . encode_id($id));
         }
 
         if ($seminar->price <= 0) {
             $this->Seminar_model->register_user($user_id, $id);
             $this->session->set_flashdata('success', t('Berhasil mendaftar seminar!', 'Registered successfully!'));
-            redirect('seminars/detail/' . $id);
+            redirect('seminars/detail/' . encode_id($id));
         }
 
         redirect('checkout/initiate/seminar/' . $id);

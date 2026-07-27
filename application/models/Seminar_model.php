@@ -3,10 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Seminar_model extends CI_Model {
 
-    public function get_seminars() {
+    public function get_seminars($filters = array()) {
         $this->db->select('seminars.*, users.name as speaker_name');
         $this->db->from('seminars');
         $this->db->join('users', 'users.id = seminars.speaker_id');
+        if (!empty($filters['speaker_id'])) {
+            $this->db->where('seminars.speaker_id', $filters['speaker_id']);
+        }
         $this->db->order_by('seminars.date_time', 'ASC');
         return $this->db->get()->result();
     }

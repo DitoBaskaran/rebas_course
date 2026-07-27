@@ -70,6 +70,10 @@ class Admin extends CI_Controller {
 
     // ===== ANALYTICS DASHBOARD =====
     public function analytics() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('Course_model');
         $this->load->model('Seminar_model');
 
@@ -110,6 +114,10 @@ class Admin extends CI_Controller {
 
     // ================ TRANSACTION ACTIONS ================
     public function transactions() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['transactions'] = $this->Transaction_model->get_all_transactions();
         $data['active_page'] = 'transactions';
         $data['title'] = t('Transaksi', 'Transactions');
@@ -119,6 +127,10 @@ class Admin extends CI_Controller {
     }
 
     public function approve_transaction($tx_id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
         if (!$tx) show_404();
 
@@ -176,6 +188,10 @@ class Admin extends CI_Controller {
     }
 
     public function reject_transaction($tx_id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
         if (!$tx) show_404();
 
@@ -192,7 +208,13 @@ class Admin extends CI_Controller {
     public function courses() {
         $data['active_page'] = 'courses';
         $data['title'] = t('Kelola Konten', 'Manage Content');
-        $data['courses'] = $this->Course_model->get_courses(array('status' => 'all'));
+        $role = $this->session->userdata('role');
+        $user_id = $this->session->userdata('user_id');
+        if ($role === 'teacher') {
+            $data['courses'] = $this->Course_model->get_courses(array('teacher_id' => $user_id, 'status' => 'all'));
+        } else {
+            $data['courses'] = $this->Course_model->get_courses(array('status' => 'all'));
+        }
         $this->load->view('templates/admin_header', $data);
         $this->load->view('admin/courses/list', $data);
         $this->load->view('templates/admin_footer');
@@ -261,6 +283,10 @@ class Admin extends CI_Controller {
     public function edit_course($id) {
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak. Bukan konten Anda.', 'Access denied. Not your content.'));
+            redirect('admin/courses');
+        }
 
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
 
@@ -315,6 +341,12 @@ class Admin extends CI_Controller {
     }
 
     public function delete_course($id) {
+        $course = $this->Course_model->get_course_by_id($id);
+        if (!$course) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak. Bukan konten Anda.', 'Access denied. Not your content.'));
+            redirect('admin/courses');
+        }
         $this->Course_model->delete_course($id);
         $this->session->set_flashdata('success', t('Konten berhasil dihapus.', 'Content deleted.'));
         redirect('admin/courses');
@@ -324,6 +356,10 @@ class Admin extends CI_Controller {
     public function lessons($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
 
         $data['active_page'] = 'courses';
         $data['title'] = t('Materi: ', 'Lessons: ') . $course->title;
@@ -338,6 +374,10 @@ class Admin extends CI_Controller {
     public function create_lesson($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
 
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
 
@@ -374,6 +414,10 @@ class Admin extends CI_Controller {
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
 
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
 
@@ -409,6 +453,11 @@ class Admin extends CI_Controller {
     public function delete_lesson($id) {
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
+        $course = $this->Course_model->get_course_by_id($lesson->course_id);
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
         $course_id = $lesson->course_id;
         $this->Course_model->delete_lesson($id);
         $this->session->set_flashdata('success', t('Materi dihapus.', 'Lesson deleted.'));
@@ -419,7 +468,13 @@ class Admin extends CI_Controller {
     public function seminars() {
         $data['active_page'] = 'seminars';
         $data['title'] = t('Kelola Seminar', 'Manage Seminars');
-        $data['seminars'] = $this->Seminar_model->get_seminars();
+        $role = $this->session->userdata('role');
+        $user_id = $this->session->userdata('user_id');
+        if ($role === 'teacher') {
+            $data['seminars'] = $this->Seminar_model->get_seminars(array('speaker_id' => $user_id));
+        } else {
+            $data['seminars'] = $this->Seminar_model->get_seminars();
+        }
         $this->load->view('templates/admin_header', $data);
         $this->load->view('admin/seminars/list', $data);
         $this->load->view('templates/admin_footer');
@@ -478,6 +533,10 @@ class Admin extends CI_Controller {
     public function edit_seminar($id) {
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $seminar->speaker_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak. Bukan seminar Anda.', 'Access denied. Not your seminar.'));
+            redirect('admin/seminars');
+        }
 
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
 
@@ -523,6 +582,12 @@ class Admin extends CI_Controller {
     }
 
     public function delete_seminar($id) {
+        $seminar = $this->Seminar_model->get_seminar_by_id($id);
+        if (!$seminar) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $seminar->speaker_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak. Bukan seminar Anda.', 'Access denied. Not your seminar.'));
+            redirect('admin/seminars');
+        }
         $this->Seminar_model->delete_seminar($id);
         $this->session->set_flashdata('success', t('Seminar dihapus.', 'Seminar deleted.'));
         redirect('admin/seminars');
@@ -530,6 +595,10 @@ class Admin extends CI_Controller {
 
     // ================ MENTORING SESSIONS ================
     public function mentoring() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['active_page'] = 'mentoring';
         $data['title'] = t('Jadwal Mentoring', 'Mentoring Schedule');
         $data['sessions'] = $this->Mentoring_model->get_all_sessions();
@@ -540,6 +609,10 @@ class Admin extends CI_Controller {
 
     // ================ LEARNING PATHS ================
     public function learning_paths() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['active_page'] = 'learning_paths';
         $data['title'] = t('Learning Paths', 'Learning Paths');
         $data['paths'] = $this->Learning_path_model->get_all();
@@ -549,6 +622,10 @@ class Admin extends CI_Controller {
     }
 
     public function create_learning_path() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
 
         if ($this->form_validation->run() === FALSE) {
@@ -577,6 +654,10 @@ class Admin extends CI_Controller {
     }
 
     public function edit_learning_path($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $path = $this->Learning_path_model->get_by_id($id);
         if (!$path) show_404();
 
@@ -609,11 +690,19 @@ class Admin extends CI_Controller {
     }
 
     public function delete_learning_path($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->Learning_path_model->delete($id);
         redirect('admin/learning_paths');
     }
 
     public function add_path_content($path_id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->form_validation->set_rules('course_id', 'Course', 'required|numeric');
         if ($this->form_validation->run()) {
             $this->Learning_path_model->add_content(array(
@@ -626,6 +715,10 @@ class Admin extends CI_Controller {
     }
 
     public function remove_path_content($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->Learning_path_model->remove_content($id);
         redirect($this->input->server('HTTP_REFERER') ?: 'admin/learning_paths');
     }
@@ -641,6 +734,10 @@ class Admin extends CI_Controller {
     }
 
     public function create_tag() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->form_validation->set_rules('name', t('Nama', 'Name'), 'required|trim');
         if ($this->form_validation->run()) {
             $slug = url_title($this->input->post('name'), 'dash', true);
@@ -655,6 +752,10 @@ class Admin extends CI_Controller {
     }
 
     public function delete_tag($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->Tag_model->delete($id);
         redirect('admin/tags');
     }
@@ -715,6 +816,10 @@ class Admin extends CI_Controller {
     public function assignments($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
         $data['active_page'] = 'courses';
         $data['title'] = t('Tugas', 'Assignments') . ' - ' . $course->title;
         $data['course'] = $course;
@@ -727,6 +832,10 @@ class Admin extends CI_Controller {
     public function create_assignment($course_id) {
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
 
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
 
@@ -762,6 +871,11 @@ class Admin extends CI_Controller {
     public function delete_assignment($id) {
         $a = $this->Assignment_model->get_assignment_by_id($id);
         if (!$a) show_404();
+        $course = $this->Course_model->get_course_by_id($a->course_id);
+        if ($this->session->userdata('role') === 'teacher' && $course->teacher_id != $this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/courses');
+        }
         $course_id = $a->course_id;
         $this->Assignment_model->delete_assignment($id);
         $this->session->set_flashdata('success', t('Tugas dihapus.', 'Assignment deleted.'));
@@ -770,6 +884,10 @@ class Admin extends CI_Controller {
 
     // ================ TRANSLATIONS ================
     public function translations() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['active_page'] = 'translations';
         $data['title'] = t('Terjemahan', 'Translations');
         $data['translations'] = $this->Translation_model->get_all_keys();
@@ -792,6 +910,10 @@ class Admin extends CI_Controller {
 
     // ================ SETTINGS ================
     public function settings($group = 'general') {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $valid_groups = array('general', 'appearance', 'hero', 'homepage', 'social', 'footer', 'payment');
         if (!in_array($group, $valid_groups)) $group = 'general';
 
@@ -873,6 +995,10 @@ class Admin extends CI_Controller {
 
     // ================ REFERENCE DOCUMENTS ================
     public function documents() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['active_page'] = 'documents';
         $data['title'] = t('Dokumen Referensi', 'Reference Documents');
         $this->load->view('templates/admin_header', $data);
@@ -881,6 +1007,10 @@ class Admin extends CI_Controller {
     }
 
     public function document_view($key) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $allowed = array('partnership_discussion', 'business_discussion', 'business_plan');
         if (!in_array($key, $allowed)) show_404();
 
@@ -905,6 +1035,10 @@ class Admin extends CI_Controller {
 
     // ===== USER MANAGEMENT =====
     public function users() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('User_model');
         $role = $this->input->get('role');
         $status = $this->input->get('status');
@@ -918,6 +1052,10 @@ class Admin extends CI_Controller {
     }
 
     public function edit_user($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('User_model');
         $data['user'] = $this->User_model->get_user_by_id($id);
         if (!$data['user']) show_404();
@@ -929,6 +1067,10 @@ class Admin extends CI_Controller {
     }
 
     public function update_user($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('User_model');
         $user = $this->User_model->get_user_by_id($id);
         if (!$user) show_404();
@@ -944,6 +1086,10 @@ class Admin extends CI_Controller {
     }
 
     public function delete_user($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('User_model');
         $this->User_model->update_user($id, array('status' => 'banned'));
         $this->session->set_flashdata('success', t('Akun dinonaktifkan.', 'Account disabled.'));
@@ -952,6 +1098,10 @@ class Admin extends CI_Controller {
 
     // ===== COUPON MANAGEMENT =====
     public function coupons() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['coupons'] = $this->db->order_by('created_at', 'DESC')->get('coupons')->result();
         $data['active_page'] = 'coupons';
         $this->load->view('templates/admin_header', $data);
@@ -960,6 +1110,10 @@ class Admin extends CI_Controller {
     }
 
     public function create_coupon() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->form_validation->set_rules('code', 'Code', 'required|is_unique[coupons.code]');
         if ($this->form_validation->run() === FALSE) {
             $data['active_page'] = 'coupons';
@@ -983,6 +1137,10 @@ class Admin extends CI_Controller {
     }
 
     public function delete_coupon($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->db->where('id', $id)->delete('coupons');
         $this->session->set_flashdata('success', t('Kupon berhasil dihapus.', 'Coupon deleted.'));
         redirect('admin/coupons');
@@ -990,6 +1148,10 @@ class Admin extends CI_Controller {
 
     // ===== CATEGORY MANAGEMENT =====
     public function categories() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('Course_model');
         $data['categories'] = $this->Course_model->get_all_categories_tree();
         $data['active_page'] = 'settings-general';
@@ -999,6 +1161,10 @@ class Admin extends CI_Controller {
     }
 
     public function create_category() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('Course_model');
         $this->form_validation->set_rules('name', 'Name', 'required');
         if ($this->form_validation->run() === FALSE) {
@@ -1025,6 +1191,10 @@ class Admin extends CI_Controller {
     }
 
     public function edit_category($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('Course_model');
         $data['category'] = $this->Course_model->get_category_by_id($id);
         if (!$data['category']) show_404();
@@ -1036,6 +1206,10 @@ class Admin extends CI_Controller {
     }
 
     public function update_category($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('Course_model');
         $this->form_validation->set_rules('name', 'Name', 'required');
         if ($this->form_validation->run() === FALSE) {
@@ -1061,6 +1235,10 @@ class Admin extends CI_Controller {
     }
 
     public function delete_category($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->load->model('Course_model');
         $this->Course_model->delete_category($id);
         $this->session->set_flashdata('success', t('Kategori berhasil dihapus.', 'Category deleted.'));
@@ -1115,6 +1293,10 @@ class Admin extends CI_Controller {
 
     // ===== PACKAGE MANAGEMENT =====
     public function packages() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
         $data['packages'] = $this->Package_model->get_packages(false);
         $data['active_page'] = 'packages';
         $this->load->view('templates/admin_header', $data);
@@ -1123,6 +1305,10 @@ class Admin extends CI_Controller {
     }
 
     public function create_package() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->form_validation->set_rules('name', t('Nama Paket', 'Package Name'), 'required|trim');
         $this->form_validation->set_rules('price', t('Harga', 'Price'), 'required|numeric');
         $this->form_validation->set_rules('duration_days', t('Durasi (hari)', 'Duration (days)'), 'required|numeric');
@@ -1157,6 +1343,10 @@ class Admin extends CI_Controller {
     }
 
     public function edit_package($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $package = $this->Package_model->get_package_by_id($id);
         if (!$package) show_404();
 
@@ -1192,6 +1382,10 @@ class Admin extends CI_Controller {
     }
 
     public function delete_package($id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
+            redirect('admin/dashboard');
+        }
         $this->Package_model->delete_package($id);
         $this->session->set_flashdata('success', t('Paket berhasil dihapus.', 'Package deleted.'));
         redirect('admin/packages');
