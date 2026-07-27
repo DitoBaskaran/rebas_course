@@ -85,14 +85,8 @@
                         <span class="admin-topbar-brand-text">BISATUNTAS</span>
                     <?php endif; ?>
                 </a>
-                <span class="admin-topbar-badge">Admin</span>
             </div>
             <div class="admin-topbar-end">
-                <!-- Dark Mode Toggle -->
-                <button class="theme-toggle" id="themeToggle" title="Toggle theme">
-                    <i data-lucide="moon" class="moon-icon" style="width:18px;height:18px;"></i>
-                    <i data-lucide="sun" class="sun-icon" style="width:18px;height:18px;"></i>
-                </button>
                 <!-- Command Palette -->
                 <button class="admin-topbar-action" id="cmdTrigger" title="Search (Cmd+K)">
                     <i data-lucide="search" style="width:18px;height:18px;"></i>
