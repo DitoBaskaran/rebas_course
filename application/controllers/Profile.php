@@ -33,9 +33,10 @@ class Profile extends CI_Controller {
             $data['courses'] = $this->Course_model->get_courses(array('teacher_id' => $user_id));
         }
         $data['active_page'] = 'profile';
-        $this->load->view('templates/student_header', $data);
+        $is_admin = in_array($user->role, ['admin', 'teacher']);
+        $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
         $this->load->view('profile/index', $data);
-        $this->load->view('templates/student_footer');
+        $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');
     }
 
     public function edit() {
@@ -48,9 +49,10 @@ class Profile extends CI_Controller {
             $data['title'] = t('Edit Profil', 'Edit Profile');
             $data['active_page'] = 'profile';
             $data['user'] = $this->User_model->get_user_by_id($user_id);
-            $this->load->view('templates/student_header', $data);
+            $is_admin = in_array($data['user']->role, ['admin', 'teacher']);
+            $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
             $this->load->view('profile/edit', $data);
-            $this->load->view('templates/student_footer');
+            $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');
         } else {
             $update = array('name' => $this->input->post('name'), 'bio' => $this->input->post('bio'), 'phone' => $this->input->post('phone'));
             if (!empty($_FILES['avatar']['name'])) {
@@ -77,9 +79,10 @@ class Profile extends CI_Controller {
             $data['title'] = t('Ganti Password', 'Change Password');
             $data['active_page'] = 'profile';
             $data['user'] = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
-            $this->load->view('templates/student_header', $data);
+            $is_admin = in_array($data['user']->role, ['admin', 'teacher']);
+            $this->load->view($is_admin ? 'templates/admin_header' : 'templates/student_header', $data);
             $this->load->view('profile/change_password', $data);
-            $this->load->view('templates/student_footer');
+            $this->load->view($is_admin ? 'templates/admin_footer' : 'templates/student_footer');
         } else {
             $user = $this->User_model->get_user_by_id($this->session->userdata('user_id'));
             if (!password_verify($this->input->post('current_password'), $user->password)) {

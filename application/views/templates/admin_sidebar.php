@@ -79,10 +79,10 @@
 
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Akun', 'Account'); ?></div>
-    <a class="nav-link" href="<?php echo base_url('profile'); ?>">
+    <a class="nav-link <?php echo $active_page === 'profile' ? 'active' : ''; ?>" href="<?php echo base_url('profile'); ?>">
         <i data-lucide="user-circle"></i> <span><?php echo t('Profil Saya', 'My Profile'); ?></span>
     </a>
-    <a class="nav-link" href="<?php echo base_url('affiliate'); ?>">
+    <a class="nav-link <?php echo $active_page === 'affiliate' ? 'active' : ''; ?>" href="<?php echo base_url('affiliate'); ?>">
         <i data-lucide="gift"></i> <span><?php echo t('Affiliate', 'Affiliate'); ?></span>
     </a>
 
