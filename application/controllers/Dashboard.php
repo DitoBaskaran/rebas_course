@@ -18,6 +18,12 @@ class Dashboard extends CI_Controller {
     }
 
     public function index() {
+        $role = $this->session->userdata('role');
+        if ($this->session->userdata('is_mentor')) {
+            redirect('mentor');
+        } elseif ($role === 'admin' || $this->session->userdata('is_teacher')) {
+            redirect('admin/dashboard');
+        }
         $user_id = $this->session->userdata('user_id');
         $data['title'] = t('Dashboard - BISATUNTAS', 'Dashboard - BISATUNTAS');
         $data['enrolled_courses'] = $this->Course_model->get_user_enrolled_courses($user_id);

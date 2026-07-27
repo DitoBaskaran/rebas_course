@@ -1,11 +1,24 @@
 <div class="admin-sidebar playful" id="adminSidebar">
     <?php $active_page = isset($active_page) ? $active_page : ''; ?>
+    <?php $_ss_role = $this->session->userdata('role'); ?>
+    <?php $_ss_is_teacher = $this->session->userdata('is_teacher'); ?>
+    <?php $_ss_is_mentor = $this->session->userdata('is_mentor'); ?>
+    <?php
+        if ($_ss_is_mentor) $_ss_dash_url = 'mentor';
+        elseif ($_ss_role === 'admin' || $_ss_is_teacher) $_ss_dash_url = 'admin/dashboard';
+        else $_ss_dash_url = 'dashboard';
+    ?>
 
     <!-- Grup: Pembelajaran & Komunitas -->
     <div class="sidebar-heading"><?php echo t('Pembelajaran & Komunitas', 'Learning & Community'); ?></div>
-    <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url('dashboard'); ?>">
+    <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url($_ss_dash_url); ?>">
         <i data-lucide="layout-dashboard"></i> <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
     </a>
+    <?php if ($_ss_is_mentor && $_ss_dash_url !== 'mentor'): ?>
+    <a class="nav-link" href="<?php echo base_url('mentor'); ?>">
+        <i data-lucide="calendar-check"></i> <span><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></span>
+    </a>
+    <?php endif; ?>
     <a class="nav-link <?php echo $active_page === 'my_courses' ? 'active' : ''; ?>" href="<?php echo base_url('courses/mine'); ?>">
         <i data-lucide="book-open"></i> <span><?php echo t('Kelas Saya', 'My Courses'); ?></span>
     </a>
