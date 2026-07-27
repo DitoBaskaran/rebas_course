@@ -61,8 +61,12 @@ class Mentor_availability_model extends CI_Model {
         $slots = $this->db->where('mentor_id', $mentor_id)->where('is_booked', 0)->order_by('day_of_week, start_time')->get('mentor_availability')->result();
         $week = array_fill(0, 7, array());
         foreach ($slots as $slot) {
-            if ($slot->day_of_week !== null) {
-                $week[$slot->day_of_week][] = $slot;
+            $dow = $slot->day_of_week;
+            if ($dow === null && $slot->date_override !== null) {
+                $dow = date('w', strtotime($slot->date_override));
+            }
+            if ($dow !== null) {
+                $week[$dow][] = $slot;
             }
         }
         return $week;

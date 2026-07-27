@@ -1147,7 +1147,7 @@ class Admin extends CI_Controller {
         if ($update_data['is_mentor']) {
             $this->load->model('Mentor_model');
             if (!$this->Mentor_model->get_by_user_id($id)) {
-                $this->Mentor_model->create(array('user_id' => $id));
+                $this->Mentor_model->create(array('user_id' => $id, 'is_active' => 1));
             }
         }
 

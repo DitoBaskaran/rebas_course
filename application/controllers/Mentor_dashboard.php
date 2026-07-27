@@ -75,6 +75,7 @@ class Mentor_dashboard extends CI_Controller {
                 'bio_en' => $this->input->post('bio_en') ?: '',
                 'durations_available' => $this->input->post('durations_available') ?: '15,30,45,60',
                 'meeting_platforms' => $this->input->post('meeting_platforms') ?: 'zoom,gmeet,whatsapp',
+                'is_active' => 1,
             ));
             $this->session->set_flashdata('success', t('Profil mentor berhasil dibuat!', 'Mentor profile created!'));
             redirect('mentor');
