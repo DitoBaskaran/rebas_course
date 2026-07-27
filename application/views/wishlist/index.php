@@ -9,7 +9,7 @@
                 <?php echo t('Kursus yang kamu simpan.', 'Courses you have saved.'); ?>
             </p>
         </div>
-        <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #f97316; color: #fff; font-size: 0.8rem;">
+        <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #059669; color: #fff; font-size: 0.8rem;">
             <i class="fas fa-search me-1"></i> <?php echo t('Cari Kursus', 'Browse Courses'); ?>
         </a>
     </div>
@@ -26,7 +26,7 @@
         <p style="color: #78716c; font-size: 0.85rem; max-width: 350px; margin: 0 auto 1rem;">
             <?php echo t('Klik icon hati pada kursus untuk menyimpannya dan akses cepat kapan saja.', 'Click the heart icon on courses to save them for quick access anytime.'); ?>
         </p>
-        <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #f97316; color: #fff; font-size: 0.85rem;">
+        <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #059669; color: #fff; font-size: 0.85rem;">
             <i class="fas fa-search me-1"></i> <?php echo t('Jelajahi Kursus', 'Browse Courses'); ?>
         </a>
     </div>
@@ -41,7 +41,7 @@
                     <div class="position-relative overflow-hidden" style="aspect-ratio: 16/9; border-radius: 12px 12px 0 0;">
                         <img src="<?php echo base_url('uploads/courses/' . $c->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100" style="object-fit: cover;">
                         <!-- Remove button -->
-                        <button onclick="toggleWishlist('<?php echo $c->slug; ?>')" class="btn d-flex align-items-center justify-content-center position-absolute" style="top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; color: #f43f5e; padding: 0; cursor: pointer;">
+                        <button onclick="toggleWishlist('<?php echo $c->slug; ?>')" class="btn d-flex align-items-center justify-content-center position-absolute" style="top: 8px; right: 8px; width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,0.9); border: none; color: #059669; padding: 0; cursor: pointer;">
                             <i class="fas fa-heart" style="font-size: 0.75rem;"></i>
                         </button>
                         <!-- Type badge -->
@@ -65,10 +65,10 @@
                         </h6>
 
                         <div class="mt-auto pt-2 d-flex align-items-center justify-content-between" style="border-top: 1px solid #f0eeeb;">
-                            <span class="fw-bold" style="color: #f97316; font-size: 0.8rem;">
-                                <?php echo $c->price > 0 ? 'Rp ' . number_format($c->price, 0, ',', '.') : '<span style="color: #14b8a6;">' . t('Gratis', 'Free') . '</span>'; ?>
+                            <span class="fw-bold" style="color: #059669; font-size: 0.8rem;">
+                                <?php echo $c->price > 0 ? 'Rp ' . number_format($c->price, 0, ',', '.') : '<span style="color: #10b981;">' . t('Gratis', 'Free') . '</span>'; ?>
                             </span>
-                            <a href="<?php echo base_url('courses/detail/' . $c->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-3" style="background: #f97316; color: #fff; font-size: 0.72rem;">
+                            <a href="<?php echo base_url('courses/detail/' . $c->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-3" style="background: #059669; color: #fff; font-size: 0.72rem;">
                                 <i class="fas fa-eye me-1" style="font-size: 0.6rem;"></i> <?php echo t('Detail', 'Detail'); ?>
                             </a>
                         </div>

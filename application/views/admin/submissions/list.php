@@ -22,9 +22,9 @@
                             </div>
                         </div>
                         <div class="d-flex align-items-center gap-2 flex-shrink-0">
-                            <?php if ($s->status === 'graded'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #14b8a6; font-size: 0.6rem;"><?php echo t('Dinilai', 'Graded'); ?></span><span class="fw-bold" style="color: #1c1917; font-size: 0.78rem;"><?php echo $s->grade; ?>/100</span>
+                            <?php if ($s->status === 'graded'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;"><?php echo t('Dinilai', 'Graded'); ?></span><span class="fw-bold" style="color: #1c1917; font-size: 0.78rem;"><?php echo $s->grade; ?>/100</span>
                             <?php elseif ($s->status === 'returned'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;"><?php echo t('Dikembalikan', 'Returned'); ?></span>
-                            <?php else: ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #14b8a6; font-size: 0.6rem;"><?php echo t('Dikumpulkan', 'Submitted'); ?></span><?php endif; ?>
+                            <?php else: ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;"><?php echo t('Dikumpulkan', 'Submitted'); ?></span><?php endif; ?>
                         </div>
                         <div class="d-flex gap-1 flex-shrink-0">
                             <?php if ($s->file_url): ?><a href="<?php echo base_url('uploads/assignments/' . $s->file_url); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.68rem;" target="_blank"><i class="fas fa-download" style="font-size: 0.65rem;"></i></a><?php endif; ?>
@@ -34,11 +34,11 @@
                                     <div class="d-flex gap-2">
                                         <input type="number" name="grade" class="form-control rounded-pill" placeholder="0-100" min="0" max="100" required style="width: 72px; height: 34px; font-size: 0.78rem; border-color: #e7e5e4;">
                                         <input type="text" name="feedback" class="form-control rounded-pill" placeholder="<?php echo t('Feedback', 'Feedback'); ?>" style="width: 120px; height: 34px; font-size: 0.78rem; border-color: #e7e5e4;">
-                                        <button type="submit" class="btn btn-sm rounded-pill px-2" style="background: #14b8a6; color: #fff; font-size: 0.68rem;"><i class="fas fa-check"></i></button>
+                                        <button type="submit" class="btn btn-sm rounded-pill px-2" style="background: #10b981; color: #fff; font-size: 0.68rem;"><i class="fas fa-check"></i></button>
                                         <a href="<?php echo base_url('admin/return_submission/' . $s->id); ?>" class="btn btn-sm rounded-pill px-2" style="background: #f97316; color: #fff; font-size: 0.68rem;" onclick="return confirm('<?php echo t('Kembalikan untuk revisi?', 'Return for revision?'); ?>')"><i class="fas fa-undo"></i></a>
                                     </div>
                                 </form>
-                            <?php else: ?><span class="fw-semibold d-flex align-items-center gap-1" style="color: #14b8a6; font-size: 0.72rem;"><i class="fas fa-check-circle"></i> <?php echo t('Dinilai', 'Graded'); ?></span><?php endif; ?>
+                            <?php else: ?><span class="fw-semibold d-flex align-items-center gap-1" style="color: #10b981; font-size: 0.72rem;"><i class="fas fa-check-circle"></i> <?php echo t('Dinilai', 'Graded'); ?></span><?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>

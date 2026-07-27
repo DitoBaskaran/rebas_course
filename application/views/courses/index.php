@@ -6,11 +6,11 @@
 @media (min-width: 768px) { .crs-search-form { flex-direction: row; gap: 0.5rem; } }
 .crs-search-input-wrap { position: relative; flex: 1; }
 .crs-search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 0.85rem; z-index: 1; pointer-events: none; transition: color 0.2s; }
-.crs-search-input-wrap:focus-within .crs-search-icon { color: #eab308; }
+.crs-search-input-wrap:focus-within .crs-search-icon { color: #059669; }
 .crs-input { width: 100%; padding: 0.75rem 1rem 0.75rem 46px; border-radius: 14px; border: 2px solid #e5e5e5; font-size: 0.85rem; height: 48px; background: #fff; transition: all 0.2s; outline: none; }
-.crs-input:focus { border-color: #eab308; box-shadow: 0 0 0 3px rgba(234,179,8,0.1); }
+.crs-input:focus { border-color: #059669; box-shadow: 0 0 0 3px rgba(234,179,8,0.1); }
 .crs-input::placeholder { color: #cbd5e1; }
-.crs-btn-search { background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%); color: #111827; border: none; border-radius: 14px; font-size: 0.85rem; height: 48px; padding: 0 1.5rem; font-weight: 700; white-space: nowrap; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; justify-content: center; }
+.crs-btn-search { background: #059669; color: #111827; border: none; border-radius: 14px; font-size: 0.85rem; height: 48px; padding: 0 1.5rem; font-weight: 700; white-space: nowrap; transition: all 0.2s; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; justify-content: center; }
 .crs-btn-search:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(234,179,8,0.3); }
 .crs-btn-search:active { transform: translateY(0); }
 .crs-scroll { display: flex; gap: 0.75rem; overflow-x: auto; padding-bottom: 0.5rem; scrollbar-width: none; -ms-overflow-style: none; }
@@ -57,7 +57,7 @@
             $query_parts = array_filter(array($query_type, $query_level, $query_cat));
             $query_all = $query_parts ? '?' . implode('&', $query_parts) : '';
             $cat_colors = array(
-                array('#fef3c7','#d97706'),
+                array('#f0fdfa','#d97706'),
                 array('#dbeafe','#2563eb'),
                 array('#fce7f3','#db2777'),
                 array('#dcfce7','#16a34a'),
@@ -143,7 +143,7 @@
                                         <i class="fas fa-folder-open me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
                                     </span>
                                     <?php if ($course->price > 0): ?>
-                                        <span class="px-2 py-1 rounded-pill fw-bold" style="background: #eab308; color: #111827; font-size: 0.65rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
+                                        <span class="px-2 py-1 rounded-pill fw-bold" style="background: #059669; color: #111827; font-size: 0.65rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
                                     <?php else: ?>
                                         <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #22c55e; color: #fff; font-size: 0.65rem;"><?php echo t('Gratis', 'Free'); ?></span>
                                     <?php endif; ?>

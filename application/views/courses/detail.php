@@ -57,7 +57,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
             <span class="fw-semibold px-2 py-1 rounded-pill" style="background: #111827; color: #fff; font-size: 0.7rem;"><?php echo content_type_label($course->content_type); ?></span>
             <span class="fw-semibold px-2 py-1 rounded-pill" style="background: #f5f5f5; color: #525252; font-size: 0.7rem;"><?php echo skill_level_label($course->skill_level); ?></span>
             <?php if ($course->price > 0): ?>
-                <span class="fw-semibold px-2 py-1 rounded-pill" style="background: #fef3c7; color: #92400e; font-size: 0.7rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
+                <span class="fw-semibold px-2 py-1 rounded-pill" style="background: #f0fdfa; color: #92400e; font-size: 0.7rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
             <?php else: ?>
                 <span class="fw-semibold px-2 py-1 rounded-pill" style="background: #ecfdf5; color: #065f46; font-size: 0.7rem;"><?php echo t('Gratis', 'Free'); ?></span>
             <?php endif; ?>
@@ -82,7 +82,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                 <?php echo $enrolled_count; ?> <?php echo t('siswa', 'students'); ?>
             </span>
             <span class="d-flex align-items-center gap-1">
-                <i class="fas fa-star" style="color: #eab308; font-size: 0.65rem;"></i>
+                <i class="fas fa-star" style="color: #059669; font-size: 0.65rem;"></i>
                 <?php echo $avg_rating; ?> (<?php echo $review_count; ?>)
             </span>
             <?php if ($course->duration_total > 0): ?>
@@ -153,7 +153,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                                 <?php endif; ?>
                             </div>
                             <?php if ($is_enrolled): ?>
-                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($lesson->id)); ?>" class="fw-semibold flex-shrink-0" style="color: #eab308; text-decoration: none; font-size: 0.8rem;">
+                                <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($lesson->id)); ?>" class="fw-semibold flex-shrink-0" style="color: #059669; text-decoration: none; font-size: 0.8rem;">
                                     <?php echo t('Mulai', 'Start'); ?> <i class="fas fa-chevron-right" style="font-size: 0.6rem;"></i>
                                 </a>
                             <?php endif; ?>
@@ -213,7 +213,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                         <div class="fw-bold mb-1" style="font-size: 2.5rem; color: #111827; line-height: 1;"><?php echo $avg_rating; ?></div>
                         <div class="d-flex justify-content-center gap-1 mb-1">
                             <?php for ($s = 1; $s <= 5; $s++): ?>
-                                <i class="fas fa-star" style="color: <?php echo $s <= round($avg_rating) ? '#eab308' : '#d4d4d4'; ?>; font-size: 0.8rem;"></i>
+                                <i class="fas fa-star" style="color: <?php echo $s <= round($avg_rating) ? '#059669' : '#d4d4d4'; ?>; font-size: 0.8rem;"></i>
                             <?php endfor; ?>
                         </div>
                         <small style="color: #a3a3a3; font-size: 0.75rem;"><?php echo $review_count; ?> <?php echo t('ulasan', 'reviews'); ?></small>
@@ -224,9 +224,9 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                         <?php foreach (array_reverse(range(5, 1)) as $star): ?>
                             <div class="d-flex align-items-center gap-2 mb-2" style="font-size: 0.8rem;">
                                 <span class="fw-medium" style="color: #525252; min-width: 16px;"><?php echo $star; ?></span>
-                                <i class="fas fa-star" style="color: #eab308; font-size: 0.6rem;"></i>
+                                <i class="fas fa-star" style="color: #059669; font-size: 0.6rem;"></i>
                                 <div class="flex-fill rounded-pill overflow-hidden" style="height: 6px; background: #f5f5f5;">
-                                    <div class="h-100 rounded-pill" style="width: <?php echo $review_count > 0 ? ($rating_counts[$star] / $review_count) * 100 : 0; ?>%; background: #eab308;"></div>
+                                    <div class="h-100 rounded-pill" style="width: <?php echo $review_count > 0 ? ($rating_counts[$star] / $review_count) * 100 : 0; ?>%; background: #059669;"></div>
                                 </div>
                                 <span style="color: #a3a3a3; min-width: 20px; text-align: right; font-size: 0.75rem;"><?php echo $rating_counts[$star]; ?></span>
                             </div>
@@ -245,7 +245,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                                 <span class="fw-semibold" style="color: #111827; font-size: 0.825rem;"><?php echo htmlspecialchars($r->user_name); ?></span>
                                 <div class="d-flex gap-1">
                                     <?php for ($s = 1; $s <= 5; $s++): ?>
-                                        <i class="fas fa-star" style="color: <?php echo $s <= $r->rating ? '#eab308' : '#d4d4d4'; ?>; font-size: 0.6rem;"></i>
+                                        <i class="fas fa-star" style="color: <?php echo $s <= $r->rating ? '#059669' : '#d4d4d4'; ?>; font-size: 0.6rem;"></i>
                                     <?php endfor; ?>
                                 </div>
                             </div>
@@ -297,7 +297,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                     <a href="<?php echo base_url('forum/view/' . encode_id($d->id)); ?>" class="text-decoration-none p-3 rounded-3 d-flex justify-content-between align-items-center" style="border: 1px solid #f0f0f0; transition: all 0.15s;">
                         <div class="min-w-0 flex-grow-1 me-3">
                             <p class="small mb-0 text-truncate" style="font-weight: 600; color: #111827; font-size: 0.825rem;">
-                                <?php echo $d->is_pinned ? '<i class="fas fa-thumbtack me-1" style="color: #eab308; font-size: 0.65rem;"></i>' : ''; ?>
+                                <?php echo $d->is_pinned ? '<i class="fas fa-thumbtack me-1" style="color: #059669; font-size: 0.65rem;"></i>' : ''; ?>
                                 <?php echo htmlspecialchars($d->title); ?>
                             </p>
                             <small style="color: #a3a3a3; font-size: 0.72rem;"><?php echo htmlspecialchars($d->user_name); ?> · <?php echo time_elapsed($d->created_at); ?></small>
@@ -308,7 +308,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                     </a>
                 <?php endforeach; ?>
                 <?php if (count($discussions) > 5): ?>
-                    <a href="<?php echo base_url('forum/index/' . $course->slug); ?>" class="text-center small fw-semibold text-decoration-none pt-2" style="color: #eab308; font-size: 0.8rem;">
+                    <a href="<?php echo base_url('forum/index/' . $course->slug); ?>" class="text-center small fw-semibold text-decoration-none pt-2" style="color: #059669; font-size: 0.8rem;">
                         <?php echo t('Lihat semua diskusi', 'View all discussions'); ?> <i class="fas fa-chevron-right" style="font-size: 0.6rem;"></i>
                     </a>
                 <?php endif; ?>
@@ -370,17 +370,17 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                         <?php endif; ?>
                     </div>
                     <div class="d-flex align-items-center gap-2" style="color: #737373; font-size: 0.75rem;">
-                        <span><i class="fas fa-star" style="color: #eab308; font-size: 0.65rem;"></i> <?php echo $avg_rating; ?></span>
+                        <span><i class="fas fa-star" style="color: #059669; font-size: 0.65rem;"></i> <?php echo $avg_rating; ?></span>
                         <span>·</span>
                         <span><i class="fas fa-users" style="font-size: 0.65rem;"></i> <?php echo $enrolled_count; ?></span>
                     </div>
                 </div>
                 <?php if ($is_enrolled): ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn w-100 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem; padding: 0.6rem;">
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn w-100 fw-bold rounded-pill" style="background: #059669; color: #111827; font-size: 0.85rem; padding: 0.6rem;">
                         <i class="fas fa-play me-1"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
                     </a>
                 <?php else: ?>
-                    <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn w-100 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem; padding: 0.6rem;">
+                    <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn w-100 fw-bold rounded-pill" style="background: #059669; color: #111827; font-size: 0.85rem; padding: 0.6rem;">
                         <?php if ($course->price <= 0): ?>
                             <i class="fas fa-graduation-cap me-1"></i> <?php echo t('Daftar Gratis', 'Enroll Free'); ?>
                         <?php else: ?>
@@ -411,7 +411,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
                 <?php endif; ?>
             </div>
             <div class="d-flex align-items-center gap-3" style="color: #737373; font-size: 0.8rem;">
-                <span><i class="fas fa-star" style="color: #eab308; font-size: 0.7rem;"></i> <?php echo $avg_rating; ?></span>
+                <span><i class="fas fa-star" style="color: #059669; font-size: 0.7rem;"></i> <?php echo $avg_rating; ?></span>
                 <span>·</span>
                 <span><i class="fas fa-users" style="font-size: 0.7rem;"></i> <?php echo $enrolled_count; ?> siswa</span>
                 <span>·</span>
@@ -419,11 +419,11 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
             </div>
         </div>
         <?php if ($is_enrolled): ?>
-            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem;">
+            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #059669; color: #111827; font-size: 0.85rem;">
                 <i class="fas fa-play me-1"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
             </a>
         <?php else: ?>
-            <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #eab308; color: #111827; font-size: 0.85rem;">
+            <a href="<?php echo base_url('courses/buy/' . $course->slug); ?>" class="btn px-4 fw-bold rounded-pill" style="background: #059669; color: #111827; font-size: 0.85rem;">
                 <?php if ($course->price <= 0): ?>
                     <i class="fas fa-graduation-cap me-1"></i> <?php echo t('Daftar Gratis', 'Enroll Free'); ?>
                 <?php else: ?>

@@ -28,7 +28,7 @@
                             <div class="d-flex flex-column gap-2">
                                 <?php foreach ($balances as $bal): ?>
                                     <label class="d-flex justify-content-between align-items-center p-3 rounded-3" style="border: 1px solid #e5e5e5; cursor: pointer; transition: all 0.15s;">
-                                        <input type="radio" name="balance_id" value="<?php echo $bal->id; ?>" class="me-2" required style="accent-color: #eab308;">
+                                        <input type="radio" name="balance_id" value="<?php echo $bal->id; ?>" class="me-2" required style="accent-color: #059669;">
                                         <div class="flex-fill min-w-0">
                                             <strong style="color: #111827; font-size: 0.83rem;"><?php echo htmlspecialchars(t($bal->name, $bal->name_en)); ?></strong>
                                             <br><small style="color: #737373; font-size: 0.75rem;">
@@ -72,7 +72,7 @@
                         <textarea name="notes" class="form-control" rows="3" style="border-radius: 8px; border-color: #e5e5e5; font-size: 0.85rem;" placeholder="<?php echo t('Topik yang ingin didiskusikan...', 'Topics to discuss...'); ?>"></textarea>
                     </div>
 
-                    <button type="submit" class="btn py-3 fw-bold rounded-pill w-100" style="background: #eab308; color: #111827; font-size: 0.9rem;" <?php echo empty($balances) ? 'disabled' : ''; ?>>
+                    <button type="submit" class="btn py-3 fw-bold rounded-pill w-100" style="background: #059669; color: #111827; font-size: 0.9rem;" <?php echo empty($balances) ? 'disabled' : ''; ?>>
                         <i class="fas fa-check-circle me-2"></i> <?php echo t('Konfirmasi Booking', 'Confirm Booking'); ?>
                     </button>
                 </form>
@@ -86,7 +86,7 @@
                 <h6 class="fw-bold" style="color: #111827; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
                 <small class="fw-medium" style="color: #737373; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
                 <div class="d-flex justify-content-center align-items-center gap-1 mt-1">
-                    <i class="fas fa-star" style="color: #eab308; font-size: 0.7rem;"></i>
+                    <i class="fas fa-star" style="color: #059669; font-size: 0.7rem;"></i>
                     <span class="fw-bold" style="color: #111827; font-size: 0.8rem;"><?php echo $mentor->avg_rating; ?></span>
                 </div>
             </div>
@@ -101,11 +101,11 @@
         border-color: #111827 !important;
     }
     input[type="radio"]:not(:checked) + label:hover {
-        border-color: #eab308 !important;
-        background: #fefce8 !important;
+        border-color: #059669 !important;
+        background: #ecfdf5 !important;
     }
     input[name="balance_id"]:checked + div {
-        border-color: #eab308 !important;
-        background: #fefce8 !important;
+        border-color: #059669 !important;
+        background: #ecfdf5 !important;
     }
 </style>

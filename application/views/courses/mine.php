@@ -9,7 +9,7 @@
                 <?php echo t('Semua kelas yang sudah kamu daftar.', 'All courses you have enrolled in.'); ?>
             </p>
         </div>
-        <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #f97316; color: #fff; font-size: 0.8rem;">
+        <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #059669; color: #fff; font-size: 0.8rem;">
             <i class="fas fa-plus me-1"></i> <?php echo t('Tambah Kelas', 'Add Course'); ?>
         </a>
     </div>
@@ -26,7 +26,7 @@
         <p style="color: #78716c; font-size: 0.85rem; max-width: 350px; margin: 0 auto 1rem;">
             <?php echo t('Kamu belum terdaftar di kelas apapun. Mulai eksplorasi dan temukan materi yang menarik.', 'You are not enrolled in any courses yet. Explore and find interesting content.'); ?>
         </p>
-        <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #f97316; color: #fff; font-size: 0.85rem;">
+        <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #059669; color: #fff; font-size: 0.85rem;">
             <i class="fas fa-search me-1"></i> <?php echo t('Jelajahi Konten', 'Explore Content'); ?>
         </a>
     </div>
@@ -34,7 +34,7 @@
     <?php else: ?>
     <!-- Filter Tabs -->
     <div class="d-flex gap-2 mb-3 overflow-auto pb-1" style="scrollbar-width: none; -ms-overflow-style: none;">
-        <a href="#all" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none" style="background: #f97316; color: #fff; font-size: 0.78rem; white-space: nowrap;">
+        <a href="#all" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none" style="background: #059669; color: #fff; font-size: 0.78rem; white-space: nowrap;">
             <?php echo t('Semua', 'All'); ?> (<?php echo count($enrolled_courses); ?>)
         </a>
         <?php
@@ -65,7 +65,7 @@
                             <?php echo skill_level_label($course->skill_level); ?>
                         </span>
                         <?php if (($course->progress_pct ?? 0) >= 100): ?>
-                            <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #14b8a6; font-size: 0.65rem;">
+                            <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.65rem;">
                                 <i class="fas fa-check" style="font-size: 0.5rem;"></i> <?php echo t('Selesai', 'Done'); ?>
                             </span>
                         <?php endif; ?>
@@ -82,7 +82,7 @@
                     <!-- Progress -->
                     <div class="d-flex align-items-center gap-2">
                         <div class="flex-fill rounded-pill overflow-hidden" style="height: 5px; background: #e7e5e4; max-width: 200px;">
-                            <div class="h-100 rounded-pill" style="width: <?php echo $course->progress_pct ?? 0; ?>%; background: linear-gradient(90deg, #f97316, #f43f5e);"></div>
+                            <div class="h-100 rounded-pill" style="width: <?php echo $course->progress_pct ?? 0; ?>%; background: #059669;"></div>
                         </div>
                         <span class="fw-bold" style="color: #1c1917; font-size: 0.72rem; min-width: 32px; text-align: right;">
                             <?php echo $course->progress_pct ?? 0; ?>%
@@ -95,7 +95,7 @@
                     <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="btn btn-sm fw-semibold rounded-pill px-3" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.75rem;">
                         <?php echo t('Detail', 'Detail'); ?>
                     </a>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-4" style="background: #f97316; color: #fff; font-size: 0.75rem;">
+                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-4" style="background: #059669; color: #fff; font-size: 0.75rem;">
                         <i class="fas fa-play me-1" style="font-size: 0.65rem;"></i> <?php echo t('Mulai', 'Start'); ?>
                     </a>
                 </div>

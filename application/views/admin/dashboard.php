@@ -55,7 +55,7 @@
             <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
                 <div class="d-flex align-items-center gap-3">
                     <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #f0fdfa;">
-                        <i class="fas fa-users" style="color: #14b8a6; font-size: 0.9rem;"></i>
+                        <i class="fas fa-users" style="color: #10b981; font-size: 0.9rem;"></i>
                     </div>
                     <div>
                         <div class="fw-bold" style="color: #1c1917; font-size: 1.2rem; line-height: 1;"><?php echo $total_students; ?></div>
@@ -97,7 +97,7 @@
         <div class="col-lg-4">
             <div class="border rounded-3 p-3 h-100" style="border-color: #e7e5e4; border-radius: 12px;">
                 <h6 class="fw-bold mb-3 d-flex align-items-center gap-2" style="color: #1c1917; font-size: 0.88rem;">
-                    <i class="fas fa-bolt" style="color: #14b8a6; font-size: 0.75rem;"></i>
+                    <i class="fas fa-bolt" style="color: #10b981; font-size: 0.75rem;"></i>
                     <?php echo t('Aksi Cepat', 'Quick Actions'); ?>
                 </h6>
                 <div class="d-flex flex-column gap-2">
@@ -174,7 +174,7 @@
                             </td>
                             <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;">
                                 <?php if ($tx->status === 'approved'): ?>
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #14b8a6; font-size: 0.65rem;">
+                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.65rem;">
                                         <i class="fas fa-check-circle me-1" style="font-size: 0.55rem;"></i> Approved
                                     </span>
                                 <?php elseif ($tx->status === 'rejected'): ?>
@@ -190,7 +190,7 @@
                             <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; text-align: center;">
                                 <?php if ($tx->status === 'pending'): ?>
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background: #f0fdfa; color: #14b8a6; font-size: 0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>">
+                                        <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background: #f0fdfa; color: #10b981; font-size: 0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>">
                                             <i class="fas fa-check"></i>
                                         </a>
                                         <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border: 1px solid #fca5a5; color: #f43f5e; font-size: 0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>">

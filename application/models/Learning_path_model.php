@@ -113,16 +113,24 @@ class Learning_path_model extends CI_Model {
         // Check existing enrollment to handle started_at and completed_at
         $existing_enrollment = $this->get_user_enrollment($user_id, $path_id);
 
-        if (!$existing_enrollment->started_at) {
-            $data['started_at'] = date('Y-m-d H:i:s');
-        }
+        if ($existing_enrollment) {
+            if (!$existing_enrollment->started_at) {
+                $data['started_at'] = date('Y-m-d H:i:s');
+            }
 
-        if ($pct >= 100) {
-            if (!$existing_enrollment->completed_at) { // Only set if not already set
-                $data['completed_at'] = date('Y-m-d H:i:s');
+            if ($pct >= 100) {
+                if (!$existing_enrollment->completed_at) {
+                    $data['completed_at'] = date('Y-m-d H:i:s');
+                }
+            } else {
+                $data['completed_at'] = NULL;
             }
         } else {
-            $data['completed_at'] = NULL; // Reset if progress drops below 100
+            // Enrollment not found, set started_at and progress only
+            $data['started_at'] = date('Y-m-d H:i:s');
+            if ($pct >= 100) {
+                $data['completed_at'] = date('Y-m-d H:i:s');
+            }
         }
 
         $this->db->where('user_id', $user_id)->where('path_id', $path_id)->update('path_enrollments', $data);

@@ -4,7 +4,7 @@
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-5 text-center">
                     <!-- Award Icon -->
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 80px; height: 80px; background: #fef3c7;">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 80px; height: 80px; background: #f0fdfa;">
                         <i class="fas fa-award fa-lg" style="color: #d97706; font-size: 2rem;"></i>
                     </div>
 

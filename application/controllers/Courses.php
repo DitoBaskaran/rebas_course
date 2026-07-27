@@ -283,90 +283,75 @@ class Courses extends CI_Controller {
     }
 
     public function ajax_complete_lesson() {
-        $this->db->db_debug = FALSE;
-        if (!$this->session->userdata('logged_in')) {
-            echo json_encode(['ok' => false, 'msg' => 'Login required.']);
-            exit;
-        }
-
-        $lesson_id = (int) $this->input->post('lesson_id');
-        $course_id = (int) $this->input->post('course_id');
-        if (!$lesson_id || !$course_id) {
-            echo json_encode(['ok' => false, 'msg' => 'Invalid request.']);
-            exit;
-        }
-
-        $user_id = $this->session->userdata('user_id');
-
-        if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
-            echo json_encode(['ok' => false, 'msg' => 'Not enrolled.']);
-            exit;
-        }
-
-        $this->load->helper('gamification');
-        $this->load->helper('uuid');
-        $result = $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
-        if (!$result) {
-            echo json_encode(['ok' => false, 'msg' => 'Gagal menyimpan.']);
-            exit;
-        }
-        award_points($user_id, 10, 'lesson_complete', $lesson_id);
-
-        // Cek apakah course ini ada di learning path
-        $lp_paths = array();
-        $this->db->db_debug = FALSE;
-        $lp_query = $this->db->select('DISTINCT path_id')->from('learning_path_contents')->where('course_id', $course_id)->get();
-        if ($lp_query !== FALSE && is_object($lp_query)) {
-            $lp_rows = $lp_query->result();
-            foreach ($lp_rows as $lr) {
-                $lp_paths[] = $lr->path_id;
+        try {
+            $this->db->db_debug = FALSE;
+            if (!$this->session->userdata('logged_in')) {
+                echo json_encode(['ok' => false, 'msg' => 'Login required.']);
+                exit;
             }
-            // Update progress untuk setiap path
-            $this->load->model('Learning_path_model');
-            foreach ($lp_paths as $pid) {
-                $this->db->where('user_id', $user_id)->where('path_id', $pid);
-                $enr = $this->db->get('path_enrollments');
-                if ($enr !== FALSE && is_object($enr) && $enr->num_rows() > 0) {
-                    $this->Learning_path_model->update_progress($user_id, $pid);
+
+            $lesson_id = (int) $this->input->post('lesson_id');
+            $course_id = (int) $this->input->post('course_id');
+            if (!$lesson_id || !$course_id) {
+                echo json_encode(['ok' => false, 'msg' => 'Invalid request.']);
+                exit;
+            }
+
+            $user_id = $this->session->userdata('user_id');
+
+            if (!$this->Course_model->check_enrollment($user_id, $course_id)) {
+                echo json_encode(['ok' => false, 'msg' => 'Not enrolled.']);
+                exit;
+            }
+
+            $this->load->helper('gamification');
+            $this->load->helper('uuid');
+            $result = $this->Course_model->mark_lesson_completed($user_id, $lesson_id);
+            if (!$result) {
+                echo json_encode(['ok' => false, 'msg' => 'Gagal menyimpan.']);
+                exit;
+            }
+            award_points($user_id, 10, 'lesson_complete', $lesson_id);
+
+            $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
+            $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
+
+            $lessons = $this->Course_model->get_lessons_by_course($course_id);
+            $next_lesson_id = null;
+            $found = false;
+            foreach ($lessons as $lesson) {
+                if ($found) { $next_lesson_id = $lesson->id; break; }
+                if ($lesson->id == $lesson_id) { $found = true; }
+            }
+
+            $cert_msg = null;
+            if ($pct >= 100 && $next_lesson_id === null) {
+                $this->db->db_debug = FALSE;
+                $cert_result = $this->Certificate_model->issue_certificate($user_id, $course_id);
+                if ($cert_result) {
+                    award_points($user_id, 100, 'course_completed', $course_id);
+                    $cert_msg = t('Sertifikat telah diterbitkan!', 'Certificate issued!');
                 }
             }
-        }
-        $this->db->db_debug = TRUE;
-        $completed_lessons = $this->Course_model->get_completed_lessons($user_id, $course_id);
-        $pct = $this->Course_model->get_course_progress_percentage($user_id, $course_id);
 
-        $lessons = $this->Course_model->get_lessons_by_course($course_id);
-        $next_lesson_id = null;
-        $found = false;
-        foreach ($lessons as $lesson) {
-            if ($found) { $next_lesson_id = $lesson->id; break; }
-            if ($lesson->id == $lesson_id) { $found = true; }
+            while (ob_get_level()) ob_end_clean();
+            $this->output
+                ->set_content_type('application/json')
+                ->set_output(json_encode([
+                'ok' => true,
+                'completed' => $completed_lessons,
+                'pct' => $pct,
+                'next_lesson_id' => $next_lesson_id,
+                'next_lesson_encoded' => $next_lesson_id ? encode_id($next_lesson_id) : null,
+                'cert_msg' => $cert_msg,
+            ]))
+                ->_display();
+            exit;
+        } catch (Throwable $e) {
+            while (ob_get_level()) ob_end_clean();
+            echo json_encode(['ok' => false, 'msg' => $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine()]);
+            exit;
         }
-
-        $cert_msg = null;
-        if ($pct >= 100 && $next_lesson_id === null) {
-            $this->db->db_debug = FALSE;
-            $cert_result = $this->Certificate_model->issue_certificate($user_id, $course_id);
-            if ($cert_result) {
-                award_points($user_id, 100, 'course_completed', $course_id);
-                $cert_msg = t('Sertifikat telah diterbitkan!', 'Certificate issued!');
-            }
-            $this->db->db_debug = TRUE;
-        }
-
-        while (ob_get_level()) ob_end_clean();
-        $this->output
-            ->set_content_type('application/json')
-            ->set_output(json_encode([
-            'ok' => true,
-            'completed' => $completed_lessons,
-            'pct' => $pct,
-            'next_lesson_id' => $next_lesson_id,
-            'next_lesson_encoded' => $next_lesson_id ? encode_id($next_lesson_id) : null,
-            'cert_msg' => $cert_msg,
-        ]))
-            ->_display();
-        exit;
     }
 
     public function review($course_slug_or_id) {

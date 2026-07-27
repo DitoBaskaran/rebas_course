@@ -71,7 +71,7 @@
                                 <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; font-weight: 700; color: #1c1917; font-size: 0.82rem;">
                                     <?php echo htmlspecialchars($course->title); ?>
                                     <?php if ($course->featured): ?><i class="fas fa-star" style="color: #eab308; font-size: 0.6rem; margin-left: 0.25rem;"></i><?php endif; ?>
-                                    <?php if ($course->price == 0): ?><span class="px-2 py-1 rounded-pill fw-semibold ms-1" style="background: #f0fdfa; color: #14b8a6; font-size: 0.6rem;"><?php echo t('Gratis', 'Free'); ?></span><?php endif; ?>
+                                    <?php if ($course->price == 0): ?><span class="px-2 py-1 rounded-pill fw-semibold ms-1" style="background: #f0fdfa; color: #10b981; font-size: 0.6rem;"><?php echo t('Gratis', 'Free'); ?></span><?php endif; ?>
                                 </td>
                                 <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
                                     <span class="px-2 py-1 rounded-pill fw-semibold mb-1 d-inline-block" style="background: #fff7ed; color: #f97316; font-size: 0.6rem;"><?php echo content_type_label($course->content_type); ?></span>
@@ -81,7 +81,7 @@
                                 <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; color: #57534e; font-size: 0.78rem;"><?php echo htmlspecialchars($course->teacher_name); ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
                                     <?php if ($course->status === 'published'): ?>
-                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #14b8a6; font-size: 0.62rem;">
+                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f0fdfa; color: #10b981; font-size: 0.62rem;">
                                             <i class="fas fa-check-circle me-1" style="font-size: 0.5rem;"></i> <?php echo t('Published', 'Published'); ?>
                                         </span>
                                     <?php elseif ($course->status === 'draft'): ?>
@@ -95,7 +95,7 @@
                                     <?php endif; ?>
                                 </td>
                                 <td style="border-color: #f0eeeb; padding: 0.55rem 1rem; font-weight: 700; color: #1c1917; font-size: 0.8rem;">
-                                    <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span style="color: #14b8a6;">' . t('Gratis', 'Free') . '</span>'; ?>
+                                    <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span style="color: #10b981;">' . t('Gratis', 'Free') . '</span>'; ?>
                                 </td>
                                 <td style="border-color: #f0eeeb; padding: 0.55rem 1rem;">
                                     <div class="d-flex gap-1 justify-content-center">
@@ -154,7 +154,7 @@
                                 </p>
                                 <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
                                     <span class="fw-bold" style="color: #f97316; font-size: 0.82rem;">
-                                        <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span style="color: #14b8a6;">' . t('Gratis', 'Free') . '</span>'; ?>
+                                        <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : '<span style="color: #10b981;">' . t('Gratis', 'Free') . '</span>'; ?>
                                     </span>
                                     <div class="d-flex gap-1">
                                         <a href="<?php echo base_url('admin/edit_course/' . $course->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background: #f97316; color: #fff; font-size: 0.68rem;">

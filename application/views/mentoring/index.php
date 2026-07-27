@@ -5,7 +5,7 @@
             <span class="px-3 py-1 rounded-pill fw-semibold mb-3 d-inline-block" style="background: #111827; color: #fff; font-size: 0.72rem;">1-on-1 MENTORING</span>
             <h1 class="fw-extrabold mb-2" style="font-size: 1.6rem; letter-spacing: -0.02em; color: #111827;">
                 <?php echo t('Dapatkan Mentoring Karirmu Bersama', 'Get Career Mentoring With'); ?>
-                <br><span style="color: #eab308;"><?php echo t('Mentor Ahli Terpercaya', 'Trusted Expert Mentors'); ?></span>
+                <br><span style="color: #059669;"><?php echo t('Mentor Ahli Terpercaya', 'Trusted Expert Mentors'); ?></span>
             </h1>
             <p class="mb-3 mx-auto" style="color: #737373; font-size: 0.9rem; max-width: 500px;">
                 <?php echo t('Pilih mentor, jadwalkan sesi 1-on-1, dan mulai perjalanan karirmu.', 'Choose a mentor, schedule a 1-on-1 session, and start your career journey.'); ?>
@@ -20,15 +20,15 @@
         <!-- 3 Steps -->
         <div class="d-flex justify-content-center gap-3 flex-wrap mb-2">
             <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
-                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #eab308; color: #111827; font-size: 0.7rem;">1</div>
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #059669; color: #111827; font-size: 0.7rem;">1</div>
                 <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Jelajahi Mentor', 'Explore Mentors'); ?></span>
             </div>
             <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
-                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #eab308; color: #111827; font-size: 0.7rem;">2</div>
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #059669; color: #111827; font-size: 0.7rem;">2</div>
                 <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Pilih Jadwal', 'Choose Schedule'); ?></span>
             </div>
             <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
-                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #eab308; color: #111827; font-size: 0.7rem;">3</div>
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #059669; color: #111827; font-size: 0.7rem;">3</div>
                 <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Mentoring 1-on-1', '1-on-1 Mentoring'); ?></span>
             </div>
         </div>
@@ -96,7 +96,7 @@
                                         <h6 class="fw-bold mb-0 text-truncate" style="color: #111827; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
                                         <small class="fw-medium text-truncate d-block" style="color: #737373; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
                                         <div class="d-flex align-items-center gap-1 mt-1">
-                                            <i class="fas fa-star" style="color: #eab308; font-size: 0.6rem;"></i>
+                                            <i class="fas fa-star" style="color: #059669; font-size: 0.6rem;"></i>
                                             <span class="fw-bold" style="color: #111827; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
                                             <span style="color: #a3a3a3; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
                                         </div>
@@ -130,7 +130,7 @@
                                         <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
                                         <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
                                     </div>
-                                    <span style="color: #eab308; font-size: 0.78rem; font-weight: 600;">
+                                    <span style="color: #059669; font-size: 0.78rem; font-weight: 600;">
                                         <?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i>
                                     </span>
                                 </div>

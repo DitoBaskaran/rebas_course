@@ -16,7 +16,7 @@
             </h4>
         </div>
         <div>
-            <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #f97316; color: #fff; font-size: 0.8rem;">
+            <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #059669; color: #fff; font-size: 0.8rem;">
                 <i class="fas fa-search me-1"></i> <?php echo t('Cari Kelas', 'Find Courses'); ?>
             </a>
         </div>
@@ -26,8 +26,8 @@
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
             <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #fff7ed;">
-                    <i class="fas fa-book-open" style="color: #f97316; font-size: 0.85rem;"></i>
+                <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #f0fdfa;">
+                    <i class="fas fa-book-open" style="color: #059669; font-size: 0.85rem;"></i>
                 </div>
                 <div class="fw-bold" style="color: #1c1917; font-size: 1.1rem; line-height: 1;"><?php echo count($enrolled_courses); ?></div>
                 <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Kelas Aktif', 'Active Courses'); ?></small>
@@ -36,7 +36,7 @@
         <div class="col-6 col-md-3">
             <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
                 <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #f0fdfa;">
-                    <i class="fas fa-certificate" style="color: #14b8a6; font-size: 0.85rem;"></i>
+                    <i class="fas fa-certificate" style="color: #10b981; font-size: 0.85rem;"></i>
                 </div>
                 <div class="fw-bold" style="color: #1c1917; font-size: 1.1rem; line-height: 1;"><?php echo count($certificates); ?></div>
                 <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Sertifikat', 'Certificates'); ?></small>
@@ -53,8 +53,8 @@
         </div>
         <div class="col-6 col-md-3">
             <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #fff1f2;">
-                    <i class="fas fa-calendar-check" style="color: #f43f5e; font-size: 0.85rem;"></i>
+                <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #f0fdfa;">
+                    <i class="fas fa-calendar-check" style="color: #059669; font-size: 0.85rem;"></i>
                 </div>
                 <div class="fw-bold" style="color: #1c1917; font-size: 1.1rem; line-height: 1;"><?php echo count($mentoring_sessions ?? []); ?></div>
                 <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Mentoring', 'Mentoring'); ?></small>
@@ -67,7 +67,7 @@
     <div class="border rounded-3 mb-4" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
         <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
             <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #1c1917; font-size: 0.88rem;">
-                <i class="fas fa-route" style="color: #14b8a6; font-size: 0.75rem;"></i>
+                <i class="fas fa-route" style="color: #10b981; font-size: 0.75rem;"></i>
                 <?php echo t('Learning Paths', 'Learning Paths'); ?>
             </h6>
         </div>
@@ -80,7 +80,7 @@
                         </div>
                         <div class="d-flex align-items-center gap-2 flex-shrink-0" style="min-width: 130px;">
                             <div class="flex-fill rounded-pill overflow-hidden" style="height: 6px; background: #e7e5e4;">
-                                <div class="h-100 rounded-pill" style="width: <?php echo $lp->progress_pct; ?>%; background: linear-gradient(90deg, #f97316, #f43f5e);"></div>
+                                <div class="h-100 rounded-pill" style="width: <?php echo $lp->progress_pct; ?>%; background: #059669;"></div>
                             </div>
                             <span class="fw-bold" style="color: #1c1917; font-size: 0.75rem; min-width: 35px; text-align: right;"><?php echo $lp->progress_pct; ?>%</span>
                         </div>
@@ -98,10 +98,10 @@
             <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
                 <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
                     <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #1c1917; font-size: 0.88rem;">
-                        <i class="fas fa-book-open" style="color: #f97316; font-size: 0.75rem;"></i>
+                        <i class="fas fa-book-open" style="color: #059669; font-size: 0.75rem;"></i>
                         <?php echo t('Kelas Saya', 'My Courses'); ?>
                     </h6>
-                    <a href="<?php echo base_url('courses/mine'); ?>" class="fw-semibold text-decoration-none" style="color: #f97316; font-size: 0.75rem;">
+                    <a href="<?php echo base_url('courses/mine'); ?>" class="fw-semibold text-decoration-none" style="color: #059669; font-size: 0.75rem;">
                         <?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
                     </a>
                 </div>
@@ -113,7 +113,7 @@
                             <p style="color: #78716c; font-size: 0.8rem; margin-bottom: 0.75rem; max-width: 280px; margin-left: auto; margin-right: auto;">
                                 <?php echo t('Mulai perjalanan belajarmu dengan mendaftar ke kelas yang tersedia.', 'Start your learning journey by enrolling in available courses.'); ?>
                             </p>
-                            <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #f97316; color: #fff; font-size: 0.8rem;">
+                            <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #059669; color: #fff; font-size: 0.8rem;">
                                 <i class="fas fa-search me-1"></i> <?php echo t('Jelajahi Konten', 'Explore Content'); ?>
                             </a>
                         </div>
@@ -128,14 +128,14 @@
                                         </h6>
                                         <div class="d-flex align-items-center gap-2">
                                             <div class="flex-fill rounded-pill overflow-hidden" style="height: 4px; background: #e7e5e4;">
-                                                <div class="h-100 rounded-pill" style="width: <?php echo $course->progress_pct ?? 0; ?>%; background: linear-gradient(90deg, #f97316, #f43f5e);"></div>
+                                                <div class="h-100 rounded-pill" style="width: <?php echo $course->progress_pct ?? 0; ?>%; background: #059669;"></div>
                                             </div>
                                             <span class="fw-bold" style="color: #1c1917; font-size: 0.7rem; min-width: 30px; text-align: right;">
                                                 <?php echo $course->progress_pct ?? 0; ?>%
                                             </span>
                                         </div>
                                     </div>
-                                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0" style="background: #f97316; color: #fff; font-size: 0.72rem;">
+                                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0" style="background: #059669; color: #fff; font-size: 0.72rem;">
                                         <?php echo t('Belajar', 'Learn'); ?>
                                     </a>
                                 </div>
@@ -161,7 +161,7 @@
                     <?php if (empty($upcoming_sems)): ?>
                         <p style="color: #78716c; font-size: 0.78rem; margin-bottom: 0;">
                             <?php echo t('Belum ada seminar.', 'No seminars yet.'); ?>
-                            <a href="<?php echo base_url('seminars'); ?>" style="color: #f97316; font-weight: 600; text-decoration: none;"><?php echo t('Cari Seminar', 'Find Seminars'); ?></a>
+                            <a href="<?php echo base_url('seminars'); ?>" style="color: #059669; font-weight: 600; text-decoration: none;"><?php echo t('Cari Seminar', 'Find Seminars'); ?></a>
                         </p>
                     <?php else: ?>
                         <div class="d-flex flex-column gap-2">
@@ -180,7 +180,7 @@
                                 </div>
                             <?php endforeach; ?>
                             <?php if (count($upcoming_sems) < count($registered_seminars)): ?>
-                                <a href="<?php echo base_url('seminars/mine'); ?>" class="fw-semibold text-decoration-none text-center pt-1" style="color: #f97316; font-size: 0.72rem;">
+                                <a href="<?php echo base_url('seminars/mine'); ?>" class="fw-semibold text-decoration-none text-center pt-1" style="color: #059669; font-size: 0.72rem;">
                                     <?php echo t('Lihat semua', 'View all'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
                                 </a>
                             <?php endif; ?>
@@ -193,7 +193,7 @@
             <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
                 <div class="p-3" style="border-bottom: 1px solid #f0eeeb;">
                     <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #1c1917; font-size: 0.88rem;">
-                        <i class="fas fa-award" style="color: #14b8a6; font-size: 0.75rem;"></i>
+                        <i class="fas fa-award" style="color: #10b981; font-size: 0.75rem;"></i>
                         <?php echo t('Sertifikat', 'Certificates'); ?>
                     </h6>
                 </div>
@@ -202,14 +202,14 @@
                         <p style="color: #78716c; font-size: 0.78rem; margin-bottom: 0;">
                             <?php echo t('Belum ada sertifikat.', 'No certificates yet.'); ?>
                             <?php if (!empty($enrolled_courses)): ?>
-                                <a href="<?php echo base_url('courses/mine'); ?>" style="color: #f97316; font-weight: 600; text-decoration: none;"><?php echo t('Selesaikan kelas', 'Complete a course'); ?></a>
+                                <a href="<?php echo base_url('courses/mine'); ?>" style="color: #059669; font-weight: 600; text-decoration: none;"><?php echo t('Selesaikan kelas', 'Complete a course'); ?></a>
                             <?php endif; ?>
                         </p>
                     <?php else: ?>
                         <div class="d-flex flex-wrap gap-2">
                             <?php foreach ($certificates as $cert): ?>
                                 <a href="<?php echo base_url('certificate/view/' . encode_id($cert->id)); ?>" class="text-decoration-none d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="border: 1px solid #e7e5e4; color: #1c1917; font-size: 0.75rem; font-weight: 600;">
-                                    <i class="fas fa-file-alt" style="color: #14b8a6; font-size: 0.65rem;"></i>
+                                    <i class="fas fa-file-alt" style="color: #10b981; font-size: 0.65rem;"></i>
                                     <?php echo htmlspecialchars($cert->title); ?>
                                 </a>
                             <?php endforeach; ?>
@@ -227,10 +227,10 @@
             <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
                 <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
                     <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #1c1917; font-size: 0.88rem;">
-                        <i class="fas fa-calendar-check" style="color: #f43f5e; font-size: 0.75rem;"></i>
+                        <i class="fas fa-calendar-check" style="color: #059669; font-size: 0.75rem;"></i>
                         <?php echo t('Sesi Mentoring', 'Mentoring Sessions'); ?>
                     </h6>
-                    <a href="<?php echo base_url('mentoring'); ?>" class="fw-semibold text-decoration-none" style="color: #f97316; font-size: 0.75rem;">
+                    <a href="<?php echo base_url('mentoring'); ?>" class="fw-semibold text-decoration-none" style="color: #059669; font-size: 0.75rem;">
                         <?php echo t('Cari Mentor', 'Find Mentor'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
                     </a>
                 </div>
@@ -240,7 +240,7 @@
                     <?php if (empty($upcoming)): ?>
                         <p style="color: #78716c; font-size: 0.78rem; margin-bottom: 0;">
                             <?php echo t('Tidak ada sesi mendatang.', 'No upcoming sessions.'); ?>
-                            <a href="<?php echo base_url('mentoring'); ?>" style="color: #f97316; font-weight: 600; text-decoration: none;"><?php echo t('Temukan mentor', 'Find a mentor'); ?></a>
+                            <a href="<?php echo base_url('mentoring'); ?>" style="color: #059669; font-weight: 600; text-decoration: none;"><?php echo t('Temukan mentor', 'Find a mentor'); ?></a>
                         </p>
                     <?php else: ?>
                         <div class="d-flex flex-column gap-2">
@@ -253,7 +253,7 @@
                                             <small style="color: #a8a29e; font-size: 0.65rem;"><?php echo date('d M H:i', strtotime($s->scheduled_at)); ?></small>
                                         </div>
                                     </div>
-                                    <span class="px-2 py-1 rounded-pill fw-medium" style="font-size: 0.6rem; background: <?php echo $s->status === 'confirmed' ? '#f0fdfa' : '#fff7ed'; ?>; color: <?php echo $s->status === 'confirmed' ? '#14b8a6' : '#f97316'; ?>;">
+                                    <span class="px-2 py-1 rounded-pill fw-medium" style="font-size: 0.6rem; background: <?php echo $s->status === 'confirmed' ? '#f0fdfa' : '#f0fdfa'; ?>; color: <?php echo $s->status === 'confirmed' ? '#10b981' : '#059669'; ?>;">
                                         <?php echo $s->status === 'confirmed' ? t('Dikonfirmasi', 'Confirmed') : t('Menunggu', 'Pending'); ?>
                                     </span>
                                 </div>
@@ -273,7 +273,7 @@
                         <i class="fas fa-receipt" style="color: #78716c; font-size: 0.75rem;"></i>
                         <?php echo t('Transaksi Terakhir', 'Recent Transactions'); ?>
                     </h6>
-                    <a href="<?php echo base_url('transactions/history'); ?>" class="fw-semibold text-decoration-none" style="color: #f97316; font-size: 0.75rem;">
+                    <a href="<?php echo base_url('transactions/history'); ?>" class="fw-semibold text-decoration-none" style="color: #059669; font-size: 0.75rem;">
                         <?php echo t('Riwayat', 'History'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
                     </a>
                 </div>
@@ -293,8 +293,8 @@
                                     </div>
                                 </div>
                                 <span class="px-2 py-1 rounded-pill fw-semibold" style="font-size: 0.6rem; 
-                                    background: <?php echo $tx->status === 'approved' ? '#f0fdfa' : ($tx->status === 'pending' ? '#fff7ed' : '#fef2f2'); ?>;
-                                    color: <?php echo $tx->status === 'approved' ? '#14b8a6' : ($tx->status === 'pending' ? '#f97316' : '#f43f5e'); ?>;">
+                                    background: <?php echo $tx->status === 'approved' ? '#f0fdfa' : ($tx->status === 'pending' ? '#f0fdfa' : '#fef2f2'); ?>;
+                                    color: <?php echo $tx->status === 'approved' ? '#10b981' : ($tx->status === 'pending' ? '#059669' : '#059669'); ?>;">
                                     <?php echo $tx->status === 'approved' ? t('Berhasil', 'Success') : ($tx->status === 'pending' ? t('Pending', 'Pending') : t('Ditolak', 'Failed')); ?>
                                 </span>
                             </div>

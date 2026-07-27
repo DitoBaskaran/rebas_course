@@ -69,7 +69,7 @@ class Transactions extends CI_Controller {
         foreach ($rows as $tx) {
             $status_badge = '';
             if ($tx->status === 'approved') {
-                $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#f0fdfa;color:#14b8a6;font-size:0.65rem;">' . t('Berhasil', 'Success') . '</span>';
+                $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#ecfdf5;color:#10b981;font-size:0.65rem;">' . t('Berhasil', 'Success') . '</span>';
             } elseif ($tx->status === 'pending') {
                 $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fff7ed;color:#f97316;font-size:0.65rem;">' . t('Menunggu', 'Pending') . '</span>';
             } else {

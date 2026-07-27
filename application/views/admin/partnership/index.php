@@ -32,7 +32,7 @@
         array(
             'key' => 'business_plan',
             'icon' => 'bar-chart-3',
-            'color' => '#0f766e',
+            'color' => '#047857',
             'title_id' => 'Rencana Bisnis',
             'title_en' => 'Business Plan',
             'desc_id' => 'Rencana bisnis lengkap: analisis pasar, strategi, proyeksi keuangan 5 tahun, analisis risiko, dan milestone implementasi.',

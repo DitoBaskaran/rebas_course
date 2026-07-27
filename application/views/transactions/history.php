@@ -82,7 +82,7 @@
 }
 .dataTables_wrapper .dataTables_length select:hover { border-color: #d6d3d1; }
 .dataTables_wrapper .dataTables_length select:focus {
-    border-color: #f97316;
+    border-color: #059669;
     outline: none;
     box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
 }
@@ -97,7 +97,7 @@
 }
 .dataTables_wrapper .dataTables_filter input:hover { border-color: #d6d3d1; }
 .dataTables_wrapper .dataTables_filter input:focus {
-    border-color: #f97316;
+    border-color: #059669;
     outline: none;
     box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
 }
@@ -122,8 +122,8 @@ table.dataTable thead th.sorting_desc:after {
     font-size: 0.55rem;
     opacity: 0.4;
 }
-table.dataTable thead th.sorting_asc:after { opacity: 0.7; color: #f97316; }
-table.dataTable thead th.sorting_desc:after { opacity: 0.7; color: #f97316; }
+table.dataTable thead th.sorting_asc:after { opacity: 0.7; color: #059669; }
+table.dataTable thead th.sorting_desc:after { opacity: 0.7; color: #059669; }
 table.dataTable tbody td {
     padding: 0.65rem 1rem;
     border-bottom: 1px solid #f0eeeb;
@@ -174,8 +174,8 @@ table.dataTable.no-footer { border-bottom: none; }
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: #f97316 !important;
-    border-color: #f97316 !important;
+    background: #059669 !important;
+    border-color: #059669 !important;
     color: #fff !important;
     box-shadow: 0 2px 8px rgba(249,115,22,0.25) !important;
 }
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         order: [[4, 'desc']],
         language: {
-            processing: "<div style='display:flex;align-items:center;gap:0.5rem;'><div style='width:16px;height:16px;border:2px solid #e7e5e4;border-top-color:#f97316;border-radius:50%;animation:dtSpin 0.6s linear infinite;'></div> <?php echo t('Memuat data...', 'Loading...'); ?></div>",
+            processing: "<div style='display:flex;align-items:center;gap:0.5rem;'><div style='width:16px;height:16px;border:2px solid #e7e5e4;border-top-color:#059669;border-radius:50%;animation:dtSpin 0.6s linear infinite;'></div> <?php echo t('Memuat data...', 'Loading...'); ?></div>",
             lengthMenu: "<?php echo t('Tampilkan _MENU_', 'Show _MENU_'); ?>",
             zeroRecords: "<div style='padding:2rem 0;'><div style='font-size:2rem;color:#d6d3d1;margin-bottom:0.5rem;'><i class='fas fa-receipt'></i></div><div><?php echo t('Belum ada transaksi.', 'No transactions found.'); ?></div></div>",
             info: "<?php echo t('Menampilkan _START_–_END_ dari _TOTAL_ transaksi', 'Showing _START_–_END_ of _TOTAL_ transactions'); ?>",

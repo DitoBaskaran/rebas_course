@@ -12,8 +12,8 @@
     <div class="border rounded-3 p-4 mb-4" style="border-color: #e7e5e4; border-radius: 12px;">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div class="d-flex align-items-center gap-3">
-                <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 44px; height: 44px; background: #fff7ed;">
-                    <i class="fas fa-receipt" style="color: #f97316; font-size: 1rem;"></i>
+                <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 44px; height: 44px; background: #f0fdfa;">
+                    <i class="fas fa-receipt" style="color: #059669; font-size: 1rem;"></i>
                 </div>
                 <div>
                     <h5 class="fw-bold mb-0" style="color: #1c1917; font-size: 1rem;">
@@ -24,15 +24,15 @@
             </div>
             <div>
                 <?php if ($transaction->status === 'approved'): ?>
-                    <span class="px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center" style="background: #f0fdfa; color: #14b8a6; font-size: 0.75rem;">
+                    <span class="px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center" style="background: #f0fdfa; color: #10b981; font-size: 0.75rem;">
                         <i class="fas fa-check-circle me-1"></i> <?php echo t('Berhasil', 'Success'); ?>
                     </span>
                 <?php elseif ($transaction->status === 'pending'): ?>
-                    <span class="px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center" style="background: #fff7ed; color: #f97316; font-size: 0.75rem;">
+                    <span class="px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center" style="background: #f0fdfa; color: #059669; font-size: 0.75rem;">
                         <i class="fas fa-clock me-1"></i> <?php echo t('Menunggu', 'Pending'); ?>
                     </span>
                 <?php else: ?>
-                    <span class="px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center" style="background: #fef2f2; color: #f43f5e; font-size: 0.75rem;">
+                    <span class="px-3 py-2 rounded-pill fw-semibold d-inline-flex align-items-center" style="background: #fef2f2; color: #059669; font-size: 0.75rem;">
                         <i class="fas fa-times-circle me-1"></i> <?php echo t('Ditolak', 'Rejected'); ?>
                     </span>
                 <?php endif; ?>
@@ -67,7 +67,7 @@
                     <?php if ($transaction->discount_amount > 0): ?>
                     <div class="d-flex justify-content-between">
                         <span style="color: #78716c;"><?php echo t('Diskon', 'Discount'); ?></span>
-                        <span class="fw-semibold" style="color: #14b8a6;">- Rp <?php echo number_format($transaction->discount_amount, 0, ',', '.'); ?></span>
+                        <span class="fw-semibold" style="color: #10b981;">- Rp <?php echo number_format($transaction->discount_amount, 0, ',', '.'); ?></span>
                     </div>
                     <?php endif; ?>
                 </div>
@@ -103,7 +103,7 @@
                     <?php if ($transaction->payment_proof): ?>
                     <div class="d-flex justify-content-between">
                         <span style="color: #78716c;"><?php echo t('Bukti Bayar', 'Proof'); ?></span>
-                        <a href="<?php echo base_url('uploads/proofs/' . $transaction->payment_proof); ?>" target="_blank" class="fw-semibold" style="color: #f97316; text-decoration: none; font-size: 0.78rem;">
+                        <a href="<?php echo base_url('uploads/proofs/' . $transaction->payment_proof); ?>" target="_blank" class="fw-semibold" style="color: #059669; text-decoration: none; font-size: 0.78rem;">
                             <i class="fas fa-external-link-alt me-1"></i> <?php echo t('Lihat', 'View'); ?>
                         </a>
                     </div>
@@ -123,8 +123,8 @@
             <?php if (!empty($item->thumbnail) && $item->thumbnail !== 'default_course.png'): ?>
                 <img src="<?php echo base_url('uploads/courses/' . $item->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=80&auto=format&fit=crop&q=60';" alt="" class="rounded-2 flex-shrink-0" style="width: 60px; height: 44px; object-fit: cover; border: 1px solid #e7e5e4;">
             <?php else: ?>
-                <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 44px; background: #fff7ed;">
-                    <i class="fas fa-book-open" style="color: #f97316; font-size: 0.85rem;"></i>
+                <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 44px; background: #f0fdfa;">
+                    <i class="fas fa-book-open" style="color: #059669; font-size: 0.85rem;"></i>
                 </div>
             <?php endif; ?>
             <div class="flex-fill min-w-0">
@@ -141,15 +141,15 @@
 
     <!-- Pending Payment -->
     <?php if ($transaction->status === 'pending'): ?>
-    <div class="border rounded-3 p-3 mb-4" style="border-color: #fbbf24; background: #fff7ed; border-radius: 12px;">
+    <div class="border rounded-3 p-3 mb-4" style="border-color: #059669; background: #f0fdfa; border-radius: 12px;">
         <div class="d-flex align-items-center gap-2 mb-2">
-            <i class="fas fa-clock" style="color: #f97316; font-size: 0.8rem;"></i>
+            <i class="fas fa-clock" style="color: #059669; font-size: 0.8rem;"></i>
             <span class="fw-bold" style="color: #1c1917; font-size: 0.85rem;"><?php echo t('Pembayaran Menunggu', 'Payment Pending'); ?></span>
         </div>
         <p style="color: #57534e; font-size: 0.8rem; margin-bottom: 0.75rem;">
             <?php echo t('Transaksi ini belum dibayar. Silakan lengkapi pembayaran untuk mengakses konten.', 'This transaction is waiting for payment. Please complete the payment to access the content.'); ?>
         </p>
-        <a href="<?php echo base_url('checkout/confirm/' . $transaction->uuid); ?>" class="btn px-4 py-2 fw-bold rounded-pill d-inline-flex align-items-center gap-2" style="background: #f97316; color: #fff; font-size: 0.8rem;">
+        <a href="<?php echo base_url('checkout/confirm/' . $transaction->uuid); ?>" class="btn px-4 py-2 fw-bold rounded-pill d-inline-flex align-items-center gap-2" style="background: #059669; color: #fff; font-size: 0.8rem;">
             <i class="fas fa-credit-card"></i> <?php echo t('Bayar Sekarang', 'Pay Now'); ?>
         </a>
     </div>
@@ -159,13 +159,13 @@
     <?php if ($transaction->status === 'rejected'): ?>
     <div class="border rounded-3 p-3" style="border-color: #fca5a5; background: #fef2f2; border-radius: 12px;">
         <div class="d-flex align-items-center gap-2 mb-2">
-            <i class="fas fa-exclamation-triangle" style="color: #f43f5e; font-size: 0.8rem;"></i>
+            <i class="fas fa-exclamation-triangle" style="color: #059669; font-size: 0.8rem;"></i>
             <span class="fw-bold" style="color: #1c1917; font-size: 0.85rem;"><?php echo t('Transaksi Ditolak', 'Transaction Rejected'); ?></span>
         </div>
         <p style="color: #57534e; font-size: 0.8rem; margin-bottom: 0.75rem;">
             <?php echo t('Transaksi ini ditolak. Silakan hubungi admin jika ada pertanyaan.', 'This transaction was rejected. Please contact admin if you have questions.'); ?>
         </p>
-        <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="border: 1.5px solid #f43f5e; color: #f43f5e; background: transparent; font-size: 0.8rem;">
+        <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="border: 1.5px solid #059669; color: #059669; background: transparent; font-size: 0.8rem;">
             <i class="fas fa-arrow-left me-1"></i> <?php echo t('Kembali Ke Katalog', 'Back to Catalog'); ?>
         </a>
     </div>

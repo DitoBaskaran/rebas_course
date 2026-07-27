@@ -259,25 +259,39 @@ class Course_model extends CI_Model {
     }
 
     private function _update_learning_path_progress($user_id, $lesson_id) {
-        $lesson = $this->db->select('course_id')->from('lessons')->where('id', $lesson_id)->get()->row();
-        if (!$lesson) return;
-        $course_id = $lesson->course_id;
-        if (!$course_id) return;
-        $lp_paths = $this->db->select('DISTINCT path_id')
-            ->from('learning_path_contents')
-            ->where('course_id', $course_id)
-            ->get()->result();
+        $row = $this->db->query("SELECT course_id FROM lessons WHERE id = ?", [$lesson_id])->row();
+        if (!$row || !isset($row->course_id)) return;
+        $course_id = $row->course_id;
+
+        $lp_paths = $this->db->query("SELECT DISTINCT path_id FROM learning_path_contents WHERE course_id = ?", [$course_id])->result();
         if (!$lp_paths) return;
+
         $CI =& get_instance();
         $CI->load->model('Learning_path_model');
-        $enrollments = $this->db->from('path_enrollments')
-            ->where('user_id', $user_id)
-            ->where_in('path_id', array_column($lp_paths, 'path_id'))
-            ->get()->result();
-        $enrolled_ids = array_map(function($e) { return $e->path_id; }, $enrollments);
+
+        $path_ids = [];
+        $params = [];
         foreach ($lp_paths as $lr) {
-            if (in_array($lr->path_id, $enrolled_ids)) {
-                $CI->Learning_path_model->update_progress($user_id, $lr->path_id);
+            $path_ids[] = (int)$lr->path_id;
+            $params[] = (int)$lr->path_id;
+        }
+        if (empty($path_ids)) return;
+
+        $placeholders = implode(',', array_fill(0, count($path_ids), '?'));
+        $enrollments = $this->db->query(
+            "SELECT path_id FROM path_enrollments WHERE user_id = ? AND path_id IN ($placeholders)",
+            array_merge([$user_id], $params)
+        )->result();
+
+        if (!$enrollments) return;
+        $enrolled_ids = [];
+        foreach ($enrollments as $e) {
+            $enrolled_ids[] = (int)$e->path_id;
+        }
+
+        foreach ($path_ids as $pid) {
+            if (in_array($pid, $enrolled_ids, true)) {
+                $CI->Learning_path_model->update_progress($user_id, $pid);
             }
         }
     }

@@ -142,7 +142,7 @@
                         <?php echo t('Materi Selesai', 'Lesson Completed'); ?>
                     </div>
                 <?php else: ?>
-                    <a href="#" class="lesson-complete-btn d-inline-flex align-items-center gap-2 px-5 py-3 rounded-pill fw-bold text-decoration-none" style="background: linear-gradient(135deg, #eab308 0%, #f59e0b 100%); color: #111827; font-size: 0.95rem; box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(234, 179, 8, 0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(234, 179, 8, 0.4)'" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
+                    <a href="#" class="lesson-complete-btn d-inline-flex align-items-center gap-2 px-5 py-3 rounded-pill fw-bold text-decoration-none" style="background: #059669; color: #111827; font-size: 0.95rem; box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(234, 179, 8, 0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(234, 179, 8, 0.4)'" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
                         <i class="fas fa-check-circle" style="font-size: 1.1rem;"></i>
                         <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
                     </a>
@@ -221,7 +221,7 @@
                 const formData = new FormData();
                 formData.append('lesson_id', lessonId);
                 formData.append('course_id', courseId);
-                formData.append('csrf_test_name', '<?php echo $this->security->get_csrf_hash(); ?>');
+                formData.append('csrf_test_name', <?php echo json_encode(html_entity_decode($this->security->get_csrf_hash())); ?>);
 
                 fetch('<?php echo base_url('courses/ajax_complete_lesson'); ?>', {
                     method: 'POST',
@@ -339,6 +339,4 @@
     </div>
 </div>
 
-<!-- Style for rich text content -->
-<script>
 

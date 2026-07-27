@@ -130,6 +130,6 @@
 <?php endif; endforeach; ?>
 
 <style>
-    input[name="rating"]:checked + i { color: #eab308 !important; }
+    input[name="rating"]:checked + i { color: #059669 !important; }
     input[name="rating"]:not(:checked) + i { color: #d4d4d4; }
 </style>

@@ -110,12 +110,10 @@
     var navbar = document.getElementById('mainNavbar');
     if (navbar) {
       function updateNavbar() {
-        if (window.scrollY > 20) {
-          navbar.classList.add('scrolled');
-          navbar.classList.remove('bg-white', 'border-bottom', 'border-light');
+        if (window.scrollY > 15) {
+          navbar.classList.add('is-scrolled');
         } else {
-          navbar.classList.remove('scrolled');
-          navbar.classList.add('bg-white', 'border-bottom', 'border-light');
+          navbar.classList.remove('is-scrolled');
         }
       }
       window.addEventListener('scroll', updateNavbar, { passive: true });
