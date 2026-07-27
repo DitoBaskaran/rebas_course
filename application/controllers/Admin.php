@@ -1083,8 +1083,20 @@ class Admin extends CI_Controller {
         $role_filter = $this->input->get('role');
         $status = $this->input->get('status');
         $search = $this->input->get('search');
-        $is_teacher_filter = $this->input->get('is_teacher');
-        $is_mentor_filter = $this->input->get('is_mentor');
+
+        // Map old role filter values to new flag-based system
+        $is_teacher_filter = null;
+        $is_mentor_filter = null;
+        if ($role_filter === 'teacher') {
+            $is_teacher_filter = 1;
+            $role_filter = null;
+        } elseif ($role_filter === 'mentor') {
+            $is_mentor_filter = 1;
+            $role_filter = null;
+        } elseif ($role_filter === 'student') {
+            $role_filter = 'student';
+        }
+
         $data['users'] = $this->User_model->get_filtered($role_filter, $status, $search, 50, 0, $is_teacher_filter, $is_mentor_filter);
         $data['total'] = $this->User_model->count_all($role_filter, $status, $search, $is_teacher_filter, $is_mentor_filter);
         $data['active_page'] = 'users';
