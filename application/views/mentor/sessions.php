@@ -79,7 +79,7 @@
 <div class="modal fade" id="rateModal_<?php echo $s->id; ?>" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content border-0 shadow-lg rounded-4">
-            <form method="post" action="<?php echo base_url('mentor/rate-user/' . encode_id($s->id)); ?>">
+            <?php echo form_open('mentor/rate-user/' . encode_id($s->id)); ?>
                 <div class="modal-header border-0 pb-0">
                     <h6 class="fw-bold"><?php echo t('Nilai User', 'Rate User'); ?></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
@@ -107,7 +107,7 @@
                 <div class="modal-footer border-0 pt-0">
                     <button type="submit" class="btn btn-dark rounded-pill px-5 fw-semibold w-100"><?php echo t('Kirim', 'Submit'); ?></button>
                 </div>
-            </form>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>

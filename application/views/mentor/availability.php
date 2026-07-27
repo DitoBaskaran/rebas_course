@@ -12,7 +12,7 @@
             <div class="card border-0 shadow-sm rounded-4">
                 <div class="card-body p-4">
                     <h6 class="fw-bold mb-4"><?php echo t('Tambah Slot Baru', 'Add New Slot'); ?></h6>
-                    <form method="post" action="<?php echo base_url('mentor/add-slot'); ?>">
+                    <?php echo form_open('mentor/add-slot'); ?>
                         <div class="mb-3">
                             <label class="form-label small fw-bold"><?php echo t('Hari', 'Day'); ?></label>
                             <select name="day_of_week" class="form-select">
@@ -40,7 +40,7 @@
                         <button type="submit" class="btn btn-dark rounded-pill px-5 fw-semibold w-100">
                             <i data-lucide="plus" style="width:16px;height:16px;" class="me-1"></i> <?php echo t('Tambah Slot', 'Add Slot'); ?>
                         </button>
-                    </form>
+                    <?php echo form_close(); ?>
                 </div>
             </div>
         </div>

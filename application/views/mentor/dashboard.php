@@ -114,11 +114,11 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <label class="form-label small fw-bold"><?php echo t('Judul/Gelar', 'Title'); ?></label>
-                        <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($mentor->title); ?>" required>
+                        <input type="text" name="title" class="form-control" value="<?php echo htmlspecialchars($mentor->title ?? ''); ?>" required>
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small fw-bold">Title (EN)</label>
-                        <input type="text" name="title_en" class="form-control" value="<?php echo htmlspecialchars($mentor->title_en); ?>">
+                        <input type="text" name="title_en" class="form-control" value="<?php echo htmlspecialchars($mentor->title_en ?? ''); ?>">
                     </div>
                     <div class="col-md-6">
                         <label class="form-label small fw-bold"><?php echo t('Bio', 'Bio'); ?></label>
@@ -130,11 +130,11 @@
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small fw-bold"><?php echo t('Durasi Tersedia', 'Available Durations'); ?></label>
-                        <input type="text" name="durations_available" class="form-control" value="<?php echo htmlspecialchars($mentor->durations_available); ?>" placeholder="15,30,45,60">
+                        <input type="text" name="durations_available" class="form-control" value="<?php echo htmlspecialchars($mentor->durations_available ?? ''); ?>" placeholder="15,30,45,60">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label small fw-bold"><?php echo t('Platform Meeting', 'Meeting Platforms'); ?></label>
-                        <input type="text" name="meeting_platforms" class="form-control" value="<?php echo htmlspecialchars($mentor->meeting_platforms); ?>" placeholder="zoom,gmeet,whatsapp">
+                        <input type="text" name="meeting_platforms" class="form-control" value="<?php echo htmlspecialchars($mentor->meeting_platforms ?? ''); ?>" placeholder="zoom,gmeet,whatsapp">
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-dark rounded-pill px-5 fw-semibold"><?php echo t('Simpan', 'Save'); ?></button>
