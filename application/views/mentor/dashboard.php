@@ -4,9 +4,16 @@
             <h4 class="fw-extrabold mb-1"><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></h4>
             <p class="text-secondary small mb-0"><?php echo t('Selamat datang, ' . $this->session->userdata('name'), 'Welcome, ' . $this->session->userdata('name')); ?></p>
         </div>
-        <a href="<?php echo base_url('mentor/availability'); ?>" class="btn btn-dark rounded-pill px-4 fw-semibold shadow-sm">
-            <i data-lucide="calendar" style="width:16px;height:16px;" class="me-1"></i> <?php echo t('Atur Jadwal', 'Set Schedule'); ?>
-        </a>
+        <div class="d-flex gap-2">
+            <?php if ($this->session->userdata('is_teacher')): ?>
+            <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn btn-outline-dark rounded-pill px-3 fw-semibold shadow-sm">
+                <i data-lucide="layout-dashboard" style="width:16px;height:16px;" class="me-1"></i> <?php echo t('Panel Admin', 'Admin Panel'); ?>
+            </a>
+            <?php endif; ?>
+            <a href="<?php echo base_url('mentor/availability'); ?>" class="btn btn-dark rounded-pill px-4 fw-semibold shadow-sm">
+                <i data-lucide="calendar" style="width:16px;height:16px;" class="me-1"></i> <?php echo t('Atur Jadwal', 'Set Schedule'); ?>
+            </a>
+        </div>
     </div>
 
     <!-- Stats -->

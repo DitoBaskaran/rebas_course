@@ -99,10 +99,20 @@
                             <i class="fas fa-chevron-down fe-chevron"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end fe-dropdown">
-                            <?php if ($this->session->userdata('role') === 'admin' || $this->session->userdata('is_teacher') || $this->session->userdata('is_mentor')): ?>
+                            <?php
+                                $_role_admin = $this->session->userdata('role') === 'admin';
+                                $_is_teacher = $this->session->userdata('is_teacher');
+                                $_is_mentor = $this->session->userdata('is_mentor');
+                            ?>
+                            <?php if ($_role_admin || $_is_teacher): ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('admin/dashboard'); ?>"><i class="fas fa-th-large me-2" style="width:14px;opacity:.5;"></i><?php echo t('Panel Admin', 'Admin Panel'); ?></a></li>
+                            <?php elseif ($_is_mentor): ?>
+                                <li><a class="dropdown-item" href="<?php echo base_url('mentor'); ?>"><i class="fas fa-calendar-check me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></a></li>
                             <?php else: ?>
                                 <li><a class="dropdown-item" href="<?php echo base_url('dashboard'); ?>"><i class="fas fa-th-large me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard', 'Dashboard'); ?></a></li>
+                            <?php endif; ?>
+                            <?php if (($_role_admin || $_is_teacher) && $_is_mentor): ?>
+                                <li><a class="dropdown-item" href="<?php echo base_url('mentor'); ?>"><i class="fas fa-calendar-check me-2" style="width:14px;opacity:.5;"></i><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></a></li>
                             <?php endif; ?>
                             <li><a class="dropdown-item" href="<?php echo base_url('profile'); ?>"><i class="fas fa-user me-2" style="width:14px;opacity:.5;"></i><?php echo t('Profil', 'Profile'); ?></a></li>
                             <li><div class="fe-dropdown-divider dropdown-divider"></div></li>
@@ -133,10 +143,13 @@
                     <div style="font-size:0.8125rem;font-weight:600;color:#171717;"><?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?></div>
                     <div style="font-size:0.7rem;color:#a3a3a3;text-transform:capitalize;">
                         <?php
-                            $_role = $this->session->userdata('role');
-                            if ($_role === 'admin') echo 'Admin';
-                            elseif ($this->session->userdata('is_teacher')) echo 'Teacher';
-                            elseif ($this->session->userdata('is_mentor')) echo 'Mentor';
+                            $_lbl_role = $this->session->userdata('role');
+                            $_lbl_is_teacher = $this->session->userdata('is_teacher');
+                            $_lbl_is_mentor = $this->session->userdata('is_mentor');
+                            if ($_lbl_role === 'admin') echo 'Admin';
+                            elseif ($_lbl_is_teacher && $_lbl_is_mentor) echo 'Teacher & Mentor';
+                            elseif ($_lbl_is_teacher) echo 'Teacher';
+                            elseif ($_lbl_is_mentor) echo 'Mentor';
                             else echo 'Student';
                         ?>
                     </div>

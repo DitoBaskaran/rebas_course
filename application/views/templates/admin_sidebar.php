@@ -85,6 +85,11 @@
     <a class="nav-link <?php echo $active_page === 'affiliate' ? 'active' : ''; ?>" href="<?php echo base_url('affiliate'); ?>">
         <i data-lucide="gift"></i> <span><?php echo t('Affiliate', 'Affiliate'); ?></span>
     </a>
+    <?php if ($this->session->userdata('is_mentor')): ?>
+    <a class="nav-link" href="<?php echo base_url('mentor'); ?>">
+        <i data-lucide="calendar-check"></i> <span><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></span>
+    </a>
+    <?php endif; ?>
 
     <button class="sidebar-collapse-btn" title="Collapse sidebar">
         <i data-lucide="chevron-left" style="width:18px;height:18px;"></i>
