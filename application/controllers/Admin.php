@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Admin extends CI_Controller {
+class Admin extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -1160,8 +1160,18 @@ class Admin extends CI_Controller {
             $this->session->set_flashdata('error', t('Akses ditolak.', 'Access denied.'));
             redirect('admin/dashboard');
         }
+        if ((int)$id === (int)$this->session->userdata('user_id')) {
+            $this->session->set_flashdata('error', t('Tidak bisa menonaktifkan akun sendiri.', 'You cannot disable your own account.'));
+            redirect('admin/users');
+        }
         $this->load->model('User_model');
         $this->User_model->update_user($id, array('status' => 'banned'));
+
+        // Cabut langganan aktif supaya akses berbayar ikut berhenti
+        $this->db->where('user_id', $id)
+                 ->where('status', 'active')
+                 ->update('user_subscriptions', array('status' => 'cancelled'));
+
         $this->session->set_flashdata('success', t('Akun dinonaktifkan.', 'Account disabled.'));
         redirect('admin/users');
     }

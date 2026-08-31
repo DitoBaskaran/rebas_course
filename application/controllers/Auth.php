@@ -33,6 +33,12 @@ class Auth extends CI_Controller {
             $user = $this->User_model->login($this->input->post('email'), $this->input->post('password'));
 
             if ($user) {
+                // Reject banned accounts (konsisten dengan Google & API login)
+                if ($user->status === 'banned') {
+                    $this->session->set_flashdata('error', t('Akun tidak aktif.', 'Account is not active.'));
+                    redirect('auth/login');
+                }
+
                 $session_data = array(
                     'user_id' => $user->id,
                     'name' => $user->name,

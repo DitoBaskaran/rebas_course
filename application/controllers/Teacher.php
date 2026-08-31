@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Teacher extends CI_Controller {
+class Teacher extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
