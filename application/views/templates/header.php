@@ -21,6 +21,15 @@
         .fe-navbar { height: 56px; background: rgba(255,255,255,0.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid rgba(0,0,0,0.04); transition: box-shadow 0.3s ease, background 0.3s ease; }
         .fe-navbar.is-scrolled { background: rgba(255,255,255,0.9); box-shadow: 0 1px 20px rgba(0,0,0,0.06); }
         .fe-brand { font-size: 1rem; font-weight: 800; letter-spacing: -0.04em; color: #171717; text-decoration: none; display: flex; align-items: center; gap: 1px; }
+        .fe-brand-img { height: 32px; width: auto; display: block; transition: height 0.2s; }
+        @media (max-width: 576px) {
+            .fe-brand-img { height: 24px; }
+            .fe-btn-login, .fe-btn-register { font-size: 0.72rem; padding: 0.32rem 0.6rem; white-space: nowrap; }
+        }
+        @media (max-width: 380px) {
+            .fe-brand-img { height: 20px; }
+            .fe-btn-login { display: none; }
+        }
         .fe-brand-accent { color: #059669; }
         .fe-nav-link { position: relative; font-size: 0.8125rem; font-weight: 500; color: #525252; padding: 0.25rem 0; margin: 0 0.5rem; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
         .fe-nav-link::after { content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 2px; background: #059669; border-radius: 2px; transition: width 0.25s ease, left 0.25s ease; }
@@ -76,7 +85,7 @@
             </button>
 
             <a class="fe-brand me-lg-4" href="<?php echo base_url(); ?>">
-                <img src="<?php echo base_url('assets/img/bisatuntas-logo-v2.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" style="height:32px;width:auto;">
+                <img src="<?php echo base_url('assets/img/bisatuntas-logo-v2.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" class="fe-brand-img">
             </a>
 
             <div class="d-none d-lg-flex align-items-center gap-1 me-auto">
@@ -134,8 +143,8 @@
 
     <div class="offcanvas offcanvas-start d-lg-none" style="width:280px;border-right:1px solid #e5e5e5;" tabindex="-1" id="offcanvasNavbar">
         <div class="offcanvas-header" style="border-bottom:1px solid rgba(0,0,0,0.04);padding:1rem 1.25rem;">
-            <div class="fe-brand">
-                <img src="<?php echo base_url('assets/img/bisatuntas-logo-v2.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" style="height:28px;width:auto;">
+            <div class="fe-brand" style="font-size:1.05rem;">
+                <span class="fe-brand-accent"><?php echo mb_substr(setting('general_site_name', 'BISATUNTAS'), 0, 1); ?></span><?php echo mb_substr(setting('general_site_name', 'BISATUNTAS'), 1); ?>
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>
