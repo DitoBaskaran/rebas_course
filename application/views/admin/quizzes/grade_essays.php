@@ -30,7 +30,7 @@
                             <p class="small mb-2"><?php echo htmlspecialchars($ans['question'] ?? '-'); ?></p>
                             <div class="small fw-semibold text-dark mb-1"><?php echo t('Jawaban:', 'Answer:'); ?></div>
                             <p class="small text-muted bg-white rounded-2 p-2 border mb-2"><?php echo nl2br(htmlspecialchars($ans['answer'] ?? '-')); ?></p>
-                            <form method="POST" action="<?php echo base_url('admin/save_essay_grade/' . $a->id . '/' . $i); ?>" class="d-flex align-items-center gap-2">
+                            <?php echo form_open('admin/save_essay_grade/' . $a->id . '/' . $i, array('class' => 'd-flex align-items-center gap-2')); ?>
                                 <label class="small fw-semibold"><?php echo t('Nilai:', 'Score:'); ?></label>
                                 <input type="number" name="score" class="form-control form-control-sm" style="width:80px;" value="<?php echo $ans['essay_score'] ?? $ans['score'] ?? 0; ?>" min="0" max="<?php echo $ans['points'] ?? 100; ?>">
                                 <span class="small text-muted">/ <?php echo $ans['points'] ?? 100; ?></span>

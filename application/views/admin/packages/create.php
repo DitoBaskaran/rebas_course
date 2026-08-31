@@ -4,7 +4,7 @@
         <h1 class="display-6 fw-extrabold text-dark mb-1 lh-sm"><?php echo t('Buat Paket Baru', 'Create New Package'); ?></h1>
     </div>
     <div class="bento-card p-4 p-xl-5">
-        <form method="POST" action="<?php echo base_url('admin/packages/create'); ?>">
+        <?php echo form_open('admin/packages/create'); ?>
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-semibold"><?php echo t('Nama (ID)', 'Name (ID)'); ?> *</label>

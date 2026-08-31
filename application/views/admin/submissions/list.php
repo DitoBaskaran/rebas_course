@@ -30,7 +30,7 @@
                             <?php if ($s->file_url): ?><a href="<?php echo base_url('uploads/assignments/' . $s->file_url); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.68rem;" target="_blank"><i class="fas fa-download" style="font-size: 0.65rem;"></i></a><?php endif; ?>
                             <?php if ($s->status === 'submitted' || $s->status === 'returned'): ?>
                                 <a href="#" onclick="document.getElementById('gradeForm<?php echo $s->id; ?>').classList.toggle('d-none');return false;" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center gap-1" style="background: #f97316; color: #fff; font-size: 0.68rem;"><i class="fas fa-check-circle" style="font-size: 0.65rem;"></i> <?php echo t('Nilai', 'Grade'); ?></a>
-                                <form id="gradeForm<?php echo $s->id; ?>" action="<?php echo base_url('admin/grade_submission/' . $s->id); ?>" method="POST" class="d-none">
+                                <?php echo form_open('admin/grade_submission/' . $s->id, array('id' => 'gradeForm' . $s->id, 'class' => 'd-none')); ?>
                                     <div class="d-flex gap-2">
                                         <input type="number" name="grade" class="form-control rounded-pill" placeholder="0-100" min="0" max="100" required style="width: 72px; height: 34px; font-size: 0.78rem; border-color: #e7e5e4;">
                                         <input type="text" name="feedback" class="form-control rounded-pill" placeholder="<?php echo t('Feedback', 'Feedback'); ?>" style="width: 120px; height: 34px; font-size: 0.78rem; border-color: #e7e5e4;">
