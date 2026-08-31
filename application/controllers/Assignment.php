@@ -39,7 +39,8 @@ class Assignment extends MY_Controller {
         $user_id = $this->session->userdata('user_id');
         if (!$this->Course_model->check_enrollment($user_id, $assignment->course_id)) {
             $this->session->set_flashdata('error', t('Anda harus terdaftar di kelas ini.', 'You must be enrolled in this course.'));
-            redirect('courses/detail/' . $course->slug);
+            $course = $this->Course_model->get_course_by_id($assignment->course_id);
+            redirect('courses/detail/' . ($course ? $course->slug : $assignment->course_id));
         }
         if ($assignment->due_days > 0) {
             $enrolled = $this->Course_model->get_enrollment_date($user_id, $assignment->course_id);
