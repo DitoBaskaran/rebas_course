@@ -11,8 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="au2-visual">
         <div class="au2-v-inner">
             <a href="<?php echo base_url(); ?>" class="au2-brand">
-                <span class="au2-brand-dot"></span>
-                <span>B</span>ISATUNTAS
+                <img src="<?php echo base_url('assets/img/bisatuntas-logo.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" style="height:34px;width:auto;filter:brightness(0) invert(1);">
             </a>
 
             <div class="au2-v-scene">

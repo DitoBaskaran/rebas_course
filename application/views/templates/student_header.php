@@ -63,7 +63,7 @@
                         <span class="admin-topbar-logo-icon">
                             <i data-lucide="graduation-cap" style="width:16px;height:16px;"></i>
                         </span>
-                        <span class="admin-topbar-brand-text">BISATUNTAS</span>
+                        <img src="<?php echo base_url('assets/img/bisatuntas-logo.png'); ?>" alt="BISATUNTAS" style="height:26px;width:auto;">
                     <?php endif; ?>
                 </a>
             </div>

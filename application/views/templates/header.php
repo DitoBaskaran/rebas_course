@@ -76,7 +76,7 @@
             </button>
 
             <a class="fe-brand me-lg-4" href="<?php echo base_url(); ?>">
-                <?php echo '<span class="fe-brand-accent">' . mb_substr(setting('general_site_name', 'BISATUNTAS'), 0, 1) . '</span>' . mb_substr(setting('general_site_name', 'BISATUNTAS'), 1); ?>
+                <img src="<?php echo base_url('assets/img/bisatuntas-logo.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" style="height:32px;width:auto;">
             </a>
 
             <div class="d-none d-lg-flex align-items-center gap-1 me-auto">
@@ -135,7 +135,7 @@
     <div class="offcanvas offcanvas-start d-lg-none" style="width:280px;border-right:1px solid #e5e5e5;" tabindex="-1" id="offcanvasNavbar">
         <div class="offcanvas-header" style="border-bottom:1px solid rgba(0,0,0,0.04);padding:1rem 1.25rem;">
             <div class="fe-brand">
-                <?php echo '<span class="fe-brand-accent">' . mb_substr(setting('general_site_name', 'BISATUNTAS'), 0, 1) . '</span>' . mb_substr(setting('general_site_name', 'BISATUNTAS'), 1); ?>
+                <img src="<?php echo base_url('assets/img/bisatuntas-logo.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" style="height:28px;width:auto;">
             </div>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
         </div>

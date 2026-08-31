@@ -3,8 +3,7 @@
             <div class="row g-4 fe-footer-grid">
                 <div class="col-lg-5">
                     <div class="fe-footer-brand">
-                        <span class="fe-brand-dot"></span>
-                        <?php echo htmlspecialchars(setting('general_site_name', 'BISATUNTAS')); ?>
+                        <img src="<?php echo base_url('assets/img/bisatuntas-logo.png'); ?>" alt="<?php echo htmlspecialchars(setting('general_site_name', 'BISATUNTAS')); ?>" style="height:28px;width:auto;">
                     </div>
                     <p class="fe-footer-about">
                         <?php echo htmlspecialchars(t(setting('footer_about_text', 'Platform belajar online modern dengan kelas terstruktur dan seminar interaktif dari para ahli terbaik Indonesia.'), setting('footer_about_text_en', ''))); ?>
