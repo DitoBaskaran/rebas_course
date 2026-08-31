@@ -32,7 +32,7 @@
                                 </div>
                             </div>
 
-                            <?php if ($q->type === 'multiple_choice' && $q->options): ?>
+                            <?php if ($q->question_type === 'multiple_choice' && $q->options): ?>
                                 <?php $options = json_decode($q->options, true); ?>
                                 <div class="ms-5 d-flex flex-column gap-2">
                                     <?php foreach ($options as $j => $opt): ?>
@@ -42,7 +42,7 @@
                                         </label>
                                     <?php endforeach; ?>
                                 </div>
-                            <?php elseif ($q->type === 'true_false'): ?>
+                            <?php elseif ($q->question_type === 'true_false'): ?>
                                 <div class="ms-5 d-flex gap-3">
                                     <label class="d-flex align-items-center gap-2 p-3 rounded-3 border option-label cursor-pointer flex-fill bg-light" style="transition: all 0.2s;">
                                         <input type="radio" name="q_<?php echo $q->id; ?>" value="True" required>
@@ -53,11 +53,11 @@
                                         <span class="small fw-semibold text-danger"><i class="fas fa-times-circle me-1"></i> False</span>
                                     </label>
                                 </div>
-                            <?php elseif ($q->type === 'short_answer'): ?>
+                            <?php elseif ($q->question_type === 'short_answer'): ?>
                                 <div class="ms-5">
                                     <input type="text" name="q_<?php echo $q->id; ?>" class="form-control rounded-pill" placeholder="<?php echo t('Tulis jawaban...', 'Type your answer...'); ?>" required>
                                 </div>
-                            <?php elseif ($q->type === 'essay'): ?>
+                            <?php elseif ($q->question_type === 'essay'): ?>
                                 <div class="ms-5">
                                     <textarea name="q_<?php echo $q->id; ?>" rows="4" class="form-control" placeholder="<?php echo t('Tulis jawaban esai...', 'Type your essay answer...'); ?>"></textarea>
                                     <small class="text-secondary"><?php echo t('Esai akan dinilai oleh pengajar', 'Essay will be graded by instructor'); ?></small>

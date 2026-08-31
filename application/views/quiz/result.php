@@ -42,7 +42,7 @@
                             <p class="small mb-0">
                                 <?php echo t('Jawaban: ', 'Answer: '); ?>
                                 <span class="fw-bold"><?php echo htmlspecialchars($answers['q_' . $q->id] ?? '-'); ?></span>
-                                <?php if ($q->type !== 'essay'): ?>
+                                <?php if ($q->question_type !== 'essay'): ?>
                                     <span class="text-success ms-2 fw-medium">(<?php echo t('Benar: ', 'Correct: '); ?><?php echo htmlspecialchars($q->correct_answer); ?>)</span>
                                 <?php endif; ?>
                             </p>

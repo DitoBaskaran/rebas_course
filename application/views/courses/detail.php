@@ -18,7 +18,7 @@ $og_image = $course->thumbnail ? base_url('uploads/courses/' . $course->thumbnai
   ,"aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "<?php echo $avg_rating; ?>",
-    "reviewCount": "<?php echo $total_reviews; ?>"
+    "reviewCount": "<?php echo isset($total_reviews) ? $total_reviews : (isset($review_count) ? $review_count : 0); ?>"
   }
   <?php endif; ?>
   ,"offers": {
