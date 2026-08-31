@@ -12,7 +12,7 @@
                 </div>
 
                 <?php $six = $package->six_month_option ?? null; ?>
-                <form method="POST" action="<?php echo base_url('subscription/buy/' . $package->slug); ?>" class="mb-4">
+                <?php echo form_open('subscription/buy/' . $package->slug, array('class' => 'mb-4')); ?>
                     <h5 class="fw-bold mb-3"><?php echo t('Pilih Durasi', 'Choose Duration'); ?></h5>
                     <div class="card border-0 bg-light p-3 rounded-4 mb-3">
                         <div class="form-check mb-3">

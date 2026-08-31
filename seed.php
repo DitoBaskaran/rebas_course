@@ -668,6 +668,12 @@ try {
     $mentor_sarah_id = (int)$pdo->lastInsertId();
     $stmt->execute([$mentor_bryan, 'Data Scientist', 'Data Scientist', 'Ahli dalam analisis data dan machine learning. Membantu project data science dan persiapan karir di bidang data.', 'Expert in data analysis and machine learning. Helping with data science projects and career preparation in data field.', 'mentor_bryan.png', 150000.00, '30,60', 'zoom', 1, 4.8, 15, 80]);
     $mentor_bryan_id = (int)$pdo->lastInsertId();
+
+    // Tandai flag is_mentor supaya guard Mentor_dashboard mengenali mereka.
+    // Tanpa ini mentor tampil di /mentoring tapi tak bisa buka dashboard sendiri.
+    $pdo->prepare("UPDATE users SET is_mentor = 1 WHERE id IN (?, ?, ?)")
+        ->execute([$mentor_dimas, $mentor_sarah, $mentor_bryan]);
+
     echo "Mentors OK.\n";
 
     // ========== MENTOR CATEGORY PIVOT ==========

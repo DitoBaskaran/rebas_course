@@ -13,8 +13,8 @@
             <div class="border rounded-3 p-4" style="border-color: #e5e5e5; border-radius: 12px;">
                 <h5 class="fw-bold mb-4" style="color: #111827; font-size: 1rem;"><?php echo t('Pilih Paket & Jadwal', 'Choose Package & Schedule'); ?></h5>
 
-                <form method="post" action="<?php echo base_url('mentoring/confirm-booking'); ?>">
-                    <input type="hidden" name="mentor_id" value="<?php echo $mentor->id; ?>">
+                <?php echo form_open('mentoring/confirm-booking'); ?>
+                    <input type="hidden" name="mentor_id" value="<?php echo $encoded_mentor_id; ?>">
 
                     <!-- Select Package -->
                     <div class="mb-4">

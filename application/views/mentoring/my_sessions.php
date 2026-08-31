@@ -102,7 +102,7 @@
 <div class="modal fade" id="reviewModal_<?php echo $s->id; ?>" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content" style="border-radius: 12px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.12);">
-            <form method="post" action="<?php echo base_url('mentoring/review/' . encode_id($s->id)); ?>">
+            <?php echo form_open('mentoring/review/' . encode_id($s->id)); ?>
                 <div class="modal-header" style="border-bottom: 1px solid #f0f0f0; padding: 1rem 1.25rem;">
                     <h6 class="fw-bold mb-0" style="font-size: 0.9rem;"><?php echo t('Review Mentor', 'Review Mentor'); ?></h6>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" style="font-size: 0.75rem;"></button>
