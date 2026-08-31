@@ -5,6 +5,19 @@ class Checkout extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+        // Webhook dari gateway berjalan tanpa session login
+        $webhook_methods = array('pakasir_webhook', 'midtrans_callback');
+        if (in_array($this->router->fetch_method(), $webhook_methods)) {
+            $this->load->model('Transaction_model');
+            $this->load->model('Course_model');
+            $this->load->model('Seminar_model');
+            $this->load->model('Coupon_model');
+            $this->load->model('Package_model');
+            $this->load->model('Mentoring_package_model');
+            $this->load->library('pakasir');
+            return;
+        }
+
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login terlebih dahulu.', 'Please login first.'));
             redirect('auth/login');
