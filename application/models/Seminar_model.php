@@ -43,6 +43,12 @@ class Seminar_model extends CI_Model {
     }
 
     public function register_user($user_id, $seminar_id) {
+        // Idempotent: unique key (user_id, seminar_id) -> insert ulang bikin DB error 1062.
+        $exists = $this->db->get_where('seminar_registrations', array('user_id' => $user_id, 'seminar_id' => $seminar_id));
+        if ($exists->num_rows() > 0) {
+            return TRUE;
+        }
+
         $data = array(
             'user_id' => $user_id,
             'seminar_id' => $seminar_id

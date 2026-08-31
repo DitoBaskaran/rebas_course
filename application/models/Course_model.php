@@ -210,6 +210,12 @@ class Course_model extends CI_Model {
     }
 
     public function enroll_user($user_id, $course_id) {
+        // Idempotent: unique key (user_id, course_id) -> insert ulang bikin DB error 1062.
+        // Terjadi mis. saat admin approve transaksi untuk user yang sudah terdaftar.
+        if ($this->check_enrollment($user_id, $course_id)) {
+            return TRUE;
+        }
+
         $data = array(
             'user_id' => $user_id,
             'course_id' => $course_id
