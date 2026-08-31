@@ -25,7 +25,7 @@
                 <a href="<?php echo config_item('base_url'); ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; background: linear-gradient(135deg, var(--primary), var(--info)); color: #fff; padding: 0.6rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem; box-shadow: 0 4px 14px rgba(13,110,253,0.25);">
                     <i class="fas fa-home"></i> Kembali ke Beranda
                 </a>
-                <a href="<?php echo base_url('courses'); ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; border: 2px solid var(--primary); color: var(--primary); padding: 0.6rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">
+                <a href="<?php echo config_item('base_url') . 'courses'; ?>" style="display: inline-flex; align-items: center; gap: 0.5rem; border: 2px solid var(--primary); color: var(--primary); padding: 0.6rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 0.9rem;">
                     <i class="fas fa-search"></i> Jelajahi Konten
                 </a>
             </div>
