@@ -18,6 +18,35 @@
                 <p><?php echo t('Buat paket langganan pertama Anda.', 'Create your first subscription package.'); ?></p>
             </div>
         <?php else: ?>
+
+        <!-- Mobile: kartu eksplisit -->
+        <div class="app-row-list app-list">
+            <?php foreach ($packages as $p): ?>
+                <div class="app-row app-row-card">
+                    <div class="app-row-head">
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#E0F2F1;color:#009688;"><i class="fas fa-layer-group"></i></div>
+                        <div class="app-row-main">
+                            <div class="app-row-title"><?php echo htmlspecialchars($p->name); ?></div>
+                            <div class="app-row-sub"><?php echo $p->duration_days . ' ' . t('hari', 'days'); ?></div>
+                        </div>
+                        <?php echo $p->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
+                    </div>
+                    <div class="app-row-meta">
+                        <span><b><?php echo t('Harga', 'Price'); ?>:</b> Rp <?php echo number_format($p->price, 0, ',', '.'); ?></span>
+                        <span><b><?php echo t('Akses', 'Access'); ?>:</b>
+                            <?php if ($p->access_scope === 'all') echo t('Semua Konten', 'All Content'); elseif ($p->access_scope === 'category') echo t('Per Kategori', 'By Category'); else echo t('Per Kursus', 'By Course'); ?>
+                        </span>
+                    </div>
+                    <div class="app-actions">
+                        <a href="<?php echo base_url('admin/packages/edit/' . $p->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
+                        <a href="<?php echo base_url('admin/packages/delete/' . $p->id); ?>" data-confirm="<?php echo t('Hapus paket langganan?', 'Delete subscription package?'); ?>" class="app-action app-action-red" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Desktop: tabel -->
+        <div class="app-card app-table-desktop">
             <div class="app-table-wrap">
                 <table class="app-table">
                     <thead>
@@ -51,6 +80,6 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         <?php endif; ?>
-    </div>
 </div>

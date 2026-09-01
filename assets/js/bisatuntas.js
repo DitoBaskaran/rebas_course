@@ -556,10 +556,28 @@
     document.querySelectorAll('table.app-table').forEach(function(table) {
       var wrap = table.closest('.app-table-wrap') || table.parentNode;
       var list = wrap.querySelector(':scope > .app-row-list');
+      // Cari list eksplisit di scope lebih luas (dalam .app-page) jika tidak ada di wrap
+      if (!list) {
+        var page = table.closest('.app-page');
+        if (page) {
+          var candidates = page.querySelectorAll('.app-row-list');
+          for (var i = 0; i < candidates.length; i++) {
+            // list yang sudah punya kartu (eksplisit dari view)
+            if (candidates[i].querySelector('.app-row-card')) {
+              list = candidates[i];
+              break;
+            }
+          }
+        }
+      }
       if (!list) {
         list = document.createElement('div');
         list.className = 'app-row-list app-list';
         wrap.insertBefore(list, table);
+      }
+      // Jika view sudah menyediakan kartu eksplisit (.app-row-card), biarkan CSS yang kontrol visibility
+      if (list.querySelector('.app-row-card')) {
+        return;
       }
       if (!isMobile) {
         list.innerHTML = '';
@@ -572,29 +590,88 @@
       var html = '';
       rows.forEach(function(row) {
         var cells = Array.prototype.map.call(row.querySelectorAll('td'), function(td) { return td; });
-        var headCell = cells[0];
-        var headHtml = headCell ? headCell.innerHTML : '';
-        var body = '';
+        var isMediaCell = function(td) {
+          return !!td.querySelector('.app-avatar, .app-thumb, img, .avatar, .thumb');
+        };
+        var hasActionBtn = function(td) {
+          return !!td.querySelector('a.app-action, .app-action, .btn, button');
+        };
+        var hasChip = function(td) {
+          return !!td.querySelector('.app-chip, .role-badge, .status-badge, .badge');
+        };
+        var clsOf = function(td) {
+          return (td.className || '') + ' ' + (td.getAttribute('class') || '');
+        };
+        // 1. Cari sel aksi (paling kanan, ada tombol)
         var actions = '';
+        var actionsIdx = -1;
+        cells.forEach(function(td, i) {
+          if (hasActionBtn(td) && !isMediaCell(td)) {
+            // pilih yang paling kanan
+            actionsIdx = i;
+          }
+        });
+        if (actionsIdx !== -1) {
+          actions = cells[actionsIdx].innerHTML.trim();
+        }
+        // 2. Cari sel media (avatar/thumbnail) untuk head — selain kolom aksi
+        var headHtml = '';
+        var headIdx = -1;
+        cells.forEach(function(td, i) {
+          if (i === actionsIdx) return;
+          if (isMediaCell(td) && !headHtml) {
+            headHtml = td.innerHTML.trim();
+            headIdx = i;
+          }
+        });
+        // 3. Cari sel judul: td-title / berisi .app-row-title / teks terpanjang (bukan angka, bukan chip-only)
+        var titleHtml = '';
+        var titleIdx = -1;
+        var bestLen = 0;
+        cells.forEach(function(td, i) {
+          if (i === actionsIdx || i === headIdx) return;
+          var cls = clsOf(td);
+          var txt = (td.textContent || '').trim();
+          if (!txt) return;
+          var hasRowTitle = !!td.querySelector('.app-row-title');
+          if (cls.indexOf('td-title') !== -1 || cls.indexOf('td-user') !== -1 || hasRowTitle) {
+            // jangan jadikan judul jika ini adalah sel yang sama dengan head (nama sudah di head)
+            if (headIdx !== -1 && hasRowTitle && i !== 0) return;
+            titleHtml = td.innerHTML.trim();
+            titleIdx = i;
+            return;
+          }
+          // teks terpanjang (min 6 chars) yang bukan cuma angka/harga & bukan email
+          if (txt.length >= 6 && txt.length > bestLen && !/^[\d\s.,Rp%x-]+$/.test(txt) && txt.indexOf('@') === -1) {
+            bestLen = txt.length;
+            titleHtml = td.innerHTML.trim();
+            titleIdx = i;
+          }
+        });
+        // 4. Meta: sisa sel (label dari thead, kecuali chip langsung tampil)
         var meta = [];
         cells.forEach(function(td, i) {
-          var cls = (td.className || '') + ' ' + (td.getAttribute('class') || '');
-          var label = heads[i] || '';
+          if (i === actionsIdx || i === headIdx || i === titleIdx) return;
           var inner = td.innerHTML.trim();
           if (!inner) return;
-          if (cls.indexOf('td-title') !== -1 || cls.indexOf('app-row-title') !== -1 || (i === 0 && !actions)) {
-            body = '<div class="app-row-title">' + inner + '</div>';
-          } else if (cls.indexOf('td-actions') !== -1 || td.querySelector('a.app-action, .app-action, .btn')) {
-            actions = inner;
-          } else if (td.querySelector('.app-chip, .role-badge, .status-badge')) {
+          var label = heads[i] || '';
+          if (hasChip(td)) {
             meta.push('<span>' + inner + '</span>');
           } else {
             meta.push('<span><b>' + label + ':</b> ' + inner + '</span>');
           }
         });
+        // 5. Kalau tidak ada media → judul dipakai sebagai head (jangan dobel di body)
+        var headBlock = '';
+        if (headHtml) {
+          headBlock = '<div class="app-row-head">' + headHtml + '</div>';
+        } else if (titleHtml) {
+          headBlock = '<div class="app-row-head">' + titleHtml + '</div>';
+          titleHtml = '';
+        }
         html += '<div class="app-row app-row-card">' +
-          '<div class="app-row-head">' + headHtml + '</div>' +
-          (body ? body : '') +
+          headBlock +
+          (titleHtml ? '<div class="app-row-title">' + titleHtml + '</div>' : '') +
           (meta.length ? '<div class="app-row-meta">' + meta.join('') + '</div>' : '') +
           (actions ? '<div class="app-actions">' + actions + '</div>' : '') +
         '</div>';

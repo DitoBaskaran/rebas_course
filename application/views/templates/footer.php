@@ -102,7 +102,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="<?php echo base_url('assets/js/analytics.js'); ?>"></script>
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-    <script src="<?php echo base_url('assets/js/bisatuntas.js?v=2'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bisatuntas.js?v=6'); ?>"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var video = document.querySelector('video');

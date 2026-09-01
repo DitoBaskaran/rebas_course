@@ -34,9 +34,43 @@
         </select>
     </form>
 
-    <div class="app-card">
+    <!-- Mobile: kartu eksplisit -->
+    <div class="app-row-list app-list">
+        <?php foreach ($users as $u): ?>
+            <?php
+                $badges = array();
+                if ($u->role === 'admin') $badges[] = '<span class="role-badge role-badge-admin">Admin</span>';
+                if ($u->is_teacher) $badges[] = '<span class="role-badge role-badge-teacher">Teacher</span>';
+                if ($u->is_mentor) $badges[] = '<span class="role-badge role-badge-mentor">Mentor</span>';
+                if (empty($badges)) $badges[] = '<span class="role-badge role-badge-student">Student</span>';
+                $status_chip = ($u->status === 'active' || !$u->status)
+                    ? '<span class="app-chip app-chip-green"><i class="fas fa-check-circle"></i> Active</span>'
+                    : '<span class="app-chip app-chip-red"><i class="fas fa-ban"></i> Banned</span>';
+            ?>
+            <div class="app-row app-row-card">
+                <div class="app-row-head">
+                    <span class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;"><?php echo strtoupper(substr($u->name, 0, 1)); ?></span>
+                    <div class="app-row-main">
+                        <div class="app-row-title"><?php echo htmlspecialchars($u->name); ?></div>
+                        <div class="app-row-sub"><?php echo htmlspecialchars($u->email); ?></div>
+                    </div>
+                    <?php echo $status_chip; ?>
+                </div>
+                <div class="app-row-meta">
+                    <?php echo implode(' ', $badges); ?>
+                    <span><b><?php echo t('Terdaftar', 'Registered'); ?>:</b> <?php echo date('d M Y', strtotime($u->created_at)); ?></span>
+                </div>
+                <div class="app-actions">
+                    <a href="<?php echo base_url('admin/edit_user/' . $u->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- Desktop: tabel -->
+    <div class="app-card app-table-desktop">
         <div class="app-table-wrap">
-            <table class="app-table" id="userTable">
+            <table class="app-table">
                 <thead>
                     <tr>
                         <th><?php echo t('Nama', 'Name'); ?></th>
@@ -48,17 +82,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if (empty($users)): ?>
-                    <tr><td colspan="6" class="text-center py-5" style="color:#a8a29e;"><?php echo t('Tidak ada pengguna.', 'No users found.'); ?></td></tr>
-                    <?php else: ?>
-                        <?php foreach ($users as $u): ?>
+                    <?php foreach ($users as $u): ?>
                         <tr>
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <span class="app-avatar" style="width:34px;height:34px;font-size:0.75rem;"><?php echo strtoupper(substr($u->name, 0, 1)); ?></span>
                                     <div class="min-w-0">
                                         <div class="app-row-title"><?php echo htmlspecialchars($u->name); ?></div>
-                                        <div style="color:#a8a29e;font-size:0.68rem;"><?php echo htmlspecialchars($u->email); ?></div>
                                     </div>
                                 </div>
                             </td>
@@ -85,8 +115,7 @@
                                 <a href="<?php echo base_url('admin/edit_user/' . $u->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
                             </td>
                         </tr>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

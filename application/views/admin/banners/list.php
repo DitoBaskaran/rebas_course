@@ -11,7 +11,7 @@
         </div>
     </div>
 
-    <div class="app-card">
+    <div class="app-card app-table-desktop">
         <div class="app-table-wrap">
             <table class="app-table">
                 <thead>
@@ -69,4 +69,33 @@
             </table>
         </div>
     </div>
+
+    <!-- Mobile: kartu eksplisit -->
+    <?php if (!empty($banners)): ?>
+    <div class="app-row-list app-list">
+        <?php foreach ($banners as $b): ?>
+            <div class="app-row app-row-card">
+                <div class="app-row-head">
+                    <?php if ($b->image && file_exists(FCPATH . 'uploads/banners/' . $b->image)): ?>
+                        <img src="<?php echo base_url('uploads/banners/' . $b->image); ?>" alt="" class="app-thumb" style="width:60px;height:36px;">
+                    <?php else: ?>
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#E6EBEF;color:#78716c;"><i class="fas fa-image"></i></div>
+                    <?php endif; ?>
+                    <div class="app-row-main">
+                        <div class="app-row-title"><?php echo htmlspecialchars($b->title); ?></div>
+                        <div class="app-row-sub"><?php echo $b->link ? htmlspecialchars(substr($b->link, 0, 40)) : '—'; ?></div>
+                    </div>
+                    <?php echo $b->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
+                </div>
+                <div class="app-row-meta">
+                    <span><b><?php echo t('Target', 'Target'); ?>:</b> <?php echo $b->target === 'both' ? t('Semua', 'All') : ucfirst($b->target); ?></span>
+                </div>
+                <div class="app-actions">
+                    <a href="<?php echo base_url('admin/banners_edit/' . $b->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
+                    <a href="<?php echo base_url('admin/banners_delete/' . $b->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus banner?', 'Delete banner?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
 </div>

@@ -18,6 +18,33 @@
                 <p><?php echo t('Buat kode promo untuk diskon pembelian.', 'Create promo codes for purchase discounts.'); ?></p>
             </div>
         <?php else: ?>
+
+        <!-- Mobile: kartu eksplisit -->
+        <div class="app-row-list app-list">
+            <?php foreach ($coupons as $c): ?>
+                <div class="app-row app-row-card">
+                    <div class="app-row-head">
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#fef3c7;color:#d97706;"><i class="fas fa-ticket-alt"></i></div>
+                        <div class="app-row-main">
+                            <div class="app-row-title" style="font-family:monospace;"><?php echo htmlspecialchars($c->code); ?></div>
+                            <div class="app-row-sub"><?php echo $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.'); ?> <?php echo t('diskon', 'discount'); ?></div>
+                        </div>
+                        <?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
+                    </div>
+                    <div class="app-row-meta">
+                        <span><b><?php echo t('Min. Belanja', 'Min. Purchase'); ?>:</b> <?php echo $c->min_purchase > 0 ? 'Rp ' . number_format($c->min_purchase, 0, ',', '.') : '-'; ?></span>
+                        <span><b><?php echo t('Pemakaian', 'Usage'); ?>:</b> <?php echo $c->used_count . ($c->max_uses ? '/' . $c->max_uses : ''); ?></span>
+                        <span><b><?php echo t('Berlaku', 'Valid Until'); ?>:</b> <?php echo $c->expired_at ? date('d M Y', strtotime($c->expired_at)) : '-'; ?></span>
+                    </div>
+                    <div class="app-actions">
+                        <a href="<?php echo base_url('admin/delete_coupon/' . $c->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kupon?', 'Delete coupon?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Desktop: tabel -->
+        <div class="app-card app-table-desktop">
             <div class="app-table-wrap">
                 <table class="app-table">
                     <thead>
@@ -48,6 +75,6 @@
                     </tbody>
                 </table>
             </div>
+        </div>
         <?php endif; ?>
-    </div>
 </div>

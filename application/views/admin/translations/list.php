@@ -32,8 +32,8 @@
             <?php echo form_close(); ?>
         </div>
 
-        <!-- Tabel -->
-        <div class="app-card">
+        <!-- Tabel (desktop) -->
+        <div class="app-card app-table-desktop">
             <div class="app-table-wrap">
                 <table class="app-table">
                     <thead>
@@ -62,5 +62,28 @@
                 </table>
             </div>
         </div>
+
+        <!-- Mobile: kartu eksplisit -->
+        <?php if (!empty($translations)): ?>
+        <div class="app-row-list app-list">
+            <?php foreach ($translations as $t): ?>
+                <div class="app-row app-row-card">
+                    <div class="app-row-head">
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#eff6ff;color:#2563eb;"><i class="fas fa-language"></i></div>
+                        <div class="app-row-main">
+                            <div class="app-row-title" style="font-family:monospace;"><?php echo htmlspecialchars($t->key); ?></div>
+                        </div>
+                    </div>
+                    <div class="app-row-meta">
+                        <span><b>ID:</b> <?php echo htmlspecialchars($t->value_id); ?></span>
+                        <span><b>EN:</b> <?php echo htmlspecialchars($t->value_en); ?></span>
+                    </div>
+                    <div class="app-actions">
+                        <a href="<?php echo base_url('admin/delete_translation/' . $t->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus terjemahan?', 'Delete translation?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
     </div>
 </div>

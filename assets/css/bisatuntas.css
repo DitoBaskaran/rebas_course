@@ -2546,10 +2546,12 @@ h1, h2, h3, h4, h5, h6,
 
 /* Mobile: tabel disembunyikan, diganti daftar kartu oleh JS */
 .app-row-list { display: none; }
+.app-table-desktop { display: block; }
 @media (max-width: 768px) {
   .app-table { display: none; }
   .app-row-list { display: block; }
   .app-row-list .app-row-card { display: flex !important; }
+  .app-table-desktop { display: none; }
 }
 .app-row-card {
   display: flex !important; flex-direction: column; align-items: stretch !important;

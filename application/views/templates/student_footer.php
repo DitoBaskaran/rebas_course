@@ -50,6 +50,6 @@
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- BISATUNTAS JS -->
-    <script src="<?php echo base_url('assets/js/bisatuntas.js?v=2'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bisatuntas.js?v=6'); ?>"></script>
 </body>
 </html>
