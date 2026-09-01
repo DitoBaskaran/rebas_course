@@ -362,7 +362,7 @@
                                 <h6 class="fw-bold mb-1 lh-sm crs-card-title" style="color: #111827; font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     <?php echo htmlspecialchars($course->title); ?>
                                 </h6>
-                                <p class="mb-2 crs-card-desc" style="color: #737373; font-size: 0.76rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                <p class="mb-1 crs-card-desc" style="color: #737373; font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;">
                                     <?php echo htmlspecialchars($course->description); ?>
                                 </p>
                                 <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0f0f0;">
@@ -386,7 +386,7 @@
 .crs-card-v { box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
 .crs-card-v:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); border-color: #d6d3d1; }
 .crs-card-thumb {
-    aspect-ratio: 16/9;
+    aspect-ratio: 21/9;
     min-height: 0;
     background: #f5f5f5;
 }
@@ -399,7 +399,7 @@
 .crs-card-title { min-height: 0; }
 .crs-card-desc { min-height: 0; }
 @media (max-width: 767px) {
-    .crs-card-thumb { aspect-ratio: 16/9; }
+    .crs-card-thumb { aspect-ratio: 21/9; }
 }
 </style>
 <?php endif; ?>
