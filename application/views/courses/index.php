@@ -299,6 +299,13 @@ $grads = array(
             #aiGoalMobile::placeholder { color: rgba(255,255,255,0.55) !important; opacity: 1; }
             #aiGoalMobile:-ms-input-placeholder { color: rgba(255,255,255,0.55) !important; }
             #aiGoalMobile::-ms-input-placeholder { color: rgba(255,255,255,0.55) !important; }
+            .ai-card-item { display:flex; align-items:center; gap:0.5rem; padding:0.5rem; border-radius:0.75rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); }
+            .ai-card-item .ai-card-link { display:flex; align-items:center; gap:0.5rem; text-decoration:none; flex:1 1 auto; min-width:0; }
+            .ai-card-item .ai-card-title { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; color:#fff; font-weight:700; font-size:0.8rem; line-height:1.3; word-break:break-word; }
+            .ai-card-item .ai-card-sub { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; color:rgba(230,235,239,0.7); font-size:0.7rem; word-break:break-word; }
+            .ai-card-item .ai-card-avatar { flex-shrink:0; }
+            .ai-card-item .ai-card-body { flex:1 1 auto; min-width:0; }
+            .ai-card-item .ai-card-btn { flex-shrink:0; white-space:nowrap; }
         </style>
         <div class="rounded-4 p-3 mb-3" style="border:1px solid #e7e5e4; border-radius:16px; background:linear-gradient(135deg,#0D1830 0%,#1e3a5f 55%,#0ea5e9 130%); position:relative; overflow:hidden;">
             <div style="position:absolute; top:-40px; right:-30px; width:140px; height:140px; border-radius:50%; background:rgba(251,191,36,0.12);"></div>
@@ -416,6 +423,13 @@ $grads = array(
             #aiGoal::placeholder { color: rgba(255,255,255,0.55) !important; opacity: 1; }
             #aiGoal:-ms-input-placeholder { color: rgba(255,255,255,0.55) !important; }
             #aiGoal::-ms-input-placeholder { color: rgba(255,255,255,0.55) !important; }
+            .ai-card-item { display:flex; align-items:center; gap:0.5rem; padding:0.5rem; border-radius:0.75rem; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14); }
+            .ai-card-item .ai-card-link { display:flex; align-items:center; gap:0.5rem; text-decoration:none; flex:1 1 auto; min-width:0; }
+            .ai-card-item .ai-card-title { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; color:#fff; font-weight:700; font-size:0.8rem; line-height:1.3; word-break:break-word; }
+            .ai-card-item .ai-card-sub { display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; color:rgba(230,235,239,0.7); font-size:0.7rem; word-break:break-word; }
+            .ai-card-item .ai-card-avatar { flex-shrink:0; }
+            .ai-card-item .ai-card-body { flex:1 1 auto; min-width:0; }
+            .ai-card-item .ai-card-btn { flex-shrink:0; white-space:nowrap; }
         </style>
         <div class="crs-ai-card rounded-4 p-3 mb-4" style="border:1px solid #e7e5e4; border-radius:16px; background:linear-gradient(135deg,#0D1830 0%,#1e3a5f 55%,#0ea5e9 130%); position:relative; overflow:hidden;">
             <div style="position:absolute; top:-40px; right:-30px; width:160px; height:160px; border-radius:50%; background:rgba(251,191,36,0.12);"></div>
@@ -743,15 +757,15 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 html += '<div class="d-flex flex-column gap-2">';
                 d.courses.forEach(function (c) {
-                    html += '<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);">'
-                        + '<a href="<?php echo base_url('courses/detail/'); ?>' + esc(c.slug) + '" class="d-flex align-items-center gap-2 text-decoration-none flex-fill min-w-0">'
-                        + '<span class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#009688);color:#fff;font-size:0.78rem;">' + esc((c.title || '?').charAt(0).toUpperCase()) + '</span>'
-                        + '<span class="flex-fill min-w-0">'
-                        + '<span class="d-block fw-bold text-truncate" style="color:#fff;font-size:0.8rem;">' + esc(c.title) + '</span>'
-                        + '<span class="d-block text-truncate" style="color:rgba(230,235,239,0.7);font-size:0.7rem;">' + esc(c.content_type || '') + (c.price > 0 ? ' · Rp ' + Number(c.price).toLocaleString('id-ID') : ' · ' + '<?php echo t('Gratis', 'Free'); ?>') + '</span>'
+                    html += '<div class="ai-card-item">'
+                        + '<a href="<?php echo base_url('courses/detail/'); ?>' + esc(c.slug) + '" class="ai-card-link">'
+                        + '<span class="ai-card-avatar d-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:36px;height:36px;background:linear-gradient(135deg,#0ea5e9,#009688);color:#fff;font-size:0.78rem;">' + esc((c.title || '?').charAt(0).toUpperCase()) + '</span>'
+                        + '<span class="ai-card-body">'
+                        + '<span class="ai-card-title d-block">' + esc(c.title) + '</span>'
+                        + '<span class="ai-card-sub d-block">' + esc(c.content_type || '') + (c.price > 0 ? ' · Rp ' + Number(c.price).toLocaleString('id-ID') : ' · ' + '<?php echo t('Gratis', 'Free'); ?>') + '</span>'
                         + '</span>'
                         + '</a>'
-                        + '<a href="<?php echo base_url('courses/buy/'); ?>' + esc(c.slug) + '" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background:#FBBF24; color:#0D1830; font-size:0.68rem; white-space:nowrap;">'
+                        + '<a href="<?php echo base_url('courses/buy/'); ?>' + esc(c.slug) + '" class="ai-card-btn btn btn-sm fw-bold rounded-pill px-3 text-decoration-none" style="background:#FBBF24; color:#0D1830; font-size:0.68rem;">'
                         + '<i class="fas fa-shopping-cart me-1" style="font-size:0.6rem;"></i> <?php echo t('Beli', 'Buy'); ?>'
                         + '</a>'
                         + '</div>';
@@ -826,15 +840,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else {
                     html += '<div class="d-flex flex-column gap-2">';
                     d.courses.forEach(function (c) {
-                        html += '<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);">'
-                            + '<a href="<?php echo base_url('courses/detail/'); ?>' + esc(c.slug) + '" class="d-flex align-items-center gap-2 text-decoration-none flex-fill min-w-0">'
-                            + '<span class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width:34px;height:34px;background:linear-gradient(135deg,#0ea5e9,#009688);color:#fff;font-size:0.75rem;">' + esc((c.title || '?').charAt(0).toUpperCase()) + '</span>'
-                            + '<span class="flex-fill min-w-0">'
-                            + '<span class="d-block fw-bold text-truncate" style="color:#fff;font-size:0.78rem;">' + esc(c.title) + '</span>'
-                            + '<span class="d-block text-truncate" style="color:rgba(230,235,239,0.7);font-size:0.68rem;">' + esc(c.content_type || '') + (c.price > 0 ? ' · Rp ' + Number(c.price).toLocaleString('id-ID') : ' · ' + '<?php echo t('Gratis', 'Free'); ?>') + '</span>'
+                        html += '<div class="ai-card-item">'
+                            + '<a href="<?php echo base_url('courses/detail/'); ?>' + esc(c.slug) + '" class="ai-card-link">'
+                            + '<span class="ai-card-avatar d-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:34px;height:34px;background:linear-gradient(135deg,#0ea5e9,#009688);color:#fff;font-size:0.75rem;">' + esc((c.title || '?').charAt(0).toUpperCase()) + '</span>'
+                            + '<span class="ai-card-body">'
+                            + '<span class="ai-card-title d-block" style="font-size:0.78rem;">' + esc(c.title) + '</span>'
+                            + '<span class="ai-card-sub d-block" style="font-size:0.68rem;">' + esc(c.content_type || '') + (c.price > 0 ? ' · Rp ' + Number(c.price).toLocaleString('id-ID') : ' · ' + '<?php echo t('Gratis', 'Free'); ?>') + '</span>'
                             + '</span>'
                             + '</a>'
-                            + '<a href="<?php echo base_url('courses/buy/'); ?>' + esc(c.slug) + '" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background:#FBBF24; color:#0D1830; font-size:0.66rem; white-space:nowrap;">'
+                            + '<a href="<?php echo base_url('courses/buy/'); ?>' + esc(c.slug) + '" class="ai-card-btn btn btn-sm fw-bold rounded-pill px-3 text-decoration-none" style="background:#FBBF24; color:#0D1830; font-size:0.66rem;">'
                             + '<i class="fas fa-shopping-cart me-1" style="font-size:0.58rem;"></i> <?php echo t('Beli', 'Buy'); ?>'
                             + '</a>'
                             + '</div>';
