@@ -1,3 +1,210 @@
+<?php $_mob_crs_panel = $this->session->userdata('logged_in'); ?>
+
+<?php if ($_mob_crs_panel): ?>
+<!-- ============ PANEL STUDENT (desktop + mobile app-style) ============ -->
+<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1100px;">
+
+    <!-- Mobile App-Style -->
+    <div class="dashboard-mobile-only">
+        <!-- Header -->
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+                <h5 class="fw-extrabold mb-0" style="color: #1c1917; font-size: 1.15rem; letter-spacing: -0.02em;">
+                    <?php echo t('Tambah Kelas', 'Add Course'); ?>
+                </h5>
+                <small style="color: #78716c; font-size: 0.72rem;"><?php echo t('Jelajahi dan daftar kelas baru', 'Explore and enroll in new courses'); ?></small>
+            </div>
+            <a href="<?php echo base_url('courses/mine'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#ecfdf5; color:#059669; font-size:0.72rem;">
+                <i class="fas fa-book-open me-1" style="font-size:0.65rem;"></i> <?php echo t('Kelas Saya', 'My Courses'); ?>
+            </a>
+        </div>
+
+        <!-- Search -->
+        <form action="<?php echo base_url('courses'); ?>" method="GET" class="d-flex gap-2 mb-3">
+            <div class="flex-fill position-relative">
+                <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
+                <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari kelas...', 'Search courses...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e7e5e4; font-size: 0.82rem; height: 42px; background: #fff;">
+            </div>
+            <button type="submit" class="btn px-3 fw-semibold flex-shrink-0" style="background: #059669; color: #fff; border-radius: 100px; font-size: 0.82rem; height: 42px;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+
+        <!-- Category chips (horizontal scroll) -->
+        <div class="d-flex gap-2 overflow-auto pb-1 mb-2" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <a href="<?php echo base_url('courses'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo !$selected_category && !$selected_type && !$selected_level ? '#059669' : '#f5f5f4'; ?>; color: <?php echo !$selected_category && !$selected_type && !$selected_level ? '#fff' : '#57534e'; ?>;">
+                <?php echo t('Semua', 'All'); ?>
+            </a>
+            <?php foreach ($categories as $cat): ?>
+                <a href="<?php echo base_url('courses?category_id=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo $selected_category == $cat->id ? '#059669' : '#f5f5f4'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
+                    <?php echo htmlspecialchars($cat->name); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Course cards (app-style list) -->
+        <?php if (empty($courses)): ?>
+            <div class="mob-empty">
+                <i class="fas fa-search"></i>
+                <p><?php echo t('Tidak ada kelas ditemukan.', 'No courses found.'); ?></p>
+            </div>
+        <?php else: ?>
+            <div class="d-flex flex-column gap-3">
+                <?php foreach ($courses as $i => $course): ?>
+                    <?php
+                    $crs_grads = array(
+                        'linear-gradient(135deg,#059669,#10b981)',
+                        'linear-gradient(135deg,#2563eb,#38bdf8)',
+                        'linear-gradient(135deg,#c026d3,#f472b6)',
+                        'linear-gradient(135deg,#ea580c,#fbbf24)',
+                        'linear-gradient(135deg,#0d9488,#2dd4bf)',
+                        'linear-gradient(135deg,#7c3aed,#a78bfa)'
+                    );
+                    $gi = $i % 6;
+                    $crs_thumb_ok = !empty($course->thumbnail)
+                        && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
+                        && $course->thumbnail !== 'default_course.png';
+                    ?>
+                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="mob-course-card text-decoration-none w-100" style="width:auto;">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <div class="mob-course-thumb" style="background: <?php echo $crs_grads[$gi]; ?>; width: 64px; height: 48px; margin-bottom: 0; flex-shrink: 0; border-radius: 12px; font-size: 1.1rem;">
+                                <?php if ($crs_thumb_ok): ?>
+                                    <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="">
+                                <?php else: ?>
+                                    <?php echo strtoupper(substr(trim($course->title), 0, 1)); ?>
+                                <?php endif; ?>
+                            </div>
+                            <div class="min-w-0 flex-fill">
+                                <div class="fw-bold text-truncate" style="color: #1c1917; font-size: 0.85rem;"><?php echo htmlspecialchars($course->title); ?></div>
+                                <div class="d-flex align-items-center gap-1 mt-1">
+                                    <span class="px-2 py-0 rounded-pill fw-semibold" style="background: #f5f5f4; color: #57534e; font-size: 0.6rem;"><?php echo content_type_label($course->content_type); ?></span>
+                                    <?php if ($course->price > 0): ?>
+                                        <span class="px-2 py-0 rounded-pill fw-bold" style="background: #ecfdf5; color: #059669; font-size: 0.6rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
+                                    <?php else: ?>
+                                        <span class="px-2 py-0 rounded-pill fw-semibold" style="background: #dcfce7; color: #16a34a; font-size: 0.6rem;"><?php echo t('Gratis', 'Free'); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div style="color: #a8a29e; font-size: 0.65rem; margin-top: 2px;"><i class="fas fa-user me-1"></i><?php echo htmlspecialchars($course->teacher_name); ?></div>
+                            </div>
+                            <span class="mob-chev"><i class="fas fa-chevron-right"></i></span>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+
+    <!-- Desktop Panel Version -->
+    <div class="dashboard-desktop-only">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h4 class="fw-extrabold mb-1" style="color: #1c1917; letter-spacing: -0.02em;">
+                    <?php echo t('Tambah Kelas', 'Add Course'); ?>
+                </h4>
+                <p style="color: #78716c; font-size: 0.85rem; margin-bottom: 0;">
+                    <?php echo t('Jelajahi dan daftar kelas baru.', 'Explore and enroll in new courses.'); ?>
+                </p>
+            </div>
+            <a href="<?php echo base_url('courses/mine'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#ecfdf5; color:#059669; font-size:0.8rem;">
+                <i class="fas fa-book-open me-1"></i> <?php echo t('Kelas Saya', 'My Courses'); ?>
+            </a>
+        </div>
+
+        <!-- Search -->
+        <form action="<?php echo base_url('courses'); ?>" method="GET" class="d-flex gap-2 mb-3">
+            <div class="flex-fill position-relative">
+                <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
+                <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari kelas, materi, atau mentor...', 'Search classes, content, or mentors...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e7e5e4; font-size: 0.85rem; height: 42px; background: #fff;">
+            </div>
+            <button type="submit" class="btn px-4 fw-semibold flex-shrink-0" style="background: #059669; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 42px;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+
+        <!-- Category chips -->
+        <div class="d-flex gap-2 overflow-auto pb-1 mb-3" style="scrollbar-width: none; -ms-overflow-style: none;">
+            <a href="<?php echo base_url('courses'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo !$selected_category && !$selected_type && !$selected_level ? '#059669' : '#f5f5f4'; ?>; color: <?php echo !$selected_category && !$selected_type && !$selected_level ? '#fff' : '#57534e'; ?>;">
+                <?php echo t('Semua', 'All'); ?>
+            </a>
+            <?php foreach ($categories as $cat): ?>
+                <a href="<?php echo base_url('courses?category_id=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo $selected_category == $cat->id ? '#059669' : '#f5f5f4'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
+                    <?php echo htmlspecialchars($cat->name); ?>
+                </a>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Course grid -->
+        <?php if (empty($courses)): ?>
+            <div class="text-center py-5">
+                <div style="font-size: 2.5rem; color: #d4d4d4; margin-bottom: 0.75rem;"><i class="fas fa-search"></i></div>
+                <h5 class="fw-bold" style="color: #1c1917;"><?php echo t('Tidak Ada Hasil', 'No Results Found'); ?></h5>
+                <p style="color: #78716c; font-size: 0.85rem;"><?php echo t('Coba ubah filter atau kata kunci pencarian Anda.', 'Try changing your filters or search keywords.'); ?></p>
+            </div>
+        <?php else: ?>
+            <div class="row g-3">
+                <?php foreach ($courses as $i => $course): ?>
+                    <?php
+                    $crs_grads2 = array(
+                        'linear-gradient(135deg,#059669,#10b981)',
+                        'linear-gradient(135deg,#2563eb,#38bdf8)',
+                        'linear-gradient(135deg,#c026d3,#f472b6)',
+                        'linear-gradient(135deg,#ea580c,#fbbf24)',
+                        'linear-gradient(135deg,#0d9488,#2dd4bf)',
+                        'linear-gradient(135deg,#7c3aed,#a78bfa)'
+                    );
+                    $gi2 = $i % 6;
+                    $crs_thumb_ok2 = !empty($course->thumbnail)
+                        && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
+                        && $course->thumbnail !== 'default_course.png';
+                    ?>
+                    <div class="col-md-6 col-lg-4">
+                        <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none">
+                            <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 14px; background: #fff; overflow: hidden; transition: all 0.15s;">
+                                <div class="position-relative overflow-hidden" style="height: 120px; background: <?php echo $crs_grads2[$gi2]; ?>;">
+                                    <?php if ($crs_thumb_ok2): ?>
+                                        <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" class="w-100 h-100" style="object-fit: cover;">
+                                    <?php endif; ?>
+                                    <div class="position-absolute top-0 start-0 m-2 d-flex gap-1 flex-wrap">
+                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: rgba(17,24,39,0.85); color: #fff; font-size: 0.6rem;"><?php echo content_type_label($course->content_type); ?></span>
+                                    </div>
+                                </div>
+                                <div class="p-3">
+                                    <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
+                                        <span style="color: #a8a29e; font-size: 0.68rem; font-weight: 500;">
+                                            <i class="fas fa-folder-open me-1" style="font-size: 0.55rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
+                                        </span>
+                                        <?php if ($course->price > 0): ?>
+                                            <span class="px-2 py-1 rounded-pill fw-bold" style="background: #ecfdf5; color: #059669; font-size: 0.62rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
+                                        <?php else: ?>
+                                            <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #dcfce7; color: #16a34a; font-size: 0.62rem;"><?php echo t('Gratis', 'Free'); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <h6 class="fw-bold mb-1 lh-sm" style="color: #1c1917; font-size: 0.85rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                        <?php echo htmlspecialchars($course->title); ?>
+                                    </h6>
+                                    <p class="mb-2" style="color: #78716c; font-size: 0.75rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                        <?php echo htmlspecialchars($course->description); ?>
+                                    </p>
+                                    <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
+                                        <span style="color: #a8a29e; font-size: 0.68rem; font-weight: 500;">
+                                            <i class="fas fa-user me-1" style="font-size: 0.55rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?>
+                                        </span>
+                                        <span class="px-2 py-1 rounded-pill" style="background: #f5f5f4; color: #57534e; font-size: 0.62rem; font-weight: 600;">
+                                            <?php echo skill_level_label($course->skill_level); ?>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php else: ?>
+<!-- ============ HALAMAN PUBLIK (guest) ============ -->
 <style>
 .crs-header { border-bottom: 1px solid #e5e5e5; }
 .crs-header-inner { padding-top: 2rem; padding-bottom: 1.5rem; max-width: 960px; }
@@ -170,3 +377,4 @@
         </div>
     <?php endif; ?>
 </div>
+<?php endif; ?>

@@ -14,6 +14,23 @@ class Courses extends MY_Controller {
         $this->load->model('Certificate_model');
     }
 
+    /**
+     * Render view dengan template yang sesuai:
+     * - sudah login → template student (panel: sidebar + bottom nav)
+     * - belum login → template publik
+     */
+    private function _render($view, $data) {
+        if ($this->session->userdata('logged_in')) {
+            $this->load->view('templates/student_header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/student_footer');
+        } else {
+            $this->load->view('templates/header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
     public function index() {
         $filters = array(
             'skill_level' => $this->input->get('skill_level'),
@@ -24,6 +41,7 @@ class Courses extends MY_Controller {
         );
 
         $data['title'] = t('Jelajahi Semua Konten', 'Browse All Content');
+        $data['active_page'] = 'my_courses';
         $data['courses'] = $this->Course_model->get_courses($filters);
         $data['categories'] = $this->Course_model->get_root_categories();
         $data['selected_level'] = $filters['skill_level'];
@@ -32,9 +50,7 @@ class Courses extends MY_Controller {
         $data['search_query'] = $filters['search'];
         $data['content_types'] = array('course','workshop','bootcamp','ebook','project','article','video','podcast','template');
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('courses/index', $data);
-        $this->load->view('templates/footer');
+        $this->_render('courses/index', $data);
     }
 
     public function mine() {
@@ -85,9 +101,8 @@ class Courses extends MY_Controller {
             $data['user_review'] = null;
         }
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('courses/detail', $data);
-        $this->load->view('templates/footer');
+        $data['active_page'] = 'my_courses';
+        $this->_render('courses/detail', $data);
     }
 
     public function detail_slug($slug) {
@@ -120,9 +135,8 @@ class Courses extends MY_Controller {
             $data['user_review'] = null;
         }
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('courses/detail', $data);
-        $this->load->view('templates/footer');
+        $data['active_page'] = 'my_courses';
+        $this->_render('courses/detail', $data);
     }
 
     public function buy($id_or_slug) {
