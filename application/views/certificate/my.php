@@ -3,7 +3,7 @@
     <!-- ============ MOBILE APP-STYLE ============ -->
     <div class="dashboard-mobile-only">
         <div class="mb-3">
-            <h5 class="fw-extrabold mb-0" style="color: #1c1917; font-size: 1.15rem; letter-spacing: -0.02em;">
+            <h5 class="fw-extrabold mb-0" style="color: #0D1830; font-size: 1.15rem; letter-spacing: -0.02em;">
                 <?php echo t('Sertifikat Saya', 'My Certificates'); ?>
             </h5>
             <small style="color: #78716c; font-size: 0.72rem;"><?php echo t('Pencapaian belajarmu', 'Your learning achievements'); ?></small>
@@ -20,7 +20,7 @@
             <div class="d-flex flex-column gap-3">
                 <?php foreach ($certificates as $cert): ?>
                     <div class="bg-white rounded-4 border p-4 text-center" style="border-color: #f0eeeb !important; box-shadow: 0 2px 8px rgba(0,0,0,0.04);">
-                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: linear-gradient(135deg,#10b981,#34d399); color: #fff;">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 64px; height: 64px; background: linear-gradient(135deg,#009688,#34d399); color: #fff;">
                             <i class="fas fa-award" style="font-size: 1.5rem;"></i>
                         </div>
                         <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;"><?php echo htmlspecialchars($cert->title ?: $cert->course_title); ?></h6>
@@ -28,7 +28,7 @@
                             <i class="far fa-calendar-alt me-1"></i><?php echo t('Diterbitkan', 'Issued'); ?> <?php echo date('d M Y', strtotime($cert->issued_at)); ?>
                         </p>
                         <div class="d-flex gap-2 justify-content-center">
-                            <a href="<?php echo base_url('certificate/download/' . encode_id($cert->id)); ?>" class="btn btn-sm fw-bold rounded-pill px-3 py-2" style="background: #1c1917; color: #fff; font-size: 0.72rem;">
+                            <a href="<?php echo base_url('certificate/download/' . encode_id($cert->id)); ?>" class="btn btn-sm fw-bold rounded-pill px-3 py-2" style="background: #0D1830; color: #fff; font-size: 0.72rem;">
                                 <i class="fas fa-download me-1"></i> <?php echo t('Unduh PDF', 'Download PDF'); ?>
                             </a>
                             <a href="<?php echo base_url('certificate/verify/' . $cert->certificate_code); ?>" class="btn btn-sm fw-semibold rounded-pill px-3 py-2" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.72rem;">

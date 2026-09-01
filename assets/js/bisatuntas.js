@@ -259,7 +259,7 @@
         showCancelButton: true,
         confirmButtonText: confirmBtn,
         cancelButtonText: cancelBtn,
-        confirmButtonColor: '#0d6efd',
+        confirmButtonColor: '#009688',
         cancelButtonColor: '#6c757d',
         reverseButtons: true
       }).then(function(result) {

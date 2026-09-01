@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #0d6efd; --primary-rgb: 13,110,253; --info: #6366f1; --gray-300: #cbd5e1; --gray-500: #64748b; --gray-700: #334155; }
-        body { font-family: 'Inter', sans-serif; background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        :root { --primary: #009688; --primary-rgb: 13,110,253; --info: #0D1830; --gray-300: #cbd5e1; --gray-500: #64748b; --gray-700: #334155; }
+        body { font-family: 'Inter', sans-serif; background: #E6EBEF; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
         .error-code { font-size: 8rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--info)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; }
         .card { border: 1px solid rgba(0,0,0,0.05); border-radius: 16px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
     </style>

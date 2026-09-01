@@ -15,7 +15,7 @@
                     <p class="text-secondary"><?php echo t('Kode sertifikat tidak valid.', 'Invalid certificate code.'); ?></p>
                 </div>
             <?php else: ?>
-                <div class="card border-0 shadow-lg rounded-4 p-5 text-center animate-scale-in" style="border: 3px solid #f59e0b;">
+                <div class="card border-0 shadow-lg rounded-4 p-5 text-center animate-scale-in" style="border: 3px solid #FBBF24;">
                     <div class="icon-72 bg-warning-subtle text-warning rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center" style="width: 72px; height: 72px;">
                         <i class="fas fa-award fa-2x"></i>
                     </div>

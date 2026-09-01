@@ -43,7 +43,7 @@
                             <td class="fw-semibold"><?php echo htmlspecialchars($b->title); ?></td>
                             <td>
                                 <?php if ($b->link): ?>
-                                    <a href="<?php echo htmlspecialchars($b->link); ?>" target="_blank" class="text-decoration-none small" style="color: #059669;"><i class="fas fa-external-link-alt me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars(substr($b->link, 0, 40)); ?></a>
+                                    <a href="<?php echo htmlspecialchars($b->link); ?>" target="_blank" class="text-decoration-none small" style="color: #009688;"><i class="fas fa-external-link-alt me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars(substr($b->link, 0, 40)); ?></a>
                                 <?php else: ?>
                                     <span class="text-muted">—</span>
                                 <?php endif; ?>

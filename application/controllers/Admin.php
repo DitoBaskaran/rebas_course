@@ -1016,7 +1016,7 @@ class Admin extends MY_Controller {
                 } elseif ($s->type === 'boolean') {
                     $val = $this->input->post($s->key) ? '1' : '0';
                 } elseif ($s->type === 'color') {
-                    $val = $this->input->post($s->key) ?: '#0d6efd';
+                    $val = $this->input->post($s->key) ?: '#009688';
                 }
 
                 if ($val !== NULL) {

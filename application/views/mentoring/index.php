@@ -9,12 +9,12 @@
         <!-- Header -->
         <div class="d-flex align-items-center justify-content-between mb-3">
             <div>
-                <h5 class="fw-extrabold mb-0" style="color: #1c1917; font-size: 1.15rem; letter-spacing: -0.02em;">
+                <h5 class="fw-extrabold mb-0" style="color: #0D1830; font-size: 1.15rem; letter-spacing: -0.02em;">
                     <?php echo t('Mentoring', 'Mentoring'); ?>
                 </h5>
                 <small style="color: #78716c; font-size: 0.72rem;"><?php echo t('Sesi 1-on-1 dengan mentor ahli', '1-on-1 sessions with expert mentors'); ?></small>
             </div>
-            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#ecfdf5; color:#059669; font-size:0.72rem;">
+            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1; color:#009688; font-size:0.72rem;">
                 <i class="fas fa-calendar-check me-1" style="font-size:0.65rem;"></i> <?php echo t('Sesi Saya', 'My Sessions'); ?>
             </a>
         </div>
@@ -28,18 +28,18 @@
                 <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
                 <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari mentor...', 'Search mentors...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e7e5e4; font-size: 0.82rem; height: 42px; background: #fff;">
             </div>
-            <button type="submit" class="btn px-3 fw-semibold flex-shrink-0" style="background: #059669; color: #fff; border-radius: 100px; font-size: 0.82rem; height: 42px;">
+            <button type="submit" class="btn px-3 fw-semibold flex-shrink-0" style="background: #009688; color: #fff; border-radius: 100px; font-size: 0.82rem; height: 42px;">
                 <i class="fas fa-search"></i>
             </button>
         </form>
 
         <!-- Category chips (horizontal scroll) -->
         <div class="d-flex gap-2 overflow-auto pb-1 mb-2" style="scrollbar-width: none; -ms-overflow-style: none;">
-            <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo !$selected_category ? '#059669' : '#f5f5f4'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
+            <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo !$selected_category ? '#009688' : '#E6EBEF'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
                 <?php echo t('Semua', 'All'); ?>
             </a>
             <?php foreach ($categories as $cat): ?>
-                <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo $selected_category == $cat->id ? '#059669' : '#f5f5f4'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
+                <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo $selected_category == $cat->id ? '#009688' : '#E6EBEF'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
                     <?php echo htmlspecialchars(t($cat->name, $cat->name_en)); ?>
                 </a>
             <?php endforeach; ?>
@@ -59,15 +59,15 @@
                 <?php foreach ($mentors as $mentor): ?>
                     <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="mob-course-card text-decoration-none w-100" style="width:auto;">
                         <div class="d-flex align-items-center gap-3 mb-2">
-                            <span class="mob-avatar" style="background: linear-gradient(135deg,#059669,#10b981); font-size: 1rem; width: 46px; height: 46px; border-radius: 50%;">
+                            <span class="mob-avatar" style="background: linear-gradient(135deg,#009688,#009688); font-size: 1rem; width: 46px; height: 46px; border-radius: 50%;">
                                 <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
                             </span>
                             <div class="min-w-0 flex-fill">
-                                <div class="fw-bold text-truncate" style="color: #1c1917; font-size: 0.85rem;"><?php echo htmlspecialchars($mentor->name); ?></div>
+                                <div class="fw-bold text-truncate" style="color: #0D1830; font-size: 0.85rem;"><?php echo htmlspecialchars($mentor->name); ?></div>
                                 <div class="text-truncate" style="color: #78716c; font-size: 0.72rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></div>
                                 <div class="d-flex align-items-center gap-1 mt-1">
-                                    <i class="fas fa-star" style="color: #f59e0b; font-size: 0.6rem;"></i>
-                                    <span class="fw-bold" style="color: #1c1917; font-size: 0.72rem;"><?php echo $mentor->avg_rating; ?></span>
+                                    <i class="fas fa-star" style="color: #FBBF24; font-size: 0.6rem;"></i>
+                                    <span class="fw-bold" style="color: #0D1830; font-size: 0.72rem;"><?php echo $mentor->avg_rating; ?></span>
                                     <span style="color: #a8a29e; font-size: 0.65rem;">(<?php echo $mentor->total_reviews; ?>)</span>
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                 <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
                                 <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
                             </div>
-                            <span style="color: #059669; font-size: 0.72rem; font-weight: 600;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i></span>
+                            <span style="color: #009688; font-size: 0.72rem; font-weight: 600;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i></span>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -95,14 +95,14 @@
     <div class="dashboard-desktop-only">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
             <div>
-                <h4 class="fw-extrabold mb-1" style="color: #1c1917; letter-spacing: -0.02em;">
+                <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em;">
                     <?php echo t('Mentoring', 'Mentoring'); ?>
                 </h4>
                 <p style="color: #78716c; font-size: 0.85rem; margin-bottom: 0;">
                     <?php echo t('Temukan mentor dan jadwalkan sesi 1-on-1.', 'Find mentors and schedule 1-on-1 sessions.'); ?>
                 </p>
             </div>
-            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#ecfdf5; color:#059669; font-size:0.8rem;">
+            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1; color:#009688; font-size:0.8rem;">
                 <i class="fas fa-calendar-check me-1"></i> <?php echo t('Sesi Saya', 'My Sessions'); ?>
             </a>
         </div>
@@ -116,18 +116,18 @@
                 <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
                 <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari mentor berdasarkan nama atau keahlian...', 'Search mentors by name or expertise...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e7e5e4; font-size: 0.85rem; height: 42px; background: #fff;">
             </div>
-            <button type="submit" class="btn px-4 fw-semibold flex-shrink-0" style="background: #059669; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 42px;">
+            <button type="submit" class="btn px-4 fw-semibold flex-shrink-0" style="background: #009688; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 42px;">
                 <i class="fas fa-search"></i>
             </button>
         </form>
 
         <!-- Category chips -->
         <div class="d-flex gap-2 overflow-auto pb-1 mb-3" style="scrollbar-width: none; -ms-overflow-style: none;">
-            <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo !$selected_category ? '#059669' : '#f5f5f4'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
+            <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo !$selected_category ? '#009688' : '#E6EBEF'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
                 <?php echo t('Semua', 'All'); ?>
             </a>
             <?php foreach ($categories as $cat): ?>
-                <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo $selected_category == $cat->id ? '#059669' : '#f5f5f4'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
+                <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo $selected_category == $cat->id ? '#009688' : '#E6EBEF'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
                     <?php echo htmlspecialchars(t($cat->name, $cat->name_en)); ?>
                 </a>
             <?php endforeach; ?>
@@ -140,7 +140,7 @@
         <?php if (empty($mentors)): ?>
             <div class="text-center py-5">
                 <div style="font-size: 2.5rem; color: #d4d4d4; margin-bottom: 0.75rem;"><i class="fas fa-user-tie"></i></div>
-                <h5 class="fw-bold" style="color: #1c1917;"><?php echo t('Tidak Ada Mentor', 'No Mentors Found'); ?></h5>
+                <h5 class="fw-bold" style="color: #0D1830;"><?php echo t('Tidak Ada Mentor', 'No Mentors Found'); ?></h5>
                 <p style="color: #78716c; font-size: 0.85rem;"><?php echo t('Coba ubah filter pencarian Anda.', 'Try changing your search filters.'); ?></p>
             </div>
         <?php else: ?>
@@ -150,15 +150,15 @@
                         <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="text-decoration-none">
                             <div class="border rounded-3 h-100 p-3" style="border-color: #e7e5e4; border-radius: 14px; background: #fff; transition: all 0.15s;">
                                 <div class="d-flex align-items-center gap-3 mb-3">
-                                    <span class="mob-avatar" style="background: linear-gradient(135deg,#059669,#10b981); font-size: 1rem; width: 48px; height: 48px; border-radius: 50%;">
+                                    <span class="mob-avatar" style="background: linear-gradient(135deg,#009688,#009688); font-size: 1rem; width: 48px; height: 48px; border-radius: 50%;">
                                         <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
                                     </span>
                                     <div class="min-w-0 flex-fill">
-                                        <h6 class="fw-bold mb-0 text-truncate" style="color: #1c1917; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
+                                        <h6 class="fw-bold mb-0 text-truncate" style="color: #0D1830; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
                                         <small class="fw-medium text-truncate d-block" style="color: #78716c; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
                                         <div class="d-flex align-items-center gap-1 mt-1">
-                                            <i class="fas fa-star" style="color: #f59e0b; font-size: 0.6rem;"></i>
-                                            <span class="fw-bold" style="color: #1c1917; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
+                                            <i class="fas fa-star" style="color: #FBBF24; font-size: 0.6rem;"></i>
+                                            <span class="fw-bold" style="color: #0D1830; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
                                             <span style="color: #a8a29e; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
                                         </div>
                                     </div>
@@ -171,7 +171,7 @@
                                         <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
                                         <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
                                     </div>
-                                    <span style="color: #059669; font-size: 0.78rem; font-weight: 600;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i></span>
+                                    <span style="color: #009688; font-size: 0.78rem; font-weight: 600;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i></span>
                                 </div>
                             </div>
                         </a>
@@ -191,7 +191,7 @@
             <span class="px-3 py-1 rounded-pill fw-semibold mb-3 d-inline-block" style="background: #111827; color: #fff; font-size: 0.72rem;">1-on-1 MENTORING</span>
             <h1 class="fw-extrabold mb-2" style="font-size: 1.6rem; letter-spacing: -0.02em; color: #111827;">
                 <?php echo t('Dapatkan Mentoring Karirmu Bersama', 'Get Career Mentoring With'); ?>
-                <br><span style="color: #059669;"><?php echo t('Mentor Ahli Terpercaya', 'Trusted Expert Mentors'); ?></span>
+                <br><span style="color: #009688;"><?php echo t('Mentor Ahli Terpercaya', 'Trusted Expert Mentors'); ?></span>
             </h1>
             <p class="mb-3 mx-auto" style="color: #737373; font-size: 0.9rem; max-width: 500px;">
                 <?php echo t('Pilih mentor, jadwalkan sesi 1-on-1, dan mulai perjalanan karirmu.', 'Choose a mentor, schedule a 1-on-1 session, and start your career journey.'); ?>
@@ -206,15 +206,15 @@
         <!-- 3 Steps -->
         <div class="d-flex justify-content-center gap-3 flex-wrap mb-2">
             <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
-                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #059669; color: #111827; font-size: 0.7rem;">1</div>
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #009688; color: #111827; font-size: 0.7rem;">1</div>
                 <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Jelajahi Mentor', 'Explore Mentors'); ?></span>
             </div>
             <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
-                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #059669; color: #111827; font-size: 0.7rem;">2</div>
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #009688; color: #111827; font-size: 0.7rem;">2</div>
                 <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Pilih Jadwal', 'Choose Schedule'); ?></span>
             </div>
             <div class="d-flex align-items-center gap-2 px-3 py-2 rounded-3" style="background: #fafafa;">
-                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #059669; color: #111827; font-size: 0.7rem;">3</div>
+                <div class="fw-bold d-inline-flex align-items-center justify-content-center" style="width: 24px; height: 24px; border-radius: 50%; background: #009688; color: #111827; font-size: 0.7rem;">3</div>
                 <span style="color: #525252; font-size: 0.78rem; font-weight: 500;"><?php echo t('Mentoring 1-on-1', '1-on-1 Mentoring'); ?></span>
             </div>
         </div>
@@ -282,7 +282,7 @@
                                         <h6 class="fw-bold mb-0 text-truncate" style="color: #111827; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
                                         <small class="fw-medium text-truncate d-block" style="color: #737373; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
                                         <div class="d-flex align-items-center gap-1 mt-1">
-                                            <i class="fas fa-star" style="color: #059669; font-size: 0.6rem;"></i>
+                                            <i class="fas fa-star" style="color: #009688; font-size: 0.6rem;"></i>
                                             <span class="fw-bold" style="color: #111827; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
                                             <span style="color: #a3a3a3; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
                                         </div>
@@ -316,7 +316,7 @@
                                         <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
                                         <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
                                     </div>
-                                    <span style="color: #059669; font-size: 0.78rem; font-weight: 600;">
+                                    <span style="color: #009688; font-size: 0.78rem; font-weight: 600;">
                                         <?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.55rem;"></i>
                                     </span>
                                 </div>

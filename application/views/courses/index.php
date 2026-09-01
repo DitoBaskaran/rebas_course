@@ -10,11 +10,11 @@ $query_parts = array_filter(array($query_type, $query_level, $query_cat));
 $query_all = $query_parts ? '?' . implode('&', $query_parts) : '';
 
 $cat_colors = array(
-    array('#ecfdf5', '#059669'),
+    array('#E0F2F1', '#009688'),
     array('#eff6ff', '#2563eb'),
     array('#fdf4ff', '#c026d3'),
     array('#fff7ed', '#ea580c'),
-    array('#f0fdfa', '#0d9488'),
+    array('#E0F2F1', '#0d9488'),
     array('#f5f3ff', '#7c3aed'),
 );
 
@@ -27,7 +27,7 @@ $lvl_meta = array(
 );
 
 $grads = array(
-    'linear-gradient(135deg,#059669,#10b981)',
+    'linear-gradient(135deg,#009688,#009688)',
     'linear-gradient(135deg,#2563eb,#38bdf8)',
     'linear-gradient(135deg,#c026d3,#f472b6)',
     'linear-gradient(135deg,#ea580c,#fbbf24)',
@@ -38,7 +38,7 @@ $grads = array(
 <style>
 /* ===== COURSES PAGE REDESIGN ===== */
 .crs-hero {
-    background: linear-gradient(135deg, #059669 0%, #0d9488 55%, #0ea5e9 130%);
+    background: linear-gradient(135deg, #009688 0%, #0d9488 55%, #0ea5e9 130%);
     border-radius: 20px;
     padding: 2.2rem 1.5rem;
     position: relative;
@@ -83,15 +83,15 @@ $grads = array(
 .crs-searchbar i { color: #a3a3a3; font-size: 0.85rem; flex-shrink: 0; }
 .crs-searchbar input {
     border: none; outline: none; flex: 1;
-    font-size: 0.88rem; background: transparent; color: #1c1917; min-width: 0;
+    font-size: 0.88rem; background: transparent; color: #0D1830; min-width: 0;
 }
 .crs-searchbar button {
-    background: #059669; color: #fff; border: none;
+    background: #009688; color: #fff; border: none;
     border-radius: 100px; font-size: 0.8rem; font-weight: 700;
     padding: 0.55rem 1.15rem; white-space: nowrap; cursor: pointer;
     transition: all 0.2s;
 }
-.crs-searchbar button:hover { background: #047857; }
+.crs-searchbar button:hover { background: #00796B; }
 
 .crs-chips {
     display: flex; gap: 0.5rem;
@@ -104,14 +104,14 @@ $grads = array(
     padding: 0.45rem 1rem;
     border-radius: 100px;
     font-size: 0.75rem; font-weight: 600;
-    background: #f5f5f4; color: #57534e;
+    background: #E6EBEF; color: #57534e;
     text-decoration: none;
     border: 1.5px solid transparent;
     transition: all 0.2s;
     white-space: nowrap;
 }
-.crs-chip:hover { border-color: #d6d3d1; background: #fafaf9; }
-.crs-chip.active { background: #059669 !important; color: #fff !important; border-color: #059669 !important; }
+.crs-chip:hover { border-color: #d6d3d1; background: #E6EBEF; }
+.crs-chip.active { background: #009688 !important; color: #fff !important; border-color: #009688 !important; }
 .crs-chip.ic { display: inline-flex; align-items: center; gap: 0.35rem; }
 .crs-chip.ic i { font-size: 0.7rem; }
 
@@ -140,7 +140,7 @@ $grads = array(
     position: relative;
     aspect-ratio: 16/9;
     overflow: hidden;
-    background: #f5f5f4;
+    background: #E6EBEF;
     display: flex; align-items: center; justify-content: center;
     color: #fff; font-size: 2rem; font-weight: 800;
 }
@@ -161,7 +161,7 @@ $grads = array(
 .crs-card-price {
     position: absolute; bottom: 10px; right: 10px;
     background: rgba(255,255,255,0.92);
-    color: #1c1917; font-size: 0.68rem; font-weight: 800;
+    color: #0D1830; font-size: 0.68rem; font-weight: 800;
     padding: 0.22rem 0.6rem; border-radius: 100px;
     backdrop-filter: blur(4px);
     z-index: 2;
@@ -179,7 +179,7 @@ $grads = array(
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .crs-card-title {
-    font-size: 0.85rem; font-weight: 700; color: #1c1917;
+    font-size: 0.85rem; font-weight: 700; color: #0D1830;
     line-height: 1.35;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
     overflow: hidden;
@@ -199,7 +199,7 @@ $grads = array(
 }
 .crs-card-teacher .t-av {
     width: 18px; height: 18px; border-radius: 50%;
-    background: linear-gradient(135deg,#059669,#10b981);
+    background: linear-gradient(135deg,#009688,#009688);
     color: #fff; font-size: 0.55rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
@@ -207,7 +207,7 @@ $grads = array(
 .crs-card-teacher span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .crs-card-level {
     font-size: 0.6rem; font-weight: 700; color: #57534e;
-    background: #f5f5f4; padding: 0.2rem 0.55rem; border-radius: 100px;
+    background: #E6EBEF; padding: 0.2rem 0.55rem; border-radius: 100px;
     flex-shrink: 0;
 }
 
@@ -226,7 +226,7 @@ $grads = array(
 .crs-mob-thumb {
     width: 92px; height: 64px; border-radius: 12px;
     flex-shrink: 0; overflow: hidden;
-    background: #f5f5f4;
+    background: #E6EBEF;
     display: flex; align-items: center; justify-content: center;
     color: #fff; font-size: 1.2rem; font-weight: 800;
     position: relative;
@@ -234,7 +234,7 @@ $grads = array(
 .crs-mob-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .crs-mob-body { flex: 1; min-width: 0; }
 .crs-mob-title {
-    font-size: 0.82rem; font-weight: 700; color: #1c1917;
+    font-size: 0.82rem; font-weight: 700; color: #0D1830;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     margin-bottom: 0.15rem;
 }
@@ -245,7 +245,7 @@ $grads = array(
 }
 .crs-mob-sub .dot { width: 3px; height: 3px; border-radius: 50%; background: #d6d3d1; flex-shrink: 0; }
 .crs-mob-price {
-    font-size: 0.7rem; font-weight: 800; color: #059669;
+    font-size: 0.7rem; font-weight: 800; color: #009688;
     margin-top: 0.2rem;
 }
 .crs-mob-price.free { color: #16a34a; }
@@ -253,7 +253,7 @@ $grads = array(
 
 /* Panel header compact */
 .crs-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; margin-bottom: 1rem; }
-.crs-panel-head h4 { font-size: 1.2rem; font-weight: 800; color: #1c1917; letter-spacing: -0.02em; margin: 0; }
+.crs-panel-head h4 { font-size: 1.2rem; font-weight: 800; color: #0D1830; letter-spacing: -0.02em; margin: 0; }
 .crs-panel-head small { color: #78716c; font-size: 0.72rem; }
 
 /* Section title untuk filter grup */
@@ -280,7 +280,7 @@ $grads = array(
                 <h4><?php echo t('Jelajahi Kelas', 'Explore Courses'); ?></h4>
                 <small><?php echo count($courses); ?> <?php echo t('kelas tersedia', 'courses available'); ?></small>
             </div>
-            <a href="<?php echo base_url('courses/mine'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#ecfdf5;color:#059669;font-size:0.72rem;">
+            <a href="<?php echo base_url('courses/mine'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1;color:#009688;font-size:0.72rem;">
                 <i class="fas fa-book-open me-1" style="font-size:0.65rem;"></i> <?php echo t('Kelas Saya', 'My Courses'); ?>
             </a>
         </div>
@@ -357,7 +357,7 @@ $grads = array(
                 <h4><?php echo t('Jelajahi Kelas', 'Explore Courses'); ?></h4>
                 <small><?php echo t('Temukan kelas baru untuk mengembangkan skillmu', 'Discover new courses to grow your skills'); ?></small>
             </div>
-            <a href="<?php echo base_url('courses/mine'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#ecfdf5;color:#059669;font-size:0.8rem;">
+            <a href="<?php echo base_url('courses/mine'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1;color:#009688;font-size:0.8rem;">
                 <i class="fas fa-book-open me-1"></i> <?php echo t('Kelas Saya', 'My Courses'); ?>
             </a>
         </div>
@@ -409,14 +409,14 @@ $grads = array(
 
         <!-- Result count -->
         <div class="mb-3" style="font-size:0.78rem;color:#78716c;font-weight:500;">
-            <?php echo t('Menampilkan', 'Showing'); ?> <strong style="color:#1c1917;"><?php echo count($courses); ?></strong> <?php echo t('kelas', 'courses'); ?>
+            <?php echo t('Menampilkan', 'Showing'); ?> <strong style="color:#0D1830;"><?php echo count($courses); ?></strong> <?php echo t('kelas', 'courses'); ?>
         </div>
 
         <!-- Grid -->
         <?php if (empty($courses)): ?>
             <div class="text-center py-5">
                 <div style="font-size: 2.5rem; color: #d4d4d4; margin-bottom: 0.75rem;"><i class="fas fa-search"></i></div>
-                <h5 class="fw-bold" style="color: #1c1917;"><?php echo t('Tidak Ada Hasil', 'No Results Found'); ?></h5>
+                <h5 class="fw-bold" style="color: #0D1830;"><?php echo t('Tidak Ada Hasil', 'No Results Found'); ?></h5>
                 <p style="color: #78716c; font-size: 0.85rem;"><?php echo t('Coba ubah filter atau kata kunci pencarian Anda.', 'Try changing your filters or search keywords.'); ?></p>
             </div>
         <?php else: ?>
@@ -427,7 +427,7 @@ $grads = array(
                     $thumb_ok = !empty($course->thumbnail)
                         && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
                         && $course->thumbnail !== 'default_course.png';
-                    $lv = $lvl_meta[$course->skill_level] ?? array('', '', 'fa-seedling', '#f5f5f4', '#57534e');
+                    $lv = $lvl_meta[$course->skill_level] ?? array('', '', 'fa-seedling', '#E6EBEF', '#57534e');
                     ?>
                     <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="crs-card">
                         <div class="crs-card-thumb" style="background: <?php echo $grads[$gi]; ?>;">
@@ -576,7 +576,7 @@ $grads = array(
                 $thumb_ok = !empty($course->thumbnail)
                     && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
                     && $course->thumbnail !== 'default_course.png';
-                $lv = $lvl_meta[$course->skill_level] ?? array('', '', 'fa-seedling', '#f5f5f4', '#57534e');
+                $lv = $lvl_meta[$course->skill_level] ?? array('', '', 'fa-seedling', '#E6EBEF', '#57534e');
                 ?>
                 <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="crs-card">
                     <div class="crs-card-thumb" style="background: <?php echo $grads[$gi]; ?>;">

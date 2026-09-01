@@ -137,12 +137,12 @@
             <!-- Complete Button -->
             <div class="text-center mb-4">
                 <?php if (in_array($active_lesson->id, $completed_lessons)): ?>
-                    <div class="d-inline-flex align-items-center gap-2 px-4 py-3 rounded-pill fw-semibold" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                    <div class="d-inline-flex align-items-center gap-2 px-4 py-3 rounded-pill fw-semibold" style="background: linear-gradient(135deg, #009688 0%, #009688 100%); color: #fff; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
                         <i class="fas fa-check-circle" style="font-size: 1.1rem;"></i>
                         <?php echo t('Materi Selesai', 'Lesson Completed'); ?>
                     </div>
                 <?php else: ?>
-                    <a href="#" class="lesson-complete-btn d-inline-flex align-items-center gap-2 px-5 py-3 rounded-pill fw-bold text-decoration-none" style="background: #059669; color: #111827; font-size: 0.95rem; box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(234, 179, 8, 0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(234, 179, 8, 0.4)'" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
+                    <a href="#" class="lesson-complete-btn d-inline-flex align-items-center gap-2 px-5 py-3 rounded-pill fw-bold text-decoration-none" style="background: #009688; color: #111827; font-size: 0.95rem; box-shadow: 0 4px 16px rgba(234, 179, 8, 0.4); transition: all 0.3s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(234, 179, 8, 0.5)'" onmouseout="this.style.transform='';this.style.boxShadow='0 4px 16px rgba(234, 179, 8, 0.4)'" data-lesson-id="<?php echo $active_lesson->id; ?>" data-course-id="<?php echo $course->id; ?>">
                         <i class="fas fa-check-circle" style="font-size: 1.1rem;"></i>
                         <?php echo t('Tandai Selesai', 'Mark Complete'); ?>
                     </a>
@@ -292,7 +292,7 @@
                 <div class="scroll-area" style="max-height: 500px; overflow-y: auto;">
                     <?php foreach ($lessons as $i => $lesson): ?>
                         <a href="<?php echo base_url('courses/learn/' . $course->slug . '/' . encode_id($lesson->id)); ?>" class="text-decoration-none d-flex align-items-center gap-3 p-3 p-xl-4 border-bottom border-light <?php echo $lesson->id == $active_lesson->id ? 'bg-primary-subtle' : 'bg-white'; ?>" style="transition: all 0.15s ease;">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width: 32px; height: 32px; font-size: 0.75rem; <?php echo in_array($lesson->id, $completed_lessons) ? 'background: #d1fae5; color: #059669;' : ($lesson->id == $active_lesson->id ? 'background: #0f172a; color: #fff;' : 'background: #f1f5f9; color: #64748b;'); ?>">
+                            <div class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width: 32px; height: 32px; font-size: 0.75rem; <?php echo in_array($lesson->id, $completed_lessons) ? 'background: #d1fae5; color: #009688;' : ($lesson->id == $active_lesson->id ? 'background: #0D1830; color: #fff;' : 'background: #f1f5f9; color: #64748b;'); ?>">
                                 <?php if (in_array($lesson->id, $completed_lessons)): ?>
                                     <i class="fas fa-check"></i>
                                 <?php elseif ($lesson->id == $active_lesson->id): ?>
@@ -302,7 +302,7 @@
                                 <?php endif; ?>
                             </div>
                             <div class="flex-fill min-w-0">
-                                <p class="fw-semibold small mb-0 text-truncate" style="color: <?php echo $lesson->id == $active_lesson->id ? '#0f172a' : '#1e293b'; ?>;">
+                                <p class="fw-semibold small mb-0 text-truncate" style="color: <?php echo $lesson->id == $active_lesson->id ? '#0D1830' : '#1e293b'; ?>;">
                                     <?php echo htmlspecialchars(t($lesson->title, $lesson->title_en ?: $lesson->title)); ?>
                                 </p>
                                 <div class="d-flex align-items-center gap-2">

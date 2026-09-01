@@ -13,23 +13,23 @@
   }
   .border-inner {
     position: absolute; inset: 12px;
-    border: 2px solid #eab308; border-radius: 4px;
+    border: 2px solid #FBBF24; border-radius: 4px;
   }
   .header { text-align: center; padding-top: 80px; }
   .badge {
     display: inline-block; width: 70px; height: 70px;
-    background: #eab308; color: #111827; border-radius: 50%;
+    background: #FBBF24; color: #0D1830; border-radius: 50%;
     line-height: 70px; font-size: 32px; font-weight: 800;
     margin-bottom: 15px;
   }
-  .title { font-size: 28px; font-weight: 800; color: #111827; letter-spacing: 3px; text-transform: uppercase; }
+  .title { font-size: 28px; font-weight: 800; color: #0D1830; letter-spacing: 3px; text-transform: uppercase; }
   .subtitle { font-size: 13px; color: #64748b; margin-top: 5px; letter-spacing: 1px; }
   .body { text-align: center; margin-top: 25px; }
   .body p { font-size: 15px; color: #475569; line-height: 1.6; max-width: 700px; margin: 0 auto; }
   .recipient { margin-top: 18px; }
   .recipient .name {
-    font-size: 38px; font-weight: 800; color: #111827;
-    border-bottom: 3px solid #eab308; display: inline-block;
+    font-size: 38px; font-weight: 800; color: #0D1830;
+    border-bottom: 3px solid #FBBF24; display: inline-block;
     padding-bottom: 5px; min-width: 350px;
   }
   .course-label { font-size: 13px; color: #64748b; margin-top: 10px; text-transform: uppercase; letter-spacing: 2px; }

@@ -69,17 +69,17 @@ class Transactions extends MY_Controller {
         foreach ($rows as $tx) {
             $status_badge = '';
             if ($tx->status === 'approved') {
-                $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#ecfdf5;color:#10b981;font-size:0.65rem;">' . t('Berhasil', 'Success') . '</span>';
+                $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#E0F2F1;color:#009688;font-size:0.65rem;">' . t('Berhasil', 'Success') . '</span>';
             } elseif ($tx->status === 'pending') {
-                $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fff7ed;color:#f97316;font-size:0.65rem;">' . t('Menunggu', 'Pending') . '</span>';
+                $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fff7ed;color:#0D1830;font-size:0.65rem;">' . t('Menunggu', 'Pending') . '</span>';
             } else {
                 $status_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fef2f2;color:#f43f5e;font-size:0.65rem;">' . t('Ditolak', 'Rejected') . '</span>';
             }
 
             $item_name = $tx->course_title ?? '-';
-            $action = '<a href="' . base_url('transactions/detail/' . $tx->uuid) . '" class="btn btn-sm fw-bold rounded-pill px-3" style="background:#f97316;color:#fff;font-size:0.72rem;">' . t('Detail', 'Detail') . '</a>';
+            $action = '<a href="' . base_url('transactions/detail/' . $tx->uuid) . '" class="btn btn-sm fw-bold rounded-pill px-3" style="background:#0D1830;color:#fff;font-size:0.72rem;">' . t('Detail', 'Detail') . '</a>';
 
-            $type_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#f5f5f4;color:#57534e;font-size:0.65rem;text-transform:uppercase;">' . $tx->item_type . '</span>';
+            $type_badge = '<span class="px-2 py-1 rounded-pill fw-semibold" style="background:#E6EBEF;color:#57534e;font-size:0.65rem;text-transform:uppercase;">' . $tx->item_type . '</span>';
 
             $data_arr[] = array(
                 date('d M Y H:i', strtotime($tx->created_at)),

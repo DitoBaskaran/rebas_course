@@ -12,7 +12,7 @@
         array(
             'key' => 'partnership_discussion',
             'icon' => 'handshake',
-            'color' => '#6366f1',
+            'color' => '#0D1830',
             'title_id' => 'Diskusi Partnership',
             'title_en' => 'Partnership Discussion',
             'desc_id' => 'Pertanyaan-pertanyaan kunci sebelum memulai bisnis bersama calon partner.',
@@ -32,7 +32,7 @@
         array(
             'key' => 'business_plan',
             'icon' => 'bar-chart-3',
-            'color' => '#047857',
+            'color' => '#00796B',
             'title_id' => 'Rencana Bisnis',
             'title_en' => 'Business Plan',
             'desc_id' => 'Rencana bisnis lengkap: analisis pasar, strategi, proyeksi keuangan 5 tahun, analisis risiko, dan milestone implementasi.',

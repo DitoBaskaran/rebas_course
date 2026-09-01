@@ -17,10 +17,10 @@
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         :root { <?php echo settings_css_vars(); ?> }
-        body { padding-top: 56px; font-family: 'Inter', -apple-system, sans-serif; background: #fff; color: #171717; }
+        body { padding-top: 56px; font-family: 'Inter', -apple-system, sans-serif; background: #fff; color: #0D1830; }
         .fe-navbar { height: 56px; background: rgba(255,255,255,0.72); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid rgba(0,0,0,0.04); transition: box-shadow 0.3s ease, background 0.3s ease; }
         .fe-navbar.is-scrolled { background: rgba(255,255,255,0.9); box-shadow: 0 1px 20px rgba(0,0,0,0.06); }
-        .fe-brand { font-size: 1rem; font-weight: 800; letter-spacing: -0.04em; color: #171717; text-decoration: none; display: flex; align-items: center; gap: 1px; }
+        .fe-brand { font-size: 1rem; font-weight: 800; letter-spacing: -0.04em; color: #0D1830; text-decoration: none; display: flex; align-items: center; gap: 1px; }
         .fe-brand-img { height: 32px; width: auto; display: block; transition: height 0.2s; }
         @media (max-width: 576px) {
             .fe-brand-img { height: 24px; }
@@ -30,38 +30,38 @@
             .fe-brand-img { height: 20px; }
             .fe-btn-login { display: none; }
         }
-        .fe-brand-accent { color: #059669; }
+        .fe-brand-accent { color: #009688; }
         .fe-nav-link { position: relative; font-size: 0.8125rem; font-weight: 500; color: #525252; padding: 0.25rem 0; margin: 0 0.5rem; text-decoration: none; transition: color 0.2s; white-space: nowrap; }
-        .fe-nav-link::after { content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 2px; background: #059669; border-radius: 2px; transition: width 0.25s ease, left 0.25s ease; }
-        .fe-nav-link:hover { color: #171717; }
+        .fe-nav-link::after { content: ''; position: absolute; bottom: -2px; left: 50%; width: 0; height: 2px; background: #009688; border-radius: 2px; transition: width 0.25s ease, left 0.25s ease; }
+        .fe-nav-link:hover { color: #0D1830; }
         .fe-nav-link:hover::after { width: 100%; left: 0; }
-        .fe-nav-link.active { color: #171717; font-weight: 600; }
+        .fe-nav-link.active { color: #0D1830; font-weight: 600; }
         .fe-nav-link.active::after { width: 100%; left: 0; }
         .navbar-toggler { border: none !important; box-shadow: none !important; padding: 0.25rem 0.4rem; }
         .navbar-toggler:focus { box-shadow: none !important; }
         .fe-nav-divider { width: 1px; height: 20px; background: rgba(0,0,0,0.06); margin: 0 0.75rem; flex-shrink: 0; }
         .fe-btn-login { font-size: 0.8125rem; font-weight: 500; color: #525252; border: 1px solid rgba(0,0,0,0.08); border-radius: 6px; padding: 0.35rem 0.85rem; text-decoration: none; transition: all 0.2s ease; background: transparent; }
-        .fe-btn-login:hover { border-color: rgba(0,0,0,0.15); color: #171717; transform: translateY(-1px); }
-        .fe-btn-register { font-size: 0.8125rem; font-weight: 600; color: #fff; background: #059669; border: none; border-radius: 6px; padding: 0.4rem 0.9rem; text-decoration: none; transition: all 0.2s ease; }
-        .fe-btn-register:hover { background: #047857; box-shadow: 0 4px 12px rgba(5, 150, 105,0.3); transform: translateY(-1px); }
+        .fe-btn-login:hover { border-color: rgba(0,0,0,0.15); color: #0D1830; transform: translateY(-1px); }
+        .fe-btn-register { font-size: 0.8125rem; font-weight: 600; color: #fff; background: #009688; border: none; border-radius: 6px; padding: 0.4rem 0.9rem; text-decoration: none; transition: all 0.2s ease; }
+        .fe-btn-register:hover { background: #00796B; box-shadow: 0 4px 12px rgba(5, 150, 105,0.3); transform: translateY(-1px); }
         .fe-user-btn { display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.04); border: none; border-radius: 99px; padding: 0.2rem 0.65rem 0.2rem 0.2rem; cursor: pointer; transition: background 0.2s ease; }
         .fe-user-btn:hover { background: rgba(0,0,0,0.08); }
-        .fe-avatar { width: 26px; height: 26px; border-radius: 50%; background: #171717; color: #fff; font-size: 0.65rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
-        .fe-user-name { font-size: 0.8rem; font-weight: 500; color: #171717; }
+        .fe-avatar { width: 26px; height: 26px; border-radius: 50%; background: #0D1830; color: #fff; font-size: 0.65rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .fe-user-name { font-size: 0.8rem; font-weight: 500; color: #0D1830; }
         .fe-chevron { color: #a3a3a3; font-size: 0.5rem; }
         .fe-dropdown { border-radius: 10px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 20px rgba(0,0,0,0.08); min-width: 172px; padding: 0.35rem 0; }
         .fe-dropdown .dropdown-item { font-size: 0.8125rem; padding: 0.45rem 0.9rem; color: #525252; }
-        .fe-dropdown .dropdown-item:hover { background: #f5f5f5; color: #171717; }
+        .fe-dropdown .dropdown-item:hover { background: #f5f5f5; color: #0D1830; }
         .fe-dropdown .dropdown-item.text-danger:hover { background: #fff1f2; }
         .fe-dropdown .dropdown-divider { margin: 0.25rem 0; border-color: #f0f0f0; }
         .fe-alert { border-radius: 8px; border: none; padding: 0.65rem 0.9rem; font-size: 0.8125rem; }
         .fe-notice { background: rgba(0,0,0,0.03); color: #737373; text-align: center; padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 500; border-bottom: 1px solid rgba(0,0,0,0.04); }
-        .fe-notice strong { color: #171717; }
-        .fe-notice a { color: #059669; text-decoration: none; font-weight: 600; }
+        .fe-notice strong { color: #0D1830; }
+        .fe-notice a { color: #009688; text-decoration: none; font-weight: 600; }
         .fe-notice a:hover { text-decoration: underline; }
         .fe-offcanvas-link { display: flex; align-items: center; gap: 12px; padding: 0.5rem 0.75rem; border-radius: 6px; text-decoration: none; font-size: 0.8125rem; font-weight: 500; color: #525252; transition: all 0.15s; margin: 0 0.5rem; }
-        .fe-offcanvas-link:hover, .fe-offcanvas-link.active { background: #f5f5f5; color: #171717; }
-        .fe-offcanvas-link.active { color: #059669; font-weight: 600; }
+        .fe-offcanvas-link:hover, .fe-offcanvas-link.active { background: #f5f5f5; color: #0D1830; }
+        .fe-offcanvas-link.active { color: #009688; font-weight: 600; }
         .fe-offcanvas-icon { width: 16px; text-align: center; font-size: 0.75rem; flex-shrink: 0; }
     </style>
 </head>
@@ -154,7 +154,7 @@
             <div class="d-flex align-items-center gap-2">
                 <span class="fe-avatar" style="width:32px;height:32px;font-size:0.75rem;"><?php echo strtoupper(substr($this->session->userdata('name'), 0, 1)); ?></span>
                 <div>
-                    <div style="font-size:0.8125rem;font-weight:600;color:#171717;"><?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?></div>
+                    <div style="font-size:0.8125rem;font-weight:600;color:#0D1830;"><?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?></div>
                     <div style="font-size:0.7rem;color:#a3a3a3;text-transform:capitalize;">
                         <?php
                             $_lbl_role = $this->session->userdata('role');
@@ -185,14 +185,14 @@
 
             <div class="mt-auto" style="border-top:1px solid #f0f0f0;padding:0.75rem;">
                 <?php if ($this->session->userdata('logged_in')): ?>
-                    <a href="<?php echo base_url('dashboard'); ?>" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#171717;color:#fff;border-radius:6px;padding:0.5rem;font-size:0.8125rem;font-weight:600;text-decoration:none;margin-bottom:0.4rem;">
+                    <a href="<?php echo base_url('dashboard'); ?>" style="display:flex;align-items:center;justify-content:center;gap:6px;background:#0D1830;color:#fff;border-radius:6px;padding:0.5rem;font-size:0.8125rem;font-weight:600;text-decoration:none;margin-bottom:0.4rem;">
                         <i class="fas fa-th-large" style="font-size:0.75rem;"></i> <?php echo t('Dashboard', 'Dashboard'); ?>
                     </a>
                     <a href="<?php echo base_url('auth/logout'); ?>" style="display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid #e5e5e5;color:#737373;border-radius:6px;padding:0.45rem;font-size:0.8125rem;font-weight:500;text-decoration:none;">
                         <i class="fas fa-sign-out-alt" style="font-size:0.75rem;"></i> <?php echo t('Keluar', 'Logout'); ?>
                     </a>
                 <?php else: ?>
-                    <a href="<?php echo base_url('auth/register'); ?>" style="display:flex;align-items:center;justify-content:center;background:#059669;color:#fff;border-radius:6px;padding:0.5rem;font-size:0.8125rem;font-weight:600;text-decoration:none;margin-bottom:0.4rem;"><?php echo t('Daftar Gratis', 'Register Free'); ?></a>
+                    <a href="<?php echo base_url('auth/register'); ?>" style="display:flex;align-items:center;justify-content:center;background:#009688;color:#fff;border-radius:6px;padding:0.5rem;font-size:0.8125rem;font-weight:600;text-decoration:none;margin-bottom:0.4rem;"><?php echo t('Daftar Gratis', 'Register Free'); ?></a>
                     <a href="<?php echo base_url('auth/login'); ?>" style="display:flex;align-items:center;justify-content:center;border:1px solid #e5e5e5;color:#525252;border-radius:6px;padding:0.45rem;font-size:0.8125rem;font-weight:500;text-decoration:none;"><?php echo t('Masuk', 'Login'); ?></a>
                 <?php endif; ?>
             </div>

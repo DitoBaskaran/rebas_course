@@ -5,19 +5,19 @@
             <!-- ============ MOBILE APP-STYLE ============ -->
             <div class="dashboard-mobile-only">
                 <div class="text-center mb-4">
-                    <a href="javascript:history.back()" class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 36px; height: 36px; background: #f5f5f4; color: #1c1917; text-decoration: none;">
+                    <a href="javascript:history.back()" class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 36px; height: 36px; background: #E6EBEF; color: #0D1830; text-decoration: none;">
                         <i class="fas fa-arrow-left"></i>
                     </a>
                 </div>
                 <div class="bg-white rounded-4 border p-4 text-center" style="border-color: #f0eeeb !important; box-shadow: 0 4px 16px rgba(0,0,0,0.06);">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 72px; height: 72px; background: linear-gradient(135deg,#10b981,#34d399); color: #fff;">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 72px; height: 72px; background: linear-gradient(135deg,#009688,#34d399); color: #fff;">
                         <i class="fas fa-award" style="font-size: 1.6rem;"></i>
                     </div>
                     <h5 class="fw-extrabold text-dark mb-1" style="letter-spacing: -0.02em;"><?php echo t('Sertifikat Kelulusan', 'Certificate of Completion'); ?></h5>
                     <p class="text-muted mb-3" style="font-size: 0.82rem;">
                         <?php echo t('Dikeluarkan untuk', 'Issued to'); ?> <strong class="text-dark"><?php echo htmlspecialchars($cert->user_name ?? $cert->name); ?></strong>
                     </p>
-                    <div class="bg-light rounded-3 p-3 mb-3 text-start" style="background: #fafaf9 !important;">
+                    <div class="bg-light rounded-3 p-3 mb-3 text-start" style="background: #E6EBEF !important;">
                         <div class="mb-2">
                             <small class="text-secondary d-block" style="font-size: 0.68rem;"><?php echo t('Kursus', 'Course'); ?></small>
                             <strong class="text-dark" style="font-size: 0.85rem;"><?php echo htmlspecialchars(current_lang() === 'en' && !empty($cert->title_en) ? $cert->title_en : $cert->title); ?></strong>
@@ -48,7 +48,7 @@
             <div class="dashboard-desktop-only">
                 <div class="card border-0 shadow-sm rounded-4">
                     <div class="card-body p-5 text-center">
-                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 80px; height: 80px; background: #f0fdfa;">
+                        <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-4" style="width: 80px; height: 80px; background: #E0F2F1;">
                             <i class="fas fa-award fa-lg" style="color: #d97706; font-size: 2rem;"></i>
                         </div>
                         <h3 class="fw-extrabold text-dark mb-2" style="letter-spacing: -0.03em;"><?php echo t('Sertifikat Kelulusan', 'Certificate of Completion'); ?></h3>

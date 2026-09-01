@@ -74,15 +74,15 @@
     <style>
         .fe-footer { background: #fff; border-top: 1px solid #e5e5e5; }
         .fe-footer-inner { padding: 2.5rem 1rem 2rem; }
-        .fe-footer-brand { display: flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 700; letter-spacing: -0.03em; color: #171717; margin-bottom: 0.85rem; }
+        .fe-footer-brand { display: flex; align-items: center; gap: 8px; font-size: 1rem; font-weight: 700; letter-spacing: -0.03em; color: #0D1830; margin-bottom: 0.85rem; }
         .fe-footer-about { font-size: 0.8125rem; line-height: 1.6; color: #737373; max-width: 320px; margin-bottom: 1rem; }
         .fe-social { display: flex; gap: 6px; }
         .fe-social-link { width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; background: #fafafa; color: #737373; text-decoration: none; font-size: 0.8rem; transition: all 0.15s; border: 1px solid #f0f0f0; }
-        .fe-social-link:hover { background: #059669; color: #fff; border-color: #059669; }
+        .fe-social-link:hover { background: #009688; color: #fff; border-color: #009688; }
         .fe-footer-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #737373; margin-bottom: 0.85rem; }
         .fe-footer-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.55rem; }
         .fe-footer-list a { font-size: 0.8125rem; color: #525252; text-decoration: none; transition: color 0.15s; }
-        .fe-footer-list a:hover { color: #171717; }
+        .fe-footer-list a:hover { color: #0D1830; }
         .fe-footer-contact li { display: flex; align-items: center; gap: 8px; font-size: 0.8125rem; color: #525252; }
         .fe-footer-contact i { width: 14px; font-size: 0.75rem; color: #a3a3a3; }
         .fe-footer-bottom { border-top: 1px solid #f0f0f0; padding: 1rem 0; }
@@ -90,7 +90,7 @@
         .fe-footer-bottom p { font-size: 0.75rem; color: #a3a3a3; margin: 0; }
         .fe-footer-links { display: flex; align-items: center; gap: 8px; }
         .fe-footer-links a { font-size: 0.75rem; color: #737373; text-decoration: none; }
-        .fe-footer-links a:hover { color: #171717; }
+        .fe-footer-links a:hover { color: #0D1830; }
         .fe-footer-links span { color: #d4d4d4; font-size: 0.7rem; }
     </style>
 

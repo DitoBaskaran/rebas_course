@@ -115,6 +115,6 @@ function switchTab(tab) {
 .lesson-content p { margin-bottom: 1rem; }
 .lesson-content img { max-width: 100%; height: auto; border-radius: 0.5rem; margin: 1rem 0; }
 .lesson-content ul, .lesson-content ol { margin-bottom: 1rem; padding-left: 1.5rem; }
-.lesson-content pre { background: #0f172a; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
+.lesson-content pre { background: #0D1830; color: #e2e8f0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin: 1rem 0; }
 .lesson-content code { background: #f1f5f9; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875rem; }
 </style>

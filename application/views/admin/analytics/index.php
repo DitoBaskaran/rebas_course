@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     label: 'Revenue',
                     data: <?php $revs = array(); foreach($revenue_by_month as $r) { $revs[] = (int)$r->revenue; } echo json_encode($revs); ?>,
                     backgroundColor: 'rgba(99,102,241,0.2)',
-                    borderColor: '#6366f1',
+                    borderColor: '#0D1830',
                     borderWidth: 2,
                     borderRadius: 6,
                 }]

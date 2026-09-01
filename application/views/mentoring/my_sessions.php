@@ -65,7 +65,7 @@
                                 <td style="border-color: #f0f0f0; padding: 0.75rem 1rem; color: #525252; font-size: 0.8rem;"><?php echo date('d M Y H:i', strtotime($s->scheduled_at)); ?></td>
                                 <td style="border-color: #f0f0f0; padding: 0.75rem 1rem; color: #525252; font-size: 0.8rem;"><?php echo $s->duration; ?>m</td>
                                 <td style="border-color: #f0f0f0; padding: 0.75rem 1rem;">
-                                    <?php $badge = array('pending' => '#fef3c7', 'confirmed' => '#ecfdf5', 'completed' => '#f5f5f5', 'cancelled' => '#fef2f2', 'no_show' => '#f5f5f5'); ?>
+                                    <?php $badge = array('pending' => '#fef3c7', 'confirmed' => '#E0F2F1', 'completed' => '#f5f5f5', 'cancelled' => '#fef2f2', 'no_show' => '#f5f5f5'); ?>
                                     <?php $color = array('pending' => '#92400e', 'confirmed' => '#065f46', 'completed' => '#525252', 'cancelled' => '#991b1b', 'no_show' => '#a3a3a3'); ?>
                                     <span class="px-2 py-1 rounded-pill fw-medium" style="background: <?php echo $badge[$s->status] ?? '#f5f5f5'; ?>; color: <?php echo $color[$s->status] ?? '#525252'; ?>; font-size: 0.7rem;">
                                         <?php echo t(ucfirst($s->status), ucfirst($s->status)); ?>
@@ -130,6 +130,6 @@
 <?php endif; endforeach; ?>
 
 <style>
-    input[name="rating"]:checked + i { color: #059669 !important; }
+    input[name="rating"]:checked + i { color: #009688 !important; }
     input[name="rating"]:not(:checked) + i { color: #d4d4d4; }
 </style>

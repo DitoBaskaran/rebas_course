@@ -78,8 +78,8 @@
 </div>
 
 <style>
-.option-label:hover { border-color: #0f172a !important; background: #f1f5f9 !important; }
-.option-label:has(input:checked) { border-color: #0f172a !important; background: #e2e8f0 !important; }
+.option-label:hover { border-color: #0D1830 !important; background: #f1f5f9 !important; }
+.option-label:has(input:checked) { border-color: #0D1830 !important; background: #e2e8f0 !important; }
 </style>
 
 <script>

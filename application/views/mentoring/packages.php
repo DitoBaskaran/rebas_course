@@ -15,9 +15,9 @@
     <div class="row g-4 justify-content-center">
         <?php foreach ($packages as $i => $pkg): ?>
             <div class="col-md-6 col-lg-4">
-                <div class="card h-100 <?php echo $i === 1 ? 'border-2' : ''; ?>" style="border-color: <?php echo $i === 1 ? '#059669' : '#e5e5e5'; ?>; border-radius: 12px; transition: all 0.15s; position: relative; overflow: visible;">
+                <div class="card h-100 <?php echo $i === 1 ? 'border-2' : ''; ?>" style="border-color: <?php echo $i === 1 ? '#009688' : '#e5e5e5'; ?>; border-radius: 12px; transition: all 0.15s; position: relative; overflow: visible;">
                     <?php if ($i === 1): ?>
-                        <div class="position-absolute px-3 py-1 rounded-pill fw-bold" style="top: -10px; left: 50%; transform: translateX(-50%); background: #059669; color: #111827; font-size: 0.65rem;">
+                        <div class="position-absolute px-3 py-1 rounded-pill fw-bold" style="top: -10px; left: 50%; transform: translateX(-50%); background: #009688; color: #111827; font-size: 0.65rem;">
                             <?php echo t('Paling Populer', 'Most Popular'); ?>
                         </div>
                     <?php endif; ?>

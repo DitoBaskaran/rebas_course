@@ -1,7 +1,7 @@
 <div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1200px;">
     <!-- Header -->
     <div class="mb-3">
-        <h4 class="fw-extrabold mb-1" style="color: #1c1917; letter-spacing: -0.02em; font-size: 1.3rem;">
+        <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.3rem;">
             <?php echo t('Riwayat Transaksi', 'Transaction History'); ?>
         </h4>
         <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
@@ -27,13 +27,13 @@
                 <table id="transactionTable" class="table mb-0" style="width: 100%; font-size: 0.82rem;">
                     <thead>
                         <tr>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tanggal', 'Date'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tipe', 'Type'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Item', 'Item'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Nominal', 'Amount'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tanggal', 'Date'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tipe', 'Type'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Item', 'Item'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Nominal', 'Amount'); ?></th>
                             <th style="display:none;"></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Status', 'Status'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;"><?php echo t('Aksi', 'Action'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Status', 'Status'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;"><?php echo t('Aksi', 'Action'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -53,7 +53,7 @@
 @keyframes dtSpin { to { transform: rotate(360deg); } }
 
 /* ---- Wrapper ---- */
-.dataTables_wrapper { font-size: 0.82rem; color: #1c1917; }
+.dataTables_wrapper { font-size: 0.82rem; color: #0D1830; }
 
 /* ---- Length + Search ---- */
 .dataTables_wrapper .dataTables_length,
@@ -76,14 +76,14 @@
     border-radius: 8px;
     padding: 0.3rem 0.5rem;
     font-size: 0.78rem;
-    color: #1c1917;
+    color: #0D1830;
     background: #fff;
     cursor: pointer;
     transition: all 0.15s;
 }
 .dataTables_wrapper .dataTables_length select:hover { border-color: #d6d3d1; }
 .dataTables_wrapper .dataTables_length select:focus {
-    border-color: #059669;
+    border-color: #009688;
     outline: none;
     box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
 }
@@ -92,13 +92,13 @@
     border-radius: 100px;
     padding: 0.4rem 0.9rem 0.4rem 2.2rem;
     font-size: 0.78rem;
-    color: #1c1917;
+    color: #0D1830;
     background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23a8a29e' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.156a5 5 0 1 1 0-10 5 5 0 0 1 0 10z'/%3E%3C/svg%3E") no-repeat 10px center;
     transition: all 0.15s;
 }
 .dataTables_wrapper .dataTables_filter input:hover { border-color: #d6d3d1; }
 .dataTables_wrapper .dataTables_filter input:focus {
-    border-color: #059669;
+    border-color: #009688;
     outline: none;
     box-shadow: 0 0 0 3px rgba(249,115,22,0.1);
 }
@@ -106,7 +106,7 @@
 /* ---- Table ---- */
 table.dataTable { width: 100% !important; border-collapse: separate; border-spacing: 0; }
 table.dataTable thead th {
-    background: #fafaf9;
+    background: #E6EBEF;
     font-weight: 600;
     font-size: 0.68rem;
     text-transform: uppercase;
@@ -123,18 +123,18 @@ table.dataTable thead th.sorting_desc:after {
     font-size: 0.55rem;
     opacity: 0.4;
 }
-table.dataTable thead th.sorting_asc:after { opacity: 0.7; color: #059669; }
-table.dataTable thead th.sorting_desc:after { opacity: 0.7; color: #059669; }
+table.dataTable thead th.sorting_asc:after { opacity: 0.7; color: #009688; }
+table.dataTable thead th.sorting_desc:after { opacity: 0.7; color: #009688; }
 table.dataTable tbody td {
     padding: 0.65rem 1rem;
     border-bottom: 1px solid #f0eeeb;
-    color: #1c1917;
+    color: #0D1830;
     vertical-align: middle;
     font-size: 0.8rem;
     transition: background 0.1s;
 }
 table.dataTable tbody tr { transition: background 0.1s; }
-table.dataTable tbody tr:hover { background: #fafaf9; }
+table.dataTable tbody tr:hover { background: #E6EBEF; }
 table.dataTable tbody tr:last-child td { border-bottom: none; }
 table.dataTable.no-footer { border-bottom: none; }
 
@@ -168,15 +168,15 @@ table.dataTable.no-footer { border-bottom: none; }
     cursor: pointer;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-    background: #f5f5f4 !important;
-    color: #1c1917 !important;
+    background: #E6EBEF !important;
+    color: #0D1830 !important;
     border-color: #d6d3d1 !important;
     box-shadow: none !important;
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.current,
 .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background: #059669 !important;
-    border-color: #059669 !important;
+    background: #009688 !important;
+    border-color: #009688 !important;
     color: #fff !important;
     box-shadow: 0 2px 8px rgba(249,115,22,0.25) !important;
 }
@@ -193,8 +193,8 @@ table.dataTable.no-footer { border-bottom: none; }
 }
 .dataTables_wrapper .dataTables_paginate .paginate_button.next:hover,
 .dataTables_wrapper .dataTables_paginate .paginate_button.previous:hover {
-    background: #f5f5f4 !important;
-    color: #1c1917 !important;
+    background: #E6EBEF !important;
+    color: #0D1830 !important;
 }
 
 /* ---- Processing spinner ---- */
@@ -231,7 +231,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         order: [[4, 'desc']],
         language: {
-            processing: "<div style='display:flex;align-items:center;gap:0.5rem;'><div style='width:16px;height:16px;border:2px solid #e7e5e4;border-top-color:#059669;border-radius:50%;animation:dtSpin 0.6s linear infinite;'></div> <?php echo t('Memuat data...', 'Loading...'); ?></div>",
+            processing: "<div style='display:flex;align-items:center;gap:0.5rem;'><div style='width:16px;height:16px;border:2px solid #e7e5e4;border-top-color:#009688;border-radius:50%;animation:dtSpin 0.6s linear infinite;'></div> <?php echo t('Memuat data...', 'Loading...'); ?></div>",
             zeroRecords: "<div style='padding:2rem 0;'><div style='font-size:2rem;color:#d6d3d1;margin-bottom:0.5rem;'><i class='fas fa-receipt'></i></div><div><?php echo t('Belum ada transaksi.', 'No transactions found.'); ?></div></div>",
         },
         drawCallback: function(settings) {

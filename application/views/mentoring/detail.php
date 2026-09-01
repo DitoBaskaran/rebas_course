@@ -18,7 +18,7 @@
                     </h4>
                     <p class="fw-medium mb-2" style="color: #737373; font-size: 0.9rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></p>
                 </div>
-                <a href="<?php echo base_url('mentoring/toggle-favorite/' . encode_id($mentor->id)); ?>" class="btn d-flex align-items-center justify-content-center flex-shrink-0" style="width: 36px; height: 36px; border-radius: 8px; border: 1px solid #e5e5e5; background: #fff; color: <?php echo $is_favorited ? '#059669' : '#d4d4d4'; ?>; padding: 0;">
+                <a href="<?php echo base_url('mentoring/toggle-favorite/' . encode_id($mentor->id)); ?>" class="btn d-flex align-items-center justify-content-center flex-shrink-0" style="width: 36px; height: 36px; border-radius: 8px; border: 1px solid #e5e5e5; background: #fff; color: <?php echo $is_favorited ? '#009688' : '#d4d4d4'; ?>; padding: 0;">
                     <i class="fas fa-heart"></i>
                 </a>
             </div>
@@ -29,7 +29,7 @@
             </div>
             <div class="d-flex flex-wrap align-items-center gap-3" style="color: #737373; font-size: 0.82rem;">
                 <span class="d-flex align-items-center gap-1">
-                    <i class="fas fa-star" style="color: #059669; font-size: 0.7rem;"></i>
+                    <i class="fas fa-star" style="color: #009688; font-size: 0.7rem;"></i>
                     <strong style="color: #111827;"><?php echo $mentor->avg_rating; ?></strong> (<?php echo $mentor->total_reviews; ?>)
                 </span>
                 <span>·</span>
@@ -76,7 +76,7 @@
     </div>
 
     <!-- Book Button -->
-    <a href="<?php echo base_url('mentoring/book/' . encode_id($mentor->id)); ?>" class="btn py-3 fw-bold rounded-pill w-100 mb-4" style="background: #059669; color: #111827; font-size: 0.9rem;">
+    <a href="<?php echo base_url('mentoring/book/' . encode_id($mentor->id)); ?>" class="btn py-3 fw-bold rounded-pill w-100 mb-4" style="background: #009688; color: #111827; font-size: 0.9rem;">
         <i class="fas fa-calendar-check me-2"></i> <?php echo t('Booking Sesi', 'Book Session'); ?>
     </a>
 
@@ -96,7 +96,7 @@
                             <span class="fw-semibold" style="color: #111827; font-size: 0.8rem;"><?php echo htmlspecialchars($review->user_name); ?></span>
                             <div class="d-flex gap-1">
                                 <?php for ($i = 1; $i <= 5; $i++): ?>
-                                    <i class="fas fa-star" style="color: <?php echo $i <= $review->rating ? '#059669' : '#d4d4d4'; ?>; font-size: 0.55rem;"></i>
+                                    <i class="fas fa-star" style="color: <?php echo $i <= $review->rating ? '#009688' : '#d4d4d4'; ?>; font-size: 0.55rem;"></i>
                                 <?php endfor; ?>
                             </div>
                         </div>

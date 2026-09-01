@@ -23,7 +23,7 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
         </div>
 
         <!-- Hero Section -->
-        <div class="position-relative overflow-hidden" style="height: 240px; background: #1c1917;">
+        <div class="position-relative overflow-hidden" style="height: 240px; background: #0D1830;">
             <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" class="w-100 h-100 object-fit-cover" style="opacity: 0.7;">
             <div class="position-absolute bottom-0 start-0 w-100 p-3" style="background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);">
                 <div class="d-flex gap-2 mb-2">
@@ -45,7 +45,7 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
         <div class="position-fixed bottom-0 start-0 w-100 p-3 pb-4 d-flex align-items-center gap-3" style="z-index: 1051; background: rgba(255,255,255,0.92); backdrop-filter: blur(15px); border-top: 1px solid #f0eeeb; box-shadow: 0 -4px 20px rgba(0,0,0,0.05); padding-bottom: calc(1rem + env(safe-area-inset-bottom)) !important;">
             <div class="flex-grow-1">
                 <div class="text-muted" style="font-size: 0.65rem; font-weight: 600;"><?php echo t('Harga', 'Price'); ?></div>
-                <div class="fw-extrabold" style="font-size: 1.15rem; color: #1c1917;">
+                <div class="fw-extrabold" style="font-size: 1.15rem; color: #0D1830;">
                     <?php if ($course->price > 0): ?>
                         Rp <?php echo number_format($course->price, 0, ',', '.'); ?>
                     <?php else: ?>
@@ -69,16 +69,16 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
     <div class="dashboard-desktop-only px-4 pt-4">
         <div class="row g-4 mb-4">
             <div class="col-md-5">
-                <div class="rounded-4 overflow-hidden shadow-sm" style="aspect-ratio: 16/9; background: #1c1917;">
+                <div class="rounded-4 overflow-hidden shadow-sm" style="aspect-ratio: 16/9; background: #0D1830;">
                     <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" class="w-100 h-100 object-fit-cover">
                 </div>
             </div>
             <div class="col-md-7 d-flex flex-column justify-content-center">
                 <div class="d-flex gap-2 mb-3">
                     <span class="px-2 py-1 rounded-pill fw-bold" style="background: #f0fdf4; color: #166534; font-size: 0.65rem;"><?php echo content_type_label($course->content_type); ?></span>
-                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f5f5f4; color: #57534e; font-size: 0.65rem;"><?php echo skill_level_label($course->skill_level); ?></span>
+                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.65rem;"><?php echo skill_level_label($course->skill_level); ?></span>
                 </div>
-                <h2 class="fw-extrabold mb-3" style="color: #1c1917; letter-spacing: -0.02em;"><?php echo htmlspecialchars($title_local); ?></h2>
+                <h2 class="fw-extrabold mb-3" style="color: #0D1830; letter-spacing: -0.02em;"><?php echo htmlspecialchars($title_local); ?></h2>
                 <div class="d-flex align-items-center gap-4 mb-4" style="color: #78716c; font-size: 0.85rem;">
                     <span><i class="fas fa-star text-warning me-1"></i><strong><?php echo $avg_rating; ?></strong> (<?php echo $review_count; ?> <?php echo t('ulasan', 'reviews'); ?>)</span>
                     <span><i class="fas fa-users me-1"></i><?php echo $enrolled_count; ?> <?php echo t('siswa', 'students'); ?></span>
@@ -90,7 +90,7 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
                             <i class="fas fa-play me-2"></i> <?php echo t('Mulai Belajar', 'Start Learning'); ?>
                         </a>
                     <?php else: ?>
-                        <div class="h3 fw-extrabold mb-0 me-3" style="color: #1c1917;">
+                        <div class="h3 fw-extrabold mb-0 me-3" style="color: #0D1830;">
                             <?php if ($course->price > 0): ?>
                                 Rp <?php echo number_format($course->price, 0, ',', '.'); ?>
                             <?php else: ?>
@@ -132,7 +132,7 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
                     <div class="d-flex flex-column gap-2">
                         <?php foreach ($lessons as $i => $lesson): ?>
                             <div class="d-flex align-items-center gap-3 p-3 rounded-4 border bg-white" style="border-color: #f0eeeb !important;">
-                                <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 38px; height: 38px; background: #f8fafc; color: #64748b;">
+                                <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width: 38px; height: 38px; background: #E6EBEF; color: #64748b;">
                                     <i class="fas <?php echo $lesson->lesson_type === 'video' ? 'fa-play' : 'fa-file-alt'; ?>" style="font-size: 0.85rem;"></i>
                                 </div>
                                 <div class="flex-fill min-w-0">
@@ -272,9 +272,9 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
 <style>
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .nav-pills .nav-link { color: #78716c; background: #f5f5f4; border: none; }
-    .nav-pills .nav-link.active { background: #1c1917 !important; color: #fff !important; }
-    #formReview i.fa-star:hover, #formReview input:checked + i.fa-star { color: #f59e0b !important; }
+    .nav-pills .nav-link { color: #78716c; background: #E6EBEF; border: none; }
+    .nav-pills .nav-link.active { background: #0D1830 !important; color: #fff !important; }
+    #formReview i.fa-star:hover, #formReview input:checked + i.fa-star { color: #FBBF24 !important; }
 </style>
 
 <?php else: ?>
@@ -296,7 +296,7 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
 <!-- UI Landing Tetap Menggunakan Struktur Container Default -->
 <div style="background: #f5f5f5; border-bottom: 1px solid #e5e5e5;">
     <div class="container" style="padding-top: 1.5rem; padding-bottom: 2.5rem; max-width: 960px;">
-        <div class="rounded-4 overflow-hidden shadow-sm" style="aspect-ratio: 16/9; background: #1c1917;">
+        <div class="rounded-4 overflow-hidden shadow-sm" style="aspect-ratio: 16/9; background: #0D1830;">
             <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" class="w-100 h-100 object-fit-cover">
         </div>
     </div>

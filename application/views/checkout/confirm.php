@@ -94,7 +94,7 @@
                     <?php if ($pay_method === 'pay_cart'): ?>
                     <?php echo form_open('checkout/choose_method/' . $tx_ref, array('class' => 'mb-3'), array('method' => 'qris')); ?>
                         <button type="submit" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none w-100 text-start" style="transition: all 0.2s; border: 1px solid rgba(13,110,253,.25) !important; background: #f8f9fa !important; cursor: pointer;">
-                            <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #f0f5ff;">
+                            <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #E0F2F1;">
                                 <img src="<?php echo base_url('assets/img/qris-logo.png'); ?>" alt="QRIS" style="max-width:36px;max-height:36px;width:auto;height:auto;">
                             </div>
                             <div class="flex-fill">
@@ -107,7 +107,7 @@
                     <?php echo form_close(); ?>
                     <?php else: ?>
                     <a href="<?php echo base_url('checkout/pay/' . $tx_ref . '?method=qris'); ?>" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none mb-3" style="transition: all 0.2s;">
-                        <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #f0f5ff;">
+                        <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #E0F2F1;">
                             <img src="<?php echo base_url('assets/img/qris-logo.png'); ?>" alt="QRIS" style="max-width:36px;max-height:36px;width:auto;height:auto;">
                         </div>
                         <div class="flex-fill">
