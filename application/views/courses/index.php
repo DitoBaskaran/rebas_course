@@ -295,6 +295,11 @@ $grads = array(
         </form>
 
         <!-- ===== AI REKOMENDASI KURSUS (MOBILE) ===== -->
+        <style>
+            #aiGoalMobile::placeholder { color: rgba(255,255,255,0.55) !important; opacity: 1; }
+            #aiGoalMobile:-ms-input-placeholder { color: rgba(255,255,255,0.55) !important; }
+            #aiGoalMobile::-ms-input-placeholder { color: rgba(255,255,255,0.55) !important; }
+        </style>
         <div class="rounded-4 p-3 mb-3" style="border:1px solid #e7e5e4; border-radius:16px; background:linear-gradient(135deg,#0D1830 0%,#1e3a5f 55%,#0ea5e9 130%); position:relative; overflow:hidden;">
             <div style="position:absolute; top:-40px; right:-30px; width:140px; height:140px; border-radius:50%; background:rgba(251,191,36,0.12);"></div>
             <div class="d-flex align-items-center gap-2 mb-2 position-relative">
