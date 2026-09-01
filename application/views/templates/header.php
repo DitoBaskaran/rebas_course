@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=10'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=11'); ?>">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         :root { <?php echo settings_css_vars(); ?> }
