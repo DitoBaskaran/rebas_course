@@ -68,45 +68,57 @@
         <?php else: ?>
             <div class="d-flex flex-column gap-3">
                 <?php foreach ($mentors as $mentor): ?>
-                    <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="mob-course-card text-decoration-none w-100" style="width:auto;">
-                        <div class="d-flex align-items-center gap-3 mb-2">
-                            <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
-                            <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="flex-shrink-0" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #E0F2F1;">
-                            <?php else: ?>
-                            <span class="mob-avatar flex-shrink-0" style="background: linear-gradient(135deg,#009688,#00796B); color:#fff; font-size: 1rem; width: 48px; height: 48px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center;">
-                                <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
-                            </span>
+                    <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="mn-card text-decoration-none w-100">
+                        <!-- Cover gradient + watermark -->
+                        <div class="mn-cover" style="background: linear-gradient(135deg,#009688 0%,#0D1830 100%);">
+                            <span class="mn-cover-watermark"><?php echo strtoupper(substr($mentor->name, 0, 1)); ?></span>
+                            <?php if ((float)$mentor->price_per_session > 0): ?>
+                            <span class="mn-price-badge">Rp <?php echo number_format($mentor->price_per_session / 1000, 0); ?>rb<span class="mn-price-unit">/ <?php echo t('sesi', 'session'); ?></span></span>
                             <?php endif; ?>
-                            <div class="min-w-0 flex-fill">
-                                <div class="d-flex align-items-center gap-1">
-                                    <span class="fw-bold text-truncate" style="color: #0D1830; font-size: 0.88rem;"><?php echo htmlspecialchars($mentor->name); ?></span>
-                                    <i class="fas fa-check-circle flex-shrink-0" style="color: #009688; font-size: 0.72rem;" title="<?php echo t('Terverifikasi', 'Verified'); ?>"></i>
-                                </div>
-                                <div class="text-truncate" style="color: #78716c; font-size: 0.72rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></div>
-                                <div class="d-flex align-items-center gap-1 mt-1">
-                                    <i class="fas fa-star" style="color: #FBBF24; font-size: 0.6rem;"></i>
-                                    <span class="fw-bold" style="color: #0D1830; font-size: 0.72rem;"><?php echo $mentor->avg_rating; ?></span>
-                                    <span style="color: #a8a29e; font-size: 0.65rem;">(<?php echo $mentor->total_reviews; ?>)</span>
-                                </div>
-                            </div>
-                            <div class="text-end flex-shrink-0">
-                                <?php if ((float)$mentor->price_per_session > 0): ?>
-                                <div class="fw-bold" style="color: #009688; font-size: 0.85rem; white-space: nowrap;">Rp <?php echo number_format($mentor->price_per_session / 1000, 0); ?>rb</div>
-                                <div style="color:#a8a29e; font-size:0.62rem;">/ <?php echo t('sesi', 'session'); ?></div>
-                                <?php endif; ?>
-                            </div>
                         </div>
-                        <?php if (!empty($mentor->bio)): ?>
-                            <p class="mb-2" style="color: #78716c; font-size: 0.72rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;">
-                                <?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?>
-                            </p>
-                        <?php endif; ?>
-                        <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
-                            <div class="d-flex gap-3" style="color: #a8a29e; font-size: 0.65rem;">
-                                <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
-                                <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 8)); ?></span>
+                        <!-- Avatar overlap -->
+                        <div class="mn-avatar-wrap">
+                            <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
+                            <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="mn-avatar">
+                            <?php else: ?>
+                            <span class="mn-avatar mn-avatar-initial"><?php echo strtoupper(substr($mentor->name, 0, 1)); ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="mn-body">
+                            <div class="d-flex align-items-center gap-1">
+                                <span class="fw-bold text-truncate mn-name"><?php echo htmlspecialchars($mentor->name); ?></span>
+                                <i class="fas fa-check-circle flex-shrink-0" style="color: #009688; font-size: 0.75rem;" title="<?php echo t('Terverifikasi', 'Verified'); ?>"></i>
                             </div>
-                            <span class="fw-bold" style="color: #009688; font-size: 0.75rem;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i></span>
+                            <div class="text-truncate mn-title"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></div>
+                            <div class="d-flex align-items-center gap-1 mt-1">
+                                <i class="fas fa-star" style="color: #FBBF24; font-size: 0.62rem;"></i>
+                                <span class="fw-bold mn-rating"><?php echo $mentor->avg_rating; ?></span>
+                                <span class="mn-reviews">(<?php echo $mentor->total_reviews; ?>)</span>
+                            </div>
+                            <?php
+                            $m_cats = $this->db->select('mentor_categories.*')
+                                ->from('mentor_category_pivot')
+                                ->join('mentor_categories', 'mentor_categories.id = mentor_category_pivot.category_id')
+                                ->where('mentor_category_pivot.mentor_id', $mentor->id)
+                                ->get()->result();
+                            ?>
+                            <?php if (!empty($m_cats)): ?>
+                            <div class="d-flex gap-1 overflow-auto mt-2" style="scrollbar-width:none; -ms-overflow-style:none;">
+                                <?php foreach (array_slice($m_cats, 0, 3) as $mc): ?>
+                                <span class="mn-chip"><?php echo htmlspecialchars(t($mc->name, $mc->name_en)); ?></span>
+                                <?php endforeach; ?>
+                            </div>
+                            <?php endif; ?>
+                            <?php if (!empty($mentor->bio)): ?>
+                            <p class="mb-0 mt-2 mn-bio"><?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?></p>
+                            <?php endif; ?>
+                            <div class="d-flex align-items-center justify-content-between mt-2 pt-2 mn-footer">
+                                <div class="d-flex gap-3 mn-meta">
+                                    <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
+                                    <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 8)); ?></span>
+                                </div>
+                                <span class="mn-view"><?php echo t('Lihat Profil', 'View Profile'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i></span>
+                            </div>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -156,32 +168,34 @@
             <div class="row g-3">
                 <?php foreach ($mentors as $mentor): ?>
                     <div class="col-md-6 col-lg-4">
-                        <div class="border rounded-3 h-100 p-3 mentor-card-hover d-flex flex-column" style="border-color: #e7e5e4; border-radius: 16px; background: #fff; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-                            <div class="d-flex align-items-center gap-3 mb-3">
-                                <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
-                                <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="flex-shrink-0" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; background: #E0F2F1; border: 2px solid #E0F2F1;">
-                                <?php else: ?>
-                                <span class="flex-shrink-0" style="background: linear-gradient(135deg,#009688,#00796B); color:#fff; font-size: 1.05rem; width: 52px; height: 52px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; font-weight: 700;">
-                                    <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
-                                </span>
+                        <div class="mn-card mn-card-desktop h-100">
+                            <!-- Cover gradient + watermark -->
+                            <div class="mn-cover" style="background: linear-gradient(135deg,#009688 0%,#0D1830 100%);">
+                                <span class="mn-cover-watermark"><?php echo strtoupper(substr($mentor->name, 0, 1)); ?></span>
+                                <?php if ((float)$mentor->price_per_session > 0): ?>
+                                <span class="mn-price-badge">Rp <?php echo number_format($mentor->price_per_session, 0, ',', '.'); ?><span class="mn-price-unit">/ <?php echo t('sesi', 'session'); ?></span></span>
                                 <?php endif; ?>
-                                <div class="min-w-0 flex-fill">
-                                    <div class="d-flex align-items-center gap-1">
-                                        <h6 class="fw-bold mb-0 text-truncate" style="color: #0D1830; font-size: 0.92rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
-                                        <i class="fas fa-check-circle flex-shrink-0" style="color: #009688; font-size: 0.75rem;" title="<?php echo t('Terverifikasi', 'Verified'); ?>"></i>
-                                    </div>
-                                    <small class="fw-medium text-truncate d-block" style="color: #78716c; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
-                                    <div class="d-flex align-items-center gap-1 mt-1">
-                                        <i class="fas fa-star" style="color: #FBBF24; font-size: 0.62rem;"></i>
-                                        <span class="fw-bold" style="color: #0D1830; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
-                                        <span style="color: #a8a29e; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
-                                    </div>
-                                </div>
                             </div>
-                            <p class="mb-3" style="color: #78716c; font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
-                                <?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?>
-                            </p>
-                            <div class="d-flex flex-wrap gap-1 mb-3">
+                            <!-- Avatar overlap -->
+                            <div class="mn-avatar-wrap">
+                                <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
+                                <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="mn-avatar">
+                                <?php else: ?>
+                                <span class="mn-avatar mn-avatar-initial"><?php echo strtoupper(substr($mentor->name, 0, 1)); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="mn-body d-flex flex-column">
+                                <div class="d-flex align-items-center gap-1">
+                                    <span class="fw-bold text-truncate mn-name"><?php echo htmlspecialchars($mentor->name); ?></span>
+                                    <i class="fas fa-check-circle flex-shrink-0" style="color: #009688; font-size: 0.78rem;" title="<?php echo t('Terverifikasi', 'Verified'); ?>"></i>
+                                </div>
+                                <div class="text-truncate mn-title"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></div>
+                                <div class="d-flex align-items-center gap-1 mt-1">
+                                    <i class="fas fa-star" style="color: #FBBF24; font-size: 0.65rem;"></i>
+                                    <span class="fw-bold mn-rating"><?php echo $mentor->avg_rating; ?></span>
+                                    <span class="mn-reviews">(<?php echo $mentor->total_reviews; ?>)</span>
+                                </div>
+                                <p class="mb-0 mt-2 mn-bio"><?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?></p>
                                 <?php
                                 $m_cats = $this->db->select('mentor_categories.*')
                                     ->from('mentor_category_pivot')
@@ -189,23 +203,20 @@
                                     ->where('mentor_category_pivot.mentor_id', $mentor->id)
                                     ->get()->result();
                                 ?>
-                                <?php foreach (array_slice($m_cats, 0, 3) as $mc): ?>
-                                    <span class="px-2 py-1 rounded-pill" style="background: #E6EBEF; color: #57534E; font-size: 0.65rem; font-weight: 600;">
-                                        <?php echo htmlspecialchars(t($mc->name, $mc->name_en)); ?>
-                                    </span>
-                                <?php endforeach; ?>
-                            </div>
-                            <div class="d-flex align-items-center justify-content-between pt-2 mt-auto" style="border-top: 1px solid #f0eeeb;">
-                                <div class="d-flex flex-column gap-1">
-                                    <?php if ((float)$mentor->price_per_session > 0): ?>
-                                    <span class="fw-bold" style="color: #009688; font-size: 0.9rem;">Rp <?php echo number_format($mentor->price_per_session, 0, ',', '.'); ?> <small style="color:#a8a29e; font-weight:500; font-size:0.65rem;">/ <?php echo t('sesi', 'session'); ?></small></span>
-                                    <?php endif; ?>
-                                    <div class="d-flex gap-3" style="color: #a8a29e; font-size: 0.7rem;">
+                                <?php if (!empty($m_cats)): ?>
+                                <div class="d-flex flex-wrap gap-1 mt-2">
+                                    <?php foreach (array_slice($m_cats, 0, 3) as $mc): ?>
+                                    <span class="mn-chip"><?php echo htmlspecialchars(t($mc->name, $mc->name_en)); ?></span>
+                                    <?php endforeach; ?>
+                                </div>
+                                <?php endif; ?>
+                                <div class="d-flex align-items-center justify-content-between mt-3 pt-2 mn-footer mt-auto">
+                                    <div class="d-flex gap-3 mn-meta">
                                         <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
                                         <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
                                     </div>
+                                    <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background: #009688; color: #fff; font-size: 0.72rem;"><?php echo t('Lihat', 'View'); ?></a>
                                 </div>
-                                <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background: #009688; color: #fff; font-size: 0.72rem;"><?php echo t('Lihat', 'View'); ?></a>
                             </div>
                         </div>
                     </div>
