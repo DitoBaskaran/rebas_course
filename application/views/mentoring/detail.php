@@ -1,7 +1,5 @@
 <div class="container" style="max-width: 960px; padding-top: 1.25rem; padding-bottom: 4rem;">
 
-    <?php $is_logged = $this->session->userdata('logged_in'); ?>
-
     <!-- ===== HERO CARD PROFIL ===== -->
     <div class="mn-detail-hero mb-4" style="background: linear-gradient(150deg,#0D1830 0%,#0D1830 55%,#00796B 100%); border-radius: 22px; overflow: hidden; color: #fff; position: relative;">
         <div style="position:absolute; top:-60px; right:-40px; width:220px; height:220px; border-radius:50%; background:rgba(251,191,36,0.13);"></div>
@@ -121,7 +119,7 @@
     </div>
 
     <!-- ===== BOOK CTA ===== -->
-    <a href="<?php echo base_url('mentoring/book/' . encode_id($mentor->id)); ?>" class="btn py-3 fw-bold rounded-pill w-100 mb-4 mn-detail-book <?php echo $is_logged ? 'mn-detail-book-panel' : 'mn-detail-book-guest'; ?>" style="background: linear-gradient(135deg,#009688,#00796B); color: #fff; font-size: 0.95rem; box-shadow: 0 8px 20px rgba(0,150,136,0.3);">
+    <a href="<?php echo base_url('mentoring/book/' . encode_id($mentor->id)); ?>" class="btn py-3 fw-bold rounded-pill w-100 mb-4 mn-detail-book" style="background: linear-gradient(135deg,#009688,#00796B); color: #fff; font-size: 0.95rem; box-shadow: 0 8px 20px rgba(0,150,136,0.3);">
         <i class="fas fa-calendar-check me-2"></i> <?php echo t('Booking Sesi Sekarang', 'Book Session Now'); ?>
     </a>
 
@@ -158,9 +156,6 @@
             <?php endforeach; ?>
         <?php endif; ?>
     </div>
-
-    <!-- Spacer utk tombol booking sticky di mobile -->
-    <div class="mn-detail-book-spacer"></div>
 </div>
 
 <style>
@@ -168,13 +163,6 @@
 @media (max-width: 767.98px) {
     .mn-detail-hero { border-radius: 18px; }
     .mn-detail-price { margin-top: 0.5rem; }
-    .mn-detail-book { position: fixed; left: 16px; right: 16px; width: auto !important; z-index: 100; box-shadow: 0 8px 24px rgba(0,150,136,0.4); }
-    .mn-detail-book-panel { bottom: 76px; } /* di atas bottom nav panel student */
-    .mn-detail-book-guest { bottom: 16px; } /* guest tidak ada bottom nav */
-    .mn-detail-book-spacer { display: block; height: 70px; }
-}
-@media (min-width: 768px) {
-    .mn-detail-book-spacer { display: none; }
 }
 
 /* Day tabs (dipakai juga di book.php, definisi ulang lokal agar halaman detail berdiri sendiri) */
