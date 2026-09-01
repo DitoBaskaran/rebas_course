@@ -35,9 +35,16 @@ class Certificate extends MY_Controller {
         if (!$cert || $cert->user_id != $this->session->userdata('user_id')) show_404();
         $data['title'] = t('Sertifikat', 'Certificate');
         $data['cert'] = $cert;
-        $this->load->view('templates/header', $data);
-        $this->load->view('certificate/view', $data);
-        $this->load->view('templates/footer');
+        $data['active_page'] = 'certificates';
+        if ($this->session->userdata('logged_in')) {
+            $this->load->view('templates/student_header', $data);
+            $this->load->view('certificate/view', $data);
+            $this->load->view('templates/student_footer');
+        } else {
+            $this->load->view('templates/header', $data);
+            $this->load->view('certificate/view', $data);
+            $this->load->view('templates/footer');
+        }
     }
 
     public function my() {

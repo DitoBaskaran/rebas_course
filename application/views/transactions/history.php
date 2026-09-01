@@ -9,35 +9,36 @@
         </p>
     </div>
 
-    <!-- Table Card -->
-    <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-        <div class="table-responsive">
-            <table id="transactionTable" class="table mb-0" style="width: 100%; font-size: 0.82rem;">
-                <thead>
-                    <tr>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;">
-                            <?php echo t('Tanggal', 'Date'); ?>
-                        </th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;">
-                            <?php echo t('Tipe', 'Type'); ?>
-                        </th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;">
-                            <?php echo t('Item', 'Item'); ?>
-                        </th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;">
-                            <?php echo t('Nominal', 'Amount'); ?>
-                        </th>
-                        <th style="display:none;"></th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;">
-                            <?php echo t('Status', 'Status'); ?>
-                        </th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;">
-                            <?php echo t('Aksi', 'Action'); ?>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+    <!-- ============ MOBILE APP-STYLE (list card) ============ -->
+    <div class="dashboard-mobile-only">
+        <div id="mobTxList" class="d-flex flex-column gap-3">
+            <div class="text-center py-5" style="color: #a8a29e;">
+                <div class="spinner-border spinner-border-sm text-success mb-3"></div>
+                <div style="font-size: 0.8rem;"><?php echo t('Memuat...', 'Loading...'); ?></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ DESKTOP (DataTables) ============ -->
+    <div class="dashboard-desktop-only">
+        <!-- Table Card -->
+        <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
+            <div class="table-responsive">
+                <table id="transactionTable" class="table mb-0" style="width: 100%; font-size: 0.82rem;">
+                    <thead>
+                        <tr>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tanggal', 'Date'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tipe', 'Type'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Item', 'Item'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Nominal', 'Amount'); ?></th>
+                            <th style="display:none;"></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Status', 'Status'); ?></th>
+                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #fafaf9; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;"><?php echo t('Aksi', 'Action'); ?></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -210,6 +211,8 @@ table.dataTable.no-footer { border-bottom: none; }
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    var isMobile = window.innerWidth <= 768;
+    
     var table = $('#transactionTable').DataTable({
         processing: true,
         serverSide: true,
@@ -218,37 +221,45 @@ document.addEventListener('DOMContentLoaded', function() {
             type: 'GET'
         },
         columns: [
-            { data: 0, searchable: true },
-            { data: 1, orderable: false, searchable: true },
-            { data: 2, searchable: true },
-            { data: 3, orderable: true, searchable: false },
-            { data: 4, orderable: true, searchable: false, visible: false },
-            { data: 5, orderable: false, searchable: false },
-            { data: 6, orderable: false, searchable: false, className: 'text-center' }
+            { data: 0 },
+            { data: 1 },
+            { data: 2 },
+            { data: 3 },
+            { data: 4, visible: false },
+            { data: 5 },
+            { data: 6, className: 'text-center' }
         ],
         order: [[4, 'desc']],
         language: {
             processing: "<div style='display:flex;align-items:center;gap:0.5rem;'><div style='width:16px;height:16px;border:2px solid #e7e5e4;border-top-color:#059669;border-radius:50%;animation:dtSpin 0.6s linear infinite;'></div> <?php echo t('Memuat data...', 'Loading...'); ?></div>",
-            lengthMenu: "<?php echo t('Tampilkan _MENU_', 'Show _MENU_'); ?>",
             zeroRecords: "<div style='padding:2rem 0;'><div style='font-size:2rem;color:#d6d3d1;margin-bottom:0.5rem;'><i class='fas fa-receipt'></i></div><div><?php echo t('Belum ada transaksi.', 'No transactions found.'); ?></div></div>",
-            info: "<?php echo t('Menampilkan _START_–_END_ dari _TOTAL_ transaksi', 'Showing _START_–_END_ of _TOTAL_ transactions'); ?>",
-            infoEmpty: "<?php echo t('Tidak ada data transaksi.', 'No transactions.'); ?>",
-            search: "<?php echo t('Cari transaksi:', 'Search:'); ?>",
-            paginate: {
-                first: "<i class='fas fa-angle-double-left'></i>",
-                last: "<i class='fas fa-angle-double-right'></i>",
-                next: "<?php echo t('Selanjutnya', 'Next'); ?> <i class='fas fa-angle-right' style='font-size:0.65rem;'></i>",
-                previous: "<i class='fas fa-angle-left' style='font-size:0.65rem;'></i> <?php echo t('Sebelumnya', 'Prev'); ?>"
-            }
         },
-        responsive: false,
-        pageLength: 10,
-        lengthMenu: [5, 10, 25, 50],
-        drawCallback: function() {
-            var info = this.api().page.info();
-            if (info.recordsTotal === 0) {
-                $(this).parent().find('.dataTables_info').hide();
-                $(this).parent().find('.dataTables_paginate').hide();
+        drawCallback: function(settings) {
+            if (isMobile) {
+                var api = this.api();
+                var data = api.rows({page:'current'}).data();
+                var html = '';
+                if (data.length === 0) {
+                    html = '<div class="mob-empty"><i class="fas fa-receipt"></i><p><?php echo t('Belum ada transaksi.', 'No transactions found.'); ?></p></div>';
+                } else {
+                    data.each(function(row) {
+                        html += `
+                        <div class="bg-white rounded-4 border p-3" style="border-color:#f0eeeb!important;">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="min-w-0">
+                                    <div class="fw-bold text-dark text-truncate" style="font-size:0.85rem;">${row[2]}</div>
+                                    <div class="text-muted" style="font-size:0.7rem;">${row[0]}</div>
+                                </div>
+                                <div>${row[5]}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top" style="border-color:#fafafa!important;">
+                                <div class="fw-extrabold text-dark" style="font-size:0.9rem;">${row[3]}</div>
+                                <div>${row[6]}</div>
+                            </div>
+                        </div>`;
+                    });
+                }
+                $('#mobTxList').html(html);
             }
         }
     });
