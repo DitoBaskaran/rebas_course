@@ -9,13 +9,25 @@ class Learning_paths extends MY_Controller {
         $this->load->model('Course_model');
     }
 
+    private function _render($view, $data) {
+        if ($this->session->userdata('logged_in')) {
+            $this->load->view('templates/student_header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/student_footer');
+        } else {
+            $this->load->view('templates/header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
     public function index() {
         $data['title'] = t('Learning Paths (Skill Tree)', 'Learning Paths (Skill Tree)');
+        $data['active_page'] = 'learning_paths';
         $data['paths'] = $this->Learning_path_model->get_all();
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('learning_paths/index', $data);
-        $this->load->view('templates/footer');
+        // Login → tetap di panel (student template), bukan landing
+        $this->_render('learning_paths/index', $data);
     }
 
     public function mine() {
@@ -25,9 +37,7 @@ class Learning_paths extends MY_Controller {
         $data['title'] = t('Learning Path Saya', 'My Learning Paths');
         $data['active_page'] = 'learning_paths';
         $data['learning_paths'] = $this->Learning_path_model->get_user_paths($this->session->userdata('user_id'));
-        $this->load->view('templates/student_header', $data);
-        $this->load->view('learning_paths/mine', $data);
-        $this->load->view('templates/student_footer');
+        $this->_render('learning_paths/mine', $data);
     }
 
     public function detail($slug) {
@@ -37,6 +47,7 @@ class Learning_paths extends MY_Controller {
         $contents = $this->Learning_path_model->get_contents($path->id);
 
         $data['title'] = $path->title;
+        $data['active_page'] = 'learning_paths';
         $data['path'] = $path;
         $data['contents'] = $contents;
 
@@ -51,9 +62,8 @@ class Learning_paths extends MY_Controller {
             $data['enrollment'] = null;
         }
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('learning_paths/detail', $data);
-        $this->load->view('templates/footer');
+        // Login → tetap di panel (student template), bukan landing
+        $this->_render('learning_paths/detail', $data);
     }
 
     public function enroll($encoded_id) {

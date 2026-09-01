@@ -2356,3 +2356,15 @@ h1, h2, h3, h4, h5, h6,
 
 .mn-card-desktop { display: flex; flex-direction: column; }
 .mn-card-desktop .mn-body { flex: 1; display: flex; flex-direction: column; }
+
+/* ===== LEARNING PATHS mobile card ===== */
+.lp-mob-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #E6EBEF;
+  border-radius: 16px;
+  padding: 0.9rem;
+  box-shadow: 0 1px 3px rgba(13,24,48,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.lp-mob-card:active { transform: scale(0.98); }
