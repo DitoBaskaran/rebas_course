@@ -30,7 +30,7 @@
                 <i data-lucide="book-open"></i>
                 <span><?php echo t('Kelas', 'Courses'); ?></span>
             </a>
-            <a href="<?php echo base_url('mentoring'); ?>" class="<?php echo $_bn_active === 'mentoring' ? 'active' : ''; ?>">
+            <a href="<?php echo base_url($_bn_is_mentor ? 'mentor/sessions' : 'mentoring'); ?>" class="<?php echo $_bn_active === 'mentoring' ? 'active' : ''; ?>">
                 <i data-lucide="calendar-check"></i>
                 <span><?php echo t('Mentor', 'Mentor'); ?></span>
             </a>

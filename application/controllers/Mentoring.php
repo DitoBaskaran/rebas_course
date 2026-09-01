@@ -190,8 +190,14 @@ class Mentoring extends MY_Controller {
         if (!$this->session->userdata('logged_in')) { redirect('auth/login'); }
         $session_id = decode_id($encoded_session_id);
         if (!$session_id) show_404();
+        $user_id = $this->session->userdata('user_id');
         $session = $this->Mentoring_bookings_model->get_by_id($session_id);
-        if (!$session) show_404();
+        // Cek kepemilikan: hanya pemilik sesi (student) yang bisa mengonfirmasi sesinya sendiri
+        if (!$session || $session->user_id != $user_id) show_404();
+        if ($session->status !== 'pending') {
+            $this->session->set_flashdata('error', t('Sesi ini sudah tidak bisa dikonfirmasi.', 'This session can no longer be confirmed.'));
+            redirect('mentoring/my-sessions');
+        }
         $this->Mentoring_bookings_model->update($session_id, array('status' => 'confirmed', 'user_confirmed_at' => date('Y-m-d H:i:s')));
         $this->session->set_flashdata('success', t('Sesi dikonfirmasi.', 'Session confirmed.'));
         redirect('mentoring/my-sessions');

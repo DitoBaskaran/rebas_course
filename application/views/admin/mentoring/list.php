@@ -26,11 +26,13 @@
                                 <div class="fw-semibold" style="color: #0D1830;"><?php echo date('d M Y', strtotime($s->scheduled_at)); ?></div>
                                 <div style="color: #78716c;"><?php echo date('H:i', strtotime($s->scheduled_at)); ?> WIB · <?php echo $s->duration; ?> min</div>
                             </div>
-                            <?php if ($s->status === 'scheduled'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E0F2F1; color: #009688; font-size: 0.6rem;"><?php echo t('Terjadwal', 'Scheduled'); ?></span>
-                            <?php elseif ($s->status === 'completed'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E0F2F1; color: #009688; font-size: 0.6rem;"><?php echo t('Selesai', 'Completed'); ?></span>
-                            <?php elseif ($s->status === 'cancelled'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.6rem;"><?php echo t('Dibatalkan', 'Cancelled'); ?></span><?php endif; ?>
+                            <?php if ($s->status === 'pending'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef3c7; color: #92400e; font-size: 0.6rem;"><?php echo t('Menunggu', 'Pending'); ?></span>
+                            <?php elseif ($s->status === 'confirmed'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E0F2F1; color: #009688; font-size: 0.6rem;"><?php echo t('Dikonfirmasi', 'Confirmed'); ?></span>
+                            <?php elseif ($s->status === 'completed'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f5f5f5; color: #525252; font-size: 0.6rem;"><?php echo t('Selesai', 'Completed'); ?></span>
+                            <?php elseif ($s->status === 'cancelled'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.6rem;"><?php echo t('Dibatalkan', 'Cancelled'); ?></span>
+                            <?php elseif ($s->status === 'no_show'): ?><span class="px-2 py-1 rounded-pill fw-semibold" style="background: #f5f5f5; color: #a3a3a3; font-size: 0.6rem;"><?php echo t('No Show', 'No Show'); ?></span><?php endif; ?>
                         </div>
-                        <?php if ($s->meeting_link && $s->status === 'scheduled'): ?><a href="<?php echo $s->meeting_link; ?>" target="_blank" class="btn btn-sm rounded-pill px-3 fw-semibold d-inline-flex align-items-center gap-1" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.68rem;"><i class="fas fa-video" style="font-size: 0.65rem;"></i> <?php echo t('Gabung', 'Join'); ?></a><?php endif; ?>
+                        <?php if (!empty($s->meeting_url) && in_array($s->status, array('confirmed', 'completed'))): ?><a href="<?php echo htmlspecialchars($s->meeting_url); ?>" target="_blank" class="btn btn-sm rounded-pill px-3 fw-semibold d-inline-flex align-items-center gap-1" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.68rem;"><i class="fas fa-video" style="font-size: 0.65rem;"></i> <?php echo t('Gabung', 'Join'); ?></a><?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>

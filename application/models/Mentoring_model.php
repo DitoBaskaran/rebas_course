@@ -40,12 +40,13 @@ class Mentoring_model extends CI_Model {
     }
 
     public function get_all_sessions() {
-        $this->db->select('mentoring_sessions.*, student.name as student_name, mentor.name as mentor_name, courses.title as course_title');
-        $this->db->from('mentoring_sessions');
-        $this->db->join('users as student', 'student.id = mentoring_sessions.student_id');
-        $this->db->join('users as mentor', 'mentor.id = mentoring_sessions.mentor_id');
-        $this->db->join('courses', 'courses.id = mentoring_sessions.course_id', 'left');
-        $this->db->order_by('mentoring_sessions.scheduled_at', 'DESC');
+        // Sistem mentoring AKTIF: tabel mentoring_bookings (join users + mentors)
+        $this->db->select('mentoring_bookings.*, student.name as student_name, student.avatar as student_avatar, mentor_user.name as mentor_name, mentor_user.avatar as mentor_avatar, mentors.title as course_title');
+        $this->db->from('mentoring_bookings');
+        $this->db->join('users as student', 'student.id = mentoring_bookings.user_id');
+        $this->db->join('mentors', 'mentors.id = mentoring_bookings.mentor_id');
+        $this->db->join('users as mentor_user', 'mentor_user.id = mentors.user_id');
+        $this->db->order_by('mentoring_bookings.scheduled_at', 'DESC');
         return $this->db->get()->result();
     }
 

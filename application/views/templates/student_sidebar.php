@@ -24,7 +24,7 @@
     <a class="nav-link <?php echo $active_page === 'learning_paths' ? 'active' : ''; ?>" href="<?php echo base_url('learning_paths/mine'); ?>">
         <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Learning Paths'); ?></span>
     </a>
-    <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url('mentoring'); ?>">
+    <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url($_ss_is_mentor ? 'mentor/sessions' : 'mentoring'); ?>">
         <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
     </a>
     <a class="nav-link <?php echo $active_page === 'forum' ? 'active' : ''; ?>" href="<?php echo base_url('forum'); ?>">
