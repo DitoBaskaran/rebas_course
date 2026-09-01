@@ -2199,3 +2199,10 @@ h1, h2, h3, h4, h5, h6,
     font-size: 0.875rem;
     padding: 0.5rem 0.875rem;
 }
+/* ===== MENTORING CARDS (palet logo) ===== */
+.mentor-card-hover { transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease; }
+.mentor-card-hover:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -6px rgba(13,24,48,0.14) !important;
+    border-color: rgba(0,150,136,0.35) !important;
+}
