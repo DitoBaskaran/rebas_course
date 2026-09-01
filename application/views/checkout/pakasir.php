@@ -131,8 +131,8 @@
                     <button type="button" class="btn btn-success w-100 py-3 rounded-pill fw-semibold" id="checkPaymentBtn" onclick="checkPayment()">
                         <i class="fas fa-search me-2"></i> <?php echo t('Cek Status Pembayaran', 'Check Payment Status'); ?>
                     </button>
-                    <a href="<?php echo base_url('checkout/confirm/' . $tx->uuid); ?>" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-semibold">
-                        <i class="fas fa-arrow-left me-2"></i> <?php echo t('Kembali ke Konfirmasi', 'Back to Confirmation'); ?>
+                    <a href="<?php echo base_url('transactions/history'); ?>" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-semibold">
+                        <i class="fas fa-arrow-left me-2"></i> <?php echo t('Kembali ke Riwayat Transaksi', 'Back to Transaction History'); ?>
                     </a>
                 </div>
             </div>

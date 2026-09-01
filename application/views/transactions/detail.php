@@ -149,7 +149,13 @@
         <p style="color: #57534e; font-size: 0.8rem; margin-bottom: 0.75rem;">
             <?php echo t('Transaksi ini belum dibayar. Silakan lengkapi pembayaran untuk mengakses konten.', 'This transaction is waiting for payment. Please complete the payment to access the content.'); ?>
         </p>
-        <a href="<?php echo base_url('checkout/confirm/' . $transaction->uuid); ?>" class="btn px-4 py-2 fw-bold rounded-pill d-inline-flex align-items-center gap-2" style="background: #059669; color: #fff; font-size: 0.8rem;">
+        <?php
+            $allowed_methods = array('qris','bri_va','bni_va','cimb_niaga_va','maybank_va','permata_va','atm_bersama_va','sampoerna_va','bnc_va','artha_graha_va');
+            $pay_url = (in_array($transaction->payment_channel, $allowed_methods) && !empty($transaction->payment_channel))
+                ? base_url('checkout/pay/' . $transaction->uuid . '?method=' . $transaction->payment_channel)
+                : base_url('checkout/confirm/' . $transaction->uuid);
+        ?>
+        <a href="<?php echo $pay_url; ?>" class="btn px-4 py-2 fw-bold rounded-pill d-inline-flex align-items-center gap-2" style="background: #059669; color: #fff; font-size: 0.8rem;">
             <i class="fas fa-credit-card"></i> <?php echo t('Bayar Sekarang', 'Pay Now'); ?>
         </a>
     </div>

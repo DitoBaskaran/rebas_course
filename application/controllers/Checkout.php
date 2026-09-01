@@ -64,6 +64,13 @@ class Checkout extends MY_Controller {
             redirect('dashboard');
         }
 
+        // Metode pembayaran sudah dipilih → langsung ke halaman bayar,
+        // jangan tampilkan pilihan metode lagi (transaksi terkunci).
+        $allowed_methods = array('qris','bri_va','bni_va','cimb_niaga_va','maybank_va','permata_va','atm_bersama_va','sampoerna_va','bnc_va','artha_graha_va');
+        if (!empty($tx->payment_channel) && in_array($tx->payment_channel, $allowed_methods)) {
+            redirect('checkout/pay/' . $tx->uuid . '?method=' . $tx->payment_channel);
+        }
+
         $item = NULL;
         $item_name = '';
         if (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'video', 'podcast', 'template'])) {
