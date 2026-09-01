@@ -410,4 +410,57 @@ class Courses extends MY_Controller {
         }
         redirect('courses/detail/' . $course->slug);
     }
+
+    // ===== AI REKOMENDASI KURSUS =====
+    public function ai_recommend() {
+        if (!$this->session->userdata('logged_in')) {
+            echo json_encode(array('status' => 'error', 'message' => 'Silakan login.'));
+            return;
+        }
+        $goal = trim($this->input->post('goal'));
+        if ($goal === '') {
+            echo json_encode(array('status' => 'error', 'message' => 'Silakan tulis tujuan belajarmu terlebih dahulu.'));
+            return;
+        }
+        if (mb_strlen($goal) > 200) {
+            $goal = mb_substr($goal, 0, 200);
+        }
+
+        $this->load->library('Ai_course');
+        $res = $this->ai_course->recommend($goal);
+
+        if (!$res['ok']) {
+            echo json_encode(array(
+                'status' => 'error',
+                'message' => $res['error'] === 'no_courses' ? 'Belum ada kursus yang tersedia.' : 'Layanan AI sedang sibuk, coba lagi. (' . $res['error'] . ')',
+            ));
+            return;
+        }
+
+        // Ambil detail kursus hasil rekomendasi
+        $courses = array();
+        if (!empty($res['course_ids'])) {
+            foreach ($res['course_ids'] as $cid) {
+                $c = $this->Course_model->get_course_by_id($cid);
+                if ($c) {
+                    $courses[] = array(
+                        'id' => $cid,
+                        'title' => $c->title,
+                        'slug' => $c->slug,
+                        'content_type' => $c->content_type,
+                        'skill_level' => $c->skill_level,
+                        'price' => (float) $c->price,
+                        'thumbnail' => $c->thumbnail,
+                        'description' => $c->description,
+                    );
+                }
+            }
+        }
+
+        echo json_encode(array(
+            'status' => 'ok',
+            'reason' => $res['explanation'],
+            'courses' => $courses,
+        ));
+    }
 }

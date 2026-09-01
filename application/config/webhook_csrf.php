@@ -34,4 +34,7 @@ return array(
     // Endpoint AJAX Konsultasi AI (Mentoring) — dipanggil fetch() dari panel student.
     // Aman: controller wajib session logged_in + validasi panjang input; bukan mutasi data.
     'mentoring/ai-recommend',
+
+    // Endpoint AJAX AI Rekomendasi Kursus — sama: wajib login, bukan mutasi data.
+    'courses/ai-recommend',
 );

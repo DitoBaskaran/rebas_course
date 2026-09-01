@@ -271,6 +271,7 @@ $route['courses/detail/(:any)'] = 'courses/detail/$1';
 $route['courses/buy/(:any)'] = 'courses/buy/$1';
 $route['courses/review/(:any)'] = 'courses/review/$1';
 $route['courses/complete_lesson/(:any)/(:any)'] = 'courses/complete_lesson/$1/$2';
+$route['courses/ai-recommend'] = 'courses/ai_recommend';
 
 // Seminar routes (use encoded IDs)
 $route['seminars/mine'] = 'seminars/mine';
