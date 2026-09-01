@@ -750,6 +750,7 @@ CREATE TABLE IF NOT EXISTS `mentoring_bookings` (
   `cancelled_by` VARCHAR(10) NULL COMMENT 'user/mentor',
   `cancelled_at` DATETIME NULL,
   `completed_at` DATETIME NULL,
+  `reminder_sent_at` DATETIME NULL COMMENT 'H-1 reminder WhatsApp sent',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE,
