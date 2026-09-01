@@ -43,7 +43,7 @@
                     <div class="small text-muted mb-2"><?php echo t('Gambar saat ini', 'Current image'); ?></div>
                 <?php else: ?>
                     <div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-image"></i></div>
-                    <div class="small text-muted mb-3"><?php echo t('Rekomendasi 1200×400px', 'Recommended 1200x400px'); ?></div>
+                    <div class="small text-muted mb-3"><?php echo t('Rekomendasi: 1200×400px (rasio 3:1), JPG/WebP, maks 500KB. Teks penting di tengah.', 'Recommended: 1200x400px (3:1 ratio), JPG/WebP, max 500KB. Keep text centered.'); ?></div>
                 <?php endif; ?>
                 <input type="file" name="image" class="form-control form-control-sm" accept="image/*">
                 <?php if (isset($banner) && $banner->image): ?>
