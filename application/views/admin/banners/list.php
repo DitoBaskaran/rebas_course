@@ -70,25 +70,22 @@
         </div>
     </div>
 
-    <!-- Mobile: kartu eksplisit -->
+    <!-- Mobile: kartu eksplisit (1 baris kompak) -->
     <?php if (!empty($banners)): ?>
     <div class="app-row-list app-list">
         <?php foreach ($banners as $b): ?>
             <div class="app-row app-row-card">
                 <div class="app-row-head">
                     <?php if ($b->image && file_exists(FCPATH . 'uploads/banners/' . $b->image)): ?>
-                        <img src="<?php echo base_url('uploads/banners/' . $b->image); ?>" alt="" class="app-thumb" style="width:60px;height:36px;">
+                        <img src="<?php echo base_url('uploads/banners/' . $b->image); ?>" alt="" class="app-thumb" style="width:52px;height:32px;flex-shrink:0;">
                     <?php else: ?>
-                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#E6EBEF;color:#78716c;"><i class="fas fa-image"></i></div>
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#E6EBEF;color:#78716c;flex-shrink:0;"><i class="fas fa-image"></i></div>
                     <?php endif; ?>
                     <div class="app-row-main">
                         <div class="app-row-title"><?php echo htmlspecialchars($b->title); ?></div>
-                        <div class="app-row-sub"><?php echo $b->link ? htmlspecialchars(substr($b->link, 0, 40)) : '—'; ?></div>
+                        <div class="app-row-sub"><?php echo $b->target === 'both' ? t('Semua', 'All') : ucfirst($b->target); ?></div>
                     </div>
                     <?php echo $b->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
-                </div>
-                <div class="app-row-meta">
-                    <span><b><?php echo t('Target', 'Target'); ?>:</b> <?php echo $b->target === 'both' ? t('Semua', 'All') : ucfirst($b->target); ?></span>
                 </div>
                 <div class="app-actions">
                     <a href="<?php echo base_url('admin/banners_edit/' . $b->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>

@@ -47,21 +47,18 @@
         </div>
     </div>
 
-    <!-- Mobile: kartu eksplisit -->
+    <!-- Mobile: kartu eksplisit (1 baris kompak) -->
     <?php if (!empty($paths)): ?>
     <div class="app-row-list app-list">
         <?php foreach ($paths as $p): ?>
             <div class="app-row app-row-card">
                 <div class="app-row-head">
-                    <span class="d-inline-block rounded-2" style="width:12px;height:38px;background:<?php echo $p->color ?? '#4361ee'; ?>;flex-shrink:0;"></span>
+                    <span class="d-inline-block rounded-2" style="width:6px;height:38px;background:<?php echo $p->color ?? '#4361ee'; ?>;flex-shrink:0;"></span>
                     <div class="app-row-main">
                         <div class="app-row-title"><?php echo htmlspecialchars($p->title); ?></div>
-                        <div class="app-row-sub"><?php echo htmlspecialchars($p->category_name ?? '-'); ?></div>
+                        <div class="app-row-sub"><?php echo htmlspecialchars($p->category_name ?? '-'); ?><span class="mob-sub-sep">·</span><?php echo $p->content_count ?? 0; ?> <?php echo t('konten', 'items'); ?></div>
                     </div>
                     <span class="app-chip app-chip-amber"><?php echo skill_level_label($p->skill_level); ?></span>
-                </div>
-                <div class="app-row-meta">
-                    <span><b><?php echo t('Konten', 'Content'); ?>:</b> <?php echo $p->content_count ?? 0; ?> <?php echo t('konten', 'items'); ?></span>
                 </div>
                 <div class="app-actions">
                     <a href="<?php echo base_url('admin/edit_learning_path/' . $p->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>

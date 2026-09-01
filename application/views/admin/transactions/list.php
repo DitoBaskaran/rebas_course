@@ -19,32 +19,23 @@
     </div>
     <?php else: ?>
 
-    <!-- Mobile: kartu eksplisit -->
+    <!-- Mobile: kartu eksplisit (1 baris kompak) -->
     <div class="app-row-list app-list">
         <?php foreach ($transactions as $tx): ?>
             <?php
                 if ($tx->status === 'pending') $st_chip = '<span class="app-chip app-chip-amber">' . t('Pending', 'Pending') . '</span>';
                 elseif ($tx->status === 'approved') $st_chip = '<span class="app-chip app-chip-green">' . t('Disetujui', 'Approved') . '</span>';
                 else $st_chip = '<span class="app-chip app-chip-red">' . t('Ditolak', 'Rejected') . '</span>';
+                $amount_txt = 'Rp ' . number_format($tx->amount, 0, ',', '.');
             ?>
             <div class="app-row app-row-card">
                 <div class="app-row-head">
-                    <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#fff7ed;color:#c2410c;"><i class="fas fa-receipt"></i></div>
+                    <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#fff7ed;color:#c2410c;flex-shrink:0;"><i class="fas fa-receipt"></i></div>
                     <div class="app-row-main">
                         <div class="app-row-title"><?php echo htmlspecialchars($tx->user_name); ?></div>
-                        <div class="app-row-sub" style="font-family:monospace;">BT-<?php echo $tx->uuid; ?></div>
+                        <div class="app-row-sub" style="font-family:monospace;">BT-<?php echo $tx->uuid; ?><span class="mob-sub-sep">·</span><?php echo $amount_txt; ?></div>
                     </div>
                     <?php echo $st_chip; ?>
-                </div>
-                <div class="app-row-meta">
-                    <span><b><?php echo t('Item', 'Item'); ?>:</b> <?php
-                        $item_name = ucfirst($tx->item_type) . ' #' . $tx->item_id;
-                        if ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') { $pkg = $this->db->get_where('packages', array('id' => $tx->item_id))->row(); $item_name = $pkg ? $pkg->name : $item_name; }
-                        elseif (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'mentoring_package'])) { $table = $tx->item_type === 'mentoring_package' ? 'mentoring_packages' : 'courses'; $pkg = $this->db->get_where($table, array('id' => $tx->item_id))->row(); $item_name = $pkg ? ($pkg->name ?? $pkg->title) : $item_name; }
-                        echo htmlspecialchars($item_name);
-                    ?></span>
-                    <span><b><?php echo t('Jumlah', 'Amount'); ?>:</b> Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?><?php if ($tx->discount_amount > 0): ?> <small style="color:#009688;">(-Rp <?php echo number_format($tx->discount_amount, 0, ',', '.'); ?>)</small><?php endif; ?></span>
-                    <span><b><?php echo t('Tanggal', 'Date'); ?>:</b> <?php echo date('d M Y H:i', strtotime($tx->created_at)); ?></span>
                 </div>
                 <div class="app-actions">
                     <?php if ($tx->status === 'pending'): ?>

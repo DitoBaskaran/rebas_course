@@ -36,7 +36,7 @@
     </div>
     <?php else: ?>
 
-    <!-- Mobile: kartu eksplisit -->
+    <!-- Mobile: kartu eksplisit (1 baris kompak) -->
     <div class="app-row-list app-list">
         <?php foreach ($courses as $course): ?>
             <?php
@@ -44,27 +44,22 @@
                 if ($course->status === 'published') $st_chip = '<span class="app-chip app-chip-green"><i class="fas fa-check-circle"></i> ' . t('Published', 'Published') . '</span>';
                 elseif ($course->status === 'draft') $st_chip = '<span class="app-chip app-chip-amber"><i class="fas fa-pencil-alt"></i> ' . t('Draft', 'Draft') . '</span>';
                 else $st_chip = '<span class="app-chip app-chip-gray"><i class="fas fa-archive"></i> ' . t('Archived', 'Archived') . '</span>';
+                $price_txt = $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : t('Gratis', 'Free');
             ?>
             <div class="app-row app-row-card">
                 <div class="app-row-head">
-                    <img src="<?php echo $thumb_url; ?>" onerror="this.style.visibility='hidden';" alt="" class="app-thumb">
+                    <img src="<?php echo $thumb_url; ?>" onerror="this.style.visibility='hidden';" alt="" class="app-thumb" style="flex-shrink:0;">
                     <div class="app-row-main">
                         <div class="app-row-title"><?php echo htmlspecialchars($course->title); ?></div>
-                        <div class="app-row-sub"><?php echo content_type_label($course->content_type); ?> · <?php echo skill_level_label($course->skill_level); ?></div>
+                        <div class="app-row-sub"><?php echo $price_txt; ?><span class="mob-sub-sep">·</span><?php echo content_type_label($course->content_type); ?></div>
                     </div>
                     <?php echo $st_chip; ?>
-                </div>
-                <div class="app-row-meta">
-                    <span><b><?php echo t('Harga', 'Price'); ?>:</b> <?php echo $course->price > 0 ? 'Rp ' . number_format($course->price, 0, ',', '.') : t('Gratis', 'Free'); ?></span>
-                    <span><b><?php echo t('Kategori', 'Category'); ?>:</b> <?php echo htmlspecialchars($course->category_name ?? '-'); ?></span>
-                    <span><b><?php echo t('Instruktur', 'Instructor'); ?>:</b> <?php echo htmlspecialchars($course->teacher_name); ?></span>
                 </div>
                 <div class="app-actions">
                     <a href="<?php echo base_url('admin/lessons/' . $course->id); ?>" class="app-action app-action-gray" title="<?php echo t('Materi', 'Lessons'); ?>"><i class="fas fa-list"></i></a>
                     <a href="<?php echo base_url('quiz/admin_quizzes/' . $course->id); ?>" class="app-action app-action-gray" title="<?php echo t('Quiz', 'Quizzes'); ?>"><i class="fas fa-pencil-alt"></i></a>
                     <a href="<?php echo base_url('admin/assignments/' . $course->id); ?>" class="app-action app-action-gray" title="<?php echo t('Tugas', 'Assignments'); ?>"><i class="fas fa-code"></i></a>
                     <a href="<?php echo base_url('admin/edit_course/' . $course->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
-                    <a href="<?php echo base_url('admin/delete_course/' . $course->id); ?>" data-confirm="<?php echo t('Hapus konten ini?', 'Delete this content?'); ?>" class="app-action app-action-red" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
                 </div>
             </div>
         <?php endforeach; ?>

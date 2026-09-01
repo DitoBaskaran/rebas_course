@@ -34,31 +34,29 @@
         </select>
     </form>
 
-    <!-- Mobile: kartu eksplisit -->
+    <!-- Mobile: kartu eksplisit (1 baris kompak) -->
     <div class="app-row-list app-list">
         <?php foreach ($users as $u): ?>
             <?php
                 $badges = array();
-                if ($u->role === 'admin') $badges[] = '<span class="role-badge role-badge-admin">Admin</span>';
-                if ($u->is_teacher) $badges[] = '<span class="role-badge role-badge-teacher">Teacher</span>';
-                if ($u->is_mentor) $badges[] = '<span class="role-badge role-badge-mentor">Mentor</span>';
-                if (empty($badges)) $badges[] = '<span class="role-badge role-badge-student">Student</span>';
+                if ($u->role === 'admin') $badges[] = 'Admin';
+                elseif ($u->is_teacher && $u->is_mentor) $badges[] = 'Teacher · Mentor';
+                elseif ($u->is_teacher) $badges[] = 'Teacher';
+                elseif ($u->is_mentor) $badges[] = 'Mentor';
+                else $badges[] = 'Student';
+                $role_txt = implode(', ', $badges);
                 $status_chip = ($u->status === 'active' || !$u->status)
                     ? '<span class="app-chip app-chip-green"><i class="fas fa-check-circle"></i> Active</span>'
                     : '<span class="app-chip app-chip-red"><i class="fas fa-ban"></i> Banned</span>';
             ?>
             <div class="app-row app-row-card">
                 <div class="app-row-head">
-                    <span class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;"><?php echo strtoupper(substr($u->name, 0, 1)); ?></span>
+                    <span class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;flex-shrink:0;"><?php echo strtoupper(substr($u->name, 0, 1)); ?></span>
                     <div class="app-row-main">
                         <div class="app-row-title"><?php echo htmlspecialchars($u->name); ?></div>
-                        <div class="app-row-sub"><?php echo htmlspecialchars($u->email); ?></div>
+                        <div class="app-row-sub"><?php echo htmlspecialchars($u->email); ?><span class="mob-sub-sep">·</span><?php echo $role_txt; ?></div>
                     </div>
                     <?php echo $status_chip; ?>
-                </div>
-                <div class="app-row-meta">
-                    <?php echo implode(' ', $badges); ?>
-                    <span><b><?php echo t('Terdaftar', 'Registered'); ?>:</b> <?php echo date('d M Y', strtotime($u->created_at)); ?></span>
                 </div>
                 <div class="app-actions">
                     <a href="<?php echo base_url('admin/edit_user/' . $u->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>

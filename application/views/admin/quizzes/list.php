@@ -13,22 +13,19 @@
         </div>
     </div>
 
-    <!-- Mobile: kartu eksplisit -->
+    <!-- Mobile: kartu eksplisit (1 baris kompak) -->
     <?php if (!empty($quizzes)): ?>
     <div class="app-row-list app-list">
         <?php foreach ($quizzes as $qz): ?>
             <?php $qcount = $question_counts[$qz->id] ?? 0; ?>
             <div class="app-row app-row-card">
                 <div class="app-row-head">
-                    <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#E0F2F1;color:#009688;"><i class="fas fa-pencil-alt"></i></div>
+                    <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#E0F2F1;color:#009688;flex-shrink:0;"><i class="fas fa-pencil-alt"></i></div>
                     <div class="app-row-main">
                         <div class="app-row-title"><?php echo htmlspecialchars($qz->title); ?></div>
-                        <div class="app-row-sub"><?php echo $qz->time_limit > 0 ? $qz->time_limit . ' ' . t('menit', 'min') : '-'; ?> · <?php echo $qz->max_attempts; ?>x</div>
+                        <div class="app-row-sub"><?php echo $qcount; ?> <?php echo t('soal', 'questions'); ?><span class="mob-sub-sep">·</span><?php echo $qz->time_limit > 0 ? $qz->time_limit . ' ' . t('menit', 'min') : '-'; ?></div>
                     </div>
                     <span class="app-chip <?php echo $qz->passing_score >= 70 ? 'app-chip-green' : 'app-chip-amber'; ?>"><?php echo $qz->passing_score; ?>%</span>
-                </div>
-                <div class="app-row-meta">
-                    <span><b><?php echo t('Soal', 'Questions'); ?>:</b> <?php echo $qcount; ?></span>
                 </div>
                 <div class="app-actions">
                     <a href="<?php echo base_url('quiz/admin_questions/' . $qz->id); ?>" class="app-action app-action-gray" title="<?php echo t('Soal', 'Questions'); ?>"><i class="fas fa-list"></i></a>
