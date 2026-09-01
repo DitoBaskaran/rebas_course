@@ -236,7 +236,7 @@ $route['affiliate'] = 'affiliate/index';
 
 // Wishlist routes
 $route['wishlist'] = 'wishlist/index';
-$route['wishlist/toggle/(:num)'] = 'wishlist/toggle/$1';
+$route['wishlist/toggle/(:any)'] = 'wishlist/toggle/$1';
 
 // Quiz / Essay grading routes
 $route['admin/grade_essays/(:num)'] = 'admin/grade_essays/$1';
@@ -319,10 +319,6 @@ $route['forum/view/(:any)'] = 'forum/view/$1';
 $route['forum/create/(:any)'] = 'forum/create/$1';
 $route['forum/reply/(:any)'] = 'forum/reply/$1';
 $route['forum/mark_best/(:any)'] = 'forum/mark_best/$1';
-
-// Wishlist
-$route['wishlist'] = 'wishlist/index';
-$route['wishlist/toggle/(:any)'] = 'wishlist/toggle/$1';
 
 // Transactions (already UUID-based)
 $route['transactions/history'] = 'transactions/history';

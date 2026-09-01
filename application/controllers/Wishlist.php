@@ -12,7 +12,17 @@ class Wishlist extends MY_Controller {
     }
 
     public function toggle($course_slug_or_id) {
-        $course = is_numeric($course_slug_or_id) ? $this->Course_model->get_course_by_id($course_slug_or_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
+        // Dukung 3 format: ID ter-encode (base64), ID numerik, atau slug
+        $course_id = null;
+        if (is_numeric($course_slug_or_id)) {
+            $course_id = (int) $course_slug_or_id;
+        } else {
+            $decoded = decode_id($course_slug_or_id);
+            if ($decoded) {
+                $course_id = (int) $decoded;
+            }
+        }
+        $course = $course_id ? $this->Course_model->get_course_by_id($course_id) : $this->Course_model->get_course_by_slug($course_slug_or_id);
         if (!$course) { echo json_encode(array('status' => 'error')); return; }
 
         $user_id = $this->session->userdata('user_id');
