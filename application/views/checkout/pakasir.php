@@ -130,7 +130,7 @@
                 </div>
 
                 <div class="d-flex flex-column gap-2 pt-3">
-                    <button type="button" class="btn btn-success w-100 py-3 rounded-pill fw-semibold" id="checkPaymentBtn" onclick="checkPayment()">
+                    <button type="button" class="btn w-100 py-3 rounded-pill fw-semibold text-white" id="checkPaymentBtn" onclick="checkPayment()" style="background:#f97316; border-color:#f97316;">
                         <i class="fas fa-search me-2"></i> <?php echo t('Cek Status Pembayaran', 'Check Payment Status'); ?>
                     </button>
                     <a href="<?php echo base_url('transactions/history'); ?>" class="btn btn-outline-secondary w-100 py-3 rounded-pill fw-semibold">
