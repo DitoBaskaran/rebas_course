@@ -16,8 +16,8 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
                 <i class="fas fa-arrow-left"></i>
             </a>
             <div class="d-flex gap-2" style="pointer-events: auto;">
-                <a href="<?php echo base_url('wishlist/toggle/' . encode_id($course->id)); ?>" class="d-flex align-items-center justify-content-center rounded-circle" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; text-decoration: none;">
-                    <i class="far fa-heart"></i>
+                <a href="javascript:void(0)" class="d-flex align-items-center justify-content-center rounded-circle js-wishlist-toggle" data-course-encoded="<?php echo encode_id($course->id); ?>" style="width: 36px; height: 36px; background: rgba(255,255,255,0.2); backdrop-filter: blur(10px); color: #fff; text-decoration: none;">
+                    <i class="<?php echo !empty($is_wishlisted) ? 'fas' : 'far'; ?> fa-heart" style="<?php echo !empty($is_wishlisted) ? 'color:#ff4d6d;' : ''; ?>"></i>
                 </a>
             </div>
         </div>
@@ -343,3 +343,30 @@ $desc_local = t($course->description, $course->description_en ?: $course->descri
     </div>
 </div>
 <?php endif; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var toggles = document.querySelectorAll('.js-wishlist-toggle');
+    toggles.forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var encoded = btn.getAttribute('data-course-encoded');
+            var icon = btn.querySelector('i');
+            if (!encoded || !icon) return;
+
+            fetch('<?php echo base_url('wishlist/toggle/'); ?>' + encoded)
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    if (d.status === 'added') {
+                        icon.className = 'fas fa-heart';
+                        icon.style.color = '#ff4d6d';
+                    } else if (d.status === 'removed') {
+                        icon.className = 'far fa-heart';
+                        icon.style.color = '';
+                    }
+                })
+                .catch(function () {});
+        });
+    });
+});
+</script>

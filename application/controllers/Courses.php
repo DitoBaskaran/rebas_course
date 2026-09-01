@@ -93,9 +93,11 @@ class Courses extends MY_Controller {
         $data['enrolled_count'] = count($this->Course_model->get_enrolled_students($id));
 
         $data['is_enrolled'] = FALSE;
+        $data['is_wishlisted'] = FALSE;
         $user_id = $this->session->userdata('user_id');
         if ($user_id) {
             $data['is_enrolled'] = $this->Course_model->check_enrollment($user_id, $id);
+            $data['is_wishlisted'] = $this->db->where('user_id', $user_id)->where('course_id', $id)->count_all_results('wishlists') > 0;
             $data['user_review'] = $this->Review_model->get_user_review($user_id, $id);
         } else {
             $data['user_review'] = null;
