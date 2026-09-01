@@ -12,6 +12,23 @@ class Mentoring extends MY_Controller {
         $this->load->model('User_mentoring_balance_model');
     }
 
+    /**
+     * Render view dengan template yang sesuai:
+     * - sudah login → template student (panel: sidebar + bottom nav)
+     * - belum login → template publik
+     */
+    private function _render($view, $data) {
+        if ($this->session->userdata('logged_in')) {
+            $this->load->view('templates/student_header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/student_footer');
+        } else {
+            $this->load->view('templates/header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
     public function index() {
         $data['title'] = t('Mentoring', 'Mentoring');
         $data['active_page'] = 'mentoring';
@@ -21,18 +38,22 @@ class Mentoring extends MY_Controller {
         $data['categories'] = $this->db->order_by('sort_order', 'ASC')->get('mentor_categories')->result();
         $data['selected_category'] = $category_id;
         $data['search_query'] = $search;
-        $this->load->view('templates/header', $data);
-        $this->load->view('mentoring/index', $data);
-        $this->load->view('templates/footer');
+        $logged_in = $this->session->userdata('logged_in');
+        if ($logged_in) {
+            // Di dalam panel student: pakai template student (sidebar + bottom nav)
+            $this->_render('mentoring/index', $data);
+        } else {
+            $this->load->view('templates/header', $data);
+            $this->load->view('mentoring/index', $data);
+            $this->load->view('templates/footer');
+        }
     }
 
     public function packages() {
         $data['title'] = t('Paket Mentoring', 'Mentoring Packages');
         $data['active_page'] = 'mentoring';
         $data['packages'] = $this->Mentoring_package_model->get_all(true);
-        $this->load->view('templates/header', $data);
-        $this->load->view('mentoring/packages', $data);
-        $this->load->view('templates/footer');
+        $this->_render('mentoring/packages', $data);
     }
 
     public function detail($encoded_id) {
@@ -54,9 +75,7 @@ class Mentoring extends MY_Controller {
             ->get()->result();
         $user_id = $this->session->userdata('user_id');
         $data['is_favorited'] = $user_id ? $this->Mentor_model->is_favorited($user_id, $id) : false;
-        $this->load->view('templates/header', $data);
-        $this->load->view('mentoring/detail', $data);
-        $this->load->view('templates/footer');
+        $this->_render('mentoring/detail', $data);
     }
 
     public function book($encoded_mentor_id) {
@@ -76,9 +95,7 @@ class Mentoring extends MY_Controller {
         $data['packages'] = $this->Mentoring_package_model->get_all(true);
         $data['balances'] = $this->User_mentoring_balance_model->get_by_user($user_id);
         $data['week_slots'] = $this->Mentor_availability_model->get_week_slots($mentor_id);
-        $this->load->view('templates/header', $data);
-        $this->load->view('mentoring/book', $data);
-        $this->load->view('templates/footer');
+        $this->_render('mentoring/book', $data);
     }
 
     public function confirm_booking() {
@@ -122,9 +139,7 @@ class Mentoring extends MY_Controller {
         $data['active_page'] = 'mentoring';
         $data['sessions'] = $this->Mentoring_bookings_model->get_by_user($user_id);
         $data['balances'] = $this->User_mentoring_balance_model->get_by_user($user_id);
-        $this->load->view('templates/header', $data);
-        $this->load->view('mentoring/my_sessions', $data);
-        $this->load->view('templates/footer');
+        $this->_render('mentoring/my_sessions', $data);
     }
 
     public function cancel($encoded_session_id) {
