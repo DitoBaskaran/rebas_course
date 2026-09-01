@@ -2206,3 +2206,34 @@ h1, h2, h3, h4, h5, h6,
     box-shadow: 0 12px 28px -6px rgba(13,24,48,0.14) !important;
     border-color: rgba(0,150,136,0.35) !important;
 }
+
+/* ===== MENTORING HALAMAN PUBLIK — mobile app-style ===== */
+.mh-mob-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #E6EBEF;
+  border-radius: 16px;
+  padding: 0.9rem;
+  box-shadow: 0 1px 3px rgba(13,24,48,0.04);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.mh-mob-card:active { transform: scale(0.98); }
+
+@media (max-width: 991.98px) {
+  .mh-hero-inner { padding-top: 2.2rem; padding-bottom: 2.2rem; }
+  .mh-title { font-size: 1.45rem !important; }
+  .mh-sub { font-size: 0.85rem !important; }
+  .mh-badge { font-size: 0.65rem !important; }
+  .mh-stats { gap: 1rem; font-size: 0.8rem; }
+  .mh-stat-divider { width: 1px; background: rgba(255,255,255,0.2); }
+  .mh-steps { flex-wrap: wrap; }
+  .mh-step { font-size: 0.72rem; padding: 0.5rem 0.75rem !important; }
+  .mh-chip { font-size: 0.72rem !important; padding: 0.45rem 0.85rem !important; }
+}
+@media (min-width: 992px) {
+  .mh-hero-inner { padding-top: 3.5rem; padding-bottom: 3rem; }
+  .mh-title { font-size: 2rem !important; }
+  .mh-sub { font-size: 0.95rem !important; }
+  .mh-stats { gap: 1.5rem; font-size: 0.85rem; }
+  .mh-stat-divider { width: 1px; background: rgba(255,255,255,0.2); }
+}
