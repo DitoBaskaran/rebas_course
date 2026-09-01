@@ -16,8 +16,8 @@
                         <span class="fw-bold text-dark"><?php echo htmlspecialchars($item_name); ?></span>
                     </div>
                     <div class="d-flex justify-content-between mb-3 small">
-                        <span class="text-secondary"><?php echo t('ID Transaksi', 'Transaction ID'); ?></span>
-                        <span class="fw-bold text-dark font-monospace small"><?php echo $tx_ref; ?></span>
+                        <span class="text-secondary"><?php echo t('Kode Transaksi', 'Transaction Code'); ?></span>
+                        <span class="fw-bold text-dark font-monospace small"><?php echo ($pay_method === 'pay_cart') ? $tx_ref : 'BT-' . $tx_ref; ?></span>
                     </div>
                     <?php if ($applied_coupon): ?>
                     <div class="d-flex justify-content-between mb-3 small">

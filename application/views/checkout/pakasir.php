@@ -31,30 +31,7 @@
                     <p class="text-secondary small mb-0"><?php echo htmlspecialchars($method_label ?? $method); ?></p>
                 </div>
 
-                <div class="bg-light rounded-4 p-4 mb-4">
-                    <?php if ($item): ?>
-                    <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
-                        <div class="flex-fill min-w-0">
-                            <div class="fw-bold text-dark"><?php echo htmlspecialchars($item->title ?? $item->name ?? ''); ?></div>
-                            <div class="text-secondary small"><?php echo ucfirst($tx->item_type); ?> &middot; Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-                    <div class="d-flex justify-content-between mb-3 small">
-                        <span class="text-secondary"><?php echo t('ID Transaksi', 'Transaction ID'); ?></span>
-                        <span class="fw-bold text-dark">#<?php echo $tx->uuid; ?></span>
-                    </div>
-                    <div class="d-flex justify-content-between mb-3 small">
-                        <span class="text-secondary"><?php echo t('Order ID', 'Order ID'); ?></span>
-                        <span class="fw-bold text-dark font-monospace small"><?php echo htmlspecialchars($order_id); ?></span>
-                    </div>
-                    <hr class="my-4 opacity-25">
-                    <div class="d-flex justify-content-between align-items-baseline">
-                        <span class="fw-bold text-dark"><?php echo t('Total Pembayaran', 'Total Payment'); ?></span>
-                        <span class="fw-extrabold text-primary fs-3">Rp <?php echo number_format($payment['total_payment'] ?? $tx->amount, 0, ',', '.'); ?></span>
-                    </div>
-                </div>
-
+                <!-- ============ KODE PEMBAYARAN (ditampilkan PALING ATAS) ============ -->
                 <?php if ($method === 'qris'): ?>
                 <div class="text-center mb-4">
                     <h6 class="fw-bold text-dark mb-3"><?php echo t('Scan QRIS di bawah ini', 'Scan QRIS below'); ?></h6>
@@ -82,6 +59,31 @@
                     </div>
                 </div>
                 <?php endif; ?>
+
+                <!-- ============ RINGKASAN TRANSAKSI ============ -->
+                <div class="bg-light rounded-4 p-4 mb-4">
+                    <?php if ($item): ?>
+                    <div class="d-flex align-items-center gap-2 mb-3 pb-3 border-bottom">
+                        <div class="flex-fill min-w-0">
+                            <div class="fw-bold text-dark"><?php echo htmlspecialchars($item->title ?? $item->name ?? ''); ?></div>
+                            <div class="text-secondary small"><?php echo ucfirst($tx->item_type); ?> &middot; Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
+                        </div>
+                    </div>
+                    <?php endif; ?>
+                    <div class="d-flex justify-content-between mb-3 small">
+                        <span class="text-secondary"><?php echo t('Kode Transaksi', 'Transaction Code'); ?></span>
+                        <span class="fw-bold text-dark">BT-<?php echo $tx->uuid; ?></span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3 small">
+                        <span class="text-secondary"><?php echo t('Order ID', 'Order ID'); ?></span>
+                        <span class="fw-bold text-dark font-monospace small"><?php echo htmlspecialchars($order_id); ?></span>
+                    </div>
+                    <hr class="my-4 opacity-25">
+                    <div class="d-flex justify-content-between align-items-baseline">
+                        <span class="fw-bold text-dark"><?php echo t('Total Pembayaran', 'Total Payment'); ?></span>
+                        <span class="fw-extrabold text-primary fs-3">Rp <?php echo number_format($payment['total_payment'] ?? $tx->amount, 0, ',', '.'); ?></span>
+                    </div>
+                </div>
 
                 <?php if (isset($payment['expired_at'])): ?>
                 <?php $exp_ts = strtotime($payment['expired_at']); ?>

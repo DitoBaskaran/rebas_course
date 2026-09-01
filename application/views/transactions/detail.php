@@ -4,7 +4,7 @@
         <ol class="breadcrumb" style="background: none; padding: 0;">
             <li class="breadcrumb-item"><a href="<?php echo base_url('dashboard'); ?>" style="color: #78716c; text-decoration: none; font-weight: 500;"><?php echo t('Dashboard', 'Dashboard'); ?></a></li>
             <li class="breadcrumb-item"><a href="<?php echo base_url('transactions/history'); ?>" style="color: #78716c; text-decoration: none; font-weight: 500;"><?php echo t('Riwayat', 'History'); ?></a></li>
-            <li class="breadcrumb-item active" style="color: #1c1917; font-weight: 600;">#<?php echo $transaction->uuid; ?></li>
+            <li class="breadcrumb-item active" style="color: #1c1917; font-weight: 600;">BT-<?php echo $transaction->uuid; ?></li>
         </ol>
     </nav>
 
@@ -19,7 +19,7 @@
                     <h5 class="fw-bold mb-0" style="color: #1c1917; font-size: 1rem;">
                         <?php echo t('Detail Transaksi', 'Transaction Detail'); ?>
                     </h5>
-                    <small style="color: #a8a29e; font-size: 0.72rem; font-family: monospace;">#<?php echo $transaction->uuid; ?></small>
+                    <small style="color: #a8a29e; font-size: 0.72rem; font-family: monospace;">BT-<?php echo $transaction->uuid; ?></small>
                 </div>
             </div>
             <div>

@@ -89,6 +89,7 @@ class Transactions extends MY_Controller {
                 $tx->created_at,
                 $status_badge,
                 $action,
+                $tx->uuid,
             );
         }
 

@@ -30,7 +30,7 @@
                     <tbody>
                         <?php foreach ($transactions as $tx): ?>
                             <tr>
-                                <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-family: monospace; font-size: 0.72rem; color: #1c1917;">#<?php echo $tx->uuid; ?></td>
+                                <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-family: monospace; font-size: 0.72rem; color: #1c1917;">BT-<?php echo $tx->uuid; ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-weight: 600; color: #1c1917; font-size: 0.78rem;"><?php echo htmlspecialchars($tx->user_name); ?></td>
                                 <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; color: #57534e; font-size: 0.78rem;">
                                     <?php $item_name = ucfirst($tx->item_type) . ' #' . $tx->item_id; if ($tx->item_type === 'package' || $tx->item_type === 'package_6mo') { $pkg = $this->db->get_where('packages', array('id' => $tx->item_id))->row(); $item_name = $pkg ? $pkg->name : $item_name; } elseif (in_array($tx->item_type, ['course', 'workshop', 'bootcamp', 'ebook', 'project', 'mentoring_package'])) { $table = $tx->item_type === 'mentoring_package' ? 'mentoring_packages' : 'courses'; $pkg = $this->db->get_where($table, array('id' => $tx->item_id))->row(); $item_name = $pkg ? ($pkg->name ?? $pkg->title) : $item_name; } echo htmlspecialchars($item_name); ?>

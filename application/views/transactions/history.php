@@ -249,6 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="min-w-0">
                                     <div class="fw-bold text-dark text-truncate" style="font-size:0.85rem;">${row[2]}</div>
                                     <div class="text-muted" style="font-size:0.7rem;">${row[0]}</div>
+                                    <div class="text-muted" style="font-size:0.65rem; font-family:monospace;">BT-${row[7]}</div>
                                 </div>
                                 <div>${row[5]}</div>
                             </div>
