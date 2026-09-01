@@ -2282,7 +2282,7 @@ h1, h2, h3, h4, h5, h6,
 }
 .mn-price-badge {
   position: absolute;
-  left: 12px;
+  right: 12px;
   bottom: 10px;
   background: #FBBF24;
   color: #0D1830;
@@ -2295,6 +2295,7 @@ h1, h2, h3, h4, h5, h6,
   align-items: baseline;
   gap: 0.25rem;
   white-space: nowrap;
+  z-index: 3;
 }
 .mn-price-unit { font-size: 0.6rem; font-weight: 600; opacity: 0.75; }
 
