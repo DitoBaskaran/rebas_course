@@ -1683,12 +1683,17 @@ h1, h2, h3, h4, h5, h6,
 }
 .playful[data-theme="dark"] .app-bottom-nav .bn-badge { box-shadow: 0 0 0 2px #0c0a09; }
 
-/* Mobile: bottom nav visible, footer hidden */
+/* Mobile: bottom nav visible, footer hidden (student pages only) */
 @media (max-width: 768px) {
   .app-bottom-nav { display: block; }
   .admin-footer { display: none; }
-  body { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
-  .admin-wrapper { min-height: calc(100vh - var(--topbar-height) - 64px); }
+  body.has-bottom-nav { padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px)); }
+  body.has-bottom-nav .admin-wrapper { min-height: calc(100vh - var(--topbar-height) - 64px); }
+}
+
+/* Prevent any horizontal overflow on mobile from dashboard app styles */
+@media (max-width: 768px) {
+  .admin-content, .dashboard-mobile-only { overflow-x: clip; }
 }
 
 /* ===== MOBILE APP-STYLE DASHBOARD (student) ===== */
@@ -1798,16 +1803,19 @@ h1, h2, h3, h4, h5, h6,
   display: flex;
   gap: 0.75rem;
   overflow-x: auto;
+  overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  margin: 0 -1rem;
-  padding: 0.25rem 1rem 0.6rem;
+  padding: 0.25rem 0 0.6rem;
   -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  width: 100%;
 }
 .mob-scroll-x::-webkit-scrollbar { display: none; }
-.mob-scroll-x > * { scroll-snap-align: start; flex-shrink: 0; }
+.mob-scroll-x > * { scroll-snap-align: start; flex-shrink: 0; max-width: 100%; }
 
 .mob-course-card {
-  width: 210px;
+  width: min(210px, 68vw);
+  flex: 0 0 min(210px, 68vw);
   background: var(--card-bg, #fff);
   border: 1px solid var(--card-border, #e7e5e4);
   border-radius: 16px;

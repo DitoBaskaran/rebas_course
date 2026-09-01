@@ -85,8 +85,12 @@
                 ?>
                     <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="mob-course-card">
                         <div class="mob-course-thumb" style="background: <?php echo $mob_grads[$gi++ % count($mob_grads)]; ?>;">
-                            <?php if (!empty($course->thumbnail)): ?>
-                                <img src="<?php echo htmlspecialchars($course->thumbnail); ?>" alt="">
+                            <?php
+                            $mob_thumb_ok = !empty($course->thumbnail)
+                                && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
+                                && $course->thumbnail !== 'default_course.png';
+                            if ($mob_thumb_ok): ?>
+                                <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" onerror="this.style.display='none';this.parentNode.textContent='<?php echo $init; ?>';">
                             <?php else: ?>
                                 <?php echo $init; ?>
                             <?php endif; ?>
