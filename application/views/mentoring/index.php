@@ -4,21 +4,32 @@
 <!-- ============ PANEL STUDENT (desktop + mobile app-style) ============ -->
 <div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1100px;">
 
-    <!-- Mobile App-Style -->
-    <div class="dashboard-mobile-only">
-        <!-- Header -->
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <div>
-                <h5 class="fw-extrabold mb-0" style="color: #0D1830; font-size: 1.15rem; letter-spacing: -0.02em;">
-                    <?php echo t('Mentoring', 'Mentoring'); ?>
-                </h5>
-                <small style="color: #78716c; font-size: 0.72rem;"><?php echo t('Sesi 1-on-1 dengan mentor ahli', '1-on-1 sessions with expert mentors'); ?></small>
+    <!-- ===== Hero banner panel (ringkas) ===== -->
+    <div class="mn-panel-hero mb-4" style="background: linear-gradient(120deg,#0D1830 0%,#0D1830 45%,#00796B 100%); border-radius: 18px; padding: 1.25rem 1.5rem; color: #fff; position: relative; overflow: hidden;">
+        <div style="position:absolute; top:-50px; right:-30px; width:180px; height:180px; border-radius:50%; background:rgba(251,191,36,0.14);"></div>
+        <div style="position:absolute; bottom:-70px; left:30%; width:160px; height:160px; border-radius:50%; background:rgba(0,150,136,0.3);"></div>
+        <div class="d-flex align-items-center justify-content-between gap-3 flex-wrap position-relative">
+            <div class="d-flex align-items-center gap-3">
+                <div class="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0" style="width:52px; height:52px; background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); backdrop-filter: blur(6px);">
+                    <i class="fas fa-users" style="color: #FBBF24; font-size: 1.2rem;"></i>
+                </div>
+                <div>
+                    <h5 class="fw-extrabold mb-0" style="font-size: 1.1rem; letter-spacing: -0.02em;"><?php echo t('Mentoring', 'Mentoring'); ?></h5>
+                    <small style="color: rgba(230,235,239,0.75); font-size: 0.75rem;"><?php echo t('Sesi 1-on-1 dengan mentor ahli', '1-on-1 sessions with expert mentors'); ?></small>
+                    <div class="d-flex gap-3 mt-1" style="font-size: 0.72rem;">
+                        <span><strong style="color:#FBBF24;"><?php echo count($mentors); ?></strong> <span style="color:rgba(230,235,239,0.6);"><?php echo t('Mentor', 'Mentors'); ?></span></span>
+                        <span><strong style="color:#FBBF24;">16+</strong> <span style="color:rgba(230,235,239,0.6);"><?php echo t('Bidang', 'Fields'); ?></span></span>
+                    </div>
+                </div>
             </div>
-            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1; color:#009688; font-size:0.72rem;">
-                <i class="fas fa-calendar-check me-1" style="font-size:0.65rem;"></i> <?php echo t('Sesi Saya', 'My Sessions'); ?>
+            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn fw-semibold rounded-pill flex-shrink-0" style="background:#FBBF24; color:#0D1830; font-size:0.8rem; padding:0.55rem 1.1rem; box-shadow: 0 4px 14px rgba(251,191,36,0.3);">
+                <i class="fas fa-calendar-check me-1"></i> <?php echo t('Sesi Saya', 'My Sessions'); ?>
             </a>
         </div>
+    </div>
 
+    <!-- Mobile App-Style -->
+    <div class="dashboard-mobile-only">
         <!-- Search -->
         <form method="get" class="d-flex gap-2 mb-3">
             <?php if ($selected_category): ?>
@@ -34,7 +45,7 @@
         </form>
 
         <!-- Category chips (horizontal scroll) -->
-        <div class="d-flex gap-2 overflow-auto pb-1 mb-2" style="scrollbar-width: none; -ms-overflow-style: none;">
+        <div class="d-flex gap-2 overflow-auto pb-1 mb-3" style="scrollbar-width: none; -ms-overflow-style: none;">
             <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.72rem; background: <?php echo !$selected_category ? '#009688' : '#E6EBEF'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
                 <?php echo t('Semua', 'All'); ?>
             </a>
@@ -60,25 +71,30 @@
                     <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="mob-course-card text-decoration-none w-100" style="width:auto;">
                         <div class="d-flex align-items-center gap-3 mb-2">
                             <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
-                            <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="flex-shrink-0" style="width: 46px; height: 46px; border-radius: 50%; object-fit: cover; background: #E0F2F1;">
+                            <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="flex-shrink-0" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #E0F2F1;">
                             <?php else: ?>
-                            <span class="mob-avatar flex-shrink-0" style="background: linear-gradient(135deg,#009688,#00796B); color:#fff; font-size: 1rem; width: 46px; height: 46px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center;">
+                            <span class="mob-avatar flex-shrink-0" style="background: linear-gradient(135deg,#009688,#00796B); color:#fff; font-size: 1rem; width: 48px; height: 48px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center;">
                                 <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
                             </span>
                             <?php endif; ?>
                             <div class="min-w-0 flex-fill">
-                                <div class="fw-bold text-truncate" style="color: #0D1830; font-size: 0.85rem;"><?php echo htmlspecialchars($mentor->name); ?></div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <span class="fw-bold text-truncate" style="color: #0D1830; font-size: 0.88rem;"><?php echo htmlspecialchars($mentor->name); ?></span>
+                                    <i class="fas fa-check-circle flex-shrink-0" style="color: #009688; font-size: 0.72rem;" title="<?php echo t('Terverifikasi', 'Verified'); ?>"></i>
+                                </div>
                                 <div class="text-truncate" style="color: #78716c; font-size: 0.72rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></div>
                                 <div class="d-flex align-items-center gap-1 mt-1">
                                     <i class="fas fa-star" style="color: #FBBF24; font-size: 0.6rem;"></i>
                                     <span class="fw-bold" style="color: #0D1830; font-size: 0.72rem;"><?php echo $mentor->avg_rating; ?></span>
                                     <span style="color: #a8a29e; font-size: 0.65rem;">(<?php echo $mentor->total_reviews; ?>)</span>
-                                    <?php if ((float)$mentor->price_per_session > 0): ?>
-                                    <span class="ms-auto fw-bold" style="color: #009688; font-size: 0.72rem;">Rp <?php echo number_format($mentor->price_per_session, 0, ',', '.'); ?></span>
-                                    <?php endif; ?>
                                 </div>
                             </div>
-                            <span class="mob-chev"><i class="fas fa-chevron-right"></i></span>
+                            <div class="text-end flex-shrink-0">
+                                <?php if ((float)$mentor->price_per_session > 0): ?>
+                                <div class="fw-bold" style="color: #009688; font-size: 0.85rem; white-space: nowrap;">Rp <?php echo number_format($mentor->price_per_session / 1000, 0); ?>rb</div>
+                                <div style="color:#a8a29e; font-size:0.62rem;">/ <?php echo t('sesi', 'session'); ?></div>
+                                <?php endif; ?>
+                            </div>
                         </div>
                         <?php if (!empty($mentor->bio)): ?>
                             <p class="mb-2" style="color: #78716c; font-size: 0.72rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.4;">
@@ -88,9 +104,9 @@
                         <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
                             <div class="d-flex gap-3" style="color: #a8a29e; font-size: 0.65rem;">
                                 <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
-                                <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
+                                <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 8)); ?></span>
                             </div>
-                            <span style="color: #009688; font-size: 0.72rem; font-weight: 600;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i></span>
+                            <span class="fw-bold" style="color: #009688; font-size: 0.75rem;"><?php echo t('Lihat', 'View'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i></span>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -100,47 +116,33 @@
 
     <!-- Desktop Panel Version -->
     <div class="dashboard-desktop-only">
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <div>
-                <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em;">
-                    <?php echo t('Mentoring', 'Mentoring'); ?>
-                </h4>
-                <p style="color: #78716c; font-size: 0.85rem; margin-bottom: 0;">
-                    <?php echo t('Temukan mentor dan jadwalkan sesi 1-on-1.', 'Find mentors and schedule 1-on-1 sessions.'); ?>
-                </p>
-            </div>
-            <a href="<?php echo base_url('mentoring/my_sessions'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1; color:#009688; font-size:0.8rem;">
-                <i class="fas fa-calendar-check me-1"></i> <?php echo t('Sesi Saya', 'My Sessions'); ?>
-            </a>
-        </div>
-
-        <!-- Search -->
-        <form method="get" class="d-flex gap-2 mb-3">
-            <?php if ($selected_category): ?>
-                <input type="hidden" name="category" value="<?php echo $selected_category; ?>">
-            <?php endif; ?>
-            <div class="flex-fill position-relative">
-                <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
-                <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari mentor berdasarkan nama atau keahlian...', 'Search mentors by name or expertise...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e7e5e4; font-size: 0.85rem; height: 42px; background: #fff;">
-            </div>
-            <button type="submit" class="btn px-4 fw-semibold flex-shrink-0" style="background: #009688; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 42px;">
-                <i class="fas fa-search"></i>
-            </button>
-        </form>
-
-        <!-- Category chips -->
-        <div class="d-flex gap-2 overflow-auto pb-1 mb-3" style="scrollbar-width: none; -ms-overflow-style: none;">
-            <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo !$selected_category ? '#009688' : '#E6EBEF'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
-                <?php echo t('Semua', 'All'); ?>
-            </a>
-            <?php foreach ($categories as $cat): ?>
-                <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo $selected_category == $cat->id ? '#009688' : '#E6EBEF'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
-                    <?php echo htmlspecialchars(t($cat->name, $cat->name_en)); ?>
+        <!-- Search + chips toolbar -->
+        <div class="d-flex flex-column gap-3 mb-4">
+            <form method="get" class="d-flex gap-2">
+                <?php if ($selected_category): ?>
+                    <input type="hidden" name="category" value="<?php echo $selected_category; ?>">
+                <?php endif; ?>
+                <div class="flex-fill position-relative">
+                    <i class="fas fa-search position-absolute" style="left: 14px; top: 50%; transform: translateY(-50%); color: #a3a3a3; font-size: 0.8rem;"></i>
+                    <input type="text" name="search" class="form-control" value="<?php echo htmlspecialchars($search_query ?? ''); ?>" placeholder="<?php echo t('Cari mentor berdasarkan nama atau keahlian...', 'Search mentors by name or expertise...'); ?>" style="padding-left: 36px; border-radius: 100px; border-color: #e7e5e4; font-size: 0.85rem; height: 42px; background: #fff;">
+                </div>
+                <button type="submit" class="btn px-4 fw-semibold flex-shrink-0" style="background: #009688; color: #fff; border-radius: 100px; font-size: 0.85rem; height: 42px;">
+                    <i class="fas fa-search"></i>
+                </button>
+            </form>
+            <div class="d-flex gap-2 overflow-auto" style="scrollbar-width: none; -ms-overflow-style: none;">
+                <a href="<?php echo base_url('mentoring'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo !$selected_category ? '#009688' : '#E6EBEF'; ?>; color: <?php echo !$selected_category ? '#fff' : '#57534e'; ?>;">
+                    <?php echo t('Semua', 'All'); ?>
                 </a>
-            <?php endforeach; ?>
-            <a href="<?php echo base_url('mentoring/packages'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: #FEF3C7; color: #92400E;">
-                <i class="fas fa-shopping-bag" style="font-size: 0.6rem;"></i> <?php echo t('Paket', 'Packages'); ?>
-            </a>
+                <?php foreach ($categories as $cat): ?>
+                    <a href="<?php echo base_url('mentoring?category=' . $cat->id); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: <?php echo $selected_category == $cat->id ? '#009688' : '#E6EBEF'; ?>; color: <?php echo $selected_category == $cat->id ? '#fff' : '#57534e'; ?>;">
+                        <?php echo htmlspecialchars(t($cat->name, $cat->name_en)); ?>
+                    </a>
+                <?php endforeach; ?>
+                <a href="<?php echo base_url('mentoring/packages'); ?>" class="px-3 py-2 rounded-pill fw-semibold text-decoration-none flex-shrink-0" style="font-size: 0.75rem; background: #FEF3C7; color: #92400E;">
+                    <i class="fas fa-shopping-bag" style="font-size: 0.6rem;"></i> <?php echo t('Paket', 'Packages'); ?>
+                </a>
+            </div>
         </div>
 
         <!-- Mentor grid -->
@@ -154,57 +156,58 @@
             <div class="row g-3">
                 <?php foreach ($mentors as $mentor): ?>
                     <div class="col-md-6 col-lg-4">
-                        <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="text-decoration-none">
-                            <div class="border rounded-3 h-100 p-3 mentor-card-hover" style="border-color: #e7e5e4; border-radius: 14px; background: #fff; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
-                                <div class="d-flex align-items-center gap-3 mb-3">
-                                    <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
-                                    <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="flex-shrink-0" style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; background: #E0F2F1;">
-                                    <?php else: ?>
-                                    <span class="flex-shrink-0" style="background: linear-gradient(135deg,#009688,#00796B); color:#fff; font-size: 1rem; width: 48px; height: 48px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; font-weight: 700;">
-                                        <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
-                                    </span>
-                                    <?php endif; ?>
-                                    <div class="min-w-0 flex-fill">
-                                        <h6 class="fw-bold mb-0 text-truncate" style="color: #0D1830; font-size: 0.9rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
-                                        <small class="fw-medium text-truncate d-block" style="color: #78716c; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
-                                        <div class="d-flex align-items-center gap-1 mt-1">
-                                            <i class="fas fa-star" style="color: #FBBF24; font-size: 0.6rem;"></i>
-                                            <span class="fw-bold" style="color: #0D1830; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
-                                            <span style="color: #a8a29e; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
-                                        </div>
+                        <div class="border rounded-3 h-100 p-3 mentor-card-hover d-flex flex-column" style="border-color: #e7e5e4; border-radius: 16px; background: #fff; transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.03);">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <?php if (!empty($mentor->avatar) && file_exists(FCPATH . 'uploads/mentors/' . $mentor->avatar)): ?>
+                                <img src="<?php echo base_url('uploads/mentors/' . $mentor->avatar); ?>" alt="" class="flex-shrink-0" style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; background: #E0F2F1; border: 2px solid #E0F2F1;">
+                                <?php else: ?>
+                                <span class="flex-shrink-0" style="background: linear-gradient(135deg,#009688,#00796B); color:#fff; font-size: 1.05rem; width: 52px; height: 52px; border-radius: 50%; display:inline-flex; align-items:center; justify-content:center; font-weight: 700;">
+                                    <?php echo strtoupper(substr($mentor->name, 0, 1)); ?>
+                                </span>
+                                <?php endif; ?>
+                                <div class="min-w-0 flex-fill">
+                                    <div class="d-flex align-items-center gap-1">
+                                        <h6 class="fw-bold mb-0 text-truncate" style="color: #0D1830; font-size: 0.92rem;"><?php echo htmlspecialchars($mentor->name); ?></h6>
+                                        <i class="fas fa-check-circle flex-shrink-0" style="color: #009688; font-size: 0.75rem;" title="<?php echo t('Terverifikasi', 'Verified'); ?>"></i>
                                     </div>
-                                </div>
-                                <p class="mb-3" style="color: #78716c; font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
-                                    <?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?>
-                                </p>
-                                <div class="d-flex flex-wrap gap-1 mb-3">
-                                    <?php
-                                    $m_cats = $this->db->select('mentor_categories.*')
-                                        ->from('mentor_category_pivot')
-                                        ->join('mentor_categories', 'mentor_categories.id = mentor_category_pivot.category_id')
-                                        ->where('mentor_category_pivot.mentor_id', $mentor->id)
-                                        ->get()->result();
-                                    ?>
-                                    <?php foreach (array_slice($m_cats, 0, 3) as $mc): ?>
-                                        <span class="px-2 py-1 rounded-pill" style="background: #E6EBEF; color: #57534E; font-size: 0.65rem; font-weight: 600;">
-                                            <?php echo htmlspecialchars(t($mc->name, $mc->name_en)); ?>
-                                        </span>
-                                    <?php endforeach; ?>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0eeeb;">
-                                    <div class="d-flex flex-column gap-1">
-                                        <?php if ((float)$mentor->price_per_session > 0): ?>
-                                        <span class="fw-bold" style="color: #009688; font-size: 0.85rem;">Rp <?php echo number_format($mentor->price_per_session, 0, ',', '.'); ?> <small style="color:#a8a29e; font-weight:500; font-size:0.65rem;">/ <?php echo t('sesi', 'session'); ?></small></span>
-                                        <?php endif; ?>
-                                        <div class="d-flex gap-3" style="color: #a8a29e; font-size: 0.7rem;">
-                                            <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
-                                            <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
-                                        </div>
+                                    <small class="fw-medium text-truncate d-block" style="color: #78716c; font-size: 0.78rem;"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en)); ?></small>
+                                    <div class="d-flex align-items-center gap-1 mt-1">
+                                        <i class="fas fa-star" style="color: #FBBF24; font-size: 0.62rem;"></i>
+                                        <span class="fw-bold" style="color: #0D1830; font-size: 0.78rem;"><?php echo $mentor->avg_rating; ?></span>
+                                        <span style="color: #a8a29e; font-size: 0.7rem;">(<?php echo $mentor->total_reviews; ?>)</span>
                                     </div>
-                                    <span class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0" style="background: #009688; color: #fff; font-size: 0.72rem;"><?php echo t('Lihat', 'View'); ?></span>
                                 </div>
                             </div>
-                        </a>
+                            <p class="mb-3" style="color: #78716c; font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                <?php echo htmlspecialchars(t($mentor->bio, $mentor->bio_en)); ?>
+                            </p>
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <?php
+                                $m_cats = $this->db->select('mentor_categories.*')
+                                    ->from('mentor_category_pivot')
+                                    ->join('mentor_categories', 'mentor_categories.id = mentor_category_pivot.category_id')
+                                    ->where('mentor_category_pivot.mentor_id', $mentor->id)
+                                    ->get()->result();
+                                ?>
+                                <?php foreach (array_slice($m_cats, 0, 3) as $mc): ?>
+                                    <span class="px-2 py-1 rounded-pill" style="background: #E6EBEF; color: #57534E; font-size: 0.65rem; font-weight: 600;">
+                                        <?php echo htmlspecialchars(t($mc->name, $mc->name_en)); ?>
+                                    </span>
+                                <?php endforeach; ?>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-between pt-2 mt-auto" style="border-top: 1px solid #f0eeeb;">
+                                <div class="d-flex flex-column gap-1">
+                                    <?php if ((float)$mentor->price_per_session > 0): ?>
+                                    <span class="fw-bold" style="color: #009688; font-size: 0.9rem;">Rp <?php echo number_format($mentor->price_per_session, 0, ',', '.'); ?> <small style="color:#a8a29e; font-weight:500; font-size:0.65rem;">/ <?php echo t('sesi', 'session'); ?></small></span>
+                                    <?php endif; ?>
+                                    <div class="d-flex gap-3" style="color: #a8a29e; font-size: 0.7rem;">
+                                        <span><i class="fas fa-clock me-1"></i><?php echo $mentor->total_sessions; ?> <?php echo t('sesi', 'sessions'); ?></span>
+                                        <span><i class="fas fa-video me-1"></i><?php echo strtoupper(substr($mentor->meeting_platforms, 0, 10)); ?></span>
+                                    </div>
+                                </div>
+                                <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background: #009688; color: #fff; font-size: 0.72rem;"><?php echo t('Lihat', 'View'); ?></a>
+                            </div>
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>

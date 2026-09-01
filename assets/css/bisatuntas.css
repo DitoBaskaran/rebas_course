@@ -2237,3 +2237,9 @@ h1, h2, h3, h4, h5, h6,
   .mh-stats { gap: 1.5rem; font-size: 0.85rem; }
   .mh-stat-divider { width: 1px; background: rgba(255,255,255,0.2); }
 }
+
+/* ===== MENTORING PANEL HERO (student, logged-in) ===== */
+@media (max-width: 767.98px) {
+  .mn-panel-hero { padding: 1rem 1.1rem !important; border-radius: 16px !important; }
+  .mn-panel-hero h5 { font-size: 1rem !important; }
+}
