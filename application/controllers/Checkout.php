@@ -268,6 +268,48 @@ class Checkout extends MY_Controller {
         echo json_encode(array('status' => 'ok', 'amount' => $cart['original_amount']));
     }
 
+    /**
+     * Buat transaksi di DB saat user MEMILIH metode pembayaran di halaman confirm.
+     * Dengan ini ID transaksi langsung tercatat ke history (status pending) apapun
+     * kelanjutannya: dibayar, batal, kedaluwarsa, atau ditolak.
+     */
+    public function choose_method($token) {
+        $cart = $this->_get_cart($token);
+        if (!$cart) show_404();
+
+        $user_id = $this->session->userdata('user_id');
+
+        // Validasi metode
+        $allowed_methods = array('qris','bri_va','bni_va','cimb_niaga_va','maybank_va','permata_va','atm_bersama_va','sampoerna_va','bnc_va','artha_graha_va');
+        $method = $this->input->post('method') ?: $this->input->get('method');
+        if (!$method || !in_array($method, $allowed_methods)) {
+            $this->session->set_flashdata('error', t('Metode pembayaran tidak valid.', 'Invalid payment method.'));
+            redirect('checkout/confirm/' . $token);
+        }
+
+        // Create the transaction NOW (at the moment user picks a payment method)
+        $tx_data = array(
+            'user_id' => $user_id,
+            'item_type' => $cart['item_type'],
+            'item_id' => $cart['item_id'],
+            'amount' => $cart['amount'],
+            'original_amount' => $cart['original_amount'],
+            'discount_amount' => $cart['discount_amount'],
+            'coupon_id' => $cart['coupon_id'],
+            'notes' => $cart['notes'],
+            'status' => 'pending',
+            'payment_channel' => $method,
+        );
+        $tx_id = $this->Transaction_model->create_transaction($tx_data);
+        $tx = $this->Transaction_model->get_transaction_by_id($tx_id);
+
+        // Clear the cart (transaction now lives in DB, retrievable by uuid)
+        $this->_clear_cart($token);
+
+        // Redirect to the UUID-based pay flow with the chosen method
+        redirect('checkout/pay/' . $tx->uuid . '?method=' . $method);
+    }
+
     public function pay_cart($token) {
         $cart = $this->_get_cart($token);
         if (!$cart) show_404();

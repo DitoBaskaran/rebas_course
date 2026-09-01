@@ -91,7 +91,22 @@
                         }
                     ?>
                     <?php if ($qris_enabled): ?>
-                    <a href="<?php echo base_url('checkout/' . $pay_method . '/' . $tx_ref . '?method=qris'); ?>" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none mb-3" style="transition: all 0.2s;">
+                    <?php if ($pay_method === 'pay_cart'): ?>
+                    <?php echo form_open('checkout/choose_method/' . $tx_ref, array('class' => 'mb-3'), array('method' => 'qris')); ?>
+                        <button type="submit" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none w-100 text-start" style="transition: all 0.2s; border: 1px solid rgba(13,110,253,.25) !important; background: #f8f9fa !important; cursor: pointer;">
+                            <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #f0f5ff;">
+                                <img src="<?php echo base_url('assets/img/qris-logo.png'); ?>" alt="QRIS" style="max-width:36px;max-height:36px;width:auto;height:auto;">
+                            </div>
+                            <div class="flex-fill">
+                                <span class="fw-bold text-dark d-block"><?php echo t('QRIS', 'QRIS'); ?></span>
+                                <span class="text-secondary small"><?php echo t('GoPay, OVO, DANA, ShopeePay, LinkAja, dll.', 'GoPay, OVO, DANA, ShopeePay, LinkAja, etc.'); ?></span>
+                            </div>
+                            <span class="badge bg-success rounded-pill px-3 py-2 fw-medium flex-shrink-0"><?php echo t('Cepat', 'Fast'); ?></span>
+                            <i class="fas fa-chevron-right text-primary flex-shrink-0"></i>
+                        </button>
+                    <?php echo form_close(); ?>
+                    <?php else: ?>
+                    <a href="<?php echo base_url('checkout/pay/' . $tx_ref . '?method=qris'); ?>" class="d-flex align-items-center gap-3 p-4 rounded-3 bg-light border border-primary border-opacity-25 text-decoration-none mb-3" style="transition: all 0.2s;">
                         <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 60px; height: 60px; background: #f0f5ff;">
                             <img src="<?php echo base_url('assets/img/qris-logo.png'); ?>" alt="QRIS" style="max-width:36px;max-height:36px;width:auto;height:auto;">
                         </div>
@@ -102,6 +117,7 @@
                         <span class="badge bg-success rounded-pill px-3 py-2 fw-medium flex-shrink-0"><?php echo t('Cepat', 'Fast'); ?></span>
                         <i class="fas fa-chevron-right text-primary flex-shrink-0"></i>
                     </a>
+                    <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if (!empty($va_methods)): ?>
@@ -119,7 +135,20 @@
                         <div class="collapse" id="vaCollapse">
                             <div class="d-flex flex-column" style="border-top: 1px solid var(--card-border);">
                                 <?php foreach ($va_methods as $method_key => $info): ?>
-                                <a href="<?php echo base_url('checkout/' . $pay_method . '/' . $tx_ref . '?method=' . $method_key); ?>" class="d-flex align-items-center gap-3 px-4 py-3 text-decoration-none border-bottom" style="transition: all 0.1s;">
+                                <?php if ($pay_method === 'pay_cart'): ?>
+                                <?php echo form_open('checkout/choose_method/' . $tx_ref, array('class' => 'border-bottom', 'style' => 'margin:0;'), array('method' => $method_key)); ?>
+                                    <button type="submit" class="d-flex align-items-center gap-3 px-4 py-3 w-100 text-start" style="transition: all 0.1s; background: transparent; border: 0; cursor: pointer;">
+                                        <?php if ($info['logo']): ?>
+                                        <span style="display:inline-block;width:50px;text-align:center;"><img src="<?php echo base_url('assets/img/' . $info['logo']); ?>" alt="<?php echo $info['name']; ?>" style="max-width:50px;max-height:18px;width:auto;height:auto;"></span>
+                                        <?php else: ?>
+                                        <span style="display:inline-block;width:50px;text-align:center;"><div class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold" style="width:24px;height:24px;background:var(--gray-200);color:var(--gray-600);font-size:0.6rem;"><?php echo strtoupper(substr($info['name'], 0, 1)); ?></div></span>
+                                        <?php endif; ?>
+                                        <span class="fw-semibold text-dark small flex-fill"><?php echo $info['name']; ?></span>
+                                        <i class="fas fa-chevron-right text-secondary" style="font-size: 0.65rem;"></i>
+                                    </button>
+                                <?php echo form_close(); ?>
+                                <?php else: ?>
+                                <a href="<?php echo base_url('checkout/pay/' . $tx_ref . '?method=' . $method_key); ?>" class="d-flex align-items-center gap-3 px-4 py-3 text-decoration-none border-bottom" style="transition: all 0.1s;">
                                     <?php if ($info['logo']): ?>
                                     <span style="display:inline-block;width:50px;text-align:center;"><img src="<?php echo base_url('assets/img/' . $info['logo']); ?>" alt="<?php echo $info['name']; ?>" style="max-width:50px;max-height:18px;width:auto;height:auto;"></span>
                                     <?php else: ?>
@@ -128,6 +157,7 @@
                                     <span class="fw-semibold text-dark small flex-fill"><?php echo $info['name']; ?></span>
                                     <i class="fas fa-chevron-right text-secondary" style="font-size: 0.65rem;"></i>
                                 </a>
+                                <?php endif; ?>
                                 <?php endforeach; ?>
                             </div>
                         </div>
