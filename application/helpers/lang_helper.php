@@ -21,7 +21,11 @@ if (!function_exists('current_lang')) {
 
 if (!function_exists('t')) {
     function t($id_text, $en_text = '') {
-        if (current_lang() === 'en' && $en_text !== '') {
+        // Null-safe: data mentor/setting bisa NULL di DB (PHP 8.1+ deprecation)
+        if ($id_text === null || $id_text === '') {
+            $id_text = $en_text !== null ? $en_text : '';
+        }
+        if (current_lang() === 'en' && $en_text !== null && $en_text !== '') {
             return $en_text;
         }
         return $id_text;
