@@ -10,10 +10,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- ===== Panel Visual (playful) ===== -->
     <div class="au2-visual">
         <div class="au2-v-inner">
-            <a href="<?php echo base_url(); ?>" class="au2-brand">
-                <img src="<?php echo base_url('assets/img/bisatuntas-logo-v2.png'); ?>" alt="<?php echo setting('general_site_name', 'BISATUNTAS'); ?>" style="height:34px;width:auto;filter:brightness(0) invert(1);">
-            </a>
-
             <div class="au2-v-scene">
                 <!-- elemen dekoratif melayang -->
                 <div class="au2-float au2-float-1"><i class="fas fa-rocket"></i></div>
@@ -113,8 +109,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 .au2-visual::before{content:'';position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.09) 0%,transparent 65%);top:-140px;right:-140px;}
 .au2-visual::after{content:'';position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 65%);bottom:-100px;left:-100px;}
 .au2-v-inner{position:relative;z-index:2;width:100%;max-width:440px;}
-.au2-brand{display:inline-flex;align-items:center;gap:2px;font-weight:800;letter-spacing:-0.04em;color:#fff;font-size:1.05rem;text-decoration:none;margin-bottom:3rem;}
-.au2-brand-dot{width:10px;height:10px;border-radius:50%;background:#fbbf24;margin-right:2px;box-shadow:0 0 12px rgba(251,191,36,0.7);}
 .au2-v-scene{position:relative;min-height:300px;}
 .au2-card-emoji{position:relative;display:flex;align-items:center;justify-content:center;min-height:260px;}
 .au2-emoji-ring{width:190px;height:190px;border-radius:38px;background:rgba(255,255,255,0.12);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;box-shadow:0 24px 60px rgba(0,0,0,0.25);transform:rotate(-6deg);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
