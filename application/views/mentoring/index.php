@@ -496,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     btn.addEventListener('click', function () {
         var problem = ta.value.trim();
-        if (problem.length < 10) {
+        if (problem === '') {
             ta.focus();
             ta.style.borderColor = '#ff6b6b';
             setTimeout(function () { ta.style.borderColor = ''; }, 1500);
@@ -534,8 +534,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     + '<i class="fas fa-quote-left me-1" style="color:#FBBF24;"></i> ' + esc(d.reason) + '</div>';
             }
             if (!d.mentors || d.mentors.length === 0) {
-                html += '<div class="p-3 rounded-3" style="background:rgba(255,255,255,0.08); border:1px dashed rgba(255,255,255,0.25); color:#E6EBEF; font-size:0.8rem;">'
-                    + '<?php echo t('AI belum menemukan mentor yang cocok. Coba jelaskan lebih detail atau ubah kata kunci.', 'AI could not find a matching mentor. Try describing in more detail or different keywords.'); ?>' + '</div>';
+                // AI merespons baik utk input tidak jelas / di luar lingkup
+                html += '<div class="p-3 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#E6EBEF; font-size:0.82rem; line-height:1.7;">'
+                    + '<div class="d-flex align-items-center gap-2 mb-2">'
+                    + '<span class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:30px;height:30px;background:rgba(251,191,36,0.2);color:#FBBF24;font-size:0.8rem;"><i class="fas fa-robot"></i></span>'
+                    + '<span class="fw-bold" style="color:#fff;font-size:0.8rem;"><?php echo t('Asisten BISATUNTAS', 'BISATUNTAS Assistant'); ?></span>'
+                    + '</div>'
+                    + '<p class="mb-0">' + esc(d.reason || '<?php echo t('Ceritakan lebih detail masalahmu agar AI bisa merekomendasikan mentor yang tepat.', 'Tell us more details so AI can recommend the right mentor.'); ?>') + '</p>'
+                    + '</div>';
             } else {
                 html += '<div class="d-flex flex-column gap-2">';
                 d.mentors.forEach(function (m) {

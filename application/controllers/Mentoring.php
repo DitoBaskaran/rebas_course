@@ -253,12 +253,13 @@ class Mentoring extends MY_Controller {
             return;
         }
         $problem = trim($this->input->post('problem'));
-        if ($problem === '' || mb_strlen($problem) < 10) {
-            echo json_encode(array('status' => 'error', 'message' => 'Ceritakan masalahmu minimal 10 karakter.'));
+        if ($problem === '') {
+            echo json_encode(array('status' => 'error', 'message' => 'Silakan ceritakan masalahmu terlebih dahulu.'));
             return;
         }
-        if (mb_strlen($problem) > 2000) {
-            $problem = mb_substr($problem, 0, 2000);
+        // Izinkan input pendek/sapaan — AI yang menanggapinya dengan baik (minta detail)
+        if (mb_strlen($problem) > 200) {
+            $problem = mb_substr($problem, 0, 200);
         }
 
         $this->load->library('Ai_mentor');

@@ -53,13 +53,23 @@ class Ai_mentor {
             $mentor_list[] = "ID {$m['id']}: {$m['name']} — {$m['title']} (Kategori: {$m['categories']}). Bio: {$m['bio']}";
         }
         $site = 'BISATUNTAS';
-        $prompt = "Kamu adalah konselor karier & edukasi di platform {$site}. Seorang siswa bercerita:\n\n"
+        $prompt = "Kamu adalah konselor karier & edukasi yang ramah dan profesional di platform {$site}. "
+            . "Seorang siswa bercerita:\n\n"
             . "\"{$user_problem}\"\n\n"
             . "Berikut daftar mentor yang tersedia:\n" . implode("\n", $mentor_list) . "\n\n"
             . "Tugasmu: rekomendasikan 1-3 mentor PALING COCOK untuk masalah siswa tsb. "
             . "Jawab dalam Bahasa Indonesia, format JSON saja, tanpa teks lain:\n"
-            . "{\"mentor_ids\": [id_mentor], \"reason\": \"penjelasan singkat 2-3 kalimat mengapa mentor ini cocok\"}\n"
-            . "Pilih hanya dari ID yang tersedia. Jika tidak ada yang cocok, mentor_ids boleh kosong dan reason menjelaskan alasannya.";
+            . "{\"mentor_ids\": [id_mentor], \"reason\": \"penjelasan 2-3 kalimat mengapa mentor ini cocok\"}\n"
+            . "Pilih hanya dari ID yang tersedia.\n\n"
+            . "ATURAN PENTING:\n"
+            . "1. Jika input siswa TIDAK JELAS / terlalu umum / hanya sapaan (mis. 'halo', 'tes', 'bantuan', '??'), "
+            . "maka mentor_ids KOSONG dan reason berisi respons ramah yang meminta siswa menceritakan masalahnya lebih spesifik, "
+            . "sambil menyebutkan contoh topik yang bisa dibantu BISATUNTAS (mis. bingung pilih karir, persiapan interview, belajar coding, bisnis, soft skill).\n"
+            . "2. Jika input siswa DI LUAR LINGKUP layanan BISATUNTAS (bukan pendidikan/karir/pengembangan diri/mentoring, mis. tanya cuaca, harga barang, resep masakan, hal ilegal), "
+            . "maka mentor_ids KOSONG dan reason berisi respons SOPAN: jelaskan bahwa BISATUNTAS fokus membantu masalah belajar, karir, dan pengembangan diri lewat kursus & mentoring, "
+            . "lalu ajak siswa menceritakan kebutuhannya yang berhubungan dengan itu.\n"
+            . "3. Selalu tetap sopan, empatik, dan tidak menghakimi, apapun inputnya.\n"
+            . "4. Jangan pernah berasumsi data mentor yang tidak ada di daftar.";
 
         $result = $this->call_ai($prompt);
         if (!$result['ok']) {
