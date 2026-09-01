@@ -348,7 +348,7 @@
                                 </div>
                             </div>
                             <!-- Info bawah -->
-                            <div class="card-body p-3 d-flex flex-column">
+                            <div class="card-body px-3 pt-2 pb-2 d-flex flex-column">
                                 <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
                                     <span style="color: #a3a3a3; font-size: 0.68rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                         <i class="fas fa-folder-open me-1" style="font-size: 0.55rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
@@ -365,7 +365,7 @@
                                 <p class="mb-2 crs-card-desc" style="color: #737373; font-size: 0.76rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
                                     <?php echo htmlspecialchars($course->description); ?>
                                 </p>
-                                <div class="d-flex align-items-center justify-content-between pt-2 mt-auto" style="border-top: 1px solid #f0f0f0;">
+                                <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0f0f0;">
                                     <span style="color: #a3a3a3; font-size: 0.68rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%;">
                                         <i class="fas fa-user me-1" style="font-size: 0.55rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?>
                                     </span>
@@ -396,8 +396,8 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 2.2rem; font-weight: 800; color: #fff;
 }
-.crs-card-title { min-height: 2.5em; }
-.crs-card-desc { min-height: 2.4em; }
+.crs-card-title { min-height: 0; }
+.crs-card-desc { min-height: 0; }
 @media (max-width: 767px) {
     .crs-card-thumb { aspect-ratio: 16/9; }
 }
