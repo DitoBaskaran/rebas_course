@@ -1,37 +1,38 @@
-<div class="container-fluid py-4" style="max-width: 1400px;">
-    <div class="d-flex align-items-center justify-content-between mb-4">
+<div class="app-page">
+    <!-- Header -->
+    <div class="app-page-head">
         <div>
-            <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.4rem;"><i class="fab fa-whatsapp me-2" style="color:#25D366;"></i><?php echo t('WhatsApp Gateway', 'WhatsApp Gateway'); ?></h4>
-            <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;"><?php echo t('Kelola koneksi gateway wa.ditobaskaran.my.id, template pesan & antrian notifikasi', 'Manage wa.ditobaskaran.my.id gateway connection, message templates & notification queue'); ?></p>
+            <h4 class="app-page-title"><i class="fab fa-whatsapp" style="color:#25D366;"></i> <?php echo t('WhatsApp Gateway', 'WhatsApp Gateway'); ?></h4>
+            <p class="app-page-sub"><?php echo t('Kelola koneksi gateway wa.ditobaskaran.my.id, template pesan & antrian notifikasi', 'Manage wa.ditobaskaran.my.id gateway connection, message templates & notification queue'); ?></p>
         </div>
     </div>
 
-    <div class="row g-3">
+    <div class="app-grid app-grid-2" style="grid-template-columns:1fr;align-items:start;">
+
         <!-- ===== Kolom kiri: Koneksi & Status ===== -->
-        <div class="col-lg-4 d-flex flex-column gap-3">
+        <div class="app-list" style="gap:0.8rem;">
             <!-- Status Device -->
-            <div class="border rounded-3 p-3" style="border-color:#e7e5e4; border-radius:12px;">
-                <div class="d-flex align-items-center gap-2 mb-2" style="border-bottom:1px solid #f0eeeb; padding-bottom:0.6rem;">
-                    <i class="fas fa-plug" style="color:#0D1830; font-size:0.8rem;"></i>
-                    <span class="fw-semibold" style="color:#0D1830; font-size:0.9rem;"><?php echo t('Status Koneksi', 'Connection Status'); ?></span>
+            <div class="app-card app-card-pad">
+                <div class="app-card-head" style="padding:0 0 0.6rem;margin-bottom:0.7rem;">
+                    <h6><i class="fas fa-plug" style="color:#0D1830;"></i> <?php echo t('Status Koneksi', 'Connection Status'); ?></h6>
                 </div>
                 <?php if ($device_status && !empty($device_status['connected'])): ?>
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="badge rounded-pill" style="background:#dcfce7;color:#15803d;font-weight:600;"><i class="fas fa-circle me-1" style="font-size:0.45rem;color:#16a34a;"></i><?php echo t('Terhubung', 'Connected'); ?></span>
-                        <?php if (isset($device_status['pushName'])): ?><span class="small text-secondary"><?php echo htmlspecialchars($device_status['pushName']); ?></span><?php endif; ?>
+                        <span class="app-chip app-chip-green"><i class="fas fa-circle" style="font-size:0.45rem;"></i> <?php echo t('Terhubung', 'Connected'); ?></span>
+                        <?php if (isset($device_status['pushName'])): ?><span style="color:var(--gray-500,#78716c);font-size:0.75rem;"><?php echo htmlspecialchars($device_status['pushName']); ?></span><?php endif; ?>
                     </div>
-                    <?php if (isset($device_status['jid'])): ?><div class="small text-secondary mb-1"><?php echo t('JID:', 'JID:'); ?> <?php echo htmlspecialchars($device_status['jid']); ?></div><?php endif; ?>
+                    <?php if (isset($device_status['jid'])): ?><div style="color:var(--gray-500,#78716c);font-size:0.75rem;margin-bottom:0.25rem;"><?php echo t('JID:', 'JID:'); ?> <?php echo htmlspecialchars($device_status['jid']); ?></div><?php endif; ?>
                     <?php if (isset($device_status['package']['name'])): ?>
-                        <div class="small text-secondary mb-1"><?php echo t('Paket:', 'Package:'); ?> <span class="fw-semibold text-dark"><?php echo htmlspecialchars($device_status['package']['name']); ?></span>
-                            · <?php echo t('Sisa', 'Remaining'); ?> <span class="fw-semibold text-dark"><?php echo (int)$device_status['package']['message_limit']; ?></span> <?php echo t('pesan', 'messages'); ?>
+                        <div style="color:var(--gray-500,#78716c);font-size:0.75rem;"><?php echo t('Paket:', 'Package:'); ?> <span class="fw-semibold" style="color:var(--gray-800,#262626);"><?php echo htmlspecialchars($device_status['package']['name']); ?></span>
+                            · <?php echo t('Sisa', 'Remaining'); ?> <span class="fw-semibold" style="color:var(--gray-800,#262626);"><?php echo (int)$device_status['package']['message_limit']; ?></span> <?php echo t('pesan', 'messages'); ?>
                             <?php if (isset($device_status['package']['subscription']['days_left'])): ?>· <?php echo (int)$device_status['package']['subscription']['days_left']; ?> <?php echo t('hari lagi', 'days left'); ?><?php endif; ?>
                         </div>
                     <?php endif; ?>
                 <?php else: ?>
                     <div class="d-flex align-items-center gap-2 mb-2">
-                        <span class="badge rounded-pill" style="background:#fef2f2;color:#dc2626;font-weight:600;"><i class="fas fa-circle me-1" style="font-size:0.45rem;color:#dc2626;"></i><?php echo t('Tidak Terhubung', 'Not Connected'); ?></span>
+                        <span class="app-chip app-chip-red"><i class="fas fa-circle" style="font-size:0.45rem;"></i> <?php echo t('Tidak Terhubung', 'Not Connected'); ?></span>
                     </div>
-                    <div class="small text-secondary">
+                    <div style="color:var(--gray-500,#78716c);font-size:0.75rem;">
                         <?php if (isset($device_status['error'])): ?>
                             <?php echo htmlspecialchars($device_status['error']); ?>
                         <?php else: ?>
@@ -42,42 +43,34 @@
             </div>
 
             <!-- Statistik Antrian -->
-            <div class="border rounded-3 p-3" style="border-color:#e7e5e4; border-radius:12px;">
-                <div class="d-flex align-items-center gap-2 mb-2" style="border-bottom:1px solid #f0eeeb; padding-bottom:0.6rem;">
-                    <i class="fas fa-tasks" style="color:#0D1830; font-size:0.8rem;"></i>
-                    <span class="fw-semibold" style="color:#0D1830; font-size:0.9rem;"><?php echo t('Antrian Pesan', 'Message Queue'); ?></span>
+            <div class="app-card app-card-pad">
+                <div class="app-card-head" style="padding:0 0 0.6rem;margin-bottom:0.7rem;">
+                    <h6><i class="fas fa-tasks" style="color:#0D1830;"></i> <?php echo t('Antrian Pesan', 'Message Queue'); ?></h6>
                 </div>
-                <div class="row text-center g-2">
-                    <div class="col-4">
-                        <div class="rounded-3 py-2" style="background:#fff7ed;color:#c2410c;"><div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $queue_stats['pending']; ?></div><div class="small" style="font-size:0.68rem;"><?php echo t('Menunggu', 'Pending'); ?></div></div>
-                    </div>
-                    <div class="col-4">
-                        <div class="rounded-3 py-2" style="background:#f0fdf4;color:#15803d;"><div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $queue_stats['sent']; ?></div><div class="small" style="font-size:0.68rem;"><?php echo t('Terkirim', 'Sent'); ?></div></div>
-                    </div>
-                    <div class="col-4">
-                        <div class="rounded-3 py-2" style="background:#fef2f2;color:#dc2626;"><div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $queue_stats['failed']; ?></div><div class="small" style="font-size:0.68rem;"><?php echo t('Gagal', 'Failed'); ?></div></div>
-                    </div>
+                <div class="app-grid app-grid-4" style="gap:0.5rem;grid-template-columns:repeat(3,1fr);">
+                    <div class="rounded-3 py-2 text-center" style="background:#fff7ed;color:#c2410c;"><div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $queue_stats['pending']; ?></div><div style="font-size:0.68rem;"><?php echo t('Menunggu', 'Pending'); ?></div></div>
+                    <div class="rounded-3 py-2 text-center" style="background:#f0fdf4;color:#15803d;"><div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $queue_stats['sent']; ?></div><div style="font-size:0.68rem;"><?php echo t('Terkirim', 'Sent'); ?></div></div>
+                    <div class="rounded-3 py-2 text-center" style="background:#fef2f2;color:#dc2626;"><div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $queue_stats['failed']; ?></div><div style="font-size:0.68rem;"><?php echo t('Gagal', 'Failed'); ?></div></div>
                 </div>
             </div>
 
             <!-- Pesan Terbaru -->
-            <div class="border rounded-3 p-3" style="border-color:#e7e5e4; border-radius:12px;">
-                <div class="d-flex align-items-center gap-2 mb-2" style="border-bottom:1px solid #f0eeeb; padding-bottom:0.6rem;">
-                    <i class="fas fa-history" style="color:#0D1830; font-size:0.8rem;"></i>
-                    <span class="fw-semibold" style="color:#0D1830; font-size:0.9rem;"><?php echo t('Pesan Terbaru', 'Recent Messages'); ?></span>
+            <div class="app-card app-card-pad">
+                <div class="app-card-head" style="padding:0 0 0.6rem;margin-bottom:0.7rem;">
+                    <h6><i class="fas fa-history" style="color:#0D1830;"></i> <?php echo t('Pesan Terbaru', 'Recent Messages'); ?></h6>
                 </div>
                 <?php if (empty($recent_messages)): ?>
-                    <div class="small text-secondary"><?php echo t('Belum ada pesan.', 'No messages yet.'); ?></div>
+                    <div style="color:var(--gray-500,#78716c);font-size:0.75rem;"><?php echo t('Belum ada pesan.', 'No messages yet.'); ?></div>
                 <?php else: ?>
                     <?php foreach ($recent_messages as $m): ?>
-                        <?php $badge = array('pending'=>'warning','sent'=>'success','failed'=>'danger'); ?>
+                        <?php $badge_cls = array('pending'=>'app-chip-amber','sent'=>'app-chip-green','failed'=>'app-chip-red'); ?>
                         <div class="d-flex align-items-start gap-2 py-2" style="border-bottom:1px dashed #f0eeeb;">
-                            <span class="badge bg-<?php echo $badge[$m->status] ?? 'secondary'; ?> rounded-pill px-2 fw-medium" style="font-size:0.6rem;"><?php echo $m->status; ?></span>
-                            <div class="flex-fill" style="min-width:0;">
-                                <div class="small fw-semibold" style="color:#0D1830;"><?php echo htmlspecialchars($m->phone); ?></div>
-                                <div class="small text-secondary text-truncate" style="max-width:180px;"><?php echo htmlspecialchars($m->message); ?></div>
+                            <span class="app-chip <?php echo $badge_cls[$m->status] ?? 'app-chip-gray'; ?>" style="font-size:0.55rem;"><?php echo $m->status; ?></span>
+                            <div style="flex:1;min-width:0;">
+                                <div class="fw-semibold" style="color:#0D1830;font-size:0.75rem;"><?php echo htmlspecialchars($m->phone); ?></div>
+                                <div style="color:var(--gray-500,#78716c);font-size:0.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:180px;"><?php echo htmlspecialchars($m->message); ?></div>
                             </div>
-                            <span class="small text-secondary flex-shrink-0" style="font-size:0.62rem;"><?php echo date('d/m H:i', strtotime($m->created_at)); ?></span>
+                            <span style="color:var(--gray-400,#a3a3a3);font-size:0.62rem;flex-shrink:0;"><?php echo date('d/m H:i', strtotime($m->created_at)); ?></span>
                         </div>
                     <?php endforeach; ?>
                 <?php endif; ?>
@@ -85,12 +78,11 @@
         </div>
 
         <!-- ===== Kolom kanan: Form Konfigurasi & Template ===== -->
-        <div class="col-lg-8">
+        <div class="app-card app-card-pad app-form-card" style="max-width:100%;">
             <?php echo form_open('admin/whatsapp', 'class="needs-validation" novalidate'); ?>
-            <div class="border rounded-3 p-3" style="border-color:#e7e5e4; border-radius:12px;">
-                <div class="d-flex align-items-center gap-2 px-1 py-2 mb-3" style="border-bottom:1px solid #f0eeeb;">
-                    <i class="fas fa-cog" style="color:#0D1830; font-size:0.8rem;"></i>
-                    <span class="fw-semibold" style="color:#0D1830; font-size:0.9rem;"><?php echo t('Konfigurasi Gateway', 'Gateway Configuration'); ?></span>
+            <div class="app-form-grid">
+                <div class="app-card-head" style="padding:0 0 0.6rem;">
+                    <h6><i class="fas fa-cog" style="color:#0D1830;"></i> <?php echo t('Konfigurasi Gateway', 'Gateway Configuration'); ?></h6>
                 </div>
 
                 <?php
@@ -102,40 +94,35 @@
                 $template_keys = array('wa_otp_template','wa_session_confirmed_template','wa_mentor_booking_template','wa_session_rejected_template','wa_reminder_h1_template');
                 ?>
 
-                <div class="row g-3 mb-3">
-                    <div class="col-md-4">
-                        <label class="fw-semibold mb-1 d-block" style="color:#0D1830; font-size:0.82rem;"><?php echo t('Aktifkan Notifikasi WhatsApp', 'Enable WhatsApp Notifications'); ?></label>
+                <div class="app-form-grid app-form-grid-2">
+                    <div class="app-field">
+                        <label><?php echo t('Aktifkan Notifikasi WhatsApp', 'Enable WhatsApp Notifications'); ?></label>
                         <label class="form-check form-switch" style="padding-left:2.5rem;">
                             <input type="checkbox" name="wa_enabled" id="wa_enabled" value="1" <?php echo $get_val('wa_enabled') === '1' ? 'checked' : ''; ?> class="form-check-input" style="width:2rem;height:1rem;">
-                            <span class="form-check-label small" style="color:#78716c; font-size:0.78rem;"><?php echo t('Aktif', 'Enabled'); ?></span>
+                            <span class="form-check-label" style="color:#78716c;font-size:0.78rem;"><?php echo t('Aktif', 'Enabled'); ?></span>
                         </label>
                     </div>
-                    <div class="col-md-4">
-                        <label class="fw-semibold mb-1 d-block" style="color:#0D1830; font-size:0.82rem;">API Key</label>
-                        <input type="text" name="wa_api_key" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_api_key')); ?>" style="border-color:#e7e5e4; border-radius:8px; font-size:0.85rem;" placeholder="fe3318...">
+                    <div class="app-field">
+                        <label>API Key</label>
+                        <input type="text" name="wa_api_key" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_api_key')); ?>" placeholder="fe3318...">
                     </div>
-                    <div class="col-md-4">
-                        <label class="fw-semibold mb-1 d-block" style="color:#0D1830; font-size:0.82rem;">Device ID</label>
-                        <input type="text" name="wa_device_id" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_device_id')); ?>" style="border-color:#e7e5e4; border-radius:8px; font-size:0.85rem;" placeholder="3">
+                    <div class="app-field">
+                        <label>Device ID</label>
+                        <input type="text" name="wa_device_id" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_device_id')); ?>" placeholder="3">
                     </div>
-                </div>
-
-                <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                        <label class="fw-semibold mb-1 d-block" style="color:#0D1830; font-size:0.82rem;"><?php echo t('Masa Berlaku OTP (menit)', 'OTP Validity (minutes)'); ?></label>
-                        <input type="number" name="wa_otp_ttl" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_otp_ttl','5')); ?>" min="1" style="border-color:#e7e5e4; border-radius:8px; font-size:0.85rem;">
+                    <div class="app-field">
+                        <label><?php echo t('Masa Berlaku OTP (menit)', 'OTP Validity (minutes)'); ?></label>
+                        <input type="number" name="wa_otp_ttl" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_otp_ttl','5')); ?>" min="1">
                     </div>
-                    <div class="col-md-6">
-                        <label class="fw-semibold mb-1 d-block" style="color:#0D1830; font-size:0.82rem;"><?php echo t('Jeda Antar Pesan Antrian (detik)', 'Queue Delay Between Messages (seconds)'); ?></label>
-                        <input type="number" name="wa_queue_delay" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_queue_delay','30')); ?>" min="1" style="border-color:#e7e5e4; border-radius:8px; font-size:0.85rem;">
-                        <small style="color:#a8a29e; font-size:0.7rem;"><?php echo t('Perubahan berlaku setelah worker di-restart (systemctl restart wa-worker).', 'Changes apply after worker restart (systemctl restart wa-worker).'); ?></small>
+                    <div class="app-field">
+                        <label><?php echo t('Jeda Antar Pesan Antrian (detik)', 'Queue Delay Between Messages (seconds)'); ?></label>
+                        <input type="number" name="wa_queue_delay" class="form-control" value="<?php echo htmlspecialchars($get_val('wa_queue_delay','30')); ?>" min="1">
+                        <div class="app-hint"><?php echo t('Perubahan berlaku setelah worker di-restart (systemctl restart wa-worker).', 'Changes apply after worker restart (systemctl restart wa-worker).'); ?></div>
                     </div>
                 </div>
 
-                <!-- Template messages -->
-                <div class="d-flex align-items-center gap-2 px-1 py-2 mb-2" style="border-bottom:1px solid #f0eeeb;">
-                    <i class="fas fa-comment-dots" style="color:#0D1830; font-size:0.8rem;"></i>
-                    <span class="fw-semibold" style="color:#0D1830; font-size:0.9rem;"><?php echo t('Template Pesan', 'Message Templates'); ?></span>
+                <div class="app-card-head" style="padding:0 0 0.6rem;">
+                    <h6><i class="fas fa-comment-dots" style="color:#0D1830;"></i> <?php echo t('Template Pesan', 'Message Templates'); ?></h6>
                 </div>
 
                 <?php
@@ -147,21 +134,19 @@
                     'wa_reminder_h1_template' => array('label' => t('Reminder H-1 (ke Mentor & Siswa)', 'H-1 Reminder (to Mentor & Student)'), 'vars' => array('{{nama}}','{{tanggal}}','{{jam}}','{{meeting_link}}')),
                 );
                 foreach ($template_meta as $tkey => $tinfo): ?>
-                    <div class="mb-3">
-                        <label class="fw-semibold mb-1 d-block" style="color:#0D1830; font-size:0.82rem;"><?php echo $tinfo['label']; ?></label>
-                        <textarea class="form-control" name="<?php echo $tkey; ?>" rows="4" style="border-color:#e7e5e4; border-radius:8px; font-size:0.82rem; font-family:monospace;"><?php echo htmlspecialchars($get_val($tkey)); ?></textarea>
-                        <div class="mt-1">
-                            <?php foreach ($tinfo['vars'] as $v): ?><span class="badge rounded-pill me-1" style="background:#E6EBEF;color:#0D1830;font-size:0.62rem;font-family:monospace;"><?php echo $v; ?></span><?php endforeach; ?>
-                            <span class="small" style="color:#a8a29e; font-size:0.68rem;"><?php echo t('— variabel otomatis', '— auto variables'); ?></span>
+                    <div class="app-field">
+                        <label><?php echo $tinfo['label']; ?></label>
+                        <textarea class="form-control" name="<?php echo $tkey; ?>" rows="4" style="font-family:monospace;"><?php echo htmlspecialchars($get_val($tkey)); ?></textarea>
+                        <div class="mt-1 d-flex flex-wrap gap-1">
+                            <?php foreach ($tinfo['vars'] as $v): ?><span class="app-chip app-chip-gray" style="font-family:monospace;"><?php echo $v; ?></span><?php endforeach; ?>
+                            <span style="color:#a8a29e;font-size:0.68rem;"><?php echo t('— variabel otomatis', '— auto variables'); ?></span>
                         </div>
                     </div>
                 <?php endforeach; ?>
 
-                <div class="d-flex justify-content-end gap-2 pt-3" style="border-top:1px solid #f0eeeb;">
-                    <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn px-4 py-2 rounded-pill fw-semibold" style="border:1px solid #e7e5e4;color:#57534e;font-size:0.82rem;"><?php echo t('Batal', 'Cancel'); ?></a>
-                    <button type="submit" class="btn px-4 py-2 fw-bold rounded-pill d-flex align-items-center gap-1" style="background:#25D366;color:#fff;font-size:0.82rem;">
-                        <i class="fas fa-save" style="font-size:0.7rem;"></i> <?php echo t('Simpan Pengaturan', 'Save Settings'); ?>
-                    </button>
+                <div class="app-form-actions" style="border-top:1px solid #f0eeeb;padding-top:1rem;">
+                    <a href="<?php echo base_url('admin/dashboard'); ?>" class="app-btn"><?php echo t('Batal', 'Cancel'); ?></a>
+                    <button type="submit" class="app-btn app-btn-success" style="background:#25D366;"><i class="fas fa-save"></i> <?php echo t('Simpan Pengaturan', 'Save Settings'); ?></button>
                 </div>
             </div>
             <?php echo form_close(); ?>

@@ -1,27 +1,36 @@
-<div class="container-fluid py-4" style="max-width: 1400px;">
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+<div class="app-page">
+    <!-- Header -->
+    <div class="app-page-head">
         <div>
-            <div style="color: #0D1830; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.15rem;">Tag</div>
-            <h4 class="fw-extrabold mb-0" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.4rem;"><?php echo t('Tags', 'Tags'); ?></h4>
-            <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;"><?php echo t('Kelola tag untuk konten pembelajaran.', 'Manage tags for learning content.'); ?></p>
+            <h4 class="app-page-title"><i class="fas fa-tags"></i> <?php echo t('Tags', 'Tags'); ?></h4>
+            <p class="app-page-sub"><?php echo t('Kelola tag untuk konten pembelajaran.', 'Manage tags for learning content.'); ?></p>
         </div>
-        <?php echo form_open('admin/create_tag', array('class' => 'd-flex gap-2')); ?>
-            <input type="text" name="name" class="form-control rounded-pill" placeholder="<?php echo t('Nama tag', 'Tag name'); ?>" required style="min-width: 130px; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;">
-            <input type="text" name="name_en" class="form-control rounded-pill" placeholder="English" style="min-width: 100px; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;">
-            <button type="submit" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="background: #0D1830; color: #fff; font-size: 0.78rem; height: 40px;"><i class="fas fa-plus" style="font-size: 0.7rem;"></i> <?php echo t('Tambah', 'Add'); ?></button>
-        </form>
     </div>
 
-    <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
+    <?php echo form_open('admin/create_tag', array('class' => 'app-toolbar')); ?>
+        <div class="app-search" style="flex:0 1 260px;">
+            <input type="text" name="name" placeholder="<?php echo t('Nama tag', 'Tag name'); ?>" required>
+        </div>
+        <div class="app-search" style="flex:0 1 200px;">
+            <input type="text" name="name_en" placeholder="English">
+        </div>
+        <button type="submit" class="app-btn app-btn-primary"><i class="fas fa-plus"></i> <?php echo t('Tambah', 'Add'); ?></button>
+    </form>
+
+    <div class="app-card app-card-pad">
         <?php if (empty($tags)): ?>
-            <div class="p-5 text-center"><div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-tags"></i></div><h6 class="fw-bold" style="color: #0D1830;"><?php echo t('Belum ada tag.', 'No tags yet.'); ?></h6></div>
+            <div class="app-empty">
+                <i class="fas fa-tags"></i>
+                <h6><?php echo t('Belum ada tag.', 'No tags yet.'); ?></h6>
+                <p><?php echo t('Tambahkan tag pertama Anda.', 'Add your first tag.'); ?></p>
+            </div>
         <?php else: ?>
             <div class="d-flex flex-wrap gap-2">
                 <?php foreach ($tags as $tag): ?>
-                    <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="background: #E6EBEF; border: 1px solid #e7e5e4;">
-                        <span class="fw-semibold" style="color: #0D1830; font-size: 0.8rem;"><?php echo htmlspecialchars($tag->name); ?></span>
-                        <?php if ($tag->name_en): ?><span style="color: #a8a29e; font-size: 0.72rem;">/ <?php echo htmlspecialchars($tag->name_en); ?></span><?php endif; ?>
-                        <a href="<?php echo base_url('admin/delete_tag/' . $tag->id); ?>" class="d-inline-flex align-items-center ms-1" style="color: #f43f5e; text-decoration: none;" data-confirm="<?php echo t('Hapus tag?', 'Delete tag?'); ?>"><i class="fas fa-times" style="font-size: 0.65rem;"></i></a>
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="background:#E6EBEF;border:1px solid #e7e5e4;">
+                        <span class="fw-semibold" style="color:#0D1830;font-size:0.8rem;"><?php echo htmlspecialchars($tag->name); ?></span>
+                        <?php if ($tag->name_en): ?><span style="color:#a8a29e;font-size:0.72rem;">/ <?php echo htmlspecialchars($tag->name_en); ?></span><?php endif; ?>
+                        <a href="<?php echo base_url('admin/delete_tag/' . $tag->id); ?>" class="d-inline-flex align-items-center ms-1" style="color:#f43f5e;text-decoration:none;" data-confirm="<?php echo t('Hapus tag?', 'Delete tag?'); ?>"><i class="fas fa-times" style="font-size:0.65rem;"></i></a>
                     </div>
                 <?php endforeach; ?>
             </div>

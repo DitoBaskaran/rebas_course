@@ -1,66 +1,53 @@
-<div class="container-fluid px-0">
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-5 gap-3">
-        <div>
-            <div class="d-flex align-items-center gap-2 mb-1">
-                <a href="<?php echo base_url('admin/courses'); ?>" class="btn btn-outline-dark btn-sm rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px;">
-                    <i data-lucide="arrow-left" style="width:14px;height:14px;"></i>
-                </a>
-                <h1 class="display-6 fw-extrabold text-dark mb-0 lh-sm" style="letter-spacing: -0.03em; font-size: 1.5rem;"><?php echo htmlspecialchars($course->title); ?></h1>
+<div class="app-page">
+    <!-- Header with back -->
+    <div class="app-page-head">
+        <div class="d-flex align-items-center gap-2">
+            <a href="<?php echo base_url('admin/courses'); ?>" class="app-btn app-btn-icon" title="<?php echo t('Kembali', 'Back'); ?>"><i class="fas fa-arrow-left"></i></a>
+            <div>
+                <h4 class="app-page-title mb-0"><?php echo htmlspecialchars($course->title); ?></h4>
+                <p class="app-page-sub"><?php echo t('Materi pembelajaran', 'Learning materials'); ?></p>
             </div>
-            <p class="text-secondary mb-0 ms-5 ps-3"><?php echo t('Materi pembelajaran', 'Learning materials'); ?></p>
         </div>
-        <a href="<?php echo base_url('admin/create_lesson/' . $course->id); ?>" class="btn btn-dark btn-sm px-3 rounded-pill shadow-sm d-flex align-items-center gap-1">
-            <i data-lucide="plus" style="width:16px;height:16px;"></i> <?php echo t('Tambah Materi', 'Add Lesson'); ?>
-        </a>
+        <div class="app-page-actions">
+            <a href="<?php echo base_url('admin/create_lesson/' . $course->id); ?>" class="app-btn app-btn-primary"><i class="fas fa-plus"></i> <?php echo t('Tambah Materi', 'Add Lesson'); ?></a>
+        </div>
     </div>
 
-    <div class="bento-card p-4 p-xl-5">
-        <?php $lessons = isset($lessons) ? $lessons : array(); ?>
-        <?php if (empty($lessons)): ?>
-            <div class="empty-state">
-                <i data-lucide="file-text" style="width:48px;height:48px;color:var(--gray-300);"></i>
-                <h5><?php echo t('Belum ada materi.', 'No lessons yet.'); ?></h5>
+    <?php $lessons = isset($lessons) ? $lessons : array(); ?>
+    <?php if (empty($lessons)): ?>
+        <div class="app-card">
+            <div class="app-empty">
+                <i class="fas fa-file-text"></i>
+                <h6><?php echo t('Belum ada materi.', 'No lessons yet.'); ?></h6>
                 <p><?php echo t('Tambahkan materi pertama untuk kursus ini.', 'Add the first lesson for this course.'); ?></p>
             </div>
-        <?php else: ?>
-            <div class="d-flex flex-column gap-2">
-                <?php foreach ($lessons as $i => $lesson): ?>
-                    <div class="d-flex align-items-center gap-3 p-3 rounded-3 border" style="background: var(--card-bg); border-color: var(--card-border) !important;">
-                        <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold flex-shrink-0" style="width:36px;height:36px;background:var(--gray-100);color:var(--gray-600);font-size:0.8125rem;">
-                            <?php echo $i + 1; ?>
-                        </div>
+        </div>
+    <?php else: ?>
+        <div class="app-list" style="gap:0.6rem;">
+            <?php foreach ($lessons as $i => $lesson): ?>
+                <div class="app-card app-card-pad">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="app-avatar" style="width:34px;height:34px;font-size:0.78rem;background:var(--gray-100,#f5f5f5);color:var(--gray-600,#57534e);"><?php echo $i + 1; ?></div>
                         <div class="flex-fill min-w-0">
-                            <div class="fw-bold text-dark small"><?php echo htmlspecialchars($lesson->title); ?></div>
-                            <div class="d-flex align-items-center gap-2 mt-1">
-                                <span class="badge bg-light text-dark border rounded-pill px-3 py-1 fw-medium small">
-                                    <?php if ($lesson->lesson_type === 'video'): ?>
-                                        <i data-lucide="play-circle" style="width:12px;height:12px;color:var(--primary);" class="me-1"></i>
-                                    <?php elseif ($lesson->lesson_type === 'text'): ?>
-                                        <i data-lucide="file-text" style="width:12px;height:12px;color:var(--info);" class="me-1"></i>
-                                    <?php else: ?>
-                                        <i data-lucide="pencil" style="width:12px;height:12px;color:var(--warning);" class="me-1"></i>
-                                    <?php endif; ?>
+                            <div class="app-row-title"><?php echo htmlspecialchars($lesson->title); ?></div>
+                            <div class="app-row-meta d-flex align-items-center gap-2 mt-1">
+                                <span class="app-chip app-chip-gray">
+                                    <?php if ($lesson->lesson_type === 'video'): ?><i class="fas fa-play-circle" style="color:var(--primary);"></i>
+                                    <?php elseif ($lesson->lesson_type === 'text'): ?><i class="fas fa-file-text" style="color:var(--info);"></i>
+                                    <?php else: ?><i class="fas fa-pencil" style="color:var(--warning);"></i><?php endif; ?>
                                     <?php echo ucfirst($lesson->lesson_type); ?>
                                 </span>
-                                <?php if ($lesson->duration > 0): ?>
-                                    <span class="small text-muted"><?php echo $lesson->duration . ' ' . t('menit', 'min'); ?></span>
-                                <?php endif; ?>
-                                <?php if ($lesson->is_free): ?>
-                                    <span class="badge bg-success badge-modern small"><?php echo t('Gratis', 'Free'); ?></span>
-                                <?php endif; ?>
+                                <?php if ($lesson->duration > 0): ?><span style="color:var(--gray-400,#a3a3a3);font-size:0.68rem;"><?php echo $lesson->duration . ' ' . t('menit', 'min'); ?></span><?php endif; ?>
+                                <?php if ($lesson->is_free): ?><span class="app-chip app-chip-green"><?php echo t('Gratis', 'Free'); ?></span><?php endif; ?>
                             </div>
                         </div>
-                        <div class="d-flex gap-1 flex-shrink-0">
-                            <a href="<?php echo base_url('admin/edit_lesson/' . $lesson->id); ?>" class="btn btn-warning btn-sm px-2 rounded-pill" title="<?php echo t('Edit', 'Edit'); ?>">
-                                <i data-lucide="edit" style="width:14px;height:14px;"></i>
-                            </a>
-                            <a href="<?php echo base_url('admin/delete_lesson/' . $lesson->id . '/' . $course->id); ?>" class="btn btn-outline-danger btn-sm px-2 rounded-pill" data-confirm="<?php echo t('Hapus materi ini?', 'Delete this lesson?'); ?>">
-                                <i data-lucide="trash-2" style="width:14px;height:14px;"></i>
-                            </a>
+                        <div class="app-actions">
+                            <a href="<?php echo base_url('admin/edit_lesson/' . $lesson->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
+                            <a href="<?php echo base_url('admin/delete_lesson/' . $lesson->id . '/' . $course->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus materi ini?', 'Delete this lesson?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 </div>

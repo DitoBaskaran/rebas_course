@@ -550,10 +550,68 @@
     }
   }
 
+  /* ---- Admin tables -> mobile card list (app-table) ---- */
+  function initAppTables() {
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    document.querySelectorAll('table.app-table').forEach(function(table) {
+      var wrap = table.closest('.app-table-wrap') || table.parentNode;
+      var list = wrap.querySelector(':scope > .app-row-list');
+      if (!list) {
+        list = document.createElement('div');
+        list.className = 'app-row-list app-list';
+        wrap.insertBefore(list, table);
+      }
+      if (!isMobile) {
+        list.innerHTML = '';
+        return;
+      }
+      var heads = Array.prototype.map.call(table.querySelectorAll('thead th'), function(th) {
+        return th.textContent.trim().replace(/\s+/g, ' ');
+      });
+      var rows = table.querySelectorAll('tbody tr');
+      var html = '';
+      rows.forEach(function(row) {
+        var cells = Array.prototype.map.call(row.querySelectorAll('td'), function(td) { return td; });
+        var headCell = cells[0];
+        var headHtml = headCell ? headCell.innerHTML : '';
+        var body = '';
+        var actions = '';
+        var meta = [];
+        cells.forEach(function(td, i) {
+          var cls = (td.className || '') + ' ' + (td.getAttribute('class') || '');
+          var label = heads[i] || '';
+          var inner = td.innerHTML.trim();
+          if (!inner) return;
+          if (cls.indexOf('td-title') !== -1 || cls.indexOf('app-row-title') !== -1 || (i === 0 && !actions)) {
+            body = '<div class="app-row-title">' + inner + '</div>';
+          } else if (cls.indexOf('td-actions') !== -1 || td.querySelector('a.app-action, .app-action, .btn')) {
+            actions = inner;
+          } else if (td.querySelector('.app-chip, .role-badge, .status-badge')) {
+            meta.push('<span>' + inner + '</span>');
+          } else {
+            meta.push('<span><b>' + label + ':</b> ' + inner + '</span>');
+          }
+        });
+        html += '<div class="app-row app-row-card">' +
+          '<div class="app-row-head">' + headHtml + '</div>' +
+          (body ? body : '') +
+          (meta.length ? '<div class="app-row-meta">' + meta.join('') + '</div>' : '') +
+          (actions ? '<div class="app-actions">' + actions + '</div>' : '') +
+        '</div>';
+      });
+      list.innerHTML = html || '<div class="app-empty"><i class="fas fa-inbox"></i><p>Data kosong</p></div>';
+    });
+  }
+
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
     init();
   }
+
+  window.addEventListener('resize', function() {
+    initAppTables();
+  });
+  initAppTables();
 
 })();

@@ -69,6 +69,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <?php endif; ?>
     <!-- BISATUNTAS JS -->
-    <script src="<?php echo base_url('assets/js/bisatuntas.js'); ?>"></script>
+    <script src="<?php echo base_url('assets/js/bisatuntas.js?v=2'); ?>"></script>
 </body>
 </html>

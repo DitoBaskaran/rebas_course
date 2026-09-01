@@ -1,31 +1,26 @@
-<div class="container-fluid py-4" style="max-width: 1400px;">
+<div class="app-page">
     <!-- Settings Nav Pills -->
-    <div class="d-flex gap-2 mb-4 flex-wrap">
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'general' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'general' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/general'); ?>"><i class="fas fa-cog" style="font-size: 0.7rem;"></i> General</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'appearance' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'appearance' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/appearance'); ?>"><i class="fas fa-palette" style="font-size: 0.7rem;"></i> Appearance</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'hero' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'hero' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/hero'); ?>"><i class="fas fa-image" style="font-size: 0.7rem;"></i> Hero</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'homepage' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'homepage' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/homepage'); ?>"><i class="fas fa-home" style="font-size: 0.7rem;"></i> Homepage</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'social' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'social' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/social'); ?>"><i class="fas fa-share-alt" style="font-size: 0.7rem;"></i> Social</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'footer' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'footer' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/footer'); ?>"><i class="fas fa-shoe-prints" style="font-size: 0.7rem;"></i> Footer</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: <?php echo $active_group === 'payment' ? '#0D1830' : '#E6EBEF'; ?>; color: <?php echo $active_group === 'payment' ? '#fff' : '#57534e'; ?>;" href="<?php echo base_url('admin/settings/payment'); ?>"><i class="fas fa-credit-card" style="font-size: 0.7rem;"></i> Payment</a>
-        <a class="px-3 py-2 rounded-pill fw-semibold text-decoration-none d-inline-flex align-items-center gap-1" style="font-size: 0.8rem; background: #E6EBEF; color: #57534e;" href="<?php echo base_url('admin/whatsapp'); ?>"><i class="fab fa-whatsapp" style="font-size: 0.7rem;"></i> WhatsApp</a>
+    <div class="app-toolbar" style="margin-bottom:1.1rem;">
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'general' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/general'); ?>"><i class="fas fa-cog"></i> General</a>
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'appearance' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/appearance'); ?>"><i class="fas fa-palette"></i> Appearance</a>
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'hero' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/hero'); ?>"><i class="fas fa-image"></i> Hero</a>
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'homepage' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/homepage'); ?>"><i class="fas fa-home"></i> Homepage</a>
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'social' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/social'); ?>"><i class="fas fa-share-alt"></i> Social</a>
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'footer' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/footer'); ?>"><i class="fas fa-shoe-prints"></i> Footer</a>
+        <a class="app-btn app-btn-sm <?php echo $active_group === 'payment' ? 'app-btn-primary' : ''; ?>" href="<?php echo base_url('admin/settings/payment'); ?>"><i class="fas fa-credit-card"></i> Payment</a>
+        <a class="app-btn app-btn-sm" href="<?php echo base_url('admin/whatsapp'); ?>"><i class="fab fa-whatsapp" style="color:#25D366;"></i> WhatsApp</a>
     </div>
 
-    <div class="d-flex align-items-center justify-content-between mb-4">
+    <div class="app-page-head">
         <div>
-            <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.4rem;"><?php echo $page_title; ?></h4>
-            <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;"><?php echo t('Manage', 'Manage'); ?> <?php echo $active_group; ?> <?php echo t('settings', 'settings'); ?></p>
+            <h4 class="app-page-title"><i class="fas fa-sliders-h"></i> <?php echo $page_title; ?></h4>
+            <p class="app-page-sub"><?php echo t('Manage', 'Manage'); ?> <?php echo $active_group; ?> <?php echo t('settings', 'settings'); ?></p>
         </div>
     </div>
 
     <?php echo form_open_multipart(current_url(), 'class="needs-validation" novalidate'); ?>
-    <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
-        <div class="d-flex align-items-center gap-2 px-1 py-2 mb-3" style="border-bottom: 1px solid #f0eeeb;">
-            <i class="fas fa-sliders-h" style="color: #0D1830; font-size: 0.8rem;"></i>
-            <span class="fw-semibold" style="color: #0D1830; font-size: 0.9rem;"><?php echo $page_title; ?></span>
-        </div>
-
-        <div class="d-flex flex-column gap-4 p-3">
+    <div class="app-card app-card-pad app-form-card">
+        <div class="app-form-grid">
             <?php
             $payment_methods_config = array(
                 'payment_method_qris' => array('icon' => 'qris-logo.png', 'color' => '#009688', 'label' => 'QRIS', 'desc' => 'GoPay, OVO, DANA, ShopeePay, LinkAja'),
@@ -49,14 +44,14 @@
                     $checked = $s->value === '1' ? 'checked' : '';
                     $logo_html = strpos($pm['icon'], '.') !== false ? '<span style="display:inline-block;width:60px;text-align:center;"><img src="' . base_url('assets/img/' . $pm['icon']) . '" alt="' . $pm['label'] . '" style="max-width:60px;max-height:24px;width:auto;height:auto;"></span>' : '<i class="fas ' . $pm['icon'] . '"></i>';
                     $payment_cards .= '
-                    <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background: #E6EBEF; border: 1px solid #f0eeeb;">
+                    <div class="d-flex align-items-center gap-3 p-3 rounded-3" style="background:var(--gray-50,#fafafa);border:1px solid var(--card-border,#e7e5e4);">
                         ' . $logo_html . '
-                        <div class="flex-fill">
-                            <div class="fw-semibold" style="color: #0D1830; font-size: 0.82rem;">' . $pm['label'] . '</div>
-                            <div style="color: #78716c; font-size: 0.72rem;">' . $pm['desc'] . '</div>
+                        <div style="flex:1;">
+                            <div class="fw-semibold" style="color:#0D1830;font-size:0.82rem;">' . $pm['label'] . '</div>
+                            <div style="color:#78716c;font-size:0.72rem;">' . $pm['desc'] . '</div>
                         </div>
-                        <label class="form-check form-switch mb-0 flex-shrink-0" style="padding-left: 2.5rem;">
-                            <input type="checkbox" name="' . $s->key . '" id="setting_' . $s->key . '" value="1" ' . $checked . ' class="form-check-input" style="width: 2rem; height: 1rem;">
+                        <label class="form-check form-switch mb-0" style="padding-left:2.5rem;flex-shrink:0;">
+                            <input type="checkbox" name="' . $s->key . '" id="setting_' . $s->key . '" value="1" ' . $checked . ' class="form-check-input" style="width:2rem;height:1rem;">
                         </label>
                     </div>';
                 else:
@@ -68,51 +63,54 @@
             <div class="d-flex flex-column gap-2"><?php echo $payment_cards; ?></div>
             <?php endif; ?>
             <?php foreach ($other_settings as $s): ?>
-                <div>
+                <div class="app-field">
                     <?php if ($s->type === 'boolean'): ?>
-                        <label class="fw-semibold mb-1 d-block" style="color: #0D1830; font-size: 0.82rem;"><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
-                        <label class="form-check form-switch" style="padding-left: 2.5rem;">
-                            <input type="checkbox" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="1" <?php echo $s->value === '1' ? 'checked' : ''; ?> class="form-check-input" style="width: 2rem; height: 1rem;">
-                            <span class="form-check-label small" style="color: #78716c; font-size: 0.78rem;"><?php echo t('Aktif', 'Enabled'); ?></span>
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <label class="form-check form-switch" style="padding-left:2.5rem;">
+                            <input type="checkbox" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="1" <?php echo $s->value === '1' ? 'checked' : ''; ?> class="form-check-input" style="width:2rem;height:1rem;">
+                            <span class="form-check-label" style="color:#78716c;font-size:0.78rem;"><?php echo t('Aktif', 'Enabled'); ?></span>
                         </label>
                     <?php elseif ($s->type === 'color'): ?>
-                        <label class="fw-semibold mb-1 d-block" style="color: #0D1830; font-size: 0.82rem;"><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
                         <div class="d-flex align-items-center gap-3">
-                            <input type="color" name="<?php echo $s->key; ?>_color" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" style="width: 44px; height: 44px; padding: 3px; border: 2px solid #e7e5e4; border-radius: 8px; cursor: pointer;">
-                            <input type="text" name="<?php echo $s->key; ?>" class="form-control" value="<?php echo htmlspecialchars($s->value); ?>" style="width: 100px; border-color: #e7e5e4; font-size: 0.85rem;">
+                            <input type="color" name="<?php echo $s->key; ?>_color" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" style="width:44px;height:44px;padding:3px;border:2px solid #e7e5e4;border-radius:8px;cursor:pointer;">
+                            <input type="text" name="<?php echo $s->key; ?>" class="form-control" value="<?php echo htmlspecialchars($s->value); ?>" style="width:100px;">
                         </div>
                     <?php elseif ($s->type === 'image'): ?>
-                        <label class="fw-semibold mb-1 d-block" style="color: #0D1830; font-size: 0.82rem;"><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
                         <div class="d-flex align-items-center gap-3">
-                            <div style="width: 80px; height: 80px; border-radius: 8px; border: 2px dashed #e7e5e4; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #E6EBEF;">
-                                <?php if ($s->value): ?><img src="<?php echo base_url('uploads/settings/' . $s->value); ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;"><?php else: ?><i class="fas fa-camera" style="color: #d6d3d1; font-size: 1.2rem;"></i><?php endif; ?>
+                            <div style="width:80px;height:80px;border-radius:8px;border:2px dashed #e7e5e4;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--gray-100,#f5f5f5);flex-shrink:0;">
+                                <?php if ($s->value): ?><img src="<?php echo base_url('uploads/settings/' . $s->value); ?>" alt="" style="width:100%;height:100%;object-fit:cover;"><?php else: ?><i class="fas fa-camera" style="color:#d6d3d1;font-size:1.2rem;"></i><?php endif; ?>
                             </div>
                             <div>
-                                <input type="file" name="<?php echo $s->key; ?>" class="form-control form-control-sm" accept="image/*" data-preview="preview_<?php echo $s->key; ?>" style="border-color: #e7e5e4; font-size: 0.82rem;">
+                                <input type="file" name="<?php echo $s->key; ?>" class="form-control form-control-sm" accept="image/*" data-preview="preview_<?php echo $s->key; ?>" style="font-size:0.82rem;">
                                 <input type="hidden" name="<?php echo $s->key; ?>_existing" value="<?php echo htmlspecialchars($s->value); ?>">
-                                <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Biarkan kosong jika tidak ingin mengubah', 'Leave empty to keep current'); ?></small>
+                                <div class="app-hint"><?php echo t('Biarkan kosong jika tidak ingin mengubah', 'Leave empty to keep current'); ?></div>
                             </div>
                         </div>
                     <?php elseif ($s->type === 'textarea'): ?>
-                        <textarea class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" rows="3" style="border-color: #e7e5e4; border-radius: 8px; font-size: 0.85rem;" data-max-chars="500"><?php echo htmlspecialchars($s->value); ?></textarea>
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <textarea class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" rows="3" data-max-chars="500"><?php echo htmlspecialchars($s->value); ?></textarea>
                     <?php elseif ($s->type === 'email'): ?>
-                        <input type="email" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" style="border-color: #e7e5e4; border-radius: 8px; font-size: 0.85rem;" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <input type="email" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
                     <?php elseif ($s->type === 'url'): ?>
-                        <input type="url" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" style="border-color: #e7e5e4; border-radius: 8px; font-size: 0.85rem;" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <input type="url" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
                     <?php elseif ($s->type === 'number'): ?>
-                        <input type="number" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" style="border-color: #e7e5e4; border-radius: 8px; font-size: 0.85rem;" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <input type="number" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
                     <?php else: ?>
-                        <input type="text" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" style="border-color: #e7e5e4; border-radius: 8px; font-size: 0.85rem;" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
+                        <label><?php echo htmlspecialchars($s->label ?: $s->key); ?></label>
+                        <input type="text" class="form-control" name="<?php echo $s->key; ?>" id="setting_<?php echo $s->key; ?>" value="<?php echo htmlspecialchars($s->value); ?>" placeholder="<?php echo htmlspecialchars($s->label ?: $s->key); ?>">
                     <?php endif; ?>
                 </div>
             <?php endforeach; ?>
         </div>
 
-        <div class="d-flex justify-content-end gap-2 pt-3" style="border-top: 1px solid #f0eeeb;">
-            <a href="<?php echo base_url('admin/dashboard'); ?>" class="btn px-4 py-2 rounded-pill fw-semibold" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.82rem;"><?php echo t('Batal', 'Cancel'); ?></a>
-            <button type="submit" class="btn px-4 py-2 fw-bold rounded-pill d-flex align-items-center gap-1" style="background: #0D1830; color: #fff; font-size: 0.82rem;">
-                <i class="fas fa-save" style="font-size: 0.7rem;"></i> <?php echo t('Simpan', 'Save'); ?>
-            </button>
+        <div class="app-form-actions" style="border-top:1px solid var(--gray-100,#f5f5f5);margin-top:1rem;padding-top:1rem;">
+            <a href="<?php echo base_url('admin/dashboard'); ?>" class="app-btn"><?php echo t('Batal', 'Cancel'); ?></a>
+            <button type="submit" class="app-btn app-btn-primary"><i class="fas fa-save"></i> <?php echo t('Simpan', 'Save'); ?></button>
         </div>
     </div>
     <?php echo form_close(); ?>

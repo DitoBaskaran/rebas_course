@@ -1,11 +1,13 @@
-<div class="container-fluid py-4" style="max-width: 1400px;">
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
+<div class="app-page">
+    <!-- Header -->
+    <div class="app-page-head">
         <div>
-            <div class="text-uppercase fw-bold mb-0" style="color: #0D1830; font-size: 0.7rem; letter-spacing: 0.08em;"><?php echo t('Pengguna', 'Users'); ?></div>
-            <h4 class="fw-extrabold mb-0" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.4rem;"><?php echo t('Manajemen Pengguna', 'User Management'); ?></h4>
-            <p class="mb-0" style="color: #78716c; font-size: 0.82rem;"><?php echo t('Kelola semua pengguna platform.', 'Manage all platform users.'); ?></p>
+            <h4 class="app-page-title"><i class="fas fa-users"></i> <?php echo t('Manajemen Pengguna', 'User Management'); ?></h4>
+            <p class="app-page-sub"><?php echo t('Kelola semua pengguna platform.', 'Manage all platform users.'); ?></p>
         </div>
-        <div><span class="px-3 py-2 rounded-pill fw-semibold" style="background: #fff7ed; color: #0D1830; font-size: 0.78rem;"><?php echo $total; ?> <?php echo t('pengguna', 'users'); ?></span></div>
+        <div class="app-page-actions">
+            <span class="app-chip app-chip-amber"><i class="fas fa-user-check"></i> <?php echo $total; ?> <?php echo t('pengguna', 'users'); ?></span>
+        </div>
     </div>
 
     <?php
@@ -13,57 +15,55 @@
         $selected_status = $this->input->get('status');
         $search_val = $this->input->get('search');
     ?>
-    <form method="get" class="d-flex gap-2 mb-4 flex-wrap" id="filterForm">
-        <div class="position-relative flex-fill" style="min-width: 200px; max-width: 320px;">
-            <i class="fas fa-search" style="font-size: 0.75rem; position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #a8a29e; pointer-events: none;"></i>
-            <input type="text" name="search" class="form-control rounded-pill" style="padding-left: 36px; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" placeholder="<?php echo t('Cari pengguna...', 'Search users...'); ?>" id="searchInput" value="<?php echo htmlspecialchars($search_val ?: ''); ?>">
+    <form method="get" class="app-toolbar" id="filterForm">
+        <div class="app-search">
+            <i class="fas fa-search"></i>
+            <input type="text" name="search" placeholder="<?php echo t('Cari pengguna...', 'Search users...'); ?>" id="searchInput" value="<?php echo htmlspecialchars($search_val ?: ''); ?>">
         </div>
-        <select name="role" class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="this.form.submit()">
+        <select name="role" class="app-select" onchange="this.form.submit()">
             <option value=""><?php echo t('Semua Role', 'All Roles'); ?></option>
             <option value="student" <?php echo $selected_role === 'student' ? 'selected' : ''; ?>>Student</option>
             <option value="teacher" <?php echo $selected_role === 'teacher' ? 'selected' : ''; ?>>Teacher</option>
             <option value="mentor" <?php echo $selected_role === 'mentor' ? 'selected' : ''; ?>>Mentor</option>
             <option value="admin" <?php echo $selected_role === 'admin' ? 'selected' : ''; ?>>Admin</option>
         </select>
-        <select name="status" class="form-select rounded-pill" style="width: auto; height: 40px; border-color: #e7e5e4; font-size: 0.82rem;" onchange="this.form.submit()">
+        <select name="status" class="app-select" onchange="this.form.submit()">
             <option value=""><?php echo t('Semua Status', 'All Status'); ?></option>
             <option value="active" <?php echo $selected_status === 'active' ? 'selected' : ''; ?>>Active</option>
             <option value="banned" <?php echo $selected_status === 'banned' ? 'selected' : ''; ?>>Banned</option>
         </select>
     </form>
 
-    <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-        <div class="table-responsive p-0">
-            <table class="table table-hover mb-0 align-middle" style="font-size: 0.8rem;" id="userTable">
+    <div class="app-card">
+        <div class="app-table-wrap">
+            <table class="app-table" id="userTable">
                 <thead>
                     <tr>
-                        <th class="fw-semibold text-uppercase" style="color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; letter-spacing: 0.05em; width: 30%;"><?php echo t('Nama', 'Name'); ?></th>
-                        <th class="fw-semibold text-uppercase d-none d-md-table-cell" style="color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; letter-spacing: 0.05em;">Email</th>
-                        <th class="fw-semibold text-uppercase" style="color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; letter-spacing: 0.05em; width: 18%;"><?php echo t('Role', 'Role'); ?></th>
-                        <th class="fw-semibold text-uppercase" style="color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; letter-spacing: 0.05em; width: 12%;"><?php echo t('Status', 'Status'); ?></th>
-                        <th class="fw-semibold text-uppercase d-none d-lg-table-cell" style="color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; letter-spacing: 0.05em; width: 15%;"><?php echo t('Terdaftar', 'Registered'); ?></th>
-                        <th class="fw-semibold text-uppercase text-center" style="color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; letter-spacing: 0.05em; width: 80px;"><?php echo t('Aksi', 'Action'); ?></th>
+                        <th><?php echo t('Nama', 'Name'); ?></th>
+                        <th>Email</th>
+                        <th><?php echo t('Role', 'Role'); ?></th>
+                        <th><?php echo t('Status', 'Status'); ?></th>
+                        <th><?php echo t('Terdaftar', 'Registered'); ?></th>
+                        <th class="td-actions"><?php echo t('Aksi', 'Action'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($users)): ?>
-                    <tr>
-                        <td colspan="6" class="text-center py-5" style="color: #a8a29e;"><?php echo t('Tidak ada pengguna.', 'No users found.'); ?></td>
-                    </tr>
+                    <tr><td colspan="6" class="text-center py-5" style="color:#a8a29e;"><?php echo t('Tidak ada pengguna.', 'No users found.'); ?></td></tr>
                     <?php else: ?>
                         <?php foreach ($users as $u): ?>
                         <tr>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-weight: 700; color: #0D1830; font-size: 0.78rem;">
+                            <td>
                                 <div class="d-flex align-items-center gap-2">
-                                    <span class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white flex-shrink-0" style="width: 32px; height: 32px; background: #0D1830; font-size: 0.72rem;"><?php echo strtoupper(substr($u->name, 0, 1)); ?></span>
+                                    <span class="app-avatar" style="width:34px;height:34px;font-size:0.75rem;"><?php echo strtoupper(substr($u->name, 0, 1)); ?></span>
                                     <div class="min-w-0">
-                                        <div class="text-truncate"><?php echo htmlspecialchars($u->name); ?></div>
-                                        <div class="d-block d-md-none" style="color: #a8a29e; font-size: 0.68rem;"><?php echo htmlspecialchars($u->email); ?></div>
+                                        <div class="app-row-title"><?php echo htmlspecialchars($u->name); ?></div>
+                                        <div style="color:#a8a29e;font-size:0.68rem;"><?php echo htmlspecialchars($u->email); ?></div>
                                     </div>
                                 </div>
                             </td>
-                            <td class="d-none d-md-table-cell" style="border-color: #f0eeeb; padding: 0.65rem 1rem; color: #57534e; font-size: 0.78rem;"><?php echo htmlspecialchars($u->email); ?></td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;">
+                            <td style="color:#57534e;font-size:0.78rem;"><?php echo htmlspecialchars($u->email); ?></td>
+                            <td>
                                 <?php
                                     $badges = array();
                                     if ($u->role === 'admin') $badges[] = '<span class="role-badge role-badge-admin">Admin</span>';
@@ -73,18 +73,16 @@
                                     echo implode(' ', $badges);
                                 ?>
                             </td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;">
+                            <td>
                                 <?php if ($u->status === 'active' || !$u->status): ?>
-                                    <span class="status-badge status-badge-active">Active</span>
+                                    <span class="app-chip app-chip-green"><i class="fas fa-check-circle"></i> Active</span>
                                 <?php else: ?>
-                                    <span class="status-badge status-badge-banned">Banned</span>
+                                    <span class="app-chip app-chip-red"><i class="fas fa-ban"></i> Banned</span>
                                 <?php endif; ?>
                             </td>
-                            <td class="d-none d-lg-table-cell" style="border-color: #f0eeeb; padding: 0.65rem 1rem; color: #a8a29e; font-size: 0.72rem;"><?php echo date('d M Y', strtotime($u->created_at)); ?></td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; text-align: center;">
-                                <a href="<?php echo base_url('admin/edit_user/' . $u->id); ?>" class="btn btn-sm rounded-pill px-2 d-inline-flex align-items-center" style="background: #0D1830; color: #fff; font-size: 0.68rem;" title="<?php echo t('Edit', 'Edit'); ?>">
-                                    <i class="fas fa-edit" style="font-size: 0.65rem;"></i>
-                                </a>
+                            <td style="color:#a8a29e;font-size:0.72rem;"><?php echo date('d M Y', strtotime($u->created_at)); ?></td>
+                            <td class="td-actions">
+                                <a href="<?php echo base_url('admin/edit_user/' . $u->id); ?>" class="app-action app-action-dark" title="<?php echo t('Edit', 'Edit'); ?>"><i class="fas fa-edit"></i></a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
