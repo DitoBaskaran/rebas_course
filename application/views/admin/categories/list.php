@@ -19,7 +19,32 @@
             </div>
         </div>
     <?php else: ?>
-        <div class="app-card">
+        <!-- Mobile: kartu eksplisit -->
+        <div class="app-row-list app-list">
+            <?php foreach ($categories as $cat): ?>
+                <div class="app-row app-row-card">
+                    <div class="app-row-head">
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#eff6ff;color:#2563eb;"><?php echo $cat->icon ? $cat->icon : '<i class="fas fa-folder"></i>'; ?></div>
+                        <div class="app-row-main">
+                            <div class="app-row-title"><?php echo htmlspecialchars($cat->name); ?></div>
+                            <div class="app-row-sub"><?php echo htmlspecialchars($cat->name_en ?: '-'); ?></div>
+                        </div>
+                    </div>
+                    <div class="app-row-meta">
+                        <span><b><?php echo t('Parent', 'Parent'); ?>:</b> <?php echo $cat->parent_id ? 'Yes' : '-'; ?></span>
+                        <span><b><?php echo t('Urutan', 'Order'); ?>:</b> <?php echo $cat->sort_order; ?></span>
+                        <span><b><?php echo t('Konten', 'Content'); ?>:</b> <?php echo isset($cat->content_count) ? $cat->content_count : '-'; ?></span>
+                    </div>
+                    <div class="app-actions">
+                        <a href="<?php echo base_url('admin/edit_category/' . $cat->id); ?>" class="app-action app-action-dark" title="Edit"><i class="fas fa-edit"></i></a>
+                        <a href="<?php echo base_url('admin/delete_category/' . $cat->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kategori?', 'Delete category?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+
+        <!-- Desktop: tabel -->
+        <div class="app-card app-table-desktop">
             <div class="app-table-wrap">
                 <table class="app-table">
                     <thead>
