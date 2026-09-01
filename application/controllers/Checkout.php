@@ -31,6 +31,23 @@ class Checkout extends MY_Controller {
         $this->load->library('pakasir');
     }
 
+    /**
+     * Render view dengan template yang sesuai:
+     * - sudah login → template student (panel: sidebar + bottom nav)
+     * - belum login → template publik
+     */
+    private function _render($view, $data) {
+        if ($this->session->userdata('logged_in')) {
+            $this->load->view('templates/student_header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/student_footer');
+        } else {
+            $this->load->view('templates/header', $data);
+            $this->load->view($view, $data);
+            $this->load->view('templates/footer');
+        }
+    }
+
     public function confirm($uuid) {
         // Cart-based flow (no transaction in DB yet)
         if (strpos($uuid, 'cart_') === 0) {
@@ -76,9 +93,7 @@ class Checkout extends MY_Controller {
             $data['applied_coupon'] = $this->Coupon_model->get_coupon_by_id($tx->coupon_id);
         }
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('checkout/confirm', $data);
-        $this->load->view('templates/footer');
+        $this->_render('checkout/confirm', $data);
     }
 
     public function initiate($item_type, $item_id, $extra = null) {
@@ -181,9 +196,7 @@ class Checkout extends MY_Controller {
             ? $this->Coupon_model->get_coupon_by_id($cart['coupon_id'])
             : null;
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('checkout/confirm', $data);
-        $this->load->view('templates/footer');
+        $this->_render('checkout/confirm', $data);
     }
 
     private function _get_cart($token) {
@@ -381,9 +394,7 @@ class Checkout extends MY_Controller {
         $data['client_key'] = setting('midtrans_client_key', '');
         $data['tx'] = $tx;
 
-        $this->load->view('templates/header', array('title' => t('Pembayaran Online', 'Online Payment')));
-        $this->load->view('checkout/midtrans', $data);
-        $this->load->view('templates/footer');
+        $this->_render('checkout/midtrans', $data);
     }
 
     public function midtrans_callback() {
@@ -557,9 +568,7 @@ class Checkout extends MY_Controller {
         $data['method'] = $method;
         $data['method_label'] = $method_labels[$method] ?? $method;
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('checkout/pakasir', $data);
-        $this->load->view('templates/footer');
+        $this->_render('checkout/pakasir', $data);
     }
 
     public function pakasir_webhook() {

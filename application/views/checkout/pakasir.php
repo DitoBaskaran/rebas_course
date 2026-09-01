@@ -1,7 +1,7 @@
-<div class="container py-5 my-4">
+<div class="container py-3 my-1 checkout-panel" style="max-width: 760px;">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6 animate-scale-in">
-            <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5">
+        <div class="col-md-8 col-lg-7 animate-scale-in">
+            <div class="card border-0 shadow-sm rounded-4 p-3 p-md-5">
                 <?php
                     $method_logos = array(
                         'qris' => 'qris-logo.png',
