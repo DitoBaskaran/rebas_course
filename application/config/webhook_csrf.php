@@ -30,4 +30,8 @@ return array(
     'checkout/midtrans_callback',
     'checkout/midtrans/notification',
     'api/checkout/midtrans/notification',
+
+    // Endpoint AJAX Konsultasi AI (Mentoring) — dipanggil fetch() dari panel student.
+    // Aman: controller wajib session logged_in + validasi panjang input; bukan mutasi data.
+    'mentoring/ai-recommend',
 );

@@ -364,6 +364,7 @@ $route['mentoring/cancel/(:any)'] = 'mentoring/cancel/$1';
 $route['mentoring/approve-booking/(:any)'] = 'mentoring/approve_booking/$1';
 $route['mentoring/review/(:any)'] = 'mentoring/review/$1';
 $route['mentoring/toggle-favorite/(:any)'] = 'mentoring/toggle_favorite/$1';
+$route['mentoring/ai-recommend'] = 'mentoring/ai_recommend';
 $route['mentoring/slots/(:any)'] = 'mentoring/get_slots_json/$1';
 
 // Mentor Dashboard Routes (use encoded IDs)

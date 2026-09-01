@@ -34,3 +34,6 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 *.sublime-project
 /tests/tests/
 /tests/results/
+
+# Konfigurasi AI Mentor (sensitive — API key internal)
+application/config/ai_mentor.php

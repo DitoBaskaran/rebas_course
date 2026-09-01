@@ -245,4 +245,60 @@ class Mentoring extends MY_Controller {
         }
         echo json_encode($result);
     }
+
+    // ===== KONSULTASI AI → REKOMENDASI MENTOR =====
+    public function ai_recommend() {
+        if (!$this->session->userdata('logged_in')) {
+            echo json_encode(array('status' => 'error', 'message' => 'Silakan login.'));
+            return;
+        }
+        $problem = trim($this->input->post('problem'));
+        if ($problem === '' || mb_strlen($problem) < 10) {
+            echo json_encode(array('status' => 'error', 'message' => 'Ceritakan masalahmu minimal 10 karakter.'));
+            return;
+        }
+        if (mb_strlen($problem) > 2000) {
+            $problem = mb_substr($problem, 0, 2000);
+        }
+
+        $this->load->library('Ai_mentor');
+        $user_name = $this->session->userdata('name') ?: '';
+        $res = $this->ai_mentor->recommend($problem, $user_name);
+
+        if (!$res['ok']) {
+            echo json_encode(array(
+                'status' => 'error',
+                'message' => $res['error'] === 'no_mentors' ? 'Belum ada mentor terdaftar.' : 'Layanan AI sedang sibuk, coba lagi. (' . $res['error'] . ')',
+            ));
+            return;
+        }
+
+        // Ambil detail mentor hasil rekomendasi
+        $mentors = array();
+        if (!empty($res['mentor_ids'])) {
+            $this->load->model('Mentor_model');
+            foreach ($res['mentor_ids'] as $mid) {
+                $m = $this->Mentor_model->get_by_id($mid);
+                if ($m) {
+                    $mentors[] = array(
+                        'id' => $mid,
+                        'encoded_id' => encode_id($mid),
+                        'name' => $m->name,
+                        'title' => $m->title,
+                        'avatar' => $m->avatar,
+                        'avg_rating' => $m->avg_rating,
+                        'total_reviews' => $m->total_reviews,
+                        'bio' => $m->bio,
+                        'price_per_session' => (float) $m->price_per_session,
+                    );
+                }
+            }
+        }
+
+        echo json_encode(array(
+            'status' => 'ok',
+            'reason' => $res['explanation'],
+            'mentors' => $mentors,
+        ));
+    }
 }
