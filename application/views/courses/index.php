@@ -294,6 +294,34 @@ $grads = array(
             </div>
         </form>
 
+        <!-- ===== AI REKOMENDASI KURSUS (MOBILE) ===== -->
+        <div class="rounded-4 p-3 mb-3" style="border:1px solid #e7e5e4; border-radius:16px; background:linear-gradient(135deg,#0D1830 0%,#1e3a5f 55%,#0ea5e9 130%); position:relative; overflow:hidden;">
+            <div style="position:absolute; top:-40px; right:-30px; width:140px; height:140px; border-radius:50%; background:rgba(251,191,36,0.12);"></div>
+            <div class="d-flex align-items-center gap-2 mb-2 position-relative">
+                <div class="d-flex align-items-center justify-content-center flex-shrink-0 rounded-3" style="width:38px; height:38px; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.18);">
+                    <i class="fas fa-robot" style="color:#FBBF24; font-size:0.95rem;"></i>
+                </div>
+                <div>
+                    <h6 class="fw-bold mb-0" style="color:#fff; font-size:0.85rem;"><?php echo t('AI Rekomendasi Kursus', 'AI Course Recommendation'); ?></h6>
+                    <small style="color:rgba(230,235,239,0.75); font-size:0.68rem;"><?php echo t('Ceritakan tujuan belajarmu, AI pilihkan kursusnya', 'Tell us your learning goal, AI picks the course'); ?></small>
+                </div>
+            </div>
+            <div class="position-relative">
+                <textarea id="aiGoalMobile" class="form-control mb-2" rows="2" maxlength="200" placeholder="<?php echo t('Contoh: mau belajar bikin website dari nol...', 'e.g. want to learn web development from scratch...'); ?>" style="border-radius:10px; border-color:rgba(255,255,255,0.2); background:rgba(255,255,255,0.08); color:#fff; font-size:0.8rem; resize:vertical;"></textarea>
+                <div class="d-flex align-items-center justify-content-between gap-2">
+                    <small style="color:rgba(230,235,239,0.6); font-size:0.65rem;"><span id="aiGoalMobileCount">0</span>/200</small>
+                    <button type="button" class="btn fw-bold rounded-pill px-3 flex-shrink-0 js-ai-course-mobile" style="background:#FBBF24; color:#0D1830; font-size:0.75rem; padding:0.4rem 0.9rem;">
+                        <i class="fas fa-magic me-1" style="font-size:0.65rem;"></i> <?php echo t('Cari Kursus', 'Find Course'); ?>
+                    </button>
+                </div>
+            </div>
+            <div class="js-ai-course-result-mobile mt-3 position-relative" style="display:none;"></div>
+            <div class="js-ai-course-loading-mobile text-center py-3 position-relative" style="display:none;">
+                <div class="spinner-border spinner-border-sm me-2" style="color:#FBBF24;" role="status"></div>
+                <span style="color:rgba(230,235,239,0.85); font-size:0.78rem;"><?php echo t('AI sedang mencari kursus yang tepat...', 'AI is finding the right course...'); ?></span>
+            </div>
+        </div>
+
         <!-- Category chips -->
         <div class="crs-chips mb-3">
             <a href="<?php echo base_url('courses'); ?>" class="crs-chip ic <?php echo $is_all ? 'active' : ''; ?>">
@@ -739,5 +767,85 @@ document.addEventListener('DOMContentLoaded', function () {
     ta.addEventListener('keydown', function (e) {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { btn.click(); }
     });
+
+    // ===== AI Course (MOBILE variant) =====
+    var btnM = document.querySelector('.js-ai-course-mobile');
+    var taM = document.getElementById('aiGoalMobile');
+    var resultM = document.querySelector('.js-ai-course-result-mobile');
+    var loadingM = document.querySelector('.js-ai-course-loading-mobile');
+    var countM = document.getElementById('aiGoalMobileCount');
+    if (btnM && taM && resultM && loadingM) {
+        if (countM) taM.addEventListener('input', function () { countM.textContent = taM.value.length; });
+        btnM.addEventListener('click', function () {
+            var goal = taM.value.trim();
+            if (goal === '') {
+                taM.focus();
+                taM.style.borderColor = '#ff6b6b';
+                setTimeout(function () { taM.style.borderColor = ''; }, 1500);
+                return;
+            }
+            if (goal.length > 200) {
+                taM.value = taM.value.substring(0, 200);
+                if (countM) countM.textContent = 200;
+            }
+            btnM.disabled = true;
+            resultM.style.display = 'none';
+            loadingM.style.display = '';
+            var fd = new FormData();
+            fd.append('goal', goal);
+            fetch('<?php echo base_url('courses/ai-recommend'); ?>', {
+                method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                loadingM.style.display = 'none';
+                btnM.disabled = false;
+                if (d.status !== 'ok') {
+                    resultM.innerHTML = '<div class="alert alert-danger py-2 mb-0" style="font-size:0.78rem; border-radius:10px;">' + esc(d.message || 'Terjadi kesalahan.') + '</div>';
+                    resultM.style.display = '';
+                    return;
+                }
+                var html = '';
+                if (d.reason) {
+                    html += '<div class="p-3 rounded-3 mb-2" style="background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.15); color:#E6EBEF; font-size:0.78rem; line-height:1.6;">'
+                        + '<i class="fas fa-quote-left me-1" style="color:#FBBF24;"></i> ' + esc(d.reason) + '</div>';
+                }
+                if (!d.courses || d.courses.length === 0) {
+                    html += '<div class="p-3 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#E6EBEF; font-size:0.8rem; line-height:1.7;">'
+                        + '<div class="d-flex align-items-center gap-2 mb-2">'
+                        + '<span class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:28px;height:28px;background:rgba(251,191,36,0.2);color:#FBBF24;font-size:0.75rem;"><i class="fas fa-robot"></i></span>'
+                        + '<span class="fw-bold" style="color:#fff;font-size:0.78rem;"><?php echo t('Asisten BISATUNTAS', 'BISATUNTAS Assistant'); ?></span>'
+                        + '</div>'
+                        + '<p class="mb-0">' + esc(d.reason || '') + '</p>'
+                        + '</div>';
+                } else {
+                    html += '<div class="d-flex flex-column gap-2">';
+                    d.courses.forEach(function (c) {
+                        html += '<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);">'
+                            + '<a href="<?php echo base_url('courses/detail/'); ?>' + esc(c.slug) + '" class="d-flex align-items-center gap-2 text-decoration-none flex-fill min-w-0">'
+                            + '<span class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width:34px;height:34px;background:linear-gradient(135deg,#0ea5e9,#009688);color:#fff;font-size:0.75rem;">' + esc((c.title || '?').charAt(0).toUpperCase()) + '</span>'
+                            + '<span class="flex-fill min-w-0">'
+                            + '<span class="d-block fw-bold text-truncate" style="color:#fff;font-size:0.78rem;">' + esc(c.title) + '</span>'
+                            + '<span class="d-block text-truncate" style="color:rgba(230,235,239,0.7);font-size:0.68rem;">' + esc(c.content_type || '') + (c.price > 0 ? ' · Rp ' + Number(c.price).toLocaleString('id-ID') : ' · ' + '<?php echo t('Gratis', 'Free'); ?>') + '</span>'
+                            + '</span>'
+                            + '</a>'
+                            + '<a href="<?php echo base_url('courses/buy/'); ?>' + esc(c.slug) + '" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background:#FBBF24; color:#0D1830; font-size:0.66rem; white-space:nowrap;">'
+                            + '<i class="fas fa-shopping-cart me-1" style="font-size:0.58rem;"></i> <?php echo t('Beli', 'Buy'); ?>'
+                            + '</a>'
+                            + '</div>';
+                    });
+                    html += '</div>';
+                }
+                resultM.innerHTML = html;
+                resultM.style.display = '';
+            })
+            .catch(function () {
+                loadingM.style.display = 'none';
+                btnM.disabled = false;
+                resultM.innerHTML = '<div class="alert alert-danger py-2 mb-0" style="font-size:0.78rem;"><?php echo t('Gagal terhubung ke AI. Coba lagi.', 'Failed to connect to AI. Try again.'); ?></div>';
+                resultM.style.display = '';
+            });
+        });
+    }
 });
 </script>
