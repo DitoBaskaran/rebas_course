@@ -26,7 +26,7 @@ $db->set_charset('utf8mb4');
 // ===== Konfigurasi gateway dari tabel settings =====
 function wa_settings($db) {
     $out = array();
-    $res = $db->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('wa_api_key','wa_device_id','wa_enabled')");
+    $res = $db->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('wa_api_key','wa_device_id','wa_enabled','wa_queue_delay')");
     if ($res) {
         while ($row = $res->fetch_assoc()) $out[$row['key']] = $row['value'];
     }
@@ -37,6 +37,9 @@ $cfg = wa_settings($db);
 $api_key = isset($cfg['wa_api_key']) ? $cfg['wa_api_key'] : '';
 $device_id = isset($cfg['wa_device_id']) ? $cfg['wa_device_id'] : '';
 $enabled = isset($cfg['wa_enabled']) && $cfg['wa_enabled'] === '1';
+if (!empty($cfg['wa_queue_delay']) && (int) $cfg['wa_queue_delay'] > 0) {
+    $delay = (int) $cfg['wa_queue_delay'];
+}
 
 function log_line($msg) {
     fwrite(STDOUT, '[' . date('Y-m-d H:i:s') . '] ' . $msg . "\n");
@@ -49,6 +52,9 @@ while (true) {
     $api_key = $cfg['wa_api_key'] ?? '';
     $device_id = $cfg['wa_device_id'] ?? '';
     $enabled = isset($cfg['wa_enabled']) && $cfg['wa_enabled'] === '1';
+    if (!empty($cfg['wa_queue_delay']) && (int) $cfg['wa_queue_delay'] > 0) {
+        $delay = (int) $cfg['wa_queue_delay'];
+    }
 
     if (!$enabled || !$api_key || !$device_id) {
         sleep(10);

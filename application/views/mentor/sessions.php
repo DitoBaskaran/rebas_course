@@ -51,9 +51,12 @@
                                 <td>
                                     <div class="d-flex gap-1">
                                         <?php if ($s->status == 'pending'): ?>
-                                            <a href="<?php echo base_url('mentor/confirm-session/' . encode_id($s->id)); ?>" class="btn btn-sm btn-success rounded-pill px-3 fw-medium"><?php echo t('Terima', 'Accept'); ?></a>
+                                            <button type="button" class="btn btn-sm btn-success rounded-pill px-3 fw-medium" data-bs-toggle="modal" data-bs-target="#confirmModal_<?php echo $s->id; ?>"><?php echo t('Terima', 'Accept'); ?></button>
                                             <a href="<?php echo base_url('mentor/reject-session/' . encode_id($s->id)); ?>" class="btn btn-sm btn-outline-danger rounded-pill px-3 fw-medium" onclick="return confirm('<?php echo t('Tolak sesi?', 'Reject session?'); ?>')"><?php echo t('Tolak', 'Reject'); ?></a>
                                         <?php elseif ($s->status == 'confirmed'): ?>
+                                            <?php if (!empty($s->meeting_url)): ?>
+                                                <a href="<?php echo htmlspecialchars($s->meeting_url); ?>" target="_blank" class="btn btn-sm btn-outline-primary rounded-pill px-3 fw-medium"><i data-lucide="video" style="width:14px;height:14px;" class="me-1"></i><?php echo t('Link Meet', 'Meet Link'); ?></a>
+                                            <?php endif; ?>
                                             <a href="<?php echo base_url('mentor/complete-session/' . encode_id($s->id)); ?>" class="btn btn-sm btn-dark rounded-pill px-3 fw-medium"><?php echo t('Selesai', 'Complete'); ?></a>
                                         <?php elseif ($s->status == 'completed'): ?>
                                             <?php $rated = $this->db->where('session_id', $s->id)->count_all_results('user_reputations'); ?>
@@ -73,6 +76,45 @@
         </div>
     <?php endif; ?>
 </div>
+
+<!-- Confirm Session Modals (isi link meeting) -->
+<?php foreach ($sessions as $s): if ($s->status == 'pending'): ?>
+<div class="modal fade" id="confirmModal_<?php echo $s->id; ?>" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content border-0 shadow-lg rounded-4">
+            <?php echo form_open('mentor/confirm-session/' . encode_id($s->id)); ?>
+                <div class="modal-header border-0 pb-0">
+                    <h6 class="fw-bold"><?php echo t('Konfirmasi Sesi', 'Confirm Session'); ?></h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <div class="fw-semibold small"><?php echo htmlspecialchars($s->user_name); ?></div>
+                        <div class="text-secondary small"><?php echo date('d M Y H:i', strtotime($s->scheduled_at)); ?> · <?php echo $s->duration; ?> <?php echo t('menit', 'min'); ?></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small"><?php echo t('Platform', 'Platform'); ?></label>
+                        <select name="meeting_platform" class="form-select">
+                            <option value="gmeet">Google Meet</option>
+                            <option value="zoom">Zoom</option>
+                            <option value="whatsapp">WhatsApp</option>
+                            <option value="other"><?php echo t('Lainnya', 'Other'); ?></option>
+                        </select>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label fw-bold small"><?php echo t('Link Meeting', 'Meeting Link'); ?></label>
+                        <input type="url" name="meeting_url" class="form-control" placeholder="https://meet.google.com/xxx-xxxx-xxx">
+                        <small class="text-secondary" style="font-size:0.7rem;"><?php echo t('Opsional — bisa ditambahkan nanti. Link ini akan disertakan di notifikasi WhatsApp ke siswa & reminder H-1.', 'Optional — can be added later. This link will be included in the WhatsApp notification to the student & H-1 reminder.'); ?></small>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="submit" class="btn btn-success rounded-pill px-5 fw-semibold w-100"><?php echo t('Konfirmasi Sesi', 'Confirm Session'); ?></button>
+                </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+<?php endif; endforeach; ?>
 
 <!-- Rate User Modals -->
 <?php foreach ($sessions as $s): if ($s->status == 'completed'): ?>

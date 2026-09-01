@@ -61,24 +61,34 @@ function format_time_range_id($datetime, $duration_min) {
     return date('H.i', $start) . '–' . date('H.i', $end) . ' WIB';
 }
 
-// Template reminder H-1 (persis dari user)
-function reminder_template($nama, $tanggal, $jam, $meet_link, $peran) {
-    $base = "Halo Kak {$nama} 👋😊\n\n"
-          . "Kami ingin memastikan Kakak sudah menerima informasi untuk sesi mentoring besok.\n\n"
-          . "Mentoring Session\n"
-          . "📅 {$tanggal}\n"
-          . "⏰ {$jam}\n";
-    if (!empty($meet_link)) {
-        $base .= "📍 {$meet_link}\n";
+// Template reminder H-1 — diambil dari setting admin, dengan fallback ke template default
+function reminder_template($db, $nama, $tanggal, $jam, $meet_link) {
+    $default = "Halo Kak {{nama}} 👋😊\n\n"
+        . "Kami ingin memastikan Kakak sudah menerima informasi untuk sesi mentoring besok.\n\n"
+        . "Mentoring Session\n"
+        . "📅 {{tanggal}}\n"
+        . "⏰ {{jam}}\n"
+        . "📍 {{meeting_link}}\n\n"
+        . "Agar sesi lebih efektif, Kakak dapat melihat terlebih dahulu informasi mengenai mentee, termasuk profil dan pertanyaan yang ingin didiskusikan, melalui:\n\n"
+        . "🌐 https://course.ditobaskaran.my.id/\n"
+        . "Silakan login menggunakan email yang telah terdaftar.\n\n"
+        . "Catatan: apabila Kakak sebelumnya telah melakukan reschedule, mohon abaikan pesan ini dan mengikuti jadwal terbaru yang tercantum di kalender/website BISATUNTAS.\n\n"
+        . "Apabila terdapat perubahan atau kendala untuk hadir, mohon informasikan kepada mentee dan tim BISATUNTAS.\n\n"
+        . "Thank you, Kak, for making time to share your experience and perspective. We hope this session becomes a valuable experience for both mentor and mentee. 🙏✨\n\n"
+        . "See you tomorrow! 👋";
+    $template = wa_setting($db, 'wa_reminder_h1_template', $default);
+    $meeting_line = !empty($meet_link) ? $meet_link : '';
+    $out = str_replace(
+        array('{{nama}}', '{{tanggal}}', '{{jam}}', '{{meeting_link}}'),
+        array($nama, $tanggal, $jam, $meeting_line),
+        $template
+    );
+    // Kalau tidak ada link meeting & template masih punya baris "📍 " kosong, rapikan barisnya
+    if (empty($meet_link)) {
+        $out = preg_replace('/^📍\s*$/m', '', $out);
+        $out = preg_replace('/\n{3,}/', "\n\n", $out);
     }
-    $base .= "\nAgar sesi lebih efektif, Kakak dapat melihat terlebih dahulu informasi mengenai mentee, termasuk profil dan pertanyaan yang ingin didiskusikan, melalui:\n\n"
-           . "🌐 https://course.ditobaskaran.my.id/\n"
-           . "Silakan login menggunakan email yang telah terdaftar.\n\n"
-           . "Catatan: apabila Kakak sebelumnya telah melakukan reschedule, mohon abaikan pesan ini dan mengikuti jadwal terbaru yang tercantum di kalender/website BISATUNTAS.\n\n"
-           . "Apabila terdapat perubahan atau kendala untuk hadir, mohon informasikan kepada mentee dan tim BISATUNTAS.\n\n"
-           . "Thank you, Kak, for making time to share your experience and perspective. We hope this session becomes a valuable experience for both mentor and mentee. 🙏✨\n\n"
-           . "See you tomorrow! 👋";
-    return $base;
+    return $out;
 }
 
 // Cek aktif
@@ -123,7 +133,7 @@ while ($row = $res->fetch_assoc()) {
     // Pesan ke mentor
     $mentor_phone = normalize_phone($row['mentor_phone']);
     if ($mentor_phone) {
-        $msg_mentor = reminder_template($row['mentor_name'], $tanggal, $jam, $meet_link, 'mentor');
+        $msg_mentor = reminder_template($db, $row['mentor_name'], $tanggal, $jam, $meet_link);
         enqueue($db, $mentor_phone, $msg_mentor);
         log_line("  → reminder mentor #{$id} ({$row['mentor_name']}) ke {$mentor_phone}");
     }
@@ -131,7 +141,7 @@ while ($row = $res->fetch_assoc()) {
     // Pesan ke mentee
     $student_phone = normalize_phone($row['student_phone']);
     if ($student_phone) {
-        $msg_student = reminder_template($row['student_name'], $tanggal, $jam, $meet_link, 'mentee');
+        $msg_student = reminder_template($db, $row['student_name'], $tanggal, $jam, $meet_link);
         enqueue($db, $student_phone, $msg_student);
         log_line("  → reminder mentee #{$id} ({$row['student_name']}) ke {$student_phone}");
     }

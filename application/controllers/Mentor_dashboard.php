@@ -147,10 +147,18 @@ class Mentor_dashboard extends MY_Controller {
         if (!$session_id) show_404();
         $session = $this->Mentoring_bookings_model->get_by_id($session_id);
         if ($session && $session->mentor_id == $mentor->id) {
-            $this->Mentoring_bookings_model->update($session_id, array('status' => 'confirmed', 'mentor_confirmed_at' => date('Y-m-d H:i:s')));
+            $meeting_url = trim($this->input->post('meeting_url') ?: '');
+            $meeting_platform = trim($this->input->post('meeting_platform') ?: '');
+            $update = array('status' => 'confirmed', 'mentor_confirmed_at' => date('Y-m-d H:i:s'));
+            if ($meeting_url !== '') {
+                $update['meeting_url'] = $meeting_url;
+                $update['meeting_platform'] = $meeting_platform ?: 'gmeet';
+            }
+            $this->Mentoring_bookings_model->update($session_id, $update);
 
             // Notifikasi WhatsApp ke student: sesi dikonfirmasi
             $this->load->helper('wa_notification');
+            $session = $this->Mentoring_bookings_model->get_by_id($session_id); // reload dgn meeting_url terbaru
             wa_notify_session_confirmed($session);
 
             $this->session->set_flashdata('success', t('Sesi dikonfirmasi.', 'Session confirmed.'));

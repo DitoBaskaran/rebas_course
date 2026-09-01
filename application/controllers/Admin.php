@@ -954,27 +954,12 @@ class Admin extends MY_Controller {
             $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
             redirect('admin/dashboard');
         }
-        $valid_groups = array('general', 'appearance', 'hero', 'homepage', 'social', 'footer', 'payment', 'whatsapp');
-        if (!in_array($group, $valid_groups)) $group = 'general';
-
-        // Auto-seed WhatsApp settings if not exist
+        $valid_groups = array('general', 'appearance', 'hero', 'homepage', 'social', 'footer', 'payment');
+        // WhatsApp gateway punya modul khusus: admin/whatsapp
         if ($group === 'whatsapp') {
-            $defaults = array(
-                array('key' => 'wa_enabled', 'value' => '0', 'type' => 'boolean', 'group' => 'whatsapp', 'label' => 'Aktifkan Notifikasi WhatsApp'),
-                array('key' => 'wa_api_key', 'value' => '', 'type' => 'text', 'group' => 'whatsapp', 'label' => 'API Key (wa.ditobaskaran.my.id)'),
-                array('key' => 'wa_device_id', 'value' => '', 'type' => 'text', 'group' => 'whatsapp', 'label' => 'Device ID'),
-                array('key' => 'wa_otp_ttl', 'value' => '5', 'type' => 'number', 'group' => 'whatsapp', 'label' => 'Masa Berlaku OTP (menit)'),
-                array('key' => 'wa_otp_template', 'value' => "Kode OTP {{site}} Anda: {{otp}}\nBerlaku {{ttl}} menit. Jangan bagikan kode ini kepada siapa pun.", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template OTP Pendaftaran'),
-                array('key' => 'wa_session_confirmed_template', 'value' => "Halo {{student_name}}, sesi mentoring Anda dengan {{mentor_name}} telah dikonfirmasi! 🎉\n📅 {{schedule}}\nDurasi {{duration}} menit.\nSiapkan pertanyaan Anda. Sampai jumpa di sesi!", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Notifikasi ke Siswa (Sesi Dikonfirmasi)'),
-                array('key' => 'wa_mentor_booking_template', 'value' => "Halo {{mentor_name}}, ada permintaan sesi mentoring baru dari {{student_name}}.\n📅 {{schedule}}\nDurasi {{duration}} menit.\nSilakan konfirmasi atau tolak di dashboard mentor.", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Notifikasi ke Mentor (Booking Baru)'),
-                array('key' => 'wa_session_rejected_template', 'value' => "Halo {{student_name}}, mohon maaf sesi mentoring Anda dengan {{mentor_name}} pada {{schedule}} tidak dapat dikonfirmasi. Kuota sesi Anda telah dikembalikan. Silakan booking jadwal lain.", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Notifikasi ke Siswa (Sesi Ditolak)'),
-            );
-            foreach ($defaults as $d) {
-                if ($this->Setting_model->get($d['key']) === NULL) {
-                    $this->Setting_model->set($d['key'], $d['value'], $d['type'], $d['group'], $d['label']);
-                }
-            }
+            redirect('admin/whatsapp');
         }
+        if (!in_array($group, $valid_groups)) $group = 'general';
 
         // Auto-seed payment settings if not exist
         if ($group === 'payment') {
@@ -1049,6 +1034,84 @@ class Admin extends MY_Controller {
 
         $this->load->view('templates/admin_header', $data);
         $this->load->view('admin/settings/index', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    // ================ WHATSAPP GATEWAY ================
+    public function whatsapp() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
+
+        // Auto-seed WhatsApp settings (sama seperti admin/settings/whatsapp)
+        $defaults = array(
+            array('key' => 'wa_enabled', 'value' => '0', 'type' => 'boolean', 'group' => 'whatsapp', 'label' => 'Aktifkan Notifikasi WhatsApp'),
+            array('key' => 'wa_api_key', 'value' => '', 'type' => 'text', 'group' => 'whatsapp', 'label' => 'API Key (wa.ditobaskaran.my.id)'),
+            array('key' => 'wa_device_id', 'value' => '', 'type' => 'text', 'group' => 'whatsapp', 'label' => 'Device ID'),
+            array('key' => 'wa_otp_ttl', 'value' => '5', 'type' => 'number', 'group' => 'whatsapp', 'label' => 'Masa Berlaku OTP (menit)'),
+            array('key' => 'wa_queue_delay', 'value' => '30', 'type' => 'number', 'group' => 'whatsapp', 'label' => 'Jeda Antar Pesan Antrian (detik)'),
+            array('key' => 'wa_otp_template', 'value' => "Kode OTP {{site}} Anda: {{otp}}\nBerlaku {{ttl}} menit. Jangan bagikan kode ini kepada siapa pun.", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template OTP Pendaftaran'),
+            array('key' => 'wa_session_confirmed_template', 'value' => "Halo {{student_name}}, sesi mentoring Anda dengan {{mentor_name}} telah dikonfirmasi! 🎉\n📅 {{schedule}}\nDurasi {{duration}} menit.\nSiapkan pertanyaan Anda. Sampai jumpa di sesi!", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Notifikasi ke Siswa (Sesi Dikonfirmasi)'),
+            array('key' => 'wa_mentor_booking_template', 'value' => "Halo {{mentor_name}}, ada permintaan sesi mentoring baru dari {{student_name}}.\n📅 {{schedule}}\nDurasi {{duration}} menit.\nSilakan konfirmasi atau tolak di dashboard mentor.", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Notifikasi ke Mentor (Booking Baru)'),
+            array('key' => 'wa_session_rejected_template', 'value' => "Halo {{student_name}}, mohon maaf sesi mentoring Anda dengan {{mentor_name}} pada {{schedule}} tidak dapat dikonfirmasi. Kuota sesi Anda telah dikembalikan. Silakan booking jadwal lain.", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Notifikasi ke Siswa (Sesi Ditolak)'),
+            array('key' => 'wa_reminder_h1_template', 'value' => "Halo Kak {{nama}} 👋😊\n\nKami ingin memastikan Kakak sudah menerima informasi untuk sesi mentoring besok.\n\nMentoring Session\n📅 {{tanggal}}\n⏰ {{jam}}\n📍 {{meeting_link}}\n\nAgar sesi lebih efektif, Kakak dapat melihat terlebih dahulu informasi mengenai mentee, termasuk profil dan pertanyaan yang ingin didiskusikan, melalui:\n\n🌐 https://course.ditobaskaran.my.id/\nSilakan login menggunakan email yang telah terdaftar.\n\nCatatan: apabila Kakak sebelumnya telah melakukan reschedule, mohon abaikan pesan ini dan mengikuti jadwal terbaru yang tercantum di kalender/website BISATUNTAS.\n\nApabila terdapat perubahan atau kendala untuk hadir, mohon informasikan kepada mentee dan tim BISATUNTAS.\n\nThank you, Kak, for making time to share your experience and perspective. We hope this session becomes a valuable experience for both mentor and mentee. 🙏✨\n\nSee you tomorrow! 👋", 'type' => 'textarea', 'group' => 'whatsapp', 'label' => 'Template Reminder H-1 Sesi Mentoring'),
+        );
+        foreach ($defaults as $d) {
+            if ($this->Setting_model->get($d['key']) === NULL) {
+                $this->Setting_model->set($d['key'], $d['value'], $d['type'], $d['group'], $d['label']);
+            }
+        }
+
+        if ($this->input->method() === 'post') {
+            $keys = array('wa_enabled', 'wa_api_key', 'wa_device_id', 'wa_otp_ttl', 'wa_queue_delay',
+                'wa_otp_template', 'wa_session_confirmed_template', 'wa_mentor_booking_template',
+                'wa_session_rejected_template', 'wa_reminder_h1_template');
+            foreach ($keys as $key) {
+                $existing = $this->Setting_model->get($key);
+                $val = $this->input->post($key);
+                if ($key === 'wa_enabled') {
+                    $val = $this->input->post($key) ? '1' : '0';
+                }
+                if ($val !== NULL) {
+                    $type = in_array($key, array('wa_otp_template', 'wa_session_confirmed_template', 'wa_mentor_booking_template', 'wa_session_rejected_template', 'wa_reminder_h1_template')) ? 'textarea' : (($key === 'wa_enabled') ? 'boolean' : 'text');
+                    $this->Setting_model->set($key, $val, $type, 'whatsapp');
+                }
+            }
+            $this->session->set_flashdata('success', t('Pengaturan WhatsApp berhasil disimpan!', 'WhatsApp settings saved!'));
+            redirect('admin/whatsapp');
+        }
+
+        $data['title'] = t('WhatsApp Gateway', 'WhatsApp Gateway');
+        $data['active_page'] = 'whatsapp_gateway';
+        $data['settings'] = $this->Setting_model->get_all('whatsapp');
+
+        // Status koneksi device (real-time cek ke gateway)
+        $data['device_status'] = null;
+        $api_key = $this->Setting_model->get('wa_api_key');
+        $device_id = $this->Setting_model->get('wa_device_id');
+        if ($api_key && $device_id) {
+            $ch = curl_init('https://wa.ditobaskaran.my.id/api.php?action=status&device_id=' . urlencode($device_id));
+            curl_setopt_array($ch, array(
+                CURLOPT_RETURNTRANSFER => TRUE,
+                CURLOPT_HTTPHEADER => array('X-API-Key: ' . $api_key),
+                CURLOPT_TIMEOUT => 8,
+            ));
+            $resp = curl_exec($ch);
+            curl_close($ch);
+            $data['device_status'] = json_decode($resp, TRUE);
+        }
+
+        // Statistik antrian pesan
+        $data['queue_stats'] = array(
+            'pending' => $this->db->where('status', 'pending')->count_all_results('wa_message_queue'),
+            'sent'    => $this->db->where('status', 'sent')->count_all_results('wa_message_queue'),
+            'failed'  => $this->db->where('status', 'failed')->count_all_results('wa_message_queue'),
+        );
+        $data['recent_messages'] = $this->db->order_by('id', 'DESC')->limit(15)->get('wa_message_queue')->result();
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/whatsapp/index', $data);
         $this->load->view('templates/admin_footer');
     }
 

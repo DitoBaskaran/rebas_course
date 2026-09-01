@@ -93,6 +93,12 @@
     </a>
     <?php endif; ?>
 
+    <?php if ($sidebar_role === 'admin'): ?>
+    <a class="nav-link <?php echo $active_page === 'whatsapp_gateway' ? 'active' : ''; ?>" href="<?php echo base_url('admin/whatsapp'); ?>">
+        <i data-lucide="message-circle"></i> <span><?php echo t('WhatsApp Gateway', 'WhatsApp Gateway'); ?></span>
+    </a>
+    <?php endif; ?>
+
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Akun', 'Account'); ?></div>
     <a class="nav-link <?php echo $active_page === 'profile' ? 'active' : ''; ?>" href="<?php echo base_url('profile'); ?>">
