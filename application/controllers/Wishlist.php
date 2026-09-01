@@ -46,6 +46,16 @@ class Wishlist extends MY_Controller {
             ->where('wishlists.user_id', $user_id)
             ->order_by('wishlists.created_at', 'DESC')
             ->get()->result();
+        // Mentor favorit (dari tabel mentor_favorites)
+        $this->load->model('Mentor_model');
+        $data['favorite_mentors'] = $this->db
+            ->select('mentor_favorites.*, mentors.*, users.name, users.avatar, users.phone')
+            ->from('mentor_favorites')
+            ->join('mentors', 'mentors.id = mentor_favorites.mentor_id')
+            ->join('users', 'users.id = mentors.user_id')
+            ->where('mentor_favorites.user_id', $user_id)
+            ->order_by('mentor_favorites.created_at', 'DESC')
+            ->get()->result();
         $data['title'] = t('Wishlist - BISATUNTAS', 'Wishlist - BISATUNTAS');
         $data['active_page'] = 'wishlist';
         $this->load->view('templates/student_header', $data);

@@ -171,7 +171,14 @@ class Mentoring extends MY_Controller {
         $mentor_id = decode_id($encoded_mentor_id);
         if (!$mentor_id) show_404();
         $user_id = $this->session->userdata('user_id');
+        $was_favorited = $this->Mentor_model->is_favorited($user_id, $mentor_id);
         $this->Mentor_model->toggle_favorite($user_id, $mentor_id);
+        $now_favorited = !$was_favorited;
+        // AJAX (dari halaman wishlist) → balas JSON
+        if ($this->input->is_ajax_request()) {
+            echo json_encode(array('status' => $now_favorited ? 'added' : 'removed'));
+            return;
+        }
         $this->session->set_flashdata('success', t('Diperbarui.', 'Updated.'));
         redirect('mentoring/detail/' . $encoded_mentor_id);
     }
