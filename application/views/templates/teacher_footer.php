@@ -9,6 +9,35 @@
         </div>
     </div>
 
+    <!-- Mobile App-Style Bottom Navigation (teacher pages only) -->
+    <?php
+        $_bn_active = isset($active_page) ? $active_page : '';
+    ?>
+    <nav class="app-bottom-nav" aria-label="Mobile navigation">
+        <div class="app-bottom-nav-inner">
+            <a href="<?php echo base_url('teacher/dashboard'); ?>" class="<?php echo $_bn_active === 'dashboard' ? 'active' : ''; ?>">
+                <i data-lucide="layout-dashboard"></i>
+                <span><?php echo t('Beranda', 'Home'); ?></span>
+            </a>
+            <a href="<?php echo base_url('teacher/courses'); ?>" class="<?php echo strpos($_bn_active, 'courses') === 0 ? 'active' : ''; ?>">
+                <i data-lucide="book-open"></i>
+                <span><?php echo t('Kelas', 'Courses'); ?></span>
+            </a>
+            <a href="<?php echo base_url('teacher/seminars'); ?>" class="<?php echo $_bn_active === 'seminars' ? 'active' : ''; ?>">
+                <i data-lucide="calendar"></i>
+                <span><?php echo t('Seminar', 'Seminars'); ?></span>
+            </a>
+            <a href="<?php echo base_url('admin/submissions'); ?>" class="<?php echo $_bn_active === 'submissions' ? 'active' : ''; ?>">
+                <i data-lucide="code"></i>
+                <span><?php echo t('Tugas', 'Tasks'); ?></span>
+            </a>
+            <a href="<?php echo base_url('profile'); ?>" class="<?php echo $_bn_active === 'profile' ? 'active' : ''; ?>">
+                <i data-lucide="user"></i>
+                <span><?php echo t('Profil', 'Profile'); ?></span>
+            </a>
+        </div>
+    </nav>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <!-- GSAP -->

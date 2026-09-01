@@ -9,6 +9,49 @@
         </div>
     </div>
 
+    <!-- Mobile App-Style Bottom Navigation (admin pages only) -->
+    <?php
+        $_bn_role = $this->session->userdata('role');
+        $_bn_is_mentor = $this->session->userdata('is_mentor');
+        $_bn_active = isset($active_page) ? $active_page : '';
+        $_bn_dash_url = ($_bn_is_mentor && $_bn_role !== 'admin') ? 'mentor' : 'admin/dashboard';
+    ?>
+    <nav class="app-bottom-nav" aria-label="Mobile navigation">
+        <div class="app-bottom-nav-inner">
+            <a href="<?php echo base_url($_bn_dash_url); ?>" class="<?php echo in_array($_bn_active, array('dashboard', 'dashboard_mobile')) ? 'active' : ''; ?>">
+                <i data-lucide="layout-dashboard"></i>
+                <span><?php echo t('Beranda', 'Home'); ?></span>
+            </a>
+            <a href="<?php echo base_url('admin/courses'); ?>" class="<?php echo strpos($_bn_active, 'courses') === 0 ? 'active' : ''; ?>">
+                <i data-lucide="book-open"></i>
+                <span><?php echo t('Kelas', 'Courses'); ?></span>
+            </a>
+            <?php if ($_bn_role === 'admin'): ?>
+            <a href="<?php echo base_url('admin/transactions'); ?>" class="<?php echo $_bn_active === 'transactions' ? 'active' : ''; ?>">
+                <i data-lucide="receipt"></i>
+                <span><?php echo t('Transaksi', 'Trx'); ?></span>
+            </a>
+            <a href="<?php echo base_url('admin/users'); ?>" class="<?php echo $_bn_active === 'users' ? 'active' : ''; ?>">
+                <i data-lucide="users"></i>
+                <span><?php echo t('Pengguna', 'Users'); ?></span>
+            </a>
+            <?php else: ?>
+            <a href="<?php echo base_url('admin/submissions'); ?>" class="<?php echo $_bn_active === 'submissions' ? 'active' : ''; ?>">
+                <i data-lucide="code"></i>
+                <span><?php echo t('Tugas', 'Tasks'); ?></span>
+            </a>
+            <a href="<?php echo base_url('admin/seminars'); ?>" class="<?php echo $_bn_active === 'seminars' ? 'active' : ''; ?>">
+                <i data-lucide="calendar"></i>
+                <span><?php echo t('Seminar', 'Seminars'); ?></span>
+            </a>
+            <?php endif; ?>
+            <a href="<?php echo base_url('profile'); ?>" class="<?php echo $_bn_active === 'profile' ? 'active' : ''; ?>">
+                <i data-lucide="user"></i>
+                <span><?php echo t('Profil', 'Profile'); ?></span>
+            </a>
+        </div>
+    </nav>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <!-- GSAP -->

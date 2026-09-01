@@ -1,4 +1,147 @@
-<div class="container-fluid py-4" style="max-width: 1400px;">
+<!-- ============================================================
+     ADMIN DASHBOARD — MOBILE APP-STYLE VIEW (max-width: 768px)
+     ============================================================ -->
+<div class="dashboard-mobile-only">
+
+    <!-- Hero Card -->
+    <div class="mob-hero-card admin-mob-hero">
+        <div class="mob-hero-greeting">
+            <?php
+            $hour = (int)date('H');
+            if ($hour < 11) echo t('Selamat pagi', 'Good morning');
+            elseif ($hour < 15) echo t('Selamat siang', 'Good afternoon');
+            elseif ($hour < 19) echo t('Selamat sore', 'Good evening');
+            else echo t('Selamat malam', 'Good night');
+            ?> 👋
+        </div>
+        <div class="mob-hero-name">
+            <?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?>
+        </div>
+        <div class="mob-hero-stats">
+            <div class="mob-hero-stat">
+                <b><?php echo $total_courses; ?></b>
+                <span><?php echo t('Kelas', 'Courses'); ?></span>
+            </div>
+            <div class="mob-hero-stat">
+                <b><?php echo $total_seminars; ?></b>
+                <span><?php echo t('Seminar', 'Seminars'); ?></span>
+            </div>
+            <div class="mob-hero-stat">
+                <b><?php echo $total_students; ?></b>
+                <span><?php echo t('Siswa', 'Students'); ?></span>
+            </div>
+            <?php if ($current_role === 'admin'): ?>
+            <div class="mob-hero-stat">
+                <b>Rp<?php echo number_format($total_revenue / 1000000, 1, ',', '.'); ?>jt</b>
+                <span><?php echo t('Revenue', 'Revenue'); ?></span>
+            </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- Quick Actions Grid -->
+    <div class="mob-quick-grid">
+        <a href="<?php echo base_url('admin/create_course'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-plus-circle"></i></span>
+            <span><?php echo t('Buat Kelas', 'New Course'); ?></span>
+        </a>
+        <a href="<?php echo base_url('admin/create_seminar'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-calendar-plus"></i></span>
+            <span><?php echo t('Buat Seminar', 'New Seminar'); ?></span>
+        </a>
+        <?php if ($current_role === 'admin'): ?>
+        <a href="<?php echo base_url('admin/transactions'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-receipt"></i></span>
+            <span><?php echo t('Transaksi', 'Transactions'); ?></span>
+        </a>
+        <a href="<?php echo base_url('admin/users'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-users"></i></span>
+            <span><?php echo t('Pengguna', 'Users'); ?></span>
+        </a>
+        <a href="<?php echo base_url('admin/analytics'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#fef3c7;color:#d97706;"><i class="fas fa-chart-line"></i></span>
+            <span><?php echo t('Analitik', 'Analytics'); ?></span>
+        </a>
+        <a href="<?php echo base_url('admin/settings/general'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#E6EBEF;color:#57534e;"><i class="fas fa-cog"></i></span>
+            <span><?php echo t('Pengaturan', 'Settings'); ?></span>
+        </a>
+        <?php else: ?>
+        <a href="<?php echo base_url('admin/submissions'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-code"></i></span>
+            <span><?php echo t('Tugas', 'Submissions'); ?></span>
+        </a>
+        <a href="<?php echo base_url('admin/courses'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-book-open"></i></span>
+            <span><?php echo t('Kelas', 'Courses'); ?></span>
+        </a>
+        <a href="<?php echo base_url('admin/seminars'); ?>" class="mob-quick-item">
+            <span class="qi-ic" style="background:#fef3c7;color:#d97706;"><i class="fas fa-calendar"></i></span>
+            <span><?php echo t('Seminar', 'Seminars'); ?></span>
+        </a>
+        <?php endif; ?>
+    </div>
+
+    <!-- Enrollment Chart -->
+    <div class="mob-section-head">
+        <h6><i class="fas fa-chart-line" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Analytics Pendaftaran', 'Enrollment Analytics'); ?></h6>
+    </div>
+    <div class="mob-list-card p-3" style="border-radius:16px;">
+        <div style="position: relative; width: 100%; height: 190px;">
+            <canvas id="enrollmentChart"></canvas>
+        </div>
+    </div>
+
+    <!-- Transactions (mobile) -->
+    <?php if ($current_role === 'admin'): ?>
+    <div class="mob-section-head">
+        <h6><i class="fas fa-receipt" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Verifikasi Transaksi', 'Transaction Verification'); ?></h6>
+        <a href="<?php echo base_url('admin/transactions'); ?>"><?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
+    </div>
+    <?php if (empty($transactions)): ?>
+        <div class="mob-empty">
+            <i class="fas fa-receipt"></i>
+            <p><?php echo t('Belum Ada Transaksi', 'No Transactions Yet'); ?></p>
+            <a href="<?php echo base_url('admin/transactions'); ?>"><?php echo t('Lihat Transaksi', 'View Transactions'); ?></a>
+        </div>
+    <?php else: ?>
+        <div class="mob-list-card">
+            <?php foreach (array_slice($transactions, 0, 5) as $tx): ?>
+                <div class="mob-list-row" style="cursor:default;">
+                    <div class="mob-avatar" style="background:<?php echo $tx->status === 'approved' ? '#E0F2F1' : ($tx->status === 'rejected' ? '#fef2f2' : '#fff7ed'); ?>;color:<?php echo $tx->status === 'approved' ? '#009688' : ($tx->status === 'rejected' ? '#dc2626' : '#d97706'); ?>;">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="mob-list-body">
+                        <div class="mob-list-title"><?php echo htmlspecialchars($tx->user_name); ?></div>
+                        <div class="mob-list-sub">#<?php echo $tx->id; ?> · <?php echo strtoupper(str_replace('_', ' ', !empty($tx->payment_channel) ? $tx->payment_channel : 'transfer')); ?> · Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
+                    </div>
+                    <?php if ($tx->status === 'pending'): ?>
+                        <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background:#E0F2F1;color:#009688;font-size:0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>"><i class="fas fa-check"></i></a>
+                        <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border:1px solid #fca5a5;color:#f43f5e;font-size:0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>"><i class="fas fa-times"></i></a>
+                    <?php else: ?>
+                        <?php
+                        $chip = 'mob-chip-gray';
+                        $chip_text = $tx->status;
+                        if ($tx->status === 'approved') { $chip = 'mob-chip-green'; $chip_text = 'Approved'; }
+                        elseif ($tx->status === 'rejected') { $chip = 'mob-chip-red'; $chip_text = 'Rejected'; }
+                        else { $chip_text = 'Pending'; }
+                        ?>
+                        <span class="mob-chip <?php echo $chip; ?>"><?php echo $chip_text; ?></span>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
+    <?php endif; ?>
+
+</div><!-- /.dashboard-mobile-only -->
+
+<!-- ============================================================
+     ADMIN DASHBOARD — DESKTOP VIEW (kept as-is, minor polish)
+     ============================================================ -->
+<div class="dashboard-desktop-only">
+
+    <div class="container-fluid py-4" style="max-width: 1400px;">
     <!-- Header -->
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
         <div>
@@ -74,8 +217,8 @@
         <div class="col-6 col-md-3">
             <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
                 <div class="d-flex align-items-center gap-3">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #faf5ff;">
-                        <i class="fas fa-wallet" style="color: #a855f7; font-size: 0.9rem;"></i>
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #E0F2F1;">
+                        <i class="fas fa-wallet" style="color: #009688; font-size: 0.9rem;"></i>
                     </div>
                     <div>
                         <div class="fw-bold" style="color: #0D1830; font-size: 1.2rem; line-height: 1;">Rp <?php echo number_format($total_revenue / 1000000, 1, ',', '.'); ?>jt</div>
@@ -98,7 +241,7 @@
                     </h6>
                 </div>
                 <div style="position: relative; width: 100%; height: 240px;">
-                    <canvas id="enrollmentChart"></canvas>
+                    <canvas id="enrollmentChartDesktop"></canvas>
                 </div>
             </div>
         </div>
@@ -220,14 +363,16 @@
         <?php endif; ?>
     </div>
     <?php endif; ?>
-</div>
+    </div>
+</div><!-- /.dashboard-desktop-only -->
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<!-- Chart.js (loaded by admin_footer when load_chartjs) -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var ctx = document.getElementById('enrollmentChart');
-    if (ctx) {
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    var canvasId = isMobile ? 'enrollmentChart' : 'enrollmentChartDesktop';
+    var ctx = document.getElementById(canvasId);
+    if (ctx && window.Chart) {
         new Chart(ctx, {
             type: 'line',
             data: {

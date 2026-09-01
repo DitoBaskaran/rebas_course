@@ -20,7 +20,7 @@
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- BISATUNTAS Design System v3.0 -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=16'); ?>">
     <!-- BISATUNTAS Colorful Playful Override -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas-playful-alt.css'); ?>">
     <!-- TinyMCE for rich text editing -->
@@ -71,7 +71,7 @@
     <script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','<?php echo $fb_pixel; ?>');fbq('track','PageView');</script>
     <?php endif; ?>
 </head>
-<body class="playful">
+<body class="playful has-bottom-nav">
 
     <!-- Top Bar -->
     <nav class="admin-topbar">

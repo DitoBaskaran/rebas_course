@@ -1983,6 +1983,37 @@ h1, h2, h3, h4, h5, h6,
 .mob-empty p { font-size: 0.78rem; margin-bottom: 0.4rem; color: var(--gray-500, #78716c); }
 .mob-empty a { font-size: 0.75rem; font-weight: 700; color: var(--primary, #009688); text-decoration: none; }
 
+/* ===== ADMIN MOBILE DASHBOARD ===== */
+.admin-mob-hero {
+  background: linear-gradient(135deg, #0D1830 0%, #134e4a 55%, #009688 100%);
+  box-shadow: 0 12px 28px -10px rgba(13,24,48,0.45);
+}
+.playful[data-theme="dark"] .admin-mob-hero {
+  box-shadow: 0 12px 28px -10px rgba(13,24,48,0.6);
+}
+.admin-mob-hero::after {
+  right: -30px; top: -40px;
+  width: 150px; height: 150px;
+  background: rgba(255,255,255,0.08);
+}
+.admin-mob-hero::before {
+  right: 40px; bottom: -50px;
+  width: 100px; height: 100px;
+  background: rgba(255,255,255,0.06);
+}
+/* 4 stat di layar sempit: angka sedikit lebih kecil */
+.admin-mob-hero .mob-hero-stat { padding: 0.55rem 0.3rem; }
+.admin-mob-hero .mob-hero-stat b { font-size: 0.92rem; }
+@media (max-width: 360px) {
+  .admin-mob-hero .mob-hero-stat b { font-size: 0.8rem; }
+  .admin-mob-hero .mob-hero-stat span { font-size: 0.55rem; }
+}
+/* Transaksi mobile: baris non-link, tap area nyaman */
+.mob-list-row.mob-row-static { cursor: default; }
+.mob-list-row.mob-row-static:active { background: transparent; }
+/* Canvas mobile jangan meluber */
+.dashboard-mobile-only canvas { max-width: 100%; }
+
 /* Desktop: hide mobile app styles inside dashboard */
 .dashboard-mobile-only { display: none; }
 @media (max-width: 768px) {
