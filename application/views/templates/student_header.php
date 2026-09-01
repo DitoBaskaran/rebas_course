@@ -60,9 +60,6 @@
                     <?php $logo_url = site_logo_url(); if ($logo_url): ?>
                         <img src="<?php echo $logo_url; ?>" alt="Logo" class="admin-topbar-logo">
                     <?php else: ?>
-                        <span class="admin-topbar-logo-icon">
-                            <i data-lucide="graduation-cap" style="width:16px;height:16px;"></i>
-                        </span>
                         <img src="<?php echo base_url('assets/img/bisatuntas-logo-v2.png'); ?>" alt="BISATUNTAS" style="height:26px;width:auto;">
                     <?php endif; ?>
                 </a>
