@@ -78,23 +78,46 @@
             <span class="d-inline-flex align-items-center justify-content-center" style="width: 26px; height: 26px; border-radius: 8px; background: #E0F2F1; color: #009688; font-size: 0.7rem;"><i class="fas fa-calendar-alt"></i></span>
             <?php echo t('Jadwal Tersedia', 'Available Schedule'); ?>
         </h6>
-        <?php $day_names = array(t('Min', 'Sun'), t('Sen', 'Mon'), t('Sel', 'Tue'), t('Rab', 'Wed'), t('Kam', 'Thu'), t('Jum', 'Fri'), t('Sab', 'Sat')); ?>
-        <div class="row g-2">
-            <?php foreach ($week_slots as $day_idx => $slots): ?>
-                <div class="col text-center mb-2">
-                    <div class="fw-bold mb-2" style="color: #0D1830; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em;"><?php echo $day_names[$day_idx]; ?></div>
-                    <?php if (empty($slots)): ?>
-                        <div style="color: #d4d4d4; font-size: 0.7rem;">-</div>
-                    <?php else: ?>
-                        <?php foreach ($slots as $slot): ?>
-                            <div class="rounded-3 p-1 mb-1 mn-slot" style="background: #E6EBEF; font-size: 0.68rem; color: #0D1830; font-weight: 600;">
-                                <?php echo substr($slot->start_time, 0, 5); ?>-<?php echo substr($slot->end_time, 0, 5); ?>
+
+        <?php
+            $day_names_short = array(t('Min', 'Sun'), t('Sen', 'Mon'), t('Sel', 'Tue'), t('Rab', 'Wed'), t('Kam', 'Thu'), t('Jum', 'Fri'), t('Sab', 'Sat'));
+            $avail_days = array();
+            foreach ($week_slots as $d_idx => $slots) { if (!empty($slots)) $avail_days[] = $d_idx; }
+            $first_avail = !empty($avail_days) ? $avail_days[0] : null;
+        ?>
+
+        <?php if (empty($avail_days)): ?>
+            <div class="text-center py-4" style="color: #a8a29e; font-size: 0.85rem;">
+                <i class="far fa-calendar-times d-block mb-2" style="font-size: 1.6rem; color: #d4d4d4;"></i>
+                <?php echo t('Mentor belum mengatur jadwal.', 'Mentor has not set a schedule.'); ?>
+            </div>
+        <?php else: ?>
+            <!-- Day tabs (hanya hari yang punya slot) -->
+            <div class="d-flex gap-2 overflow-auto pb-1 mb-3" id="detailDayTabs" style="scrollbar-width: none; -ms-overflow-style: none;">
+                <?php foreach ($avail_days as $d_idx): ?>
+                    <button type="button" class="mn-day-tab flex-shrink-0 <?php echo $d_idx === $first_avail ? 'active' : ''; ?>" data-day="<?php echo $d_idx; ?>">
+                        <?php echo $day_names_short[$d_idx]; ?>
+                        <span class="mn-day-tab-count"><?php echo count($week_slots[$d_idx]); ?></span>
+                    </button>
+                <?php endforeach; ?>
+            </div>
+
+            <!-- Slot panels: satu hari per tampilan -->
+            <?php foreach ($avail_days as $d_idx): ?>
+                <div class="mn-day-panel" data-day-panel="<?php echo $d_idx; ?>" style="<?php echo $d_idx === $first_avail ? '' : 'display:none;'; ?>">
+                    <div class="row g-2">
+                        <?php foreach ($week_slots[$d_idx] as $slot): ?>
+                            <div class="col-6 col-sm-4 col-md-3">
+                                <div class="mn-slot-view text-center">
+                                    <i class="far fa-clock me-1" style="font-size: 0.62rem;"></i>
+                                    <?php echo substr($slot->start_time, 0, 5); ?>-<?php echo substr($slot->end_time, 0, 5); ?>
+                                </div>
                             </div>
                         <?php endforeach; ?>
-                    <?php endif; ?>
+                    </div>
                 </div>
             <?php endforeach; ?>
-        </div>
+        <?php endif; ?>
     </div>
 
     <!-- ===== BOOK CTA ===== -->
@@ -153,4 +176,56 @@
 @media (min-width: 768px) {
     .mn-detail-book-spacer { display: none; }
 }
+
+/* Day tabs (dipakai juga di book.php, definisi ulang lokal agar halaman detail berdiri sendiri) */
+.mn-day-tab {
+    border: 1.5px solid #E6EBEF;
+    background: #fff;
+    color: #57534E;
+    border-radius: 100px;
+    padding: 0.5rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.15s;
+}
+.mn-day-tab-count {
+    background: #E6EBEF;
+    color: #57534E;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 0.05rem 0.4rem;
+    border-radius: 100px;
+}
+.mn-day-tab.active { background: #0D1830; border-color: #0D1830; color: #fff; }
+.mn-day-tab.active .mn-day-tab-count { background: #FBBF24; color: #0D1830; }
+
+/* Slot read-only (halaman detail, bukan form) */
+.mn-slot-view {
+    border: 1.5px solid #E6EBEF;
+    background: #E6EBEF;
+    color: #0D1830;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.6rem 0.5rem;
+    border-radius: 10px;
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var tabs = document.querySelectorAll('#detailDayTabs .mn-day-tab');
+    tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+            var day = tab.getAttribute('data-day');
+            tabs.forEach(function(t) { t.classList.remove('active'); });
+            tab.classList.add('active');
+            document.querySelectorAll('.mn-day-panel').forEach(function(panel) {
+                panel.style.display = panel.getAttribute('data-day-panel') === day ? '' : 'none';
+            });
+        });
+    });
+});
+</script>
