@@ -148,6 +148,11 @@ class Mentor_dashboard extends MY_Controller {
         $session = $this->Mentoring_bookings_model->get_by_id($session_id);
         if ($session && $session->mentor_id == $mentor->id) {
             $this->Mentoring_bookings_model->update($session_id, array('status' => 'confirmed', 'mentor_confirmed_at' => date('Y-m-d H:i:s')));
+
+            // Notifikasi WhatsApp ke student: sesi dikonfirmasi
+            $this->load->helper('wa_notification');
+            wa_notify_session_confirmed($session);
+
             $this->session->set_flashdata('success', t('Sesi dikonfirmasi.', 'Session confirmed.'));
         }
         redirect('mentor/sessions');
@@ -162,6 +167,11 @@ class Mentor_dashboard extends MY_Controller {
             $this->Mentoring_bookings_model->update($session_id, array('status' => 'cancelled', 'cancelled_by' => 'mentor', 'cancelled_at' => date('Y-m-d H:i:s')));
             if ($session->availability_id) $this->Mentor_availability_model->mark_available($session->availability_id);
             if ($session->balance_id) { $this->load->model('User_mentoring_balance_model'); $this->User_mentoring_balance_model->restore_session($session->balance_id); }
+
+            // Notifikasi WhatsApp ke student: sesi ditolak mentor
+            $this->load->helper('wa_notification');
+            wa_notify_session_rejected($session);
+
             $this->session->set_flashdata('success', t('Sesi ditolak. Kuota dikembalikan ke user.', 'Session rejected. Quota restored to user.'));
         }
         redirect('mentor/sessions');

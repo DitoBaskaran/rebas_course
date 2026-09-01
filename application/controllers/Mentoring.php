@@ -118,7 +118,7 @@ class Mentoring extends MY_Controller {
             redirect('mentoring/book/' . $this->input->post('mentor_id'));
         }
         $mentor = $this->Mentor_model->get_by_id($mentor_id);
-        $day_names = array('Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu');
+        $day_names = array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
         $scheduled_at = ($slot->date_override) ? $slot->date_override : date('Y-m-d', strtotime('next ' . $day_names[$slot->day_of_week]));
         $scheduled_at .= ' ' . $slot->start_time;
         $booking_id = $this->Mentoring_bookings_model->create(array(
@@ -128,6 +128,12 @@ class Mentoring extends MY_Controller {
         ));
         $this->Mentor_availability_model->mark_booked($availability_id, $booking_id);
         $this->User_mentoring_balance_model->deduct_session($balance_id);
+
+        // Notifikasi WhatsApp ke mentor: ada booking baru
+        $this->load->helper('wa_notification');
+        $new_session = $this->Mentoring_bookings_model->get_by_id($booking_id);
+        wa_notify_mentor_new_booking($new_session);
+
         $this->session->set_flashdata('success', t('Sesi berhasil dibooking! Menunggu konfirmasi mentor.', 'Session booked! Awaiting mentor confirmation.'));
         redirect('mentoring/my-sessions');
     }

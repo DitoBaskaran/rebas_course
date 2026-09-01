@@ -226,6 +226,7 @@ $route['blog'] = 'courses?content_type=article';
 // Auth routes
 $route['auth/forgot_password'] = 'auth/forgot_password';
 $route['auth/reset_password/(:any)'] = 'auth/reset_password/$1';
+$route['auth/verify-otp'] = 'auth/verify_otp';
 
 // Affiliate routes
 $route['affiliate'] = 'affiliate/index';

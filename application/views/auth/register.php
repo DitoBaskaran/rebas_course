@@ -31,6 +31,13 @@ ob_start();
     </div>
 </div>
 <div class="au2-field">
+    <label for="phone"><?php echo t('No. WhatsApp', 'WhatsApp Number'); ?></label>
+    <div class="au2-input-wrap">
+        <i class="fab fa-whatsapp"></i>
+        <input type="tel" name="phone" id="phone" value="<?php echo set_value('phone'); ?>" required placeholder="081234567890" autocomplete="tel">
+    </div>
+</div>
+<div class="au2-field">
     <label for="password"><?php echo t('Kata Sandi', 'Password'); ?></label>
     <div class="au2-input-wrap">
         <i class="fas fa-lock"></i>
