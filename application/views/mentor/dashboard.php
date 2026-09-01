@@ -1,4 +1,7 @@
 <div class="container-fluid py-4">
+    <!-- Banner Carousel -->
+    <?php $this->load->view('partials/banner_carousel'); ?>
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h4 class="fw-extrabold mb-1"><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></h4>

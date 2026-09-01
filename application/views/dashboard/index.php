@@ -5,6 +5,9 @@
          ============================================================ -->
     <div class="dashboard-mobile-only">
 
+        <!-- Banner Carousel -->
+        <?php $this->load->view('partials/banner_carousel'); ?>
+
         <!-- Hero Card -->
         <div class="mob-hero-card">
             <div class="mob-hero-greeting">
@@ -218,6 +221,9 @@
          DESKTOP VIEW
          ============================================================ -->
     <div class="dashboard-desktop-only">
+
+        <!-- Banner Carousel -->
+        <?php $this->load->view('partials/banner_carousel'); ?>
 
         <!-- Header with greeting -->
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">

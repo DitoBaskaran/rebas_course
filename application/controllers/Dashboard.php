@@ -15,6 +15,7 @@ class Dashboard extends MY_Controller {
         $this->load->model('Certificate_model');
         $this->load->model('Learning_path_model');
         $this->load->model('Mentoring_model');
+        $this->load->model('Banner_model');
     }
 
     public function index() {
@@ -34,6 +35,7 @@ class Dashboard extends MY_Controller {
         $data['certificates'] = $this->Certificate_model->get_user_certificates($user_id);
         $data['learning_paths'] = $this->Learning_path_model->get_user_paths($user_id);
         $data['mentoring_sessions'] = $this->Mentoring_model->get_student_sessions($user_id);
+        $data['banners'] = $this->Banner_model->get_all('student', TRUE);
 
         // Add progress for each course
         $course_ids = array_column($data['enrolled_courses'], 'id');

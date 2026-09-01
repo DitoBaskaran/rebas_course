@@ -1990,6 +1990,64 @@ h1, h2, h3, h4, h5, h6,
   .dashboard-desktop-only { display: none !important; }
 }
 
+/* ===== BANNER CAROUSEL (Dashboard student & mentor) ===== */
+.banner-carousel-wrap {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,0.18);
+  margin-bottom: 1.25rem;
+}
+.banner-carousel-wrap .banner-img {
+  height: 150px;
+  object-fit: cover;
+  width: 100%;
+}
+.banner-placeholder {
+  height: 150px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 60%, #34d399 100%);
+  color: #fff;
+}
+.banner-ph-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.banner-ph-sub {
+  font-size: 0.7rem;
+  opacity: 0.8;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  margin-top: 0.2rem;
+}
+.banner-indicators {
+  margin-bottom: 0.5rem;
+}
+.banner-indicators [data-bs-target] {
+  width: 7px;
+  height: 7px;
+  border-radius: 100px;
+  background: rgba(255,255,255,0.6);
+  border: none;
+  opacity: 1;
+  transition: all 0.2s;
+}
+.banner-indicators .active {
+  width: 18px;
+  background: #fff;
+}
+.banner-carousel .banner-ctrl {
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  opacity: 0.6;
+}
+.banner-carousel:hover .banner-ctrl { opacity: 1; }
+
+@media (min-width: 768px) {
+  .banner-carousel-wrap .banner-img,
+  .banner-placeholder { height: 220px; }
+  .banner-ph-title { font-size: 1.5rem; }
+}
+
 @media (max-width: 768px) {
   .navbar { padding-top: 0.625rem; padding-bottom: 0.625rem; }
   .display-4 { font-size: 2rem !important; }

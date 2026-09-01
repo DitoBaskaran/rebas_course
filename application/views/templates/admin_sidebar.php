@@ -32,6 +32,9 @@
     <a class="nav-link <?php echo $active_page === 'packages' ? 'active' : ''; ?>" href="<?php echo base_url('admin/packages'); ?>">
         <i data-lucide="layers"></i> <span><?php echo t('Paket Langganan', 'Subscription Packages'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'banners' ? 'active' : ''; ?>" href="<?php echo base_url('admin/banners'); ?>">
+        <i data-lucide="image"></i> <span><?php echo t('Banner Dashboard', 'Dashboard Banners'); ?></span>
+    </a>
     <a class="nav-link <?php echo $active_page === 'users' ? 'active' : ''; ?>" href="<?php echo base_url('admin/users'); ?>">
         <i data-lucide="users"></i> <span><?php echo t('Pengguna', 'Users'); ?></span>
     </a>

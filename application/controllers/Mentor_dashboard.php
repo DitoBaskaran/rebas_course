@@ -13,6 +13,7 @@ class Mentor_dashboard extends MY_Controller {
         $this->load->model('Mentor_model');
         $this->load->model('Mentoring_bookings_model');
         $this->load->model('Mentor_availability_model');
+        $this->load->model('Banner_model');
     }
 
     private function get_mentor_profile() {
@@ -51,6 +52,7 @@ class Mentor_dashboard extends MY_Controller {
         $data['upcoming'] = $this->Mentoring_bookings_model->get_upcoming_by_mentor($mentor->id);
         $data['total_pending'] = $this->Mentoring_bookings_model->count_by_mentor($mentor->id, 'pending');
         $data['total_completed'] = $this->Mentoring_bookings_model->count_by_mentor($mentor->id, 'completed');
+        $data['banners'] = $this->Banner_model->get_all('mentor', TRUE);
         $this->_template_header($data);
         $this->load->view('mentor/dashboard', $data);
         $this->_template_footer($data);

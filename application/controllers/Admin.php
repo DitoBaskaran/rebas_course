@@ -1074,6 +1074,126 @@ class Admin extends MY_Controller {
     }
 
     // ===== USER MANAGEMENT =====
+    public function banners() {
+        $this->load->model('Banner_model');
+        $data['title'] = t('Banner Dashboard', 'Dashboard Banners');
+        $data['active_page'] = 'banners';
+        $data['banners'] = $this->Banner_model->get_all();
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/banners/list', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function banners_create() {
+        $this->load->model('Banner_model');
+        $this->form_validation->set_rules('title', t('Judul', 'Title'), 'trim|required');
+        $this->form_validation->set_rules('link', t('Tautan', 'Link'), 'trim');
+        $this->form_validation->set_rules('target', t('Target', 'Target'), 'required|in_list[student,mentor,both]');
+
+        if ($this->form_validation->run() == FALSE) {
+            $data['title'] = t('Tambah Banner', 'Add Banner');
+            $data['active_page'] = 'banners';
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('admin/banners/form', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $image = '';
+            if (!empty($_FILES['image']['name'])) {
+                $config = array(
+                    'upload_path' => FCPATH . 'uploads/banners/',
+                    'allowed_types' => 'jpg|jpeg|png|webp',
+                    'max_size' => 2048,
+                    'encrypt_name' => TRUE,
+                );
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('image')) {
+                    $image = $this->upload->data('file_name');
+                } else {
+                    $this->session->set_flashdata('error', $this->upload->display_errors());
+                    redirect('admin/banners_create');
+                }
+            }
+            $this->Banner_model->create(array(
+                'title' => $this->input->post('title'),
+                'image' => $image,
+                'link' => $this->input->post('link'),
+                'target' => $this->input->post('target'),
+                'is_active' => $this->input->post('is_active') ? 1 : 0,
+            ));
+            $this->session->set_flashdata('success', t('Banner berhasil ditambahkan.', 'Banner added successfully.'));
+            redirect('admin/banners');
+        }
+    }
+
+    public function banners_edit($id) {
+        $this->load->model('Banner_model');
+        $banner = $this->Banner_model->get_by_id($id);
+        if (!$banner) show_404();
+
+        $this->form_validation->set_rules('title', t('Judul', 'Title'), 'trim|required');
+        $this->form_validation->set_rules('link', t('Tautan', 'Link'), 'trim');
+        $this->form_validation->set_rules('target', t('Target', 'Target'), 'required|in_list[student,mentor,both]');
+
+        if ($this->form_validation->run() == FALSE) {
+            $data['title'] = t('Edit Banner', 'Edit Banner');
+            $data['active_page'] = 'banners';
+            $data['banner'] = $banner;
+            $this->load->view('templates/admin_header', $data);
+            $this->load->view('admin/banners/form', $data);
+            $this->load->view('templates/admin_footer');
+        } else {
+            $update = array(
+                'title' => $this->input->post('title'),
+                'link' => $this->input->post('link'),
+                'target' => $this->input->post('target'),
+                'is_active' => $this->input->post('is_active') ? 1 : 0,
+            );
+            if (!empty($_FILES['image']['name'])) {
+                $config = array(
+                    'upload_path' => FCPATH . 'uploads/banners/',
+                    'allowed_types' => 'jpg|jpeg|png|webp',
+                    'max_size' => 2048,
+                    'encrypt_name' => TRUE,
+                );
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('image')) {
+                    // hapus file lama
+                    if ($banner->image && file_exists(FCPATH . 'uploads/banners/' . $banner->image)) {
+                        @unlink(FCPATH . 'uploads/banners/' . $banner->image);
+                    }
+                    $update['image'] = $this->upload->data('file_name');
+                } else {
+                    $this->session->set_flashdata('error', $this->upload->display_errors());
+                    redirect('admin/banners_edit/' . $id);
+                }
+            }
+            $this->Banner_model->update($id, $update);
+            $this->session->set_flashdata('success', t('Banner berhasil diperbarui.', 'Banner updated successfully.'));
+            redirect('admin/banners');
+        }
+    }
+
+    public function banners_delete($id) {
+        $this->load->model('Banner_model');
+        $banner = $this->Banner_model->get_by_id($id);
+        if (!$banner) show_404();
+        if ($banner->image && file_exists(FCPATH . 'uploads/banners/' . $banner->image)) {
+            @unlink(FCPATH . 'uploads/banners/' . $banner->image);
+        }
+        $this->Banner_model->delete($id);
+        $this->session->set_flashdata('success', t('Banner dihapus.', 'Banner deleted.'));
+        redirect('admin/banners');
+    }
+
+    public function banners_toggle($id) {
+        $this->load->model('Banner_model');
+        $banner = $this->Banner_model->get_by_id($id);
+        if (!$banner) show_404();
+        $this->Banner_model->update($id, array('is_active' => $banner->is_active ? 0 : 1));
+        $this->session->set_flashdata('success', t('Status banner diperbarui.', 'Banner status updated.'));
+        redirect('admin/banners');
+    }
+
     public function users() {
         if ($this->session->userdata('role') !== 'admin') {
             $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
