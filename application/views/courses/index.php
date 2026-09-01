@@ -66,8 +66,8 @@
                         && $course->thumbnail !== 'default_course.png';
                     ?>
                     <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="mob-course-card text-decoration-none w-100" style="width:auto;">
-                        <div class="d-flex align-items-center gap-3 mb-2">
-                            <div class="mob-course-thumb" style="background: <?php echo $crs_grads[$gi]; ?>; width: 64px; height: 48px; margin-bottom: 0; flex-shrink: 0; border-radius: 12px; font-size: 1.1rem;">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="mob-course-thumb" style="background: <?php echo $crs_grads[$gi]; ?>; width: 80px; height: 60px; margin-bottom: 0; flex-shrink: 0; border-radius: 12px; font-size: 1.2rem;">
                                 <?php if ($crs_thumb_ok): ?>
                                     <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="">
                                 <?php else: ?>
@@ -160,9 +160,13 @@
                     <div class="col-md-6 col-lg-4">
                         <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none">
                             <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 14px; background: #fff; overflow: hidden; transition: all 0.15s;">
-                                <div class="position-relative overflow-hidden" style="height: 120px; background: <?php echo $crs_grads2[$gi2]; ?>;">
+                                <div class="position-relative overflow-hidden" style="height: 140px; background: <?php echo $crs_grads2[$gi2]; ?>;">
                                     <?php if ($crs_thumb_ok2): ?>
                                         <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" class="w-100 h-100" style="object-fit: cover;">
+                                    <?php else: ?>
+                                        <div class="w-100 h-100 d-flex align-items-center justify-content-center" style="color: #fff; font-size: 2.4rem; font-weight: 800;">
+                                            <?php echo strtoupper(substr(trim($course->title), 0, 1)); ?>
+                                        </div>
                                     <?php endif; ?>
                                     <div class="position-absolute top-0 start-0 m-2 d-flex gap-1 flex-wrap">
                                         <span class="px-2 py-1 rounded-pill fw-semibold" style="background: rgba(17,24,39,0.85); color: #fff; font-size: 0.6rem;"><?php echo content_type_label($course->content_type); ?></span>
@@ -331,41 +335,41 @@
             <p style="color: #737373; font-size: 0.85rem;"><?php echo t('Coba ubah filter atau kata kunci pencarian Anda.', 'Try changing your filters or search keywords.'); ?></p>
         </div>
     <?php else: ?>
-        <div class="row row-cols-1 row-cols-md-2 g-3">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
             <?php foreach ($courses as $i => $course): ?>
                 <div class="col">
-                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none">
-                        <div class="card h-100" style="border: 1px solid #e5e5e5; border-radius: 12px; transition: all 0.15s; display: flex; flex-direction: row; overflow: hidden;">
-                            <!-- Thumbnail kiri -->
-                            <div class="position-relative overflow-hidden" style="width: 140px; min-height: 140px; flex-shrink: 0;">
-                                <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60';" alt="" class="w-100 h-100" style="object-fit: cover;">
+                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none h-100 d-block">
+                        <div class="card h-100 crs-card-v" style="border: 1px solid #e5e5e5; border-radius: 14px; transition: all 0.2s; overflow: hidden; background: #fff;">
+                            <!-- Thumbnail atas -->
+                            <div class="position-relative overflow-hidden crs-card-thumb">
+                                <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.parentNode.style.background='linear-gradient(135deg,#059669,#10b981)';this.style.display='none';this.parentNode.innerHTML='<span class=crs-card-thumb-init>'+'<?php echo strtoupper(substr(trim($course->title),0,1)); ?>'+'</span>';" alt="" class="w-100 h-100" style="object-fit: cover;">
                                 <div class="position-absolute top-0 start-0 m-2 d-flex gap-1 flex-wrap">
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #111827; color: #fff; font-size: 0.65rem;"><?php echo content_type_label($course->content_type); ?></span>
+                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: rgba(17,24,39,0.85); color: #fff; font-size: 0.62rem;"><?php echo content_type_label($course->content_type); ?></span>
                                 </div>
                             </div>
-                            <!-- Info kanan -->
-                            <div class="card-body p-3 d-flex flex-column flex-grow-1">
+                            <!-- Info bawah -->
+                            <div class="card-body p-3 d-flex flex-column">
                                 <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
-                                    <span style="color: #a3a3a3; font-size: 0.7rem; font-weight: 500;">
-                                        <i class="fas fa-folder-open me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
+                                    <span style="color: #a3a3a3; font-size: 0.68rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                        <i class="fas fa-folder-open me-1" style="font-size: 0.55rem;"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?>
                                     </span>
                                     <?php if ($course->price > 0): ?>
-                                        <span class="px-2 py-1 rounded-pill fw-bold" style="background: #059669; color: #111827; font-size: 0.65rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
+                                        <span class="px-2 py-1 rounded-pill fw-bold flex-shrink-0" style="background: #059669; color: #fff; font-size: 0.62rem;">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
                                     <?php else: ?>
-                                        <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #22c55e; color: #fff; font-size: 0.65rem;"><?php echo t('Gratis', 'Free'); ?></span>
+                                        <span class="px-2 py-1 rounded-pill fw-semibold flex-shrink-0" style="background: #22c55e; color: #fff; font-size: 0.62rem;"><?php echo t('Gratis', 'Free'); ?></span>
                                     <?php endif; ?>
                                 </div>
-                                <h6 class="fw-bold mb-1 lh-sm" style="color: #111827; font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                                <h6 class="fw-bold mb-1 lh-sm crs-card-title" style="color: #111827; font-size: 0.875rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
                                     <?php echo htmlspecialchars($course->title); ?>
                                 </h6>
-                                <p class="mb-2 flex-grow-1" style="color: #737373; font-size: 0.78rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
+                                <p class="mb-2 crs-card-desc" style="color: #737373; font-size: 0.76rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.5;">
                                     <?php echo htmlspecialchars($course->description); ?>
                                 </p>
-                                <div class="d-flex align-items-center justify-content-between pt-2" style="border-top: 1px solid #f0f0f0;">
-                                    <span style="color: #a3a3a3; font-size: 0.7rem; font-weight: 500;">
-                                        <i class="fas fa-user me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?>
+                                <div class="d-flex align-items-center justify-content-between pt-2 mt-auto" style="border-top: 1px solid #f0f0f0;">
+                                    <span style="color: #a3a3a3; font-size: 0.68rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 60%;">
+                                        <i class="fas fa-user me-1" style="font-size: 0.55rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?>
                                     </span>
-                                    <span class="px-2 py-1 rounded-pill" style="background: #f5f5f5; color: #525252; font-size: 0.65rem; font-weight: 600;">
+                                    <span class="px-2 py-1 rounded-pill flex-shrink-0" style="background: #f5f5f5; color: #525252; font-size: 0.62rem; font-weight: 600;">
                                         <?php echo skill_level_label($course->skill_level); ?>
                                     </span>
                                 </div>
@@ -377,4 +381,25 @@
         </div>
     <?php endif; ?>
 </div>
+
+<style>
+.crs-card-v { box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+.crs-card-v:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.10); border-color: #d6d3d1; }
+.crs-card-thumb {
+    aspect-ratio: 16/9;
+    min-height: 0;
+    background: #f5f5f5;
+}
+.crs-card-thumb img { display: block; }
+.crs-card-thumb-init {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.2rem; font-weight: 800; color: #fff;
+}
+.crs-card-title { min-height: 2.5em; }
+.crs-card-desc { min-height: 2.4em; }
+@media (max-width: 767px) {
+    .crs-card-thumb { aspect-ratio: 16/9; }
+}
+</style>
 <?php endif; ?>
