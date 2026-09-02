@@ -19,22 +19,27 @@
             </div>
         <?php else: ?>
 
-        <!-- Mobile: kartu eksplisit (gaya voucher) -->
+        <!-- Mobile: kartu eksplisit (thumbnail + jarak) -->
         <div class="app-row-list app-list">
             <?php foreach ($coupons as $c): ?>
                 <?php
                     $discount_txt = $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.');
                     $usage_txt = $c->used_count . ($c->max_uses ? '/' . $c->max_uses : '');
                     $expired_txt = $c->expired_at ? date('d M Y', strtotime($c->expired_at)) : t('Tanpa Batas', 'No Expiry');
+                    $img_ok = !empty($c->image) && file_exists(FCPATH . 'uploads/coupons/' . $c->image);
                 ?>
                 <div class="app-row app-row-card app-coupon-card">
-                    <div class="app-coupon-disc">
-                        <b><?php echo $discount_txt; ?></b>
-                        <span><?php echo t('diskon', 'OFF'); ?></span>
-                    </div>
+                    <?php if ($img_ok): ?>
+                        <img src="<?php echo base_url('uploads/coupons/' . $c->image); ?>" alt="" class="app-coupon-thumb" loading="lazy">
+                    <?php else: ?>
+                        <div class="app-coupon-disc">
+                            <b><?php echo $discount_txt; ?></b>
+                            <span><?php echo t('diskon', 'OFF'); ?></span>
+                        </div>
+                    <?php endif; ?>
                     <div class="app-row-main">
                         <div class="app-row-title" style="font-family:monospace;letter-spacing:0.04em;"><?php echo htmlspecialchars($c->code); ?></div>
-                        <div class="app-row-sub"><?php echo t('Sisa', 'Used'); ?>: <?php echo $usage_txt; ?> <span class="mob-sub-sep">·</span> <?php echo t('s/d', 'until'); ?> <?php echo $expired_txt; ?></div>
+                        <div class="app-row-sub"><?php echo $discount_txt; ?> <span class="mob-sub-sep">·</span> <?php echo t('Sisa', 'Used'); ?>: <?php echo $usage_txt; ?> <span class="mob-sub-sep">·</span> <?php echo t('s/d', 'until'); ?> <?php echo $expired_txt; ?></div>
                     </div>
                     <?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
                     <div class="app-actions">

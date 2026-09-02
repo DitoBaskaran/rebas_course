@@ -477,6 +477,7 @@ CREATE TABLE IF NOT EXISTS `user_subscriptions` (
 CREATE TABLE IF NOT EXISTS `coupons` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
   `code` VARCHAR(50) NOT NULL,
+  `image` VARCHAR(255) NULL,
   `discount_type` VARCHAR(10) DEFAULT 'percent',
   `discount_value` INT DEFAULT 0,
   `min_purchase` INT DEFAULT 0,

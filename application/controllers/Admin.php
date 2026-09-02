@@ -1403,8 +1403,29 @@ class Admin extends MY_Controller {
             $this->load->view('admin/coupons/create', $data);
             $this->load->view('templates/admin_footer');
         } else {
+            // Upload gambar kupon (opsional)
+            $image_name = null;
+            if (!empty($_FILES['image']['name'])) {
+                $config = array(
+                    'upload_path' => FCPATH . 'uploads/coupons/',
+                    'allowed_types' => 'jpg|jpeg|png|webp',
+                    'max_size' => 2048,
+                    'encrypt_name' => TRUE,
+                );
+                if (!is_dir($config['upload_path'])) {
+                    mkdir($config['upload_path'], 0755, TRUE);
+                }
+                $this->load->library('upload', $config);
+                if ($this->upload->do_upload('image')) {
+                    $image_name = $this->upload->data('file_name');
+                } else {
+                    $this->session->set_flashdata('error', $this->upload->display_errors('', ''));
+                    redirect('admin/create_coupon');
+                }
+            }
             $this->db->insert('coupons', array(
                 'code' => strtoupper($this->input->post('code')),
+                'image' => $image_name,
                 'discount_type' => $this->input->post('discount_type'),
                 'discount_value' => $this->input->post('discount_value'),
                 'min_purchase' => $this->input->post('min_purchase') ?: 0,

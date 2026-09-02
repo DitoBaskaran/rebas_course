@@ -10,7 +10,7 @@
                     <i data-lucide="ticket" style="width:18px;height:18px;color:var(--primary);"></i>
                     <span class="fw-semibold"><?php echo t('Detail Kupon', 'Coupon Details'); ?></span>
                 </div>
-                <?php echo form_open('admin/create_coupon'); ?>
+                <?php echo form_open_multipart('admin/create_coupon'); ?>
                     <div class="d-flex flex-column gap-4 p-4 p-xl-5">
                         <div class="row g-4">
                             <div class="col-md-4">
@@ -54,6 +54,20 @@
                                 <div class="form-float">
                                     <input type="datetime-local" name="expired_at" class="form-control" placeholder=" ">
                                     <label class="fl-label"><?php echo t('Berlaku Hingga', 'Valid Until'); ?></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row g-4">
+                            <div class="col-12">
+                                <label class="fw-semibold mb-2 d-block" style="color:#0D1830;font-size:0.82rem;"><?php echo t('Gambar Kupon (opsional)', 'Coupon Image (optional)'); ?></label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div id="couponImgPreview" style="width:72px;height:72px;border-radius:12px;border:2px dashed #e7e5e4;display:flex;align-items:center;justify-content:center;overflow:hidden;background:var(--gray-100,#f5f5f5);flex-shrink:0;">
+                                        <i class="fas fa-ticket-alt" style="color:#d6d3d1;font-size:1.3rem;"></i>
+                                    </div>
+                                    <div>
+                                        <input type="file" name="image" class="form-control form-control-sm" accept="image/*" id="couponImage" style="font-size:0.82rem;">
+                                        <small style="color:#a8a29e;font-size:0.7rem;"><?php echo t('JPG/PNG/WebP, maks 2MB. Tampil sebagai thumbnail di list.', 'JPG/PNG/WebP, max 2MB. Shows as thumbnail in list.'); ?></small>
+                                    </div>
                                 </div>
                             </div>
                         </div>
