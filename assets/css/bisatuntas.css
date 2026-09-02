@@ -2574,30 +2574,6 @@ h1, h2, h3, h4, h5, h6,
 /* detail tambahan dalam sub: gabung jadi satu baris */
 .app-row-card .app-row-sub .mob-sub-sep { margin: 0 0.25rem; opacity: 0.5; }
 
-/* ===== COUPON VOUCHER CARD (mobile) ===== */
-.app-coupon-card { padding-left: 0.4rem; }
-.app-coupon-thumb {
-  width: 48px; height: 48px; border-radius: 12px; object-fit: cover; flex-shrink: 0;
-  border: 1px solid var(--card-border, #e7e5e4);
-  background: var(--gray-100, #f5f5f5);
-}
-.app-coupon-disc {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  width: 48px; height: 48px; padding: 0.3rem 0.4rem; border-radius: 12px; flex-shrink: 0;
-  background: linear-gradient(135deg, #f97316, #f59e0b);
-  color: #fff;
-}
-.app-coupon-disc b { font-size: 0.8rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; }
-.app-coupon-disc span { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; opacity: 0.9; }
-.app-coupon-card .app-row-main { position: relative; }
-/* garis putus-putus pemisah kiri (gaya voucher) */
-.app-coupon-card .app-row-main::before {
-  content: '';
-  position: absolute; left: -0.45rem; top: 0; bottom: 0;
-  border-left: 2px dashed rgba(0,0,0,0.12);
-}
-.playful[data-theme="dark"] .app-coupon-card .app-row-main::before { border-left-color: rgba(255,255,255,0.15); }
-
 /* ---- Forms (app-form) ---- */
 .app-form-card { max-width: 780px; }
 .app-form-card .app-card-pad { display: flex; flex-direction: column; gap: 1rem; }
