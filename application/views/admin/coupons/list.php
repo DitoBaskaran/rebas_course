@@ -19,18 +19,24 @@
             </div>
         <?php else: ?>
 
-        <!-- Mobile: kartu eksplisit (1 baris kompak) -->
+        <!-- Mobile: kartu eksplisit (gaya voucher) -->
         <div class="app-row-list app-list">
             <?php foreach ($coupons as $c): ?>
-                <div class="app-row app-row-card">
-                    <div class="app-row-head">
-                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#fef3c7;color:#d97706;flex-shrink:0;"><i class="fas fa-ticket-alt"></i></div>
-                        <div class="app-row-main">
-                            <div class="app-row-title" style="font-family:monospace;"><?php echo htmlspecialchars($c->code); ?></div>
-                            <div class="app-row-sub"><?php echo $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.'); ?><span class="mob-sub-sep">·</span><?php echo $c->used_count . ($c->max_uses ? '/' . $c->max_uses : ''); ?> <?php echo t('dipakai', 'used'); ?></div>
-                        </div>
-                        <?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
+                <?php
+                    $discount_txt = $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.');
+                    $usage_txt = $c->used_count . ($c->max_uses ? '/' . $c->max_uses : '');
+                    $expired_txt = $c->expired_at ? date('d M Y', strtotime($c->expired_at)) : t('Tanpa Batas', 'No Expiry');
+                ?>
+                <div class="app-row app-row-card app-coupon-card">
+                    <div class="app-coupon-disc">
+                        <b><?php echo $discount_txt; ?></b>
+                        <span><?php echo t('diskon', 'OFF'); ?></span>
                     </div>
+                    <div class="app-row-main">
+                        <div class="app-row-title" style="font-family:monospace;letter-spacing:0.04em;"><?php echo htmlspecialchars($c->code); ?></div>
+                        <div class="app-row-sub"><?php echo t('Sisa', 'Used'); ?>: <?php echo $usage_txt; ?> <span class="mob-sub-sep">·</span> <?php echo t('s/d', 'until'); ?> <?php echo $expired_txt; ?></div>
+                    </div>
+                    <?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
                     <div class="app-actions">
                         <a href="<?php echo base_url('admin/delete_coupon/' . $c->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kupon?', 'Delete coupon?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
                     </div>
