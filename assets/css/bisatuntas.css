@@ -2574,6 +2574,21 @@ h1, h2, h3, h4, h5, h6,
 /* detail tambahan dalam sub: gabung jadi satu baris */
 .app-row-card .app-row-sub .mob-sub-sep { margin: 0 0.25rem; opacity: 0.5; }
 
+/* ===== AI MENTOR RECOMMENDATION (hasil konsultasi AI) ===== */
+.ai-mentor-row { flex-wrap: nowrap; }
+.ai-mentor-row .ai-mentor-main { flex: 1; min-width: 0; }
+.ai-mentor-row .ai-mentor-main > span:nth-child(2) { min-width: 0; }
+.ai-mentor-row > a.btn { margin-left: auto; flex-shrink: 0; }
+@media (max-width: 380px) {
+  .ai-mentor-row { flex-wrap: wrap; }
+  .ai-mentor-row .ai-mentor-main { flex: 1 1 100%; }
+  .ai-mentor-row > a.btn { margin-left: auto; }
+}
+@media (max-width: 340px) {
+  .ai-mentor-row { flex-direction: column; align-items: stretch !important; }
+  .ai-mentor-row > a.btn { margin-left: 0; align-self: flex-end; }
+}
+
 /* ---- Forms (app-form) ---- */
 .app-form-card { max-width: 780px; }
 .app-form-card .app-card-pad { display: flex; flex-direction: column; gap: 1rem; }

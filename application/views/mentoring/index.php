@@ -545,14 +545,17 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 html += '<div class="d-flex flex-column gap-2">';
                 d.mentors.forEach(function (m) {
-                    html += '<div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);">'
-                        + '<a href="<?php echo base_url('mentoring/detail/'); ?>' + esc(m.encoded_id) + '" class="d-flex align-items-center gap-2 text-decoration-none flex-fill min-w-0">'
+                    html += '<div class="ai-mentor-row d-flex align-items-center gap-2 p-2 rounded-3" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.14);">'
+                        + '<a href="<?php echo base_url('mentoring/detail/'); ?>' + esc(m.encoded_id) + '" class="ai-mentor-main d-flex align-items-center gap-2 text-decoration-none flex-fill min-w-0">'
                         + '<span class="d-flex align-items-center justify-content-center rounded-circle flex-shrink-0 fw-bold" style="width:36px;height:36px;background:linear-gradient(135deg,#009688,#00796B);color:#fff;font-size:0.78rem;">' + esc((m.name || '?').charAt(0).toUpperCase()) + '</span>'
                         + '<span class="flex-fill min-w-0">'
-                        + '<span class="d-block fw-bold text-truncate" style="color:#fff;font-size:0.8rem;">' + esc(m.name) + '</span>'
-                        + '<span class="d-block text-truncate" style="color:rgba(230,235,239,0.7);font-size:0.7rem;">' + esc(m.title || '') + (m.price_per_session > 0 ? ' · Rp ' + Number(m.price_per_session).toLocaleString('id-ID') : '') + '</span>'
+                        + '<span class="d-block fw-bold" style="color:#fff;font-size:0.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(m.name) + '</span>'
+                        + '<span class="d-block" style="color:rgba(230,235,239,0.7);font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + esc(m.title || '') + '</span>'
+                        + '<span class="d-flex align-items-center gap-2 mt-1" style="font-size:0.68rem;">'
+                        + '<span style="color:#FBBF24;white-space:nowrap;"><i class="fas fa-star"></i> ' + esc(m.avg_rating || '0') + '</span>'
+                        + (m.price_per_session > 0 ? '<span style="color:rgba(230,235,239,0.75);white-space:nowrap;">Rp ' + Number(m.price_per_session).toLocaleString('id-ID') + '<small style="opacity:0.7;">/sesi</small></span>' : '')
                         + '</span>'
-                        + '<span class="flex-shrink-0 text-nowrap" style="font-size:0.7rem;color:#FBBF24;"><i class="fas fa-star"></i> ' + esc(m.avg_rating || '0') + '</span>'
+                        + '</span>'
                         + '</a>'
                         + '<a href="<?php echo base_url('mentoring/book/'); ?>' + esc(m.encoded_id) + '" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0 text-decoration-none" style="background:#FBBF24; color:#0D1830; font-size:0.68rem; white-space:nowrap;">'
                         + '<i class="fas fa-calendar-check me-1" style="font-size:0.6rem;"></i> <?php echo t('Booking', 'Book'); ?>'
