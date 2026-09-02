@@ -10,75 +10,76 @@
         </div>
     </div>
 
+    <?php if (empty($coupons)): ?>
     <div class="app-card">
-        <?php if (empty($coupons)): ?>
-            <div class="app-empty">
-                <i class="fas fa-ticket-alt"></i>
-                <h6><?php echo t('Belum ada kupon.', 'No coupons yet.'); ?></h6>
-                <p><?php echo t('Buat kode promo untuk diskon pembelian.', 'Create promo codes for purchase discounts.'); ?></p>
-            </div>
-        <?php else: ?>
+        <div class="app-empty">
+            <i class="fas fa-ticket-alt"></i>
+            <h6><?php echo t('Belum ada kupon.', 'No coupons yet.'); ?></h6>
+            <p><?php echo t('Buat kode promo untuk diskon pembelian.', 'Create promo codes for purchase discounts.'); ?></p>
+        </div>
+    </div>
+    <?php else: ?>
 
-        <!-- Mobile: kartu eksplisit (sama seperti list pengguna) -->
-        <div class="app-row-list app-list">
-            <?php foreach ($coupons as $c): ?>
-                <?php
-                    $discount_txt = $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.');
-                    $usage_txt = $c->used_count . ($c->max_uses ? '/' . $c->max_uses : '');
-                    $img_ok = !empty($c->image) && file_exists(FCPATH . 'uploads/coupons/' . $c->image);
-                ?>
-                <div class="app-row app-row-card">
-                    <div class="app-row-head">
-                        <?php if ($img_ok): ?>
-                            <img src="<?php echo base_url('uploads/coupons/' . $c->image); ?>" alt="" class="app-avatar" style="object-fit:cover;" loading="lazy">
-                        <?php else: ?>
-                            <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#fef3c7;color:#d97706;flex-shrink:0;"><i class="fas fa-ticket-alt"></i></div>
-                        <?php endif; ?>
-                        <div class="app-row-main">
-                            <div class="app-row-title" style="font-family:monospace;"><?php echo htmlspecialchars($c->code); ?></div>
-                            <div class="app-row-sub"><?php echo $discount_txt; ?><span class="mob-sub-sep">·</span><?php echo $usage_txt; ?> <?php echo t('dipakai', 'used'); ?></div>
-                        </div>
-                        <?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
+    <!-- Mobile: kartu eksplisit (sama seperti list pengguna, tanpa wrapper) -->
+    <div class="app-row-list app-list">
+        <?php foreach ($coupons as $c): ?>
+            <?php
+                $discount_txt = $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.');
+                $usage_txt = $c->used_count . ($c->max_uses ? '/' . $c->max_uses : '');
+                $img_ok = !empty($c->image) && file_exists(FCPATH . 'uploads/coupons/' . $c->image);
+            ?>
+            <div class="app-row app-row-card">
+                <div class="app-row-head">
+                    <?php if ($img_ok): ?>
+                        <img src="<?php echo base_url('uploads/coupons/' . $c->image); ?>" alt="" class="app-avatar" style="object-fit:cover;" loading="lazy">
+                    <?php else: ?>
+                        <div class="app-avatar" style="width:38px;height:38px;font-size:0.8rem;background:#fef3c7;color:#d97706;flex-shrink:0;"><i class="fas fa-ticket-alt"></i></div>
+                    <?php endif; ?>
+                    <div class="app-row-main">
+                        <div class="app-row-title" style="font-family:monospace;"><?php echo htmlspecialchars($c->code); ?></div>
+                        <div class="app-row-sub"><?php echo $discount_txt; ?><span class="mob-sub-sep">·</span><?php echo $usage_txt; ?> <?php echo t('dipakai', 'used'); ?></div>
                     </div>
-                    <div class="app-actions">
-                        <a href="<?php echo base_url('admin/delete_coupon/' . $c->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kupon?', 'Delete coupon?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
-                    </div>
+                    <?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
-
-        <!-- Desktop: tabel -->
-        <div class="app-card app-table-desktop">
-            <div class="app-table-wrap">
-                <table class="app-table">
-                    <thead>
-                        <tr>
-                            <th>Code</th>
-                            <th><?php echo t('Diskon', 'Discount'); ?></th>
-                            <th><?php echo t('Min. Belanja', 'Min. Purchase'); ?></th>
-                            <th><?php echo t('Pemakaian', 'Usage'); ?></th>
-                            <th><?php echo t('Berlaku', 'Valid Until'); ?></th>
-                            <th><?php echo t('Status', 'Status'); ?></th>
-                            <th class="td-actions"><?php echo t('Aksi', 'Action'); ?></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($coupons as $c): ?>
-                            <tr>
-                                <td class="td-title" style="font-family:monospace;"><?php echo htmlspecialchars($c->code); ?></td>
-                                <td style="color:#57534e;font-size:0.78rem;"><?php echo $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.'); ?></td>
-                                <td style="color:#78716c;font-size:0.78rem;"><?php echo $c->min_purchase > 0 ? 'Rp ' . number_format($c->min_purchase, 0, ',', '.') : '-'; ?></td>
-                                <td style="color:#57534e;font-size:0.78rem;"><?php echo $c->used_count . ($c->max_uses ? '/' . $c->max_uses : ''); ?></td>
-                                <td style="color:#a8a29e;font-size:0.72rem;"><?php echo $c->expired_at ? date('d M Y', strtotime($c->expired_at)) : '-'; ?></td>
-                                <td><?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?></td>
-                                <td class="td-actions">
-                                    <a href="<?php echo base_url('admin/delete_coupon/' . $c->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kupon?', 'Delete coupon?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
-                                </td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                <div class="app-actions">
+                    <a href="<?php echo base_url('admin/delete_coupon/' . $c->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kupon?', 'Delete coupon?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                </div>
             </div>
+        <?php endforeach; ?>
+    </div>
+
+    <!-- Desktop: tabel -->
+    <div class="app-card app-table-desktop">
+        <div class="app-table-wrap">
+            <table class="app-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th><?php echo t('Diskon', 'Discount'); ?></th>
+                        <th><?php echo t('Min. Belanja', 'Min. Purchase'); ?></th>
+                        <th><?php echo t('Pemakaian', 'Usage'); ?></th>
+                        <th><?php echo t('Berlaku', 'Valid Until'); ?></th>
+                        <th><?php echo t('Status', 'Status'); ?></th>
+                        <th class="td-actions"><?php echo t('Aksi', 'Action'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($coupons as $c): ?>
+                        <tr>
+                            <td class="td-title" style="font-family:monospace;"><?php echo htmlspecialchars($c->code); ?></td>
+                            <td style="color:#57534e;font-size:0.78rem;"><?php echo $c->discount_type === 'percent' ? $c->discount_value . '%' : 'Rp ' . number_format($c->discount_value, 0, ',', '.'); ?></td>
+                            <td style="color:#78716c;font-size:0.78rem;"><?php echo $c->min_purchase > 0 ? 'Rp ' . number_format($c->min_purchase, 0, ',', '.') : '-'; ?></td>
+                            <td style="color:#57534e;font-size:0.78rem;"><?php echo $c->used_count . ($c->max_uses ? '/' . $c->max_uses : ''); ?></td>
+                            <td style="color:#a8a29e;font-size:0.72rem;"><?php echo $c->expired_at ? date('d M Y', strtotime($c->expired_at)) : '-'; ?></td>
+                            <td><?php echo $c->is_active ? '<span class="app-chip app-chip-green">Active</span>' : '<span class="app-chip app-chip-gray">Inactive</span>'; ?></td>
+                            <td class="td-actions">
+                                <a href="<?php echo base_url('admin/delete_coupon/' . $c->id); ?>" class="app-action app-action-red" data-confirm="<?php echo t('Hapus kupon?', 'Delete coupon?'); ?>" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt"></i></a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
-        <?php endif; ?>
+    </div>
+    <?php endif; ?>
 </div>
