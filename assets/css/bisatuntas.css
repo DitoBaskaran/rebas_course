@@ -1245,6 +1245,28 @@ h1, h2, h3, h4, h5, h6,
 .coupon-divider::after { right: -8px; }
 
 /* ============================================================
+   ===  USER ROW CARD (admin/users) — standar list BISATUNTAS ===
+   ============================================================ */
+.user-row-card {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #e7e5e4);
+  border-radius: 14px;
+  transition: var(--transition-smooth);
+}
+.user-row-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(var(--primary-rgb), 0.25);
+}
+@media (max-width: 575px) {
+  .user-row-card { flex-wrap: wrap; }
+  .user-row-card > .flex-fill { flex-basis: calc(100% - 3.2rem); }
+}
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {
