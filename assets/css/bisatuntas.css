@@ -770,6 +770,7 @@ h1, h2, h3, h4, h5, h6,
   position: sticky;
   top: var(--topbar-height);
   height: calc(100vh - var(--topbar-height));
+  max-height: calc(100vh - var(--topbar-height));
   overflow-y: auto;
   overflow-x: hidden;
   transition: width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -892,6 +893,8 @@ h1, h2, h3, h4, h5, h6,
   position: fixed; left: 0; top: var(--topbar-height);
   width: 280px !important;
   min-width: 280px !important;
+  height: calc(100vh - var(--topbar-height)) !important;
+  padding-bottom: 80px !important;
   z-index: 1041;
   box-shadow: var(--shadow-2xl);
 }

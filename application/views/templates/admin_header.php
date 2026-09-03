@@ -20,9 +20,9 @@
     <!-- SweetAlert2 -->
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <!-- BISATUNTAS Design System v3.0 -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=25'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=26'); ?>">
     <!-- BISATUNTAS Colorful Playful Override -->
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas-playful-alt.css'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas-playful-alt.css?v=2'); ?>">
     <!-- TinyMCE for rich text editing -->
     <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script>

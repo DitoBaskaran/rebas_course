@@ -13,7 +13,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=15'); ?>">
+    <link rel="stylesheet" href="<?php echo base_url('assets/css/bisatuntas.css?v=16'); ?>">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
     <style>
         :root { <?php echo settings_css_vars(); ?> }
@@ -200,14 +200,14 @@
     </div>
 
     <div class="container" style="padding-top:0.75rem;padding-bottom:0;">
-        <?php if ($this->session->flashdata('success')): ?>
+        <?php if (empty($is_auth_page) && $this->session->flashdata('success')): ?>
             <div class="fe-alert d-flex align-items-center gap-2 alert-dismissible fade show" role="alert" style="background:#f0fdf4;color:#166534;margin-bottom:0;">
                 <i class="fas fa-check-circle" style="font-size:0.8rem;flex-shrink:0;"></i>
                 <span><?php echo $this->session->flashdata('success'); ?></span>
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" style="font-size:0.55rem;"></button>
             </div>
         <?php endif; ?>
-        <?php if ($this->session->flashdata('error')): ?>
+        <?php if (empty($is_auth_page) && $this->session->flashdata('error')): ?>
             <div class="fe-alert d-flex align-items-center gap-2 alert-dismissible fade show" role="alert" style="background:#fef2f2;color:#991b1b;margin-bottom:0;">
                 <i class="fas fa-exclamation-circle" style="font-size:0.8rem;flex-shrink:0;"></i>
                 <span><?php echo $this->session->flashdata('error'); ?></span>
