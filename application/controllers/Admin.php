@@ -1149,24 +1149,83 @@ class Admin extends MY_Controller {
         $module_filter = in_array($module_filter, array('mentor', 'course'), true) ? $module_filter : '';
         $search = mb_substr($search, 0, 100);
 
-        // ---- Statistik ringkas (tanpa filter — gambaran global) ----
-        $stats = array(
-            'total_calls'  => (int) $this->db->count_all('ai_usage_logs'),
-            'total_tokens' => (int) $this->db->select('COALESCE(SUM(total_tokens),0) AS t')->get('ai_usage_logs')->row()->t,
-            'total_users'  => (int) $this->db->select('COUNT(DISTINCT user_id) AS c')->get('ai_usage_logs')->row()->c,
-            'mentor_calls' => (int) $this->db->where('module', 'mentor')->count_all_results('ai_usage_logs'),
-            'course_calls' => (int) $this->db->where('module', 'course')->count_all_results('ai_usage_logs'),
-        );
+        // ---- Filter rentang tanggal ----
+        // Preset: all (default) | 7 | 30 | custom (date_from & date_to)
+        $range = $this->input->get('range');
+        $range = in_array($range, array('all', '7', '30', 'custom'), true) ? $range : 'all';
+        $date_from = '';
+        $date_to = '';
+        $date_start = ''; // string SQL untuk WHERE created_at >=
+        $date_end = '';   // string SQL untuk WHERE created_at <
+        $today = date('Y-m-d');
+        if ($range === '7') {
+            $date_from = date('Y-m-d', strtotime('-6 days'));
+            $date_to = $today;
+        } elseif ($range === '30') {
+            $date_from = date('Y-m-d', strtotime('-29 days'));
+            $date_to = $today;
+        } elseif ($range === 'custom') {
+            $df = trim((string) $this->input->get('date_from'));
+            $dt = trim((string) $this->input->get('date_to'));
+            // Validasi format Y-m-d
+            if ($df !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $df)) $date_from = $df;
+            if ($dt !== '' && preg_match('/^\d{4}-\d{2}-\d{2}$/', $dt)) $date_to = $dt;
+            // Swap bila terbalik
+            if ($date_from !== '' && $date_to !== '' && $date_from > $date_to) {
+                $tmp = $date_from; $date_from = $date_to; $date_to = $tmp;
+            }
+        }
+        if ($date_from !== '') $date_start = $date_from . ' 00:00:00';
+        if ($date_to !== '')   $date_end   = date('Y-m-d', strtotime($date_to . ' +1 day')) . ' 00:00:00';
 
-        // ---- Grafik pemakaian token per hari (14 hari terakhir, tanpa filter) ----
+        // ---- Statistik ringkas (mengikuti filter tanggal, tanpa filter module/search utk konsistensi KPI) ----
+        $stats = array();
+        $stats_q = $this->db;
+        $stats_q->from('ai_usage_logs');
+        if ($date_start !== '') $stats_q->where('created_at >=', $date_start);
+        if ($date_end !== '')   $stats_q->where('created_at <', $date_end);
+        $stats['total_calls'] = (int) $stats_q->count_all_results();
+        $stats['total_tokens'] = (int) $this->db->select('COALESCE(SUM(total_tokens),0) AS t')->from('ai_usage_logs');
+        if ($date_start !== '') $this->db->where('created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('created_at <', $date_end);
+        $stats['total_tokens'] = (int) $this->db->get()->row()->t;
+        $stats['total_users'] = (int) $this->db->select('COUNT(DISTINCT user_id) AS c')->from('ai_usage_logs');
+        if ($date_start !== '') $this->db->where('created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('created_at <', $date_end);
+        $stats['total_users'] = (int) $this->db->get()->row()->c;
+        $stats['mentor_calls'] = (int) $this->db->from('ai_usage_logs');
+        if ($date_start !== '') $this->db->where('created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('created_at <', $date_end);
+        $this->db->where('module', 'mentor');
+        $stats['mentor_calls'] = (int) $this->db->count_all_results();
+        $stats['course_calls'] = (int) $this->db->from('ai_usage_logs');
+        if ($date_start !== '') $this->db->where('created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('created_at <', $date_end);
+        $this->db->where('module', 'course');
+        $stats['course_calls'] = (int) $this->db->count_all_results();
+
+        // ---- Grafik per hari: hari-hari dalam rentang filter (atau 14 hari default) ----
         $daily = array();
-        for ($i = 13; $i >= 0; $i--) {
-            $d = date('Y-m-d', strtotime("-{$i} days"));
+        if ($range === 'all') {
+            $d0 = date('Y-m-d', strtotime('-13 days'));
+            $d1 = date('Y-m-d');
+        } else {
+            $d0 = $date_from !== '' ? $date_from : date('Y-m-d', strtotime('-13 days'));
+            $d1 = $date_to !== '' ? $date_to : $today;
+        }
+        // Selalu minimal 14 hari default untuk all; utk custom span bisa panjang — batasi 93 hari.
+        $span_days = (int) ((strtotime($d1) - strtotime($d0)) / 86400);
+        if ($span_days < 0) $span_days = 0;
+        if ($span_days > 93) $span_days = 93;
+        for ($i = $span_days; $i >= 0; $i--) {
+            $d = date('Y-m-d', strtotime($d0 . " +{$i} days"));
             $daily[$d] = array('calls' => 0, 'tokens' => 0);
         }
         $rows = $this->db->select("DATE(created_at) AS day, COUNT(*) AS calls, COALESCE(SUM(total_tokens),0) AS tokens")
-            ->where('created_at >=', date('Y-m-d 00:00:00', strtotime('-13 days')))
-            ->group_by('day')->order_by('day', 'ASC')->get('ai_usage_logs')->result();
+            ->from('ai_usage_logs');
+        if ($date_start !== '') $this->db->where('created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('created_at <', $date_end);
+        $rows = $this->db->group_by('day')->order_by('day', 'ASC')->get()->result();
         foreach ($rows as $r) {
             if (isset($daily[$r->day])) {
                 $daily[$r->day]['calls']  = (int) $r->calls;
@@ -1193,6 +1252,8 @@ class Admin extends MY_Controller {
         $this->db->from('ai_usage_logs l');
         $this->db->join('users u', 'u.id = l.user_id', 'left');
         if ($module_filter) $this->db->where('l.module', $module_filter);
+        if ($date_start !== '') $this->db->where('l.created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('l.created_at <', $date_end);
         if ($search !== '') {
             $this->db->group_start();
             $this->db->like('u.name', $search);
@@ -1208,6 +1269,8 @@ class Admin extends MY_Controller {
         $this->db->from('ai_usage_logs l');
         $this->db->join('users u', 'u.id = l.user_id', 'left');
         if ($module_filter) $this->db->where('l.module', $module_filter);
+        if ($date_start !== '') $this->db->where('l.created_at >=', $date_start);
+        if ($date_end !== '')   $this->db->where('l.created_at <', $date_end);
         if ($search !== '') {
             $this->db->group_start();
             $this->db->like('u.name', $search);
@@ -1225,6 +1288,11 @@ class Admin extends MY_Controller {
         $base_params = array();
         if ($module_filter !== '') $base_params['module'] = $module_filter;
         if ($search !== '')        $base_params['search'] = $search;
+        if ($range !== 'all')      $base_params['range'] = $range;
+        if ($range === 'custom') {
+            if ($date_from !== '') $base_params['date_from'] = $date_from;
+            if ($date_to !== '')   $base_params['date_to'] = $date_to;
+        }
         $data['pagination'] = array(
             'page'       => $page,
             'per_page'   => $per_page,
@@ -1243,6 +1311,9 @@ class Admin extends MY_Controller {
         $data['stats'] = $stats;
         $data['module_filter'] = $module_filter;
         $data['search'] = $search;
+        $data['range'] = $range;
+        $data['date_from'] = $date_from;
+        $data['date_to'] = $date_to;
         $data['active_page'] = 'ai_history';
         $data['load_chartjs'] = true;
         $data['title'] = t('Riwayat AI - BISATUNTAS', 'AI History - BISATUNTAS');

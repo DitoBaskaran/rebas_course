@@ -431,10 +431,15 @@ class Courses extends MY_Controller {
         $res = $this->ai_course->recommend($goal, '', $user_id);
 
         if (!$res['ok']) {
-            echo json_encode(array(
-                'status' => 'error',
-                'message' => $res['error'] === 'no_courses' ? 'Belum ada kursus yang tersedia.' : 'Layanan AI sedang sibuk, coba lagi. (' . $res['error'] . ')',
-            ));
+            // Pesan ramah & informatif — jangan bocorkan detail teknis (curl/http code).
+            $msg = t(
+                'Mohon maaf, asisten AI sedang tidak dapat dihubungi. Silakan coba lagi beberapa saat.',
+                'Sorry, the AI assistant is unavailable right now. Please try again shortly.'
+            );
+            if ($res['error'] === 'no_courses') {
+                $msg = t('Belum ada kursus yang tersedia.', 'No courses available yet.');
+            }
+            echo json_encode(array('status' => 'error', 'message' => $msg));
             return;
         }
 

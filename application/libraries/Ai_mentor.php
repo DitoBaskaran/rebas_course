@@ -99,7 +99,18 @@ class Ai_mentor {
             }
         }
         if (!is_array($data)) {
-            return array('ok' => false, 'mentor_ids' => array(), 'explanation' => $content, 'error' => 'parse_failed');
+            // AI merespons tapi tidak dalam format JSON (mis. menjelaskan panjang lebar),
+            // atau konten kosong. Jangan tampilkan sebagai error sistem — anggap teks AI
+            // itu sendiri sebagai jawaban/penjelasan informatif utk user; fallback pesan
+            // ramah bila kosong.
+            $text = trim((string) $content);
+            if ($text === '') {
+                $text = t(
+                    'Terima kasih sudah bercerita! Agar saya bisa merekomendasikan mentor yang paling tepat, boleh ceritakan sedikit lagi masalah atau tujuanmu? Misalnya: bingung pilih karir, persiapan interview, belajar skill baru, atau mengembangkan bisnis.',
+                    'Thank you for sharing! To recommend the most suitable mentor, could you tell me a bit more about your problem or goal? E.g. career choice, interview prep, learning a new skill, or growing a business.'
+                );
+            }
+            return array('ok' => true, 'mentor_ids' => array(), 'explanation' => $text, 'error' => null);
         }
 
         $ids = isset($data['mentor_ids']) ? (array) $data['mentor_ids'] : array();

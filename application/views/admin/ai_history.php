@@ -90,7 +90,15 @@
                         <div class="bento-icon bg-primary-subtle text-primary" style="width:32px;height:32px;"><i data-lucide="bar-chart-3" style="width:16px;height:16px;"></i></div>
                         <div>
                             <div class="fw-bold text-dark" style="font-size:0.9rem;"><?php echo t('Pemakaian Token per Hari', 'Daily Token Usage'); ?></div>
-                            <div class="text-muted" style="font-size:0.68rem;"><?php echo t('14 hari terakhir', 'Last 14 days'); ?></div>
+                            <div class="text-muted" style="font-size:0.68rem;">
+                                <?php if ($range === 'all'): ?>
+                                    <?php echo t('14 hari terakhir', 'Last 14 days'); ?>
+                                <?php elseif ($range === 'custom'): ?>
+                                    <?php echo t('Rentang tanggal dipilih', 'Selected date range'); ?>
+                                <?php else: ?>
+                                    <?php echo t('Terakhir', 'Last'); ?> <?php echo $range; ?> <?php echo t('hari', 'days'); ?>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     </div>
                     <span class="px-2 py-1 rounded-pill fw-bold d-inline-flex align-items-center gap-1" style="background:#fff7ed;color:#c2410c;font-size:0.66rem;">
@@ -106,7 +114,15 @@
                     <div class="bento-icon bg-warning-subtle text-warning" style="width:32px;height:32px;"><i data-lucide="message-square" style="width:16px;height:16px;"></i></div>
                     <div>
                         <div class="fw-bold text-dark" style="font-size:0.9rem;"><?php echo t('Percakapan per Hari', 'Daily Conversations'); ?></div>
-                        <div class="text-muted" style="font-size:0.68rem;"><?php echo t('14 hari terakhir', 'Last 14 days'); ?></div>
+                        <div class="text-muted" style="font-size:0.68rem;">
+                            <?php if ($range === 'all'): ?>
+                                <?php echo t('14 hari terakhir', 'Last 14 days'); ?>
+                            <?php elseif ($range === 'custom'): ?>
+                                <?php echo t('Rentang tanggal dipilih', 'Selected date range'); ?>
+                            <?php else: ?>
+                                <?php echo t('Terakhir', 'Last'); ?> <?php echo $range; ?> <?php echo t('hari', 'days'); ?>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
                 <div class="chart-container" style="height:230px;"><canvas id="aiCallsChart"></canvas></div>
@@ -126,11 +142,24 @@
                 <option value="mentor" <?php echo $module_filter === 'mentor' ? 'selected' : ''; ?>><?php echo t('Rekomendasi Mentor', 'Mentor Recommendation'); ?></option>
                 <option value="course" <?php echo $module_filter === 'course' ? 'selected' : ''; ?>><?php echo t('Rekomendasi Kursus', 'Course Recommendation'); ?></option>
             </select>
+            <!-- Filter rentang tanggal -->
+            <select name="range" id="rangeSelect" class="form-select" style="max-width:170px;border-radius:100px;font-size:0.82rem;" onchange="toggleDateRange(this.value)">
+                <option value="all" <?php echo $range === 'all' ? 'selected' : ''; ?>><?php echo t('Semua Waktu', 'All Time'); ?></option>
+                <option value="7" <?php echo $range === '7' ? 'selected' : ''; ?>><?php echo t('7 Hari Terakhir', 'Last 7 Days'); ?></option>
+                <option value="30" <?php echo $range === '30' ? 'selected' : ''; ?>><?php echo t('30 Hari Terakhir', 'Last 30 Days'); ?></option>
+                <option value="custom" <?php echo $range === 'custom' ? 'selected' : ''; ?>><?php echo t('Custom Tanggal', 'Custom Date'); ?></option>
+            </select>
+            <!-- Input tanggal custom (muncul saat range=custom) -->
+            <div id="customDateWrap" class="align-items-center gap-1" style="<?php echo $range === 'custom' ? 'display:flex;' : 'display:none;'; ?>">
+                <input type="date" name="date_from" value="<?php echo htmlspecialchars($date_from); ?>" class="form-control" style="max-width:150px;border-radius:100px;font-size:0.78rem;" title="<?php echo t('Dari tanggal', 'From date'); ?>">
+                <span class="text-muted" style="font-size:0.75rem;">–</span>
+                <input type="date" name="date_to" value="<?php echo htmlspecialchars($date_to); ?>" class="form-control" style="max-width:150px;border-radius:100px;font-size:0.78rem;" title="<?php echo t('Sampai tanggal', 'To date'); ?>">
+            </div>
             <button type="submit" class="btn btn-sm rounded-pill px-4 fw-semibold flex-shrink-0 d-inline-flex align-items-center gap-1" style="background:#0D1830;color:#fff;font-size:0.75rem;">
                 <i data-lucide="filter" style="width:13px;height:13px;"></i> <?php echo t('Filter', 'Filter'); ?>
             </button>
-            <?php if ($module_filter !== '' || $search !== ''): ?>
-                <a href="<?php echo base_url('admin/ai_history'); ?>" class="btn btn-sm rounded-pill px-3 flex-shrink-0" style="border:1px solid #cbd5e1;color:#475569;font-size:0.75rem;">
+            <?php if ($module_filter !== '' || $search !== '' || $range !== 'all'): ?>
+                <a href="<?php echo base_url('admin/ai_history'); ?>" class="btn btn-sm rounded-pill px-3 flex-shrink-0" style="border:1px solid #cbd5e1;color:#475569;font-size:0.75rem;" title="<?php echo t('Reset filter', 'Reset filters'); ?>">
                     <i data-lucide="x" style="width:13px;height:13px;"></i>
                 </a>
             <?php endif; ?>
@@ -427,4 +456,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <?php endif; ?>
+
+<script>
+// Toggle input tanggal custom pada filter rentang tanggal
+function toggleDateRange(val) {
+    var wrap = document.getElementById('customDateWrap');
+    if (wrap) wrap.style.display = (val === 'custom') ? 'flex' : 'none';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    var sel = document.getElementById('rangeSelect');
+    if (sel) toggleDateRange(sel.value);
+});
+</script>
 

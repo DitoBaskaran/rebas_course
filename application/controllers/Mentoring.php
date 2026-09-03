@@ -272,10 +272,15 @@ class Mentoring extends MY_Controller {
         $res = $this->ai_mentor->recommend($problem, $user_name, $user_id);
 
         if (!$res['ok']) {
-            echo json_encode(array(
-                'status' => 'error',
-                'message' => $res['error'] === 'no_mentors' ? 'Belum ada mentor terdaftar.' : 'Layanan AI sedang sibuk, coba lagi. (' . $res['error'] . ')',
-            ));
+            // Pesan ramah & informatif — jangan bocorkan detail teknis (curl/http code).
+            $msg = t(
+                'Mohon maaf, asisten AI sedang tidak dapat dihubungi. Silakan coba lagi beberapa saat.',
+                'Sorry, the AI assistant is unavailable right now. Please try again shortly.'
+            );
+            if ($res['error'] === 'no_mentors') {
+                $msg = t('Belum ada mentor terdaftar.', 'No mentors registered yet.');
+            }
+            echo json_encode(array('status' => 'error', 'message' => $msg));
             return;
         }
 

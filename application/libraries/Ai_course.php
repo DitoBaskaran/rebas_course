@@ -96,7 +96,18 @@ class Ai_course {
             }
         }
         if (!is_array($data)) {
-            return array('ok' => false, 'course_ids' => array(), 'explanation' => $content, 'error' => 'parse_failed');
+            // AI merespons tapi tidak dalam format JSON (mis. menjelaskan panjang lebar),
+            // atau konten kosong. Jangan tampilkan sebagai error sistem — anggap teks AI
+            // itu sendiri sebagai jawaban/penjelasan informatif utk user; fallback pesan
+            // ramah bila kosong.
+            $text = trim((string) $content);
+            if ($text === '') {
+                $text = t(
+                    'Terima kasih sudah berbagi tujuan belajarmu! Agar saya bisa merekomendasikan kursus yang paling tepat, boleh ceritakan sedikit lagi? Misalnya: ingin belajar web development, data science, desain, video editing, musik, atau persiapan IELTS.',
+                    'Thank you for sharing your learning goal! To recommend the most suitable course, could you tell me a bit more? E.g. web development, data science, design, video editing, music, or IELTS prep.'
+                );
+            }
+            return array('ok' => true, 'course_ids' => array(), 'explanation' => $text, 'error' => null);
         }
 
         $ids = isset($data['course_ids']) ? (array) $data['course_ids'] : array();
