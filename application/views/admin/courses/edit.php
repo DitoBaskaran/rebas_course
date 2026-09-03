@@ -220,7 +220,7 @@
                         </div>
                         <div class="d-flex align-items-center justify-content-between mt-2">
                             <span class="fw-extrabold" style="color:#0D1830;font-size:0.95rem;" id="pv_price_out">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
-                            <span class="d-inline-flex align-items-center gap-1" style="color:#FBBF24;font-size:0.7rem;" id="pv_featured_out" <?php echo $course->featured ? '' : 'style="visibility:hidden;color:#FBBF24;font-size:0.7rem;"'; ?>><i data-lucide="star" style="width:12px;height:12px;"></i></span>
+                            <span class="d-inline-flex align-items-center gap-1" id="pv_featured_out" style="color:#FBBF24;font-size:0.7rem;<?php echo $course->featured ? '' : 'visibility:hidden;'; ?>"><i data-lucide="star" style="width:12px;height:12px;"></i></span>
                         </div>
                     </div>
                 </div>
@@ -232,20 +232,20 @@
                     <i data-lucide="link-2" style="width:15px;height:15px;color:var(--primary);"></i> <?php echo t('Konten Terkait', 'Related Content'); ?>
                 </h6>
                 <div class="d-flex flex-column gap-2">
-                    <a href="<?php echo base_url('admin/lessons/' . $course->id); ?>" class="quick-act-btn">
-                        <span class="qi-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-list"></i></span>
-                        <span><?php echo t('Kelola Materi', 'Manage Lessons'); ?></span>
-                        <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                    <a href="<?php echo base_url('admin/lessons/' . $course->id); ?>" class="rel-link">
+                        <span class="rel-link-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-list"></i></span>
+                        <span class="rel-link-label"><?php echo t('Kelola Materi', 'Manage Lessons'); ?></span>
+                        <i class="fas fa-chevron-right rel-link-arrow"></i>
                     </a>
-                    <a href="<?php echo base_url('quiz/admin_quizzes/' . $course->id); ?>" class="quick-act-btn">
-                        <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-pencil-alt"></i></span>
-                        <span><?php echo t('Kelola Quiz', 'Manage Quizzes'); ?></span>
-                        <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                    <a href="<?php echo base_url('quiz/admin_quizzes/' . $course->id); ?>" class="rel-link">
+                        <span class="rel-link-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-pencil-alt"></i></span>
+                        <span class="rel-link-label"><?php echo t('Kelola Quiz', 'Manage Quizzes'); ?></span>
+                        <i class="fas fa-chevron-right rel-link-arrow"></i>
                     </a>
-                    <a href="<?php echo base_url('admin/assignments/' . $course->id); ?>" class="quick-act-btn">
-                        <span class="qi-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-code"></i></span>
-                        <span><?php echo t('Kelola Tugas', 'Manage Assignments'); ?></span>
-                        <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                    <a href="<?php echo base_url('admin/assignments/' . $course->id); ?>" class="rel-link">
+                        <span class="rel-link-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-code"></i></span>
+                        <span class="rel-link-label"><?php echo t('Kelola Tugas', 'Manage Assignments'); ?></span>
+                        <i class="fas fa-chevron-right rel-link-arrow"></i>
                     </a>
                 </div>
             </div>
