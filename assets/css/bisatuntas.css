@@ -1267,6 +1267,25 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ============================================================
+   ===  SUBMISSION CARD (admin/submissions)  ===
+   ============================================================ */
+.sub-item { display: flex; flex-direction: column; gap: 0; }
+.sub-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0.9rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #e7e5e4);
+  border-radius: 14px;
+  transition: var(--transition-smooth);
+}
+.sub-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: rgba(var(--primary-rgb), 0.25);
+}
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {
