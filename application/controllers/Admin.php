@@ -1149,7 +1149,7 @@ class Admin extends MY_Controller {
         $module_filter = in_array($module_filter, array('mentor', 'course'), true) ? $module_filter : '';
         $search = mb_substr($search, 0, 100);
 
-        // ---- Statistik ringkas ----
+        // ---- Statistik ringkas (tanpa filter — gambaran global) ----
         $stats = array(
             'total_calls'  => (int) $this->db->count_all('ai_usage_logs'),
             'total_tokens' => (int) $this->db->select('COALESCE(SUM(total_tokens),0) AS t')->get('ai_usage_logs')->row()->t,
@@ -1158,7 +1158,52 @@ class Admin extends MY_Controller {
             'course_calls' => (int) $this->db->where('module', 'course')->count_all_results('ai_usage_logs'),
         );
 
-        // ---- Query log (dengan filter) ----
+        // ---- Grafik pemakaian token per hari (14 hari terakhir, tanpa filter) ----
+        $daily = array();
+        for ($i = 13; $i >= 0; $i--) {
+            $d = date('Y-m-d', strtotime("-{$i} days"));
+            $daily[$d] = array('calls' => 0, 'tokens' => 0);
+        }
+        $rows = $this->db->select("DATE(created_at) AS day, COUNT(*) AS calls, COALESCE(SUM(total_tokens),0) AS tokens")
+            ->where('created_at >=', date('Y-m-d 00:00:00', strtotime('-13 days')))
+            ->group_by('day')->order_by('day', 'ASC')->get('ai_usage_logs')->result();
+        foreach ($rows as $r) {
+            if (isset($daily[$r->day])) {
+                $daily[$r->day]['calls']  = (int) $r->calls;
+                $daily[$r->day]['tokens'] = (int) $r->tokens;
+            }
+        }
+        $chart_labels = array();
+        $chart_tokens = array();
+        $chart_calls  = array();
+        foreach ($daily as $d => $v) {
+            $chart_labels[] = date('d M', strtotime($d));
+            $chart_tokens[] = $v['tokens'];
+            $chart_calls[]  = $v['calls'];
+        }
+
+        // ---- Pagination ----
+        $page = max(1, (int) $this->input->get('page'));
+        $per_page = max(5, min(100, (int) $this->input->get('per_page')));
+        $per_page = in_array($per_page, array(10, 25, 50, 100), true) ? $per_page : 25;
+        $offset = ($page - 1) * $per_page;
+
+        // ---- Query log (dengan filter + pagination) ----
+        $this->db->select('l.*, u.name AS user_name, u.email AS user_email, u.avatar, u.role, u.is_teacher, u.is_mentor');
+        $this->db->from('ai_usage_logs l');
+        $this->db->join('users u', 'u.id = l.user_id', 'left');
+        if ($module_filter) $this->db->where('l.module', $module_filter);
+        if ($search !== '') {
+            $this->db->group_start();
+            $this->db->like('u.name', $search);
+            $this->db->or_like('u.email', $search);
+            $this->db->or_like('l.user_message', $search);
+            $this->db->group_end();
+        }
+        // Count total (reset otomatis; query data dibangun ulang di bawah)
+        $total_filtered = (int) $this->db->count_all_results();
+
+        // ---- Query log halaman ini ----
         $this->db->select('l.*, u.name AS user_name, u.email AS user_email, u.avatar, u.role, u.is_teacher, u.is_mentor');
         $this->db->from('ai_usage_logs l');
         $this->db->join('users u', 'u.id = l.user_id', 'left');
@@ -1171,13 +1216,35 @@ class Admin extends MY_Controller {
             $this->db->group_end();
         }
         $this->db->order_by('l.id', 'DESC');
-        $this->db->limit(100, 0);
-
+        $this->db->limit($per_page, $offset);
         $data['logs'] = $this->db->get()->result();
+
+        // ---- Data pagination utk view ----
+        $total_pages = (int) ceil($total_filtered / $per_page);
+        if ($page > $total_pages && $total_pages > 0) $page = $total_pages;
+        $base_params = array();
+        if ($module_filter !== '') $base_params['module'] = $module_filter;
+        if ($search !== '')        $base_params['search'] = $search;
+        $data['pagination'] = array(
+            'page'       => $page,
+            'per_page'   => $per_page,
+            'total'      => $total_filtered,
+            'total_pages'=> $total_pages,
+            'base_params'=> $base_params,
+        );
+
+        // ---- Data grafik utk view ----
+        $data['chart'] = array(
+            'labels' => $chart_labels,
+            'tokens' => $chart_tokens,
+            'calls'  => $chart_calls,
+        );
+
         $data['stats'] = $stats;
         $data['module_filter'] = $module_filter;
         $data['search'] = $search;
         $data['active_page'] = 'ai_history';
+        $data['load_chartjs'] = true;
         $data['title'] = t('Riwayat AI - BISATUNTAS', 'AI History - BISATUNTAS');
 
         $this->load->view('templates/admin_header', $data);

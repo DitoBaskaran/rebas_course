@@ -81,6 +81,39 @@
         </div>
     </div>
 
+    <!-- ============ CHART: PEMAKAIAN TOKEN PER HARI ============ -->
+    <div class="row g-3 mb-4">
+        <div class="col-lg-8">
+            <div class="bento-card h-100" style="padding:1.15rem 1.25rem;">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-2 flex-wrap">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="bento-icon bg-primary-subtle text-primary" style="width:32px;height:32px;"><i data-lucide="bar-chart-3" style="width:16px;height:16px;"></i></div>
+                        <div>
+                            <div class="fw-bold text-dark" style="font-size:0.9rem;"><?php echo t('Pemakaian Token per Hari', 'Daily Token Usage'); ?></div>
+                            <div class="text-muted" style="font-size:0.68rem;"><?php echo t('14 hari terakhir', 'Last 14 days'); ?></div>
+                        </div>
+                    </div>
+                    <span class="px-2 py-1 rounded-pill fw-bold d-inline-flex align-items-center gap-1" style="background:#fff7ed;color:#c2410c;font-size:0.66rem;">
+                        <i data-lucide="coins" style="width:11px;height:11px;"></i> <?php echo number_format($stats['total_tokens']); ?> <?php echo t('total', 'total'); ?>
+                    </span>
+                </div>
+                <div class="chart-container" style="height:230px;"><canvas id="aiTokenChart"></canvas></div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="bento-card h-100" style="padding:1.15rem 1.25rem;">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <div class="bento-icon bg-warning-subtle text-warning" style="width:32px;height:32px;"><i data-lucide="message-square" style="width:16px;height:16px;"></i></div>
+                    <div>
+                        <div class="fw-bold text-dark" style="font-size:0.9rem;"><?php echo t('Percakapan per Hari', 'Daily Conversations'); ?></div>
+                        <div class="text-muted" style="font-size:0.68rem;"><?php echo t('14 hari terakhir', 'Last 14 days'); ?></div>
+                    </div>
+                </div>
+                <div class="chart-container" style="height:230px;"><canvas id="aiCallsChart"></canvas></div>
+            </div>
+        </div>
+    </div>
+
     <!-- ============ FILTER TOOLBAR ============ -->
     <div class="bento-card mb-4" style="padding:0.8rem 1rem;">
         <form method="get" action="<?php echo base_url('admin/ai_history'); ?>" class="d-flex flex-column flex-md-row gap-2 align-items-md-center">
@@ -219,11 +252,179 @@
                 </div>
             <?php endforeach; ?>
         </div>
-        <?php if (count($logs) >= 100): ?>
-            <div class="text-center small text-muted mt-3">
-                <i data-lucide="info" style="width:12px;height:12px;"></i>
-                <?php echo t('Menampilkan 100 riwayat terbaru. Gunakan filter untuk mempersempit.', 'Showing the 100 most recent entries. Use filters to narrow down.'); ?>
+        <?php
+            // Pagination helpers
+            $pg = $pagination;
+            $total_pages = (int) $pg['total_pages'];
+            $cur = (int) $pg['page'];
+            $per = (int) $pg['per_page'];
+            $base = $pg['base_params']; // module & search dipertahankan
+            $url_for = function($p) use ($base, $per) {
+                $q = $base;
+                $q['per_page'] = $per;
+                $q['page'] = $p;
+                return base_url('admin/ai_history') . '?' . http_build_query($q);
+            };
+            $start = $pg['total'] === 0 ? 0 : (($cur - 1) * $per) + 1;
+            $end = min($cur * $per, $pg['total']);
+            // Rentang nomor halaman di sekitar halaman aktif
+            $win = 2;
+            $from_p = max(1, $cur - $win);
+            $to_p = min($total_pages, $cur + $win);
+        ?>
+        <?php if ($total_pages > 1): ?>
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 px-3 py-3 border-top" style="border-color:var(--card-border,#eef0f3) !important;">
+            <!-- Info jumlah -->
+            <div class="small text-muted d-flex align-items-center gap-2 flex-wrap">
+                <span><?php echo t('Menampilkan', 'Showing'); ?> <strong><?php echo $start; ?>–<?php echo $end; ?></strong> <?php echo t('dari', 'of'); ?> <strong><?php echo number_format($pg['total']); ?></strong></span>
+                <span class="d-inline-flex align-items-center gap-1 ms-2">
+                    <span style="font-size:0.68rem;"><?php echo t('Per halaman', 'Per page'); ?></span>
+                    <select class="form-select form-select-sm d-inline-block" style="width:auto;border-radius:100px;font-size:0.72rem;padding:0.2rem 0.6rem;" onchange="location.href=this.value">
+                        <?php foreach (array(10, 25, 50, 100) as $opt): ?>
+                            <?php
+                                $q = $base; $q['per_page'] = $opt; $q['page'] = 1;
+                            ?>
+                            <option value="<?php echo base_url('admin/ai_history') . '?' . http_build_query($q); ?>" <?php echo $per === $opt ? 'selected' : ''; ?>><?php echo $opt; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </span>
             </div>
+
+            <!-- Tombol halaman -->
+            <nav aria-label="Pagination">
+                <ul class="pagination pagination-sm mb-0 gap-1">
+                    <li class="page-item <?php echo $cur <= 1 ? 'disabled' : ''; ?>">
+                        <a class="page-link rounded-pill" style="font-size:0.75rem;border:1px solid #e2e8f0;color:#475569;" href="<?php echo $cur > 1 ? $url_for($cur - 1) : '#'; ?>" aria-label="Previous">
+                            <i data-lucide="chevron-left" style="width:13px;height:13px;"></i>
+                        </a>
+                    </li>
+                    <?php if ($from_p > 1): ?>
+                        <li class="page-item"><a class="page-link rounded-pill" style="font-size:0.75rem;border:1px solid #e2e8f0;color:#475569;" href="<?php echo $url_for(1); ?>">1</a></li>
+                        <?php if ($from_p > 2): ?><li class="page-item disabled"><span class="page-link rounded-pill" style="border:1px solid #e2e8f0;color:#94a3b8;">…</span></li><?php endif; ?>
+                    <?php endif; ?>
+                    <?php for ($p = $from_p; $p <= $to_p; $p++): ?>
+                        <li class="page-item <?php echo $p === $cur ? 'active' : ''; ?>">
+                            <?php if ($p === $cur): ?>
+                                <span class="page-link rounded-pill fw-bold" style="background:#0D1830;border-color:#0D1830;color:#fff;font-size:0.75rem;"><?php echo $p; ?></span>
+                            <?php else: ?>
+                                <a class="page-link rounded-pill" style="font-size:0.75rem;border:1px solid #e2e8f0;color:#475569;" href="<?php echo $url_for($p); ?>"><?php echo $p; ?></a>
+                            <?php endif; ?>
+                        </li>
+                    <?php endfor; ?>
+                    <?php if ($to_p < $total_pages): ?>
+                        <?php if ($to_p < $total_pages - 1): ?><li class="page-item disabled"><span class="page-link rounded-pill" style="border:1px solid #e2e8f0;color:#94a3b8;">…</span></li><?php endif; ?>
+                        <li class="page-item"><a class="page-link rounded-pill" style="font-size:0.75rem;border:1px solid #e2e8f0;color:#475569;" href="<?php echo $url_for($total_pages); ?>"><?php echo $total_pages; ?></a></li>
+                    <?php endif; ?>
+                    <li class="page-item <?php echo $cur >= $total_pages ? 'disabled' : ''; ?>">
+                        <a class="page-link rounded-pill" style="font-size:0.75rem;border:1px solid #e2e8f0;color:#475569;" href="<?php echo $cur < $total_pages ? $url_for($cur + 1) : '#'; ?>" aria-label="Next">
+                            <i data-lucide="chevron-right" style="width:13px;height:13px;"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <?php else: ?>
+            <?php if ($pg['total'] > 0): ?>
+            <div class="text-center small text-muted py-3 border-top" style="border-color:var(--card-border,#eef0f3) !important;">
+                <?php echo t('Total', 'Total'); ?> <strong><?php echo number_format($pg['total']); ?></strong> <?php echo t('riwayat', 'entries'); ?>
+            </div>
+            <?php endif; ?>
         <?php endif; ?>
     <?php endif; ?>
 </div>
+
+<?php if (!isset($error_db) && !empty($chart['labels'])): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.Chart) {
+        var labels = <?php echo json_encode($chart['labels']); ?>;
+        var tokens = <?php echo json_encode($chart['tokens']); ?>;
+        var calls  = <?php echo json_encode($chart['calls']); ?>;
+
+        // Grafik token (bar gradient teal)
+        var tctx = document.getElementById('aiTokenChart');
+        if (tctx) {
+            new Chart(tctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '<?php echo t('Token', 'Tokens'); ?>',
+                        data: tokens,
+                        backgroundColor: function(c) {
+                            var chart = c.chart;
+                            var g = chart.ctx.createLinearGradient(0, 0, 0, 230);
+                            g.addColorStop(0, 'rgba(13,148,136,0.6)');
+                            g.addColorStop(1, 'rgba(67,97,238,0.15)');
+                            return g;
+                        },
+                        borderColor: '#0d9488',
+                        borderWidth: 1.5,
+                        borderRadius: 6,
+                        maxBarThickness: 30
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0D1830', cornerRadius: 8, padding: 8, displayColors: false,
+                            callbacks: { label: function(c) { return ' ' + c.parsed.y.toLocaleString('id-ID') + ' token'; } }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
+                            ticks: { color: '#a8a29e', font: { size: 10 }, callback: function(v) { return v.toLocaleString('id-ID'); } }
+                        },
+                        x: { grid: { display: false }, ticks: { color: '#a8a29e', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }
+                    }
+                }
+            });
+        }
+
+        // Grafik percakapan (line indigo)
+        var cctx = document.getElementById('aiCallsChart');
+        if (cctx) {
+            new Chart(cctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '<?php echo t('Percakapan', 'Conversations'); ?>',
+                        data: calls,
+                        borderColor: '#4338ca',
+                        backgroundColor: function(c) {
+                            var g = c.chart.ctx.createLinearGradient(0, 0, 0, 230);
+                            g.addColorStop(0, 'rgba(67,56,202,0.18)');
+                            g.addColorStop(1, 'rgba(67,56,202,0)');
+                            return g;
+                        },
+                        fill: true, tension: 0.4,
+                        pointBackgroundColor: '#4338ca', pointBorderColor: '#fff',
+                        pointBorderWidth: 1.5, pointRadius: 3, pointHoverRadius: 5,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0D1830', cornerRadius: 8, padding: 8, displayColors: false,
+                            callbacks: { label: function(c) { return ' ' + c.parsed.y + ' ' + '<?php echo t('percakapan', 'conversations'); ?>'; } }
+                        }
+                    },
+                    scales: {
+                        y: { beginAtZero: true, ticks: { precision: 0, color: '#a8a29e', font: { size: 10 } }, grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false } },
+                        x: { grid: { display: false }, ticks: { color: '#a8a29e', font: { size: 9 }, maxRotation: 0, autoSkip: true, maxTicksLimit: 6 } }
+                    }
+                }
+            });
+        }
+    }
+});
+</script>
+<?php endif; ?>
+
