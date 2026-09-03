@@ -68,7 +68,7 @@
                         <a href="<?php echo base_url('admin/edit_learning_path/' . $p->id); ?>" class="btn btn-sm fw-semibold rounded-pill flex-fill d-inline-flex align-items-center justify-content-center gap-1" style="background:#0D1830;color:#fff;font-size:0.72rem;">
                             <i data-lucide="pencil" style="width:12px;height:12px;"></i> <?php echo t('Edit', 'Edit'); ?>
                         </a>
-                        <a href="<?php echo base_url('admin/delete_learning_path/' . $p->id); ?>" data-confirm="<?php echo t('Hapus learning path ini?', 'Delete this learning path?'); ?>" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="background:#dc2626;color:#fff;border:none;border-radius:100px;font-size:0.72rem;width:34px;box-shadow:0 2px 8px rgba(220,38,38,0.25);" title="<?php echo t('Hapus', 'Delete'); ?>"><i data-lucide="trash-2" style="width:13px;height:13px;"></i></a>
+                        <a href="<?php echo base_url('admin/delete_learning_path/' . $p->id); ?>" data-confirm="<?php echo t('Hapus learning path ini?', 'Delete this learning path?'); ?>" class="btn btn-sm d-inline-flex align-items-center justify-content-center" style="background:#dc2626;color:#fff;border:none;border-radius:100px;font-size:0.72rem;width:34px;box-shadow:0 2px 8px rgba(220,38,38,0.25);" title="<?php echo t('Hapus', 'Delete'); ?>"><i class="fas fa-trash-alt" style="color:#fff;font-size:0.72rem;"></i></a>
                     </div>
                 </div>
             <?php endforeach; ?>
