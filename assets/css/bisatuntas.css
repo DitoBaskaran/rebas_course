@@ -1218,6 +1218,38 @@ h1, h2, h3, h4, h5, h6,
 }
 .chip-check input:focus-visible + span { outline: 2px solid var(--primary); outline-offset: 1px; }
 
+/* ---- Coupon demo ticket (coupon create) ---- */
+.coupon-demo {
+  display: flex;
+  align-items: stretch;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px dashed var(--gray-300, #cbd5e1);
+  background: #fff;
+}
+.coupon-demo-left {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  background: linear-gradient(135deg, #0D1830, #134e4a);
+  color: #fff;
+}
+.coupon-demo-code {
+  font-weight: 900;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  font-family: 'Courier New', monospace;
+}
+.coupon-demo-meta { font-size: 0.66rem; color: rgba(255,255,255,0.7); margin-top: 0.15rem; }
+.coupon-demo-right {
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 0.9rem;
+  background: #FBBF24;
+  color: #0D1830;
+  font-weight: 900;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
 /* ============================================================
    ===  SETTINGS  ===
    ============================================================ */
