@@ -1445,6 +1445,22 @@ h1, h2, h3, h4, h5, h6,
 #mobTxList { gap: 10px !important; }
 
 /* ============================================================
+   ===  CERTIFICATE CARDS (certificate/my)  ===
+   ============================================================ */
+.cert-card { transition: var(--transition-smooth); }
+.cert-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.cert-share-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  color: #57534e;
+  background: var(--gray-100, #f1f5f9);
+  text-decoration: none;
+  transition: var(--transition-smooth);
+}
+.cert-share-btn:hover { color: #fff; background: #0D1830; transform: scale(1.1); }
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {
