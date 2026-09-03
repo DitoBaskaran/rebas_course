@@ -1223,6 +1223,28 @@ h1, h2, h3, h4, h5, h6,
 .tag-chip-del:hover { background: #dc2626; color: #fff; transform: scale(1.1); }
 
 /* ============================================================
+   ===  COUPON TICKET (admin/coupons)  ===
+   ============================================================ */
+.coupon-ticket { transition: var(--transition-smooth); position: relative; }
+.coupon-ticket:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+.coupon-divider {
+  position: relative;
+  border-top: 1.5px dashed var(--gray-200, #e7e5e4);
+  margin: 0 0.5rem;
+}
+.coupon-divider::before, .coupon-divider::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: var(--page-bg, #f8fafc);
+  border: 1px solid var(--card-border, #e7e5e4);
+}
+.coupon-divider::before { left: -8px; }
+.coupon-divider::after { right: -8px; }
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {
