@@ -1,13 +1,21 @@
 <div class="container-fluid px-0">
-    <div class="d-flex align-items-center gap-2 mb-5">
-        <a href="<?php echo base_url('admin/courses'); ?>" class="btn btn-outline-dark btn-sm rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 36px; height: 36px;">
-            <i data-lucide="arrow-left" style="width:16px;height:16px;"></i>
-        </a>
-        <div>
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-1">Konten</span>
-            <h1 class="display-6 fw-extrabold text-dark mb-0 lh-sm" style="letter-spacing: -0.03em;"><?php echo t('Buat Konten Baru', 'Create New Content'); ?></h1>
+
+    <!-- ============ HEADER (hero) ============ -->
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#164e63 100%);border:none;color:#fff;">
+        <div class="position-relative" style="z-index:1;">
+            <a href="<?php echo base_url('admin/courses'); ?>" class="d-inline-flex align-items-center gap-1 text-decoration-none mb-2" style="color:rgba(255,255,255,0.72);font-size:0.76rem;font-weight:600;">
+                <i data-lucide="arrow-left" style="width:13px;height:13px;"></i> <?php echo t('Kembali ke Konten', 'Back to Content'); ?>
+            </a>
+            <span class="d-inline-flex align-items-center gap-1" style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:#FBBF24;font-size:0.66rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:100px;">
+                <i data-lucide="plus" style="width:12px;height:12px;"></i>
+                <?php echo t('Konten Baru', 'New Content'); ?>
+            </span>
+            <h1 class="fw-extrabold text-white mb-0 mt-2 lh-sm" style="letter-spacing:-0.03em;font-size:1.5rem;">
+                <?php echo t('Buat Konten Baru', 'Create New Content'); ?>
+            </h1>
         </div>
     </div>
+
     <div class="row justify-content-center">
         <div class="col-lg-10">
             <div class="bento-card animate-scale-in overflow-hidden">
