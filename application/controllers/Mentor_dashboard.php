@@ -89,6 +89,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function availability() {
+        $this->_require_perm('mentoring', 'read');
         $mentor = $this->get_mentor_profile();
         $data['title'] = t('Jadwal Saya', 'My Schedule');
         $data['active_page'] = 'availability';
@@ -100,6 +101,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function add_slot() {
+        $this->_require_perm('mentoring', 'create');
         $mentor = $this->get_mentor_profile();
         $day_of_week = $this->input->post('day_of_week');
         $start_time = $this->input->post('start_time');
@@ -119,6 +121,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function delete_slot($encoded_id) {
+        $this->_require_perm('mentoring', 'delete');
         $mentor = $this->get_mentor_profile();
         $slot_id = decode_id($encoded_id);
         if (!$slot_id) show_404();
@@ -131,6 +134,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function sessions() {
+        $this->_require_perm('mentoring', 'read');
         $mentor = $this->get_mentor_profile();
         $data['title'] = t('Sesi Masuk', 'Incoming Sessions');
         $data['active_page'] = 'sessions';
@@ -142,6 +146,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function confirm_session($encoded_id) {
+        $this->_require_perm('mentoring', 'update');
         $mentor = $this->get_mentor_profile();
         $session_id = decode_id($encoded_id);
         if (!$session_id) show_404();
@@ -167,6 +172,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function reject_session($encoded_id) {
+        $this->_require_perm('mentoring', 'update');
         $mentor = $this->get_mentor_profile();
         $session_id = decode_id($encoded_id);
         if (!$session_id) show_404();
@@ -186,6 +192,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function complete_session($encoded_id) {
+        $this->_require_perm('mentoring', 'update');
         $mentor = $this->get_mentor_profile();
         $session_id = decode_id($encoded_id);
         if (!$session_id) show_404();
@@ -198,6 +205,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function rate_user($encoded_id) {
+        $this->_require_perm('mentoring', 'update');
         $mentor = $this->get_mentor_profile();
         $session_id = decode_id($encoded_id);
         if (!$session_id) show_404();
@@ -215,6 +223,7 @@ class Mentor_dashboard extends MY_Controller {
     }
 
     public function update_schedule($mentor_id) {
+        $this->_require_perm('mentoring', 'update');
         $mentor = $this->get_mentor_profile();
         $this->form_validation->set_rules('title', 'Title', 'required');
         if ($this->form_validation->run()) {

@@ -68,6 +68,9 @@
                     </div>
                     <div class="d-flex justify-content-end gap-2 px-4 px-xl-5 py-3 border-top">
                         <a href="<?php echo base_url('admin/users'); ?>" class="btn btn-outline-secondary btn-sm rounded-pill px-4"><?php echo t('Kembali', 'Back'); ?></a>
+                        <a href="<?php echo base_url('admin/permissions/' . $user->id); ?>" class="btn btn-outline-primary btn-sm rounded-pill px-4 d-flex align-items-center gap-1">
+                            <i data-lucide="shield" style="width:16px;height:16px;"></i> <?php echo t('Kelola Akses Menu', 'Manage Menu Access'); ?>
+                        </a>
                         <button type="submit" class="btn btn-primary btn-sm rounded-pill px-4 d-flex align-items-center gap-1">
                             <i data-lucide="save" style="width:16px;height:16px;"></i> <?php echo t('Simpan', 'Save'); ?>
                         </button>

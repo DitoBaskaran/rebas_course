@@ -10,12 +10,16 @@
         <i data-lucide="bar-chart-3"></i> <span><?php echo t('Analitik', 'Analytics'); ?></span>
     </a>
     <?php endif; ?>
+    <?php if ($sidebar_role === 'admin' || $this->access_library->can('courses', 'read')): ?>
     <a class="nav-link <?php echo strpos($active_page, 'courses') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('admin/courses'); ?>">
         <i data-lucide="book-open"></i> <span><?php echo t('Kelas', 'Courses'); ?></span>
     </a>
+    <?php endif; ?>
+    <?php if ($sidebar_role === 'admin' || $this->access_library->can('seminars', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'seminars' ? 'active' : ''; ?>" href="<?php echo base_url('admin/seminars'); ?>">
         <i data-lucide="calendar"></i> <span><?php echo t('Seminar', 'Seminars'); ?></span>
     </a>
+    <?php endif; ?>
     <?php if ($sidebar_role === 'admin'): ?>
     <a class="nav-link <?php echo $active_page === 'learning_paths' ? 'active' : ''; ?>" href="<?php echo base_url('admin/learning_paths'); ?>">
         <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Paths'); ?></span>
@@ -38,11 +42,16 @@
     <a class="nav-link <?php echo $active_page === 'users' ? 'active' : ''; ?>" href="<?php echo base_url('admin/users'); ?>">
         <i data-lucide="users"></i> <span><?php echo t('Pengguna', 'Users'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'role_permissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/role_permissions'); ?>">
+        <i data-lucide="shield-check"></i> <span><?php echo t('Role Default', 'Default Roles'); ?></span>
+    </a>
     <?php endif; ?>
+    <?php if ($sidebar_role === 'admin' || $this->access_library->can('submissions', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'submissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/submissions'); ?>">
         <i data-lucide="code"></i> <span><?php echo t('Tugas', 'Submissions'); ?></span>
     </a>
-    <?php if ($this->session->userdata('is_mentor')): ?>
+    <?php endif; ?>
+    <?php if ($this->session->userdata('is_mentor') && $this->access_library->can('mentoring', 'read')): ?>
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Mentoring', 'Mentoring'); ?></div>
     <a class="nav-link <?php echo $active_page === 'dashboard_mentor' ? 'active' : ''; ?>" href="<?php echo base_url('mentor'); ?>">

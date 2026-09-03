@@ -64,4 +64,74 @@ class Access_library {
         $subscriptions = $this->CI->User_subscription_model->get_active_subscriptions($user_id);
         return !empty($subscriptions);
     }
+
+    // ================= Menu/module permission (role-based + per-user override) =================
+
+    protected $_perm_cache = array();
+
+    /**
+     * Cek apakah user sesi saat ini boleh melakukan $action pada $module.
+     * Prioritas: admin selalu TRUE > override user_permissions (menang) > gabungan role_permissions
+     * (mengikuti flag role/is_teacher/is_mentor yang sudah ada) > default FALSE kalau tidak ada baris sama sekali.
+     *
+     * @param string $module 'courses'|'lessons'|'seminars'|'assignments'|'submissions'|'quizzes'|'forum'|'mentoring'|'learning_paths'
+     * @param string $action 'create'|'read'|'update'|'delete'
+     */
+    public function can($module, $action) {
+        if ($this->CI->session->userdata('role') === 'admin') return true;
+        $user_id = (int)$this->CI->session->userdata('user_id');
+        if (!$user_id) return false;
+        return $this->user_can($user_id, $module, $action);
+    }
+
+    /**
+     * Sama seperti can() tapi untuk user_id sembarang (dipakai admin saat mengedit akses user lain).
+     */
+    public function user_can($user_id, $module, $action) {
+        $perms = $this->_load_permissions($user_id);
+        $key = $module . ':' . $action;
+        if (array_key_exists($key, $perms['override'])) {
+            return (bool)$perms['override'][$key];
+        }
+        return !empty($perms['role'][$key]);
+    }
+
+    /**
+     * Ambil (dan cache per-request) permission efektif seorang user: role_permissions gabungan
+     * dari semua role yang dipegang (union: 1 role saja izinkan sudah cukup) + override user.
+     */
+    protected function _load_permissions($user_id) {
+        if (isset($this->_perm_cache[$user_id])) return $this->_perm_cache[$user_id];
+
+        $this->CI->load->model('User_model');
+        $user = $this->CI->User_model->get_user_by_id($user_id);
+        $role_slugs = array();
+        if ($user) {
+            if (!empty($user->is_teacher)) $role_slugs[] = 'guru';
+            if (!empty($user->is_mentor)) $role_slugs[] = 'mentor';
+            if (empty($role_slugs) && $user->role !== 'admin') $role_slugs[] = 'user';
+        }
+
+        $role = array();
+        if (!empty($role_slugs)) {
+            $rows = $this->CI->db
+                ->select('rp.module, rp.action, MAX(rp.allowed) as allowed')
+                ->from('role_permissions rp')
+                ->join('roles r', 'r.id = rp.role_id')
+                ->where_in('r.slug', $role_slugs)
+                ->group_by('rp.module, rp.action')
+                ->get()->result();
+            foreach ($rows as $r) {
+                $role[$r->module . ':' . $r->action] = (int)$r->allowed;
+            }
+        }
+
+        $override = array();
+        $rows = $this->CI->db->where('user_id', $user_id)->get('user_permissions')->result();
+        foreach ($rows as $r) {
+            $override[$r->module . ':' . $r->action] = (int)$r->allowed;
+        }
+
+        return $this->_perm_cache[$user_id] = array('role' => $role, 'override' => $override);
+    }
 }

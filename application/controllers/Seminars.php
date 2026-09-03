@@ -19,6 +19,7 @@ class Seminars extends MY_Controller {
     }
 
     public function mine() {
+        $this->_require_perm('seminars', 'read');
         if (!$this->session->userdata('logged_in')) {
             redirect('auth/login');
         }
@@ -51,6 +52,7 @@ class Seminars extends MY_Controller {
     }
 
     public function register($encoded_id) {
+        $this->_require_perm('seminars', 'create');
         $id = decode_id($encoded_id);
         if (!$id) show_404();
         if (!$this->session->userdata('logged_in')) {

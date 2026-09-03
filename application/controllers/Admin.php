@@ -248,6 +248,7 @@ class Admin extends MY_Controller {
 
     // ================ COURSE MANAGEMENT ================
     public function courses() {
+        $this->_require_perm('courses', 'read');
         $data['active_page'] = 'courses';
         $data['title'] = t('Kelola Konten', 'Manage Content');
         $user_id = $this->session->userdata('user_id');
@@ -262,6 +263,7 @@ class Admin extends MY_Controller {
     }
 
     public function create_course() {
+        $this->_require_perm('courses', 'create');
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
         $this->form_validation->set_rules('content_type', t('Tipe', 'Type'), 'required');
         $this->form_validation->set_rules('category_id', t('Kategori', 'Category'), 'required');
@@ -322,6 +324,7 @@ class Admin extends MY_Controller {
     }
 
     public function edit_course($id) {
+        $this->_require_perm('courses', 'update');
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -382,6 +385,7 @@ class Admin extends MY_Controller {
     }
 
     public function delete_course($id) {
+        $this->_require_perm('courses', 'delete');
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -395,6 +399,7 @@ class Admin extends MY_Controller {
 
     // ================ LESSON MANAGEMENT ================
     public function lessons($course_id) {
+        $this->_require_perm('lessons', 'read');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -413,6 +418,7 @@ class Admin extends MY_Controller {
     }
 
     public function create_lesson($course_id) {
+        $this->_require_perm('lessons', 'create');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -452,6 +458,7 @@ class Admin extends MY_Controller {
     }
 
     public function edit_lesson($id) {
+        $this->_require_perm('lessons', 'update');
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
@@ -492,6 +499,7 @@ class Admin extends MY_Controller {
     }
 
     public function delete_lesson($id) {
+        $this->_require_perm('lessons', 'delete');
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
@@ -507,6 +515,7 @@ class Admin extends MY_Controller {
 
     // ================ SEMINAR MANAGEMENT ================
     public function seminars() {
+        $this->_require_perm('seminars', 'read');
         $data['active_page'] = 'seminars';
         $data['title'] = t('Kelola Seminar', 'Manage Seminars');
         $user_id = $this->session->userdata('user_id');
@@ -521,6 +530,7 @@ class Admin extends MY_Controller {
     }
 
     public function create_seminar() {
+        $this->_require_perm('seminars', 'create');
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
         $this->form_validation->set_rules('date_time', t('Tanggal', 'Date'), 'required');
         $this->form_validation->set_rules('price', t('Harga', 'Price'), 'required|numeric');
@@ -571,6 +581,7 @@ class Admin extends MY_Controller {
     }
 
     public function edit_seminar($id) {
+        $this->_require_perm('seminars', 'update');
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
         if ($this->session->userdata('is_teacher') && $seminar->speaker_id != $this->session->userdata('user_id')) {
@@ -622,6 +633,7 @@ class Admin extends MY_Controller {
     }
 
     public function delete_seminar($id) {
+        $this->_require_perm('seminars', 'delete');
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
         if ($this->session->userdata('is_teacher') && $seminar->speaker_id != $this->session->userdata('user_id')) {
@@ -802,6 +814,7 @@ class Admin extends MY_Controller {
 
     // ================ SUBMISSIONS / GRADING ================
     public function submissions() {
+        $this->_require_perm('submissions', 'read');
         $data['title'] = t('Tugas Siswa', 'Student Submissions');
         $user_id = $this->session->userdata('user_id');
         $role = $this->session->userdata('role');
@@ -834,6 +847,7 @@ class Admin extends MY_Controller {
     }
 
     public function grade_submission($id) {
+        $this->_require_perm('submissions', 'update');
         $this->form_validation->set_rules('grade', t('Nilai', 'Grade'), 'required|numeric|greater_than[-1]|less_than[101]');
         if ($this->form_validation->run()) {
             $this->Assignment_model->grade_submission(
@@ -847,6 +861,7 @@ class Admin extends MY_Controller {
     }
 
     public function return_submission($id) {
+        $this->_require_perm('submissions', 'update');
         $this->Assignment_model->return_submission($id, $this->input->post('feedback') ?: '');
         $this->session->set_flashdata('success', t('Tugas dikembalikan untuk revisi.', 'Submission returned for revision.'));
         redirect('admin/submissions');
@@ -854,6 +869,7 @@ class Admin extends MY_Controller {
 
     // ================ ASSIGNMENT MANAGEMENT ================
     public function assignments($course_id) {
+        $this->_require_perm('assignments', 'read');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -870,6 +886,7 @@ class Admin extends MY_Controller {
     }
 
     public function create_assignment($course_id) {
+        $this->_require_perm('assignments', 'create');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -909,6 +926,7 @@ class Admin extends MY_Controller {
     }
 
     public function delete_assignment($id) {
+        $this->_require_perm('assignments', 'delete');
         $a = $this->Assignment_model->get_assignment_by_id($id);
         if (!$a) show_404();
         $course = $this->Course_model->get_course_by_id($a->course_id);
@@ -1378,6 +1396,115 @@ class Admin extends MY_Controller {
         redirect('admin/users');
     }
 
+    // ===== MENU ACCESS PERMISSIONS (role-based + per-user override) =====
+
+    /** Modul yang bisa diatur lewat matriks akses. */
+    const PERM_MODULES = array('courses', 'lessons', 'seminars', 'assignments', 'submissions', 'quizzes', 'forum', 'mentoring', 'learning_paths');
+    const PERM_ACTIONS = array('create', 'read', 'update', 'delete');
+
+    /** Halaman matriks role default (GURU/MENTOR/USER). */
+    public function role_permissions() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
+        $roles = $this->db->get('roles')->result();
+        $rows = $this->db->get('role_permissions')->result();
+        $matrix = array();
+        foreach ($rows as $r) $matrix[$r->role_id][$r->module][$r->action] = (int)$r->allowed;
+
+        $data['title'] = t('Role Default', 'Default Roles');
+        $data['active_page'] = 'role_permissions';
+        $data['roles'] = $roles;
+        $data['matrix'] = $matrix;
+        $data['modules'] = self::PERM_MODULES;
+        $data['actions'] = self::PERM_ACTIONS;
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/permissions/roles', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function save_role_permissions() {
+        if ($this->session->userdata('role') !== 'admin') redirect('admin/dashboard');
+        $roles = $this->db->get('roles')->result();
+        foreach ($roles as $role) {
+            foreach (self::PERM_MODULES as $module) {
+                foreach (self::PERM_ACTIONS as $action) {
+                    // Hidden input memastikan 0 ikut terkirim (checkbox unchecked tidak pernah dikirim browser)
+                    $allowed = $this->input->post("perm_{$role->id}_{$module}_{$action}") ? 1 : 0;
+                    $this->db->replace('role_permissions', array(
+                        'role_id' => $role->id, 'module' => $module, 'action' => $action, 'allowed' => $allowed,
+                    ));
+                }
+            }
+        }
+        $this->session->set_flashdata('success', t('Role default diperbarui.', 'Default roles updated.'));
+        redirect('admin/role_permissions');
+    }
+
+    /** Halaman override akses per user. */
+    public function permissions($user_id) {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
+        $this->load->model('User_model');
+        $user = $this->User_model->get_user_by_id($user_id);
+        if (!$user) show_404();
+
+        $role_slugs = array();
+        if ($user->is_teacher) $role_slugs[] = 'guru';
+        if ($user->is_mentor) $role_slugs[] = 'mentor';
+        if (empty($role_slugs) && $user->role !== 'admin') $role_slugs[] = 'user';
+
+        $role_default = array();
+        if (!empty($role_slugs)) {
+            $rows = $this->db->select('rp.module, rp.action, MAX(rp.allowed) as allowed')
+                ->from('role_permissions rp')->join('roles r', 'r.id = rp.role_id')
+                ->where_in('r.slug', $role_slugs)->group_by('rp.module, rp.action')->get()->result();
+            foreach ($rows as $r) $role_default[$r->module][$r->action] = (int)$r->allowed;
+        }
+
+        $overrides = array();
+        $rows = $this->db->where('user_id', $user_id)->get('user_permissions')->result();
+        foreach ($rows as $r) $overrides[$r->module][$r->action] = (int)$r->allowed;
+
+        $data['title'] = t('Akses Menu', 'Menu Access');
+        $data['active_page'] = 'users';
+        $data['target_user'] = $user;
+        $data['role_slugs'] = $role_slugs;
+        $data['role_default'] = $role_default;
+        $data['overrides'] = $overrides;
+        $data['modules'] = self::PERM_MODULES;
+        $data['actions'] = self::PERM_ACTIONS;
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/permissions/user', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
+    public function save_permissions($user_id) {
+        if ($this->session->userdata('role') !== 'admin') redirect('admin/dashboard');
+        $this->load->model('User_model');
+        $user = $this->User_model->get_user_by_id($user_id);
+        if (!$user) show_404();
+
+        $this->db->where('user_id', $user_id)->delete('user_permissions');
+        foreach (self::PERM_MODULES as $module) {
+            foreach (self::PERM_ACTIONS as $action) {
+                // 3-state: 'inherit' (ikut role, tidak disimpan), 'allow' (1), 'deny' (0)
+                $state = $this->input->post("perm_{$module}_{$action}");
+                if ($state === 'allow' || $state === 'deny') {
+                    $this->db->insert('user_permissions', array(
+                        'user_id' => $user_id, 'module' => $module, 'action' => $action,
+                        'allowed' => $state === 'allow' ? 1 : 0,
+                    ));
+                }
+            }
+        }
+        $this->session->set_flashdata('success', t('Akses menu diperbarui.', 'Menu access updated.'));
+        redirect('admin/permissions/' . $user_id);
+    }
+
     // ===== COUPON MANAGEMENT =====
     public function coupons() {
         if ($this->session->userdata('role') !== 'admin') {
@@ -1550,6 +1677,7 @@ class Admin extends MY_Controller {
 
     // ===== ESSAY GRADING =====
     public function grade_essays($quiz_id) {
+        $this->_require_perm('quizzes', 'update');
         $this->load->model('Quiz_model');
         $data['quiz'] = $this->Quiz_model->get_quiz_by_id($quiz_id);
         if (!$data['quiz']) show_404();
@@ -1570,6 +1698,7 @@ class Admin extends MY_Controller {
     }
 
     public function save_essay_grade($attempt_id, $question_idx) {
+        $this->_require_perm('quizzes', 'update');
         $score = $this->input->post('score');
         $attempt = $this->db->where('id', $attempt_id)->get('quiz_attempts')->row();
         if (!$attempt) show_404();

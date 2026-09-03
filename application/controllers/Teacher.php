@@ -73,6 +73,7 @@ class Teacher extends MY_Controller {
 
     // ================ COURSE MANAGEMENT ================
     public function courses() {
+        $this->_require_perm('courses', 'read');
         $data['active_page'] = 'courses';
         $data['title'] = t('Kelola Konten', 'Manage Content');
         $user_id = $this->session->userdata('user_id');
@@ -83,6 +84,7 @@ class Teacher extends MY_Controller {
     }
 
     public function create_course() {
+        $this->_require_perm('courses', 'create');
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
         $this->form_validation->set_rules('content_type', t('Tipe', 'Type'), 'required');
         $this->form_validation->set_rules('category_id', t('Kategori', 'Category'), 'required');
@@ -126,6 +128,7 @@ class Teacher extends MY_Controller {
     }
 
     public function edit_course($id) {
+        $this->_require_perm('courses', 'update');
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -168,6 +171,7 @@ class Teacher extends MY_Controller {
     }
 
     public function delete_course($id) {
+        $this->_require_perm('courses', 'delete');
         $course = $this->Course_model->get_course_by_id($id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -181,6 +185,7 @@ class Teacher extends MY_Controller {
 
     // ================ LESSON MANAGEMENT ================
     public function lessons($course_id) {
+        $this->_require_perm('lessons', 'read');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -197,6 +202,7 @@ class Teacher extends MY_Controller {
     }
 
     public function create_lesson($course_id) {
+        $this->_require_perm('lessons', 'create');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -227,6 +233,7 @@ class Teacher extends MY_Controller {
     }
 
     public function edit_lesson($id) {
+        $this->_require_perm('lessons', 'update');
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
@@ -259,6 +266,7 @@ class Teacher extends MY_Controller {
     }
 
     public function delete_lesson($id) {
+        $this->_require_perm('lessons', 'delete');
         $lesson = $this->Course_model->get_lesson_by_id($id);
         if (!$lesson) show_404();
         $course = $this->Course_model->get_course_by_id($lesson->course_id);
@@ -274,6 +282,7 @@ class Teacher extends MY_Controller {
 
     // ================ SEMINAR MANAGEMENT ================
     public function seminars() {
+        $this->_require_perm('seminars', 'read');
         $data['active_page'] = 'seminars';
         $data['title'] = t('Kelola Seminar', 'Manage Seminars');
         $user_id = $this->session->userdata('user_id');
@@ -284,6 +293,7 @@ class Teacher extends MY_Controller {
     }
 
     public function create_seminar() {
+        $this->_require_perm('seminars', 'create');
         $this->form_validation->set_rules('title', t('Judul', 'Title'), 'required|trim');
         $this->form_validation->set_rules('date_time', t('Tanggal', 'Date'), 'required');
         $this->form_validation->set_rules('price', t('Harga', 'Price'), 'required|numeric');
@@ -319,6 +329,7 @@ class Teacher extends MY_Controller {
     }
 
     public function edit_seminar($id) {
+        $this->_require_perm('seminars', 'update');
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
         if ($this->session->userdata('is_teacher') && $seminar->speaker_id != $this->session->userdata('user_id')) {
@@ -355,6 +366,7 @@ class Teacher extends MY_Controller {
     }
 
     public function delete_seminar($id) {
+        $this->_require_perm('seminars', 'delete');
         $seminar = $this->Seminar_model->get_seminar_by_id($id);
         if (!$seminar) show_404();
         if ($this->session->userdata('is_teacher') && $seminar->speaker_id != $this->session->userdata('user_id')) {
@@ -368,6 +380,7 @@ class Teacher extends MY_Controller {
 
     // ================ SUBMISSIONS / GRADING ================
     public function submissions() {
+        $this->_require_perm('submissions', 'read');
         $data['title'] = t('Tugas Siswa', 'Student Submissions');
         $user_id = $this->session->userdata('user_id');
         $courses = $this->Course_model->get_courses(array('teacher_id' => $user_id));
@@ -391,6 +404,7 @@ class Teacher extends MY_Controller {
     }
 
     public function grade_submission($id) {
+        $this->_require_perm('submissions', 'update');
         $this->form_validation->set_rules('grade', t('Nilai', 'Grade'), 'required|numeric|greater_than[-1]|less_than[101]');
         if ($this->form_validation->run()) {
             $this->Assignment_model->grade_submission($id, $this->input->post('grade'), $this->input->post('feedback') ?: '');
@@ -400,6 +414,7 @@ class Teacher extends MY_Controller {
     }
 
     public function return_submission($id) {
+        $this->_require_perm('submissions', 'update');
         $this->Assignment_model->return_submission($id, $this->input->post('feedback') ?: '');
         $this->session->set_flashdata('success', t('Tugas dikembalikan untuk revisi.', 'Submission returned for revision.'));
         redirect('teacher/submissions');
@@ -407,6 +422,7 @@ class Teacher extends MY_Controller {
 
     // ================ ASSIGNMENT MANAGEMENT ================
     public function assignments($course_id) {
+        $this->_require_perm('assignments', 'read');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -423,6 +439,7 @@ class Teacher extends MY_Controller {
     }
 
     public function create_assignment($course_id) {
+        $this->_require_perm('assignments', 'create');
         $course = $this->Course_model->get_course_by_id($course_id);
         if (!$course) show_404();
         if ($this->session->userdata('is_teacher') && $course->teacher_id != $this->session->userdata('user_id')) {
@@ -455,6 +472,7 @@ class Teacher extends MY_Controller {
     }
 
     public function delete_assignment($id) {
+        $this->_require_perm('assignments', 'delete');
         $a = $this->Assignment_model->get_assignment_by_id($id);
         if (!$a) show_404();
         $course = $this->Course_model->get_course_by_id($a->course_id);
@@ -470,6 +488,7 @@ class Teacher extends MY_Controller {
 
     // ================ QUIZ / ESSAY GRADING ================
     public function grade_essays($quiz_id) {
+        $this->_require_perm('quizzes', 'update');
         $this->load->model('Quiz_model');
         $data['quiz'] = $this->Quiz_model->get_quiz_by_id($quiz_id);
         if (!$data['quiz']) show_404();
@@ -486,6 +505,7 @@ class Teacher extends MY_Controller {
     }
 
     public function save_essay_grade($attempt_id, $question_idx) {
+        $this->_require_perm('quizzes', 'update');
         $score = $this->input->post('score');
         $attempt = $this->db->where('id', $attempt_id)->get('quiz_attempts')->row();
         if (!$attempt) show_404();

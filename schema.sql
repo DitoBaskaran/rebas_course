@@ -798,3 +798,32 @@ CREATE TABLE IF NOT EXISTS `user_reputations` (
   FOREIGN KEY (`mentor_id`) REFERENCES `mentors`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 57. Roles (template akses menu: GURU / MENTOR / USER)
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `slug` VARCHAR(50) UNIQUE NOT NULL,
+  `name` VARCHAR(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 58. Role permissions (matriks default per role)
+CREATE TABLE IF NOT EXISTS `role_permissions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `role_id` INT NOT NULL,
+  `module` VARCHAR(50) NOT NULL,
+  `action` ENUM('create','read','update','delete') NOT NULL,
+  `allowed` TINYINT(1) NOT NULL DEFAULT 1,
+  UNIQUE KEY `role_module_action` (`role_id`,`module`,`action`),
+  FOREIGN KEY (`role_id`) REFERENCES `roles`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 59. User permissions (override per user: 0 larang, 1 izinkan; kosong = ikut role)
+CREATE TABLE IF NOT EXISTS `user_permissions` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `module` VARCHAR(50) NOT NULL,
+  `action` ENUM('create','read','update','delete') NOT NULL,
+  `allowed` TINYINT(1) NOT NULL DEFAULT 0,
+  UNIQUE KEY `user_module_action` (`user_id`,`module`,`action`),
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

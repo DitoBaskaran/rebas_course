@@ -14,6 +14,7 @@ class Assignment extends MY_Controller {
     }
 
     public function view($encoded_id) {
+        $this->_require_perm('submissions', 'read');
         $assignment_id = decode_id($encoded_id);
         if (!$assignment_id) show_404();
         $assignment = $this->Assignment_model->get_assignment_by_id($assignment_id);
@@ -31,6 +32,7 @@ class Assignment extends MY_Controller {
     }
 
     public function submit($encoded_id) {
+        $this->_require_perm('submissions', 'create');
         $this->load->helper('gamification');
         $assignment_id = decode_id($encoded_id);
         if (!$assignment_id) show_404();

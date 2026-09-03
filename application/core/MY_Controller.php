@@ -42,4 +42,27 @@ class MY_Controller extends CI_Controller {
         $this->session->set_flashdata('error', t('Akun tidak aktif.', 'Account is not active.'));
         redirect('auth/login');
     }
+
+    /**
+     * Helper permission panel: user harus punya akses $action pada $module, kalau tidak
+     * redirect dengan flash 'Akses ditolak'. Panggil di awal method yang butuh guard.
+     */
+    protected function _require_perm($module, $action) {
+        $this->load->library('access_library');
+        if (!$this->access_library->can($module, $action)) {
+            $this->session->set_flashdata('error', t('Anda tidak memiliki izin untuk aksi ini.', 'You do not have permission for this action.'));
+            redirect($this->_perm_fallback_url());
+        }
+    }
+
+    /**
+     * Tujuan redirect saat akses ditolak: dashboard sesuai peran (admin/mentor/teacher/student).
+     */
+    protected function _perm_fallback_url() {
+        $role = $this->session->userdata('role');
+        if ($role === 'admin') return 'admin/dashboard';
+        if ($this->session->userdata('is_mentor') && !$this->session->userdata('is_teacher')) return 'mentor';
+        if ($this->session->userdata('is_teacher')) return 'teacher/dashboard';
+        return 'dashboard';
+    }
 }

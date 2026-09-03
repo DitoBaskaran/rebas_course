@@ -14,6 +14,7 @@ class Forum extends MY_Controller {
     }
 
     public function index($course_slug = null) {
+        $this->_require_perm('forum', 'read');
         if (!$course_slug) {
             $courses = $this->Course_model->get_user_enrolled_courses($this->session->userdata('user_id'));
             if (!empty($courses)) redirect('forum/index/' . $courses[0]->slug);
@@ -36,6 +37,7 @@ class Forum extends MY_Controller {
     }
 
     public function view($encoded_id) {
+        $this->_require_perm('forum', 'read');
         $id = decode_id($encoded_id);
         if (!$id) show_404();
         $discussion = $this->Discussion_model->get_discussion_by_id($id);
@@ -55,6 +57,7 @@ class Forum extends MY_Controller {
     }
 
     public function create($course_slug) {
+        $this->_require_perm('forum', 'create');
         $this->load->helper('gamification');
         $course = $this->Course_model->get_course_by_slug($course_slug);
         if (!$course) show_404();
@@ -79,6 +82,7 @@ class Forum extends MY_Controller {
     }
 
     public function reply($encoded_id) {
+        $this->_require_perm('forum', 'create');
         $discussion_id = decode_id($encoded_id);
         if (!$discussion_id) show_404();
         $discussion = $this->Discussion_model->get_discussion_by_id($discussion_id);
@@ -94,6 +98,7 @@ class Forum extends MY_Controller {
     }
 
     public function mark_best($encoded_reply_id) {
+        $this->_require_perm('forum', 'update');
         $reply_id = decode_id($encoded_reply_id);
         if (!$reply_id) show_404();
         $reply = $this->db->get_where('discussion_replies', array('id' => $reply_id))->row();

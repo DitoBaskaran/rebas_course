@@ -5,25 +5,33 @@
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url('teacher/dashboard'); ?>">
         <i data-lucide="layout-dashboard"></i> <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
     </a>
+    <?php if ($this->access_library->can('courses', 'read')): ?>
     <a class="nav-link <?php echo strpos($active_page, 'courses') === 0 ? 'active' : ''; ?>" href="<?php echo base_url('teacher/courses'); ?>">
         <i data-lucide="book-open"></i> <span><?php echo t('Kelas', 'Courses'); ?></span>
     </a>
+    <?php endif; ?>
+    <?php if ($this->access_library->can('seminars', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'seminars' ? 'active' : ''; ?>" href="<?php echo base_url('teacher/seminars'); ?>">
         <i data-lucide="calendar"></i> <span><?php echo t('Seminar', 'Seminars'); ?></span>
     </a>
+    <?php endif; ?>
+    <?php if ($this->access_library->can('submissions', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'submissions' ? 'active' : ''; ?>" href="<?php echo base_url('teacher/submissions'); ?>">
         <i data-lucide="code"></i> <span><?php echo t('Tugas', 'Submissions'); ?></span>
     </a>
+    <?php endif; ?>
 
-    <?php if ($sidebar_is_mentor): ?>
+    <?php if ($sidebar_is_mentor && $this->access_library->can('mentoring', 'read')): ?>
     <div class="sidebar-section-divider"></div>
     <div class="sidebar-heading"><?php echo t('Mentoring', 'Mentoring'); ?></div>
     <a class="nav-link <?php echo $active_page === 'dashboard_mentor' ? 'active' : ''; ?>" href="<?php echo base_url('mentor'); ?>">
         <i data-lucide="calendar-check"></i> <span><?php echo t('Dashboard Mentor', 'Mentor Dashboard'); ?></span>
     </a>
+    <?php if ($this->access_library->can('mentoring', 'create') || $this->access_library->can('mentoring', 'update')): ?>
     <a class="nav-link <?php echo $active_page === 'availability' ? 'active' : ''; ?>" href="<?php echo base_url('mentor/availability'); ?>">
         <i data-lucide="clock"></i> <span><?php echo t('Jadwal', 'Schedule'); ?></span>
     </a>
+    <?php endif; ?>
     <a class="nav-link <?php echo $active_page === 'sessions' ? 'active' : ''; ?>" href="<?php echo base_url('mentor/sessions'); ?>">
         <i data-lucide="list"></i> <span><?php echo t('Sesi Masuk', 'Sessions'); ?></span>
     </a>

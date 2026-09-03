@@ -79,6 +79,7 @@ class Mentoring extends MY_Controller {
     }
 
     public function book($encoded_mentor_id) {
+        $this->_require_perm('mentoring', 'create');
         if (!$this->session->userdata('logged_in')) {
             $this->session->set_flashdata('error', t('Silakan login.', 'Please login.'));
             redirect('auth/login');
@@ -99,6 +100,7 @@ class Mentoring extends MY_Controller {
     }
 
     public function confirm_booking() {
+        $this->_require_perm('mentoring', 'create');
         if (!$this->session->userdata('logged_in')) { redirect('auth/login'); }
         $user_id = $this->session->userdata('user_id');
         $mentor_id = decode_id($this->input->post('mentor_id'));
@@ -139,6 +141,7 @@ class Mentoring extends MY_Controller {
     }
 
     public function my_sessions() {
+        $this->_require_perm('mentoring', 'read');
         if (!$this->session->userdata('logged_in')) { redirect('auth/login'); }
         $user_id = $this->session->userdata('user_id');
         $data['title'] = t('Sesi Mentoring Saya', 'My Mentoring Sessions');
@@ -149,6 +152,7 @@ class Mentoring extends MY_Controller {
     }
 
     public function cancel($encoded_session_id) {
+        $this->_require_perm('mentoring', 'update');
         if (!$this->session->userdata('logged_in')) { redirect('auth/login'); }
         $session_id = decode_id($encoded_session_id);
         if (!$session_id) show_404();
