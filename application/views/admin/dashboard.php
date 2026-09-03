@@ -136,38 +136,32 @@
                 <i data-lucide="zap" style="width:17px;height:17px;color:var(--warning);"></i>
                 <?php echo t('Aksi Cepat', 'Quick Actions'); ?>
             </h6>
-            <div class="d-flex flex-column gap-2">
-                <a href="<?php echo base_url('admin/create_course'); ?>" class="quick-act-btn">
-                    <span class="qi-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-plus-circle"></i></span>
-                    <span><?php echo t('Buat Kelas Baru', 'New Course'); ?></span>
-                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+            <div class="quick-tile-grid">
+                <a href="<?php echo base_url('admin/create_course'); ?>" class="quick-tile">
+                    <span class="quick-tile-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-plus-circle"></i></span>
+                    <span class="quick-tile-label"><?php echo t('Buat Kelas', 'New Course'); ?></span>
                 </a>
-                <a href="<?php echo base_url('admin/create_seminar'); ?>" class="quick-act-btn">
-                    <span class="qi-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-calendar-plus"></i></span>
-                    <span><?php echo t('Buat Seminar Baru', 'New Seminar'); ?></span>
-                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                <a href="<?php echo base_url('admin/create_seminar'); ?>" class="quick-tile">
+                    <span class="quick-tile-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-calendar-plus"></i></span>
+                    <span class="quick-tile-label"><?php echo t('Buat Seminar', 'New Seminar'); ?></span>
                 </a>
                 <?php if ($current_role === 'admin'): ?>
-                <a href="<?php echo base_url('admin/analytics'); ?>" class="quick-act-btn">
-                    <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-chart-line"></i></span>
-                    <span><?php echo t('Lihat Analitik', 'View Analytics'); ?></span>
-                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                <a href="<?php echo base_url('admin/analytics'); ?>" class="quick-tile">
+                    <span class="quick-tile-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-chart-line"></i></span>
+                    <span class="quick-tile-label"><?php echo t('Analitik', 'Analytics'); ?></span>
                 </a>
-                <a href="<?php echo base_url('admin/settings/appearance'); ?>" class="quick-act-btn">
-                    <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-palette"></i></span>
-                    <span><?php echo t('Ubah Tampilan', 'Appearance'); ?></span>
-                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                <a href="<?php echo base_url('admin/settings/appearance'); ?>" class="quick-tile">
+                    <span class="quick-tile-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-palette"></i></span>
+                    <span class="quick-tile-label"><?php echo t('Tampilan', 'Appearance'); ?></span>
                 </a>
                 <?php else: ?>
-                <a href="<?php echo base_url('admin/submissions'); ?>" class="quick-act-btn">
-                    <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-code"></i></span>
-                    <span><?php echo t('Periksa Tugas', 'Submissions'); ?></span>
-                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                <a href="<?php echo base_url('admin/submissions'); ?>" class="quick-tile">
+                    <span class="quick-tile-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-code"></i></span>
+                    <span class="quick-tile-label"><?php echo t('Periksa Tugas', 'Submissions'); ?></span>
                 </a>
-                <a href="<?php echo base_url('admin/courses'); ?>" class="quick-act-btn">
-                    <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-book-open"></i></span>
-                    <span><?php echo t('Kelola Konten', 'Manage Content'); ?></span>
-                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                <a href="<?php echo base_url('admin/courses'); ?>" class="quick-tile">
+                    <span class="quick-tile-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-book-open"></i></span>
+                    <span class="quick-tile-label"><?php echo t('Kelola Konten', 'Manage Content'); ?></span>
                 </a>
                 <?php endif; ?>
             </div>
