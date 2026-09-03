@@ -1142,6 +1142,56 @@ h1, h2, h3, h4, h5, h6,
 .quick-tile-label { font-size: 0.78rem; font-weight: 700; line-height: 1.25; }
 
 /* ============================================================
+   ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
+   ============================================================ */
+.perm-grid {
+  display: grid;
+  grid-template-columns: 1fr repeat(4, 44px);
+  align-items: center;
+  gap: 0.25rem;
+}
+.perm-grid-head span {
+  font-size: 0.62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gray-400, #94a3b8);
+}
+.perm-act-create { color: #059669 !important; }
+.perm-act-read { color: #2563eb !important; }
+.perm-act-update { color: #d97706 !important; }
+.perm-act-delete { color: #dc2626 !important; }
+.perm-grid-row:hover { background: var(--gray-50, #f8fafc); }
+.perm-module-name {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.8rem; font-weight: 600;
+  color: var(--gray-900, #0D1830);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.perm-cell { display: flex; justify-content: center; cursor: pointer; }
+.perm-cell input.perm-input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.perm-box {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+  background: var(--gray-100, #f1f5f9);
+  color: var(--gray-300, #cbd5e1);
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+}
+.perm-cell:hover .perm-box { border-color: var(--gray-300, #cbd5e1); }
+.perm-cell-create input:checked + .perm-box { background: #d1fae5; color: #059669; }
+.perm-cell-read input:checked + .perm-box { background: #dbeafe; color: #2563eb; }
+.perm-cell-update input:checked + .perm-box { background: #fef3c7; color: #d97706; }
+.perm-cell-delete input:checked + .perm-box { background: #fee2e2; color: #dc2626; }
+.perm-input:focus-visible + .perm-box { outline: 2px solid var(--primary); outline-offset: 1px; }
+@media (max-width: 767px) {
+  .perm-grid { grid-template-columns: 1fr repeat(4, 36px); }
+  .perm-box { width: 26px; height: 26px; font-size: 0.62rem; }
+}
+
+/* ============================================================
    ===  SETTINGS  ===
    ============================================================ */
 .settings-section { margin-bottom: 2.5rem; }
