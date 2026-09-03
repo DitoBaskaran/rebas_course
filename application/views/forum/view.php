@@ -5,10 +5,10 @@
         <a href="<?php echo base_url('forum/index/' . $course->slug); ?>" class="text-decoration-none d-flex align-items-center justify-content-center flex-shrink-0 rounded-circle border" style="width:38px; height:38px; border-color:#e7e5e4 !important; background:#fff; color:#0D1830; box-shadow:0 1px 3px rgba(0,0,0,0.04);">
             <i class="fas fa-arrow-left" style="font-size:0.8rem;"></i>
         </a>
-        <div class="flex-fill min-w-0">
+        <div class="flex-fill min-w-0" style="min-width:0;">
             <div class="fw-semibold text-truncate" style="font-size:0.68rem; color:#009688; text-transform:uppercase; letter-spacing:0.04em;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?? $course->title)); ?></div>
             <h5 class="fw-extrabold mb-0 text-truncate" style="color:#0D1830; letter-spacing:-0.02em; font-size:1.05rem;"><?php echo $discussion->is_pinned ? '<i class="fas fa-thumbtack" style="color:#FBBF24; font-size:0.75rem;"></i> ' : ''; ?><?php echo htmlspecialchars($discussion->title); ?></h5>
-            <div class="d-flex align-items-center gap-2 mt-0" style="color:#a8a29e; font-size:0.7rem;">
+            <div class="d-flex align-items-center gap-2 mt-0" style="color:#a8a29e; font-size:0.7rem; white-space:nowrap;">
                 <span class="d-inline-flex align-items-center gap-1"><i class="far fa-comment"></i> <?php echo count($replies); ?> <?php echo t('balasan', 'replies'); ?></span>
                 <span class="opacity-50">·</span>
                 <span><i class="far fa-clock"></i> <?php echo time_elapsed($discussion->created_at); ?></span>
