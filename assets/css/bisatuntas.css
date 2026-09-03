@@ -1286,6 +1286,39 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ============================================================
+   ===  TRANSLATION ROW (admin/translations)  ===
+   ============================================================ */
+.tr-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #e7e5e4);
+  border-radius: 14px;
+  transition: var(--transition-smooth);
+}
+.tr-row:hover { box-shadow: var(--shadow-md); border-color: rgba(var(--primary-rgb), 0.25); }
+.tr-key {
+  display: flex; align-items: center; gap: 0.4rem;
+  flex-shrink: 0;
+  min-width: 150px; max-width: 220px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--gray-900, #0D1830);
+  background: var(--gray-50, #f8fafc);
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tr-lang { font-size: 0.6rem; font-weight: 800; flex-shrink: 0; width: 24px; }
+@media (max-width: 767px) {
+  .tr-row { flex-wrap: wrap; }
+  .tr-key { max-width: 100%; }
+}
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {
