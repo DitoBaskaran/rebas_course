@@ -85,23 +85,13 @@
         </div>
     </nav>
 
-    <!-- Flash Messages -->
-    <div class="container-fluid px-4 mt-3">
-        <?php if ($this->session->flashdata('success')): ?>
-            <div class="alert alert-success border-0 shadow-soft d-flex align-items-center gap-2 py-3 px-4 alert-dismissible fade show flash-toast" role="alert" data-toast="success" data-message="<?php echo htmlspecialchars($this->session->flashdata('success'), ENT_QUOTES, 'UTF-8'); ?>">
-                <span class="icon-24 bg-success-subtle rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0"><i class="fas fa-check-circle text-success fs-8"></i></span>
-                <span class="small"><?php echo $this->session->flashdata('success'); ?></span>
-                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if ($this->session->flashdata('error')): ?>
-            <div class="alert alert-danger border-0 shadow-soft d-flex align-items-center gap-2 py-3 px-4 alert-dismissible fade show" role="alert">
-                <span class="icon-24 bg-danger-subtle rounded-circle d-inline-flex align-items-center justify-content-center flex-shrink-0"><i class="fas fa-exclamation-triangle text-danger fs-8"></i></span>
-                <span class="small"><?php echo $this->session->flashdata('error'); ?></span>
-                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-    </div>
+    <!-- Flash Messages (toast) -->
+    <?php if ($this->session->flashdata('success')): ?>
+        <div class="d-none flash-toast" data-toast="success" data-message="<?php echo htmlspecialchars($this->session->flashdata('success'), ENT_QUOTES, 'UTF-8'); ?>"></div>
+    <?php endif; ?>
+    <?php if ($this->session->flashdata('error')): ?>
+        <div class="d-none flash-toast" data-toast="error" data-message="<?php echo htmlspecialchars($this->session->flashdata('error'), ENT_QUOTES, 'UTF-8'); ?>"></div>
+    <?php endif; ?>
 
     <!-- Student Wrapper -->
     <div class="admin-wrapper playful" id="studentWrapper">
