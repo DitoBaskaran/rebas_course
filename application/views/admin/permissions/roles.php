@@ -1,21 +1,24 @@
 <div class="container-fluid px-0">
 
-    <!-- ============ HEADER ============ -->
-    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
-        <div>
-            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-1">
-                <?php echo t('Akses & Izin', 'Access & Permissions'); ?>
-            </span>
-            <h1 class="display-6 fw-extrabold text-dark mb-1 lh-sm" style="letter-spacing:-0.03em;">
-                <?php echo t('Role Default', 'Default Roles'); ?>
-            </h1>
-            <p class="text-secondary mb-0 small">
-                <?php echo t('Set izin standar per role. User yang tidak punya override mengikuti template ini — override per user diatur lewat menu Edit Pengguna.', 'Set standard permissions per role. Users without an override follow this template — per-user overrides are managed via the Edit User page.'); ?>
-            </p>
+    <!-- ============ HEADER (hero) ============ -->
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#164e63 100%);border:none;color:#fff;">
+        <div class="d-flex align-items-center justify-content-between gap-3 position-relative" style="z-index:1;">
+            <div>
+                <span class="d-inline-flex align-items-center gap-1.5" style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:#FBBF24;font-size:0.66rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:100px;">
+                    <i data-lucide="shield-check" style="width:12px;height:12px;"></i>
+                    <?php echo t('Akses & Izin', 'Access & Permissions'); ?>
+                </span>
+                <h1 class="display-6 fw-extrabold text-white mb-1 mt-2 lh-sm" style="letter-spacing:-0.03em;font-size:1.6rem;">
+                    <?php echo t('Role Default', 'Default Roles'); ?>
+                </h1>
+                <p class="mb-0" style="color:rgba(255,255,255,0.72);font-size:0.82rem;max-width:46rem;line-height:1.6;">
+                    <?php echo t('Set izin standar per role. User yang tidak punya override mengikuti template ini — override per user diatur lewat menu Edit Pengguna.', 'Set standard permissions per role. Users without an override follow this template — per-user overrides are managed via the Edit User page.'); ?>
+                </p>
+            </div>
+            <a href="<?php echo base_url('admin/users'); ?>" class="btn fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0 flex-shrink-0" style="background:#FBBF24;color:#0D1830;font-size:0.78rem;padding:0.55rem 1.1rem;box-shadow:0 4px 14px rgba(251,191,36,0.3);">
+                <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> <?php echo t('Kembali', 'Back'); ?>
+            </a>
         </div>
-        <a href="<?php echo base_url('admin/users'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0 flex-shrink-0" style="background:#E6EBEF;color:#57534e;font-size:0.78rem;">
-            <i data-lucide="arrow-left" style="width:14px;height:14px;"></i> <?php echo t('Kembali', 'Back'); ?>
-        </a>
     </div>
 
     <?php echo form_open('admin/save_role_permissions', array('id' => 'rolePermForm')); ?>
