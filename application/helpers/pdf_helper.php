@@ -14,6 +14,8 @@ function generate_certificate_pdf($cert_data) {
     $options->set('defaultFont', 'sans-serif');
     $options->set('isFontSubsettingEnabled', true);
     $options->set('isPhpEnabled', true);
+    // Izinkan dompdf mengakses file lokal (logo, aset) dari root project
+    $options->set('chroot', FCPATH);
 
     $dompdf = new \Dompdf\Dompdf($options);
     $dompdf->loadHtml($html);

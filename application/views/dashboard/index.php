@@ -112,7 +112,7 @@
         <!-- Upcoming Seminars -->
         <?php $mob_upcoming_sems = array_filter($registered_seminars ?? array(), function($s) { return strtotime($s->date_time) > time(); }); ?>
         <div class="mob-section-head">
-            <h6><i class="fas fa-calendar" style="color:#a855f7;font-size:0.8rem;"></i> <?php echo t('Seminar Terdekat', 'Upcoming Seminars'); ?></h6>
+            <h6><i class="fas fa-calendar" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Seminar Terdekat', 'Upcoming Seminars'); ?></h6>
             <a href="<?php echo base_url('seminars/mine'); ?>"><?php echo t('Semua', 'All'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
         </div>
         <?php if (empty($mob_upcoming_sems)): ?>
@@ -125,7 +125,7 @@
             <div class="mob-list-card">
                 <?php foreach (array_slice(array_values($mob_upcoming_sems), 0, 3) as $i => $sem): ?>
                     <a class="mob-list-row" href="<?php echo base_url('seminars'); ?>">
-                        <span class="mob-avatar" style="background: linear-gradient(135deg,#a855f7,#d946ef);"><?php echo date('d', strtotime($sem->date_time)); ?></span>
+                        <span class="mob-avatar" style="background: linear-gradient(135deg,#009688,#00796B);"><?php echo date('d', strtotime($sem->date_time)); ?></span>
                         <span class="mob-list-body">
                             <span class="mob-list-title"><?php echo htmlspecialchars(t($sem->title, $sem->title_en ?: $sem->title)); ?></span>
                             <span class="mob-list-sub"><?php echo date('M Y', strtotime($sem->date_time)); ?> · <?php echo date('H:i', strtotime($sem->date_time)); ?> WIB</span>
@@ -270,8 +270,8 @@
             </div>
             <div class="col-6 col-md-3">
                 <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #faf5ff;">
-                        <i class="fas fa-calendar" style="color: #a855f7; font-size: 0.85rem;"></i>
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #E0F2F1;">
+                        <i class="fas fa-calendar" style="color: #009688; font-size: 0.85rem;"></i>
                     </div>
                     <div class="fw-bold" style="color: #0D1830; font-size: 1.1rem; line-height: 1;"><?php echo count($registered_seminars); ?></div>
                     <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Seminar', 'Seminars'); ?></small>
@@ -378,7 +378,7 @@
                 <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
                     <div class="p-3" style="border-bottom: 1px solid #f0eeeb;">
                         <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                            <i class="fas fa-calendar" style="color: #a855f7; font-size: 0.75rem;"></i>
+                            <i class="fas fa-calendar" style="color: #009688; font-size: 0.75rem;"></i>
                             <?php echo t('Seminar Terbaru', 'Latest Seminars'); ?>
                         </h6>
                     </div>

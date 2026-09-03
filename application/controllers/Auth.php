@@ -26,7 +26,9 @@ class Auth extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $data['google_login_url'] = google_login_url();
-            $this->load->view('templates/header', array('title' => t('Login - BISATUNTAS', 'Login - BISATUNTAS')));
+            $data['is_auth_page'] = true;
+            $data['title'] = t('Login - BISATUNTAS', 'Login - BISATUNTAS');
+            $this->load->view('templates/header', $data);
             $this->load->view('auth/login', $data);
             $this->load->view('templates/footer');
         } else {
@@ -161,7 +163,9 @@ class Auth extends CI_Controller {
         if ($this->form_validation->run() === FALSE) {
             $data['google_login_url'] = google_login_url();
             $data['wa_otp_enabled'] = wa_enabled();
-            $this->load->view('templates/header', array('title' => t('Daftar Akun - BISATUNTAS', 'Register - BISATUNTAS')));
+            $data['is_auth_page'] = true;
+            $data['title'] = t('Daftar Akun - BISATUNTAS', 'Register - BISATUNTAS');
+            $this->load->view('templates/header', $data);
             $this->load->view('auth/register', $data);
             $this->load->view('templates/footer');
         } else {
@@ -262,6 +266,7 @@ class Auth extends CI_Controller {
 
         $data['title'] = t('Verifikasi OTP - BISATUNTAS', 'Verify OTP - BISATUNTAS');
         $data['phone'] = $phone;
+        $data['is_auth_page'] = true;
         $this->load->view('templates/header', $data);
         $this->load->view('auth/verify_otp', $data);
         $this->load->view('templates/footer');
@@ -372,6 +377,7 @@ class Auth extends CI_Controller {
 
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Lupa Password - BISATUNTAS', 'Forgot Password - BISATUNTAS');
+            $data['is_auth_page'] = true;
             $this->load->view('templates/header', $data);
             $this->load->view('auth/forgot_password');
             $this->load->view('templates/footer');
@@ -408,6 +414,7 @@ class Auth extends CI_Controller {
         if ($this->form_validation->run() === FALSE) {
             $data['title'] = t('Reset Password - BISATUNTAS', 'Reset Password - BISATUNTAS');
             $data['token'] = $token;
+            $data['is_auth_page'] = true;
             $this->load->view('templates/header', $data);
             $this->load->view('auth/reset_password', $data);
             $this->load->view('templates/footer');

@@ -1,232 +1,321 @@
 <?php $site_settings = settings(); ?>
-<?php $cat_colors = array('#009688', '#FBBF24', '#0D1830', '#ec4899', '#0ea5e9', '#8b5cf6', '#f43f5e', '#009688'); ?>
+<?php $cat_colors = array('#009688', '#FBBF24', '#0D1830', '#009688', '#FBBF24', '#0D1830', '#009688', '#FBBF24'); ?>
 
-<!-- ================= HERO ================= -->
+<style>
+/* ============================================================
+   BISATUNTAS — Startup Landing (Prompt Tailwind structure)
+   Palet: Navy #0D1830 | Teal #009688 | Amber #FBBF24 | Abu #E6EBEF
+   ============================================================ */
+:root{
+  --bt-navy:#0D1830;
+  --bt-teal:#009688;
+  --bt-teal-dark:#00796B;
+  --bt-amber:#FBBF24;
+  --bt-amber-soft:#FEF3C7;
+  --bt-gray:#E6EBEF;
+  --bt-text:#334155;
+  --bt-muted:#64748b;
+}
+/* ===== HERO (light, yellow-soft gradient + underline highlight) ===== */
+.bt-hero{position:relative;background:linear-gradient(to bottom,rgba(251,191,36,0.16) 0%,rgba(251,191,36,0.05) 55%,#ffffff 100%);padding:9rem 0 5rem;overflow:hidden;}
+.bt-hero::before{content:'';position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(0,150,136,0.10) 0%,transparent 65%);top:-160px;right:-120px;pointer-events:none;}
+.bt-hero-inner{display:grid;grid-template-columns:3fr 4fr;gap:4rem;align-items:center;position:relative;z-index:1;}
+.bt-hero-title{font-size:2.6rem;line-height:1.15;font-weight:700;letter-spacing:-0.035em;color:var(--bt-navy);margin:0 0 1.1rem;}
+.bt-hero-title .bt-mark{position:relative;z-index:0;color:var(--bt-navy);white-space:nowrap;}
+.bt-hero-title .bt-mark::after{content:'';position:absolute;z-index:-1;left:0;right:0;bottom:0.08em;height:0.55em;background:rgba(251,191,36,0.45);border-radius:4px;}
+.bt-hero-sub{font-size:0.95rem;color:var(--bt-muted);max-width:460px;margin:0 0 2.2rem;line-height:1.7;}
+.bt-hero-cta{display:flex;gap:0.8rem;flex-wrap:wrap;}
+.bt-btn{border-radius:8px;padding:0.7rem 1.4rem;font-size:0.88rem;font-weight:600;display:inline-flex;align-items:center;gap:8px;text-decoration:none;transition:all 0.3s ease;cursor:pointer;border:none;font-family:inherit;}
+.bt-btn i{font-size:0.8rem;}
+.bt-btn-solid{background:var(--bt-teal);color:#fff;}
+.bt-btn-solid:hover{background:var(--bt-teal-dark);color:#fff;box-shadow:0 12px 26px rgba(0,150,136,0.35);transform:translateY(-2px);}
+.bt-btn-outline{border:1.5px solid var(--bt-teal);color:var(--bt-teal);background:transparent;}
+.bt-btn-outline:hover{background:var(--bt-teal);color:#fff;box-shadow:0 12px 26px rgba(0,150,136,0.35);transform:translateY(-2px);}
+.bt-btn-dark{background:var(--bt-navy);color:#fff;}
+.bt-btn-dark:hover{background:#152447;color:#fff;box-shadow:0 12px 26px rgba(13,24,48,0.35);transform:translateY(-2px);}
+.bt-btn-amber{background:var(--bt-amber);color:var(--bt-navy);}
+.bt-btn-amber:hover{background:#f6a800;color:var(--bt-navy);box-shadow:0 12px 26px rgba(251,191,36,0.4);transform:translateY(-2px);}
+.bt-hero-visual{position:relative;}
+.bt-hero-visual img{width:100%;max-width:520px;display:block;margin:0 auto;border-radius:16px;box-shadow:0 30px 60px rgba(13,24,48,0.16);}
+.bt-hero-chip{position:absolute;display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:0.75rem 1rem;box-shadow:0 16px 40px rgba(13,24,48,0.12);animation:btFloat 5.5s ease-in-out infinite;}
+.bt-hero-chip i{font-size:1rem;}
+.bt-chip-1{top:-14px;left:-10px;}
+.bt-chip-1 i{color:var(--bt-amber);}
+.bt-chip-2{bottom:-18px;right:-6px;animation-delay:1.6s;}
+.bt-chip-2 i{color:var(--bt-teal);}
+.bt-hero-chip strong{display:block;font-size:0.78rem;color:var(--bt-navy);line-height:1.2;}
+.bt-hero-chip span{font-size:0.64rem;color:var(--bt-muted);}
+@keyframes btFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
+/* ===== CLIENTS ===== */
+.bt-clients{padding:3rem 0;}
+.bt-clients-text{text-align:center;font-size:0.95rem;font-weight:600;color:var(--bt-navy);margin-bottom:1.6rem;}
+.bt-clients-text span{color:var(--bt-teal);}
+.bt-clients-logos{display:flex;flex-wrap:wrap;justify-content:center;gap:2.6rem;opacity:0.55;filter:grayscale(100%);}
+.bt-clients-logos span{display:flex;align-items:center;gap:7px;font-size:0.95rem;font-weight:700;color:#334155;}
+.bt-clients-logos i{font-size:1.25rem;}
+/* ===== FEATURE SPLIT ===== */
+.bt-feature{padding:4.5rem 0;overflow-x:hidden;}
+.bt-feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center;}
+.bt-chip-tag{display:inline-block;font-size:0.72rem;font-weight:700;background:rgba(0,150,136,0.10);color:var(--bt-teal);border-radius:99px;padding:0.3rem 0.8rem;margin-bottom:0.9rem;}
+.bt-chip-tag-amber{background:rgba(251,191,36,0.14);color:#b45309;}
+.bt-feature-title{font-size:1.85rem;font-weight:600;letter-spacing:-0.02em;color:var(--bt-navy);margin:0 0 0.8rem;line-height:1.25;}
+.bt-feature-desc{font-size:0.92rem;color:var(--bt-muted);line-height:1.7;margin:0 0 1.8rem;}
+.bt-feature-media img{width:100%;border-radius:14px;box-shadow:0 22px 48px rgba(13,24,48,0.12);display:block;}
+/* ===== INTEGRATIONS / SERVICES GRID ===== */
+.bt-integrations{background:var(--bt-gray);padding:4.5rem 0;}
+.bt-center{text-align:center;}
+.bt-title{font-size:1.85rem;font-weight:600;letter-spacing:-0.02em;color:var(--bt-navy);margin:0.7rem 0 0.6rem;}
+.bt-sub{font-size:0.92rem;color:var(--bt-muted);margin:0;}
+.bt-sub .bt-teal{color:var(--bt-teal);font-weight:600;}
+.bt-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;}
+.bt-integ-card{background:#fff;border-radius:12px;padding:1.3rem;display:flex;gap:1.1rem;align-items:flex-start;box-shadow:0 2px 10px rgba(13,24,48,0.05);transition:all 0.25s ease;text-decoration:none;color:inherit;}
+.bt-integ-card:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(13,24,48,0.10);}
+.bt-integ-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:#fff;flex-shrink:0;background:linear-gradient(135deg,var(--bt-teal),var(--bt-navy));}
+.bt-integ-icon.alt{background:linear-gradient(135deg,var(--bt-amber),#f59e0b);color:var(--bt-navy);}
+.bt-integ-icon.navy{background:linear-gradient(135deg,var(--bt-navy),#233358);}
+.bt-integ-icon.soft{background:linear-gradient(135deg,#E0F2F1,var(--bt-teal));}
+.bt-integ-card h5{font-size:0.95rem;font-weight:700;color:var(--bt-navy);margin:0 0 0.4rem;}
+.bt-integ-card p{font-size:0.8rem;color:var(--bt-muted);line-height:1.55;margin:0;}
+/* ===== COURSES (portfolio-style grid) ===== */
+.bt-courses{padding:4.5rem 0;}
+.bt-course-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:3rem;}
+.bt-course-card{display:flex;flex-direction:column;border:1px solid #eef1f5;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;background:#fff;transition:transform 0.22s ease,box-shadow 0.22s ease;}
+.bt-course-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(13,24,48,0.10);}
+.bt-course-img{position:relative;aspect-ratio:16/10;overflow:hidden;background:#f4f6f9;}
+.bt-course-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s;}
+.bt-course-card:hover .bt-course-img img{transform:scale(1.05);}
+.bt-course-badge{position:absolute;top:10px;left:10px;background:rgba(255,255,255,0.94);color:var(--bt-navy);font-size:0.6rem;font-weight:700;padding:0.22rem 0.55rem;border-radius:6px;}
+.bt-course-price{position:absolute;top:10px;right:10px;background:rgba(0,150,136,0.92);color:#fff;font-size:0.62rem;font-weight:700;padding:0.22rem 0.55rem;border-radius:6px;}
+.bt-course-body{padding:0.9rem;display:flex;flex-direction:column;flex:1;}
+.bt-course-meta{display:flex;gap:9px;font-size:0.65rem;color:#94a3b8;margin-bottom:0.4rem;}
+.bt-course-meta i{font-size:0.55rem;color:var(--bt-teal);margin-right:2px;}
+.bt-course-title{font-size:0.85rem;font-weight:700;color:var(--bt-navy);margin:0 0 0.5rem;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.bt-course-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;font-size:0.82rem;font-weight:700;color:var(--bt-navy);}
+.bt-course-free{color:var(--bt-teal);font-weight:600;}
+.bt-learn{width:28px;height:28px;border-radius:8px;background:var(--bt-gray);color:var(--bt-teal);display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
+.bt-course-card:hover .bt-learn{background:var(--bt-teal);color:#fff;}
+/* ===== STEPS (3 angka) ===== */
+.bt-steps-section{background:var(--bt-navy);padding:4.5rem 0;position:relative;overflow:hidden;}
+.bt-steps-section::before{content:'';position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,0.12),transparent 70%);top:-140px;right:-90px;}
+.bt-steps-section .bt-title{color:#fff;}
+.bt-steps-section .bt-sub{color:rgba(255,255,255,0.65);}
+.bt-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3.2rem;position:relative;z-index:1;}
+.bt-step{text-align:center;padding:1.8rem 1.2rem;}
+.bt-step-num{width:52px;height:52px;border-radius:50%;background:var(--bt-amber);color:var(--bt-navy);font-weight:800;font-size:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1.3rem;box-shadow:0 0 0 8px rgba(251,191,36,0.14);}
+.bt-step-icon{width:58px;height:58px;border-radius:16px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.16);display:flex;align-items:center;justify-content:center;font-size:1.25rem;color:var(--bt-amber);margin:0 auto 1rem;}
+.bt-step h5{font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 0.45rem;}
+.bt-step p{font-size:0.8rem;color:rgba(255,255,255,0.6);line-height:1.6;margin:0;}
+/* ===== PRICING TABLE ===== */
+.bt-pricing{padding:4.5rem 0;}
+.bt-price-table{width:100%;border-collapse:collapse;margin-top:3rem;min-width:640px;}
+.bt-price-table th,.bt-price-table td{padding:0.95rem 1rem;text-align:center;border-bottom:1px solid #eef1f5;font-size:0.85rem;color:var(--bt-text);}
+.bt-price-table thead th{background:#fff;border-top:2px solid #eef1f5;}
+.bt-price-table th:first-child,.bt-price-table td:first-child{text-align:left;width:40%;}
+.bt-price-table th h5{font-size:0.98rem;font-weight:700;color:var(--bt-navy);margin:0;}
+.bt-price-table th p{font-size:0.72rem;color:var(--bt-muted);margin:0.2rem 0 0;}
+.bt-price-table td:first-child{color:var(--bt-text);}
+.bt-price-check{color:#16a34a;font-size:0.9rem;}
+.bt-popular-badge{display:inline-block;font-size:0.6rem;font-weight:700;background:var(--bt-amber);color:var(--bt-navy);border-radius:99px;padding:0.2rem 0.6rem;margin-left:6px;vertical-align:middle;}
+.bt-addon{display:inline-block;font-size:0.62rem;font-weight:700;background:rgba(0,150,136,0.10);color:var(--bt-teal);border-radius:99px;padding:0.18rem 0.55rem;}
+.bt-col-popular{background:rgba(251,191,36,0.05);}
+/* ===== TESTIMONIALS ===== */
+.bt-testi-section{background:var(--bt-gray);padding:4.5rem 0;}
+.bt-testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;margin-top:3rem;}
+.bt-testi{border-radius:16px;padding:1.5rem;background:#fff;box-shadow:0 2px 10px rgba(13,24,48,0.05);}
+.bt-testi .bt-stars{display:flex;gap:3px;margin-bottom:0.8rem;}
+.bt-testi .bt-stars i{font-size:0.75rem;color:var(--bt-amber);}
+.bt-testi p{font-size:0.82rem;color:#475569;line-height:1.65;margin:0 0 1.1rem;font-style:italic;}
+.bt-testi-by{display:flex;align-items:center;gap:10px;}
+.bt-avatar{width:38px;height:38px;border-radius:50%;color:#fff;font-size:0.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.bt-testi-by strong{display:block;font-size:0.8rem;color:var(--bt-navy);}
+.bt-testi-by small{font-size:0.68rem;color:var(--bt-muted);}
+/* ===== FOOTER CTA ===== */
+.bt-cta-section{padding:4rem 0;}
+.bt-cta{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;background:linear-gradient(120deg,var(--bt-navy),#12306b 60%,var(--bt-teal));border-radius:18px;padding:2.4rem 2.6rem;box-shadow:0 24px 60px rgba(13,24,48,0.28);position:relative;overflow:hidden;}
+.bt-cta::after{content:'';position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,0.18),transparent 65%);top:-120px;right:-80px;}
+.bt-cta h2{font-size:1.5rem;font-weight:700;color:#fff;margin:0 0 0.4rem;}
+.bt-cta p{font-size:0.86rem;color:rgba(255,255,255,0.75);margin:0;}
+.bt-cta .bt-btn{position:relative;z-index:1;}
+/* responsive */
+@media (max-width:992px){
+  .bt-hero{padding:7rem 0 4rem;}
+  .bt-hero-inner{grid-template-columns:1fr;gap:3rem;}
+  .bt-hero-title{font-size:2.1rem;}
+  .bt-feature-grid{grid-template-columns:1fr;gap:2rem;}
+  .bt-feature-media{order:-1;}
+  .bt-grid-2{grid-template-columns:1fr;}
+  .bt-course-grid{grid-template-columns:repeat(2,1fr);}
+  .bt-steps{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto;}
+  .bt-testi-grid{grid-template-columns:1fr;}
+}
+@media (max-width:768px){
+  .bt-hero-title{font-size:1.75rem;}
+  .bt-course-grid{grid-template-columns:1fr;}
+  .bt-cta{padding:2rem 1.4rem;text-align:center;justify-content:center;}
+}
+</style>
+
+<!-- ================= HERO (Startup style) ================= -->
 <?php if (!isset($site_settings['hero_enabled']) || $site_settings['hero_enabled'] === '1'): ?>
-<section class="lp-hero">
-    <div class="lp-hero-glow lp-hero-glow-1"></div>
-    <div class="lp-hero-glow lp-hero-glow-2"></div>
-    <div class="container lp-hero-inner">
-        <div class="lp-hero-left">
-            <span class="lp-badge">
-                <i class="fas fa-bolt"></i>
-                <?php echo t(setting('hero_badge', 'Platform Belajar Skill #1'), setting('hero_badge_en', '#1 Skill Learning Platform')); ?>
-            </span>
-
-            <h1 class="lp-hero-title">
-                <?php echo t(setting('hero_title', 'Kembangkan Skill<br>dan <span>Karirmu</span>'), setting('hero_title_en', 'Develop Your<br>Skills & <span>Career</span>')); ?>
-            </h1>
-
-            <p class="lp-hero-sub">
-                <?php echo t(setting('hero_subtitle', 'Akses ribuan konten belajar terstruktur, mentoring langsung dengan ahli, dan sertifikat yang diakui industri.'), setting('hero_subtitle_en', 'Access thousands of structured learning content, direct mentoring with experts, and industry-recognized certificates.')); ?>
-            </p>
-
-            <div class="lp-hero-cta">
-                <a href="<?php echo base_url(setting('hero_cta_link', 'courses')); ?>" class="lp-btn lp-btn-primary">
-                    <i class="fas fa-book-open"></i>
-                    <?php echo t(setting('hero_cta_text', 'Mulai Belajar'), setting('hero_cta_text_en', 'Start Learning')); ?>
-                </a>
-                <a href="<?php echo base_url(setting('hero_secondary_cta_link', 'learning_paths')); ?>" class="lp-btn lp-btn-ghost">
-                    <?php echo t(setting('hero_secondary_cta_text', 'Lihat Alur Belajar'), setting('hero_secondary_cta_text_en', 'View Learning Paths')); ?>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-            </div>
-
-            <div class="lp-hero-stats">
-                <div class="lp-stat">
-                    <strong><?php echo $total_courses_count; ?>+</strong>
-                    <span><?php echo t('Konten Belajar', 'Learning Content'); ?></span>
-                </div>
-                <div class="lp-stat-divider"></div>
-                <div class="lp-stat">
-                    <strong><?php echo $total_teachers_count; ?>+</strong>
-                    <span><?php echo t('Pengajar Ahli', 'Expert Teachers'); ?></span>
-                </div>
-                <div class="lp-stat-divider"></div>
-                <div class="lp-stat">
-                    <strong><?php echo $total_students_count; ?>+</strong>
-                    <span><?php echo t('Siswa Aktif', 'Active Students'); ?></span>
+<section class="bt-hero">
+    <div class="container">
+        <div class="bt-hero-inner">
+            <div class="text-center sm:text-start" style="text-align:center;">
+                <h1 class="bt-hero-title">
+                    <?php echo t(setting('hero_title', 'Belajar <span class="bt-mark">Skill</span> Apapun, Kapanpun'), setting('hero_title_en', 'Learn <span class="bt-mark">Any Skill</span>, Anytime')); ?>
+                </h1>
+                <p class="bt-hero-sub" style="margin-left:auto;margin-right:auto;">
+                    <?php echo t(setting('hero_subtitle', 'Akses ribuan konten belajar terstruktur, mentoring langsung dengan ahli, dan sertifikat yang diakui industri.'), setting('hero_subtitle_en', 'Access thousands of structured learning content, direct mentoring with experts, and industry-recognized certificates.')); ?>
+                </p>
+                <div class="bt-hero-cta" style="justify-content:center;">
+                    <a href="<?php echo base_url(setting('hero_cta_link', 'courses')); ?>" class="bt-btn bt-btn-solid"><?php echo t(setting('hero_cta_text', 'Mulai Belajar'), setting('hero_cta_text_en', 'Start Learning')); ?> <i class="fas fa-arrow-right"></i></a>
+                    <a href="<?php echo base_url(setting('hero_secondary_cta_link', 'learning_paths')); ?>" class="bt-btn bt-btn-outline"><?php echo t(setting('hero_secondary_cta_text', 'Lihat Alur Belajar'), setting('hero_secondary_cta_text_en', 'View Learning Paths')); ?></a>
                 </div>
             </div>
-        </div>
-
-        <!-- Visual kanan: ilustrasi playful -->
-        <div class="lp-hero-right">
-            <div class="lp-hero-visual">
-                <div class="lp-float lp-float-1"><i class="fas fa-rocket"></i></div>
-                <div class="lp-float lp-float-2"><i class="fas fa-lightbulb"></i></div>
-                <div class="lp-float lp-float-3"><i class="fas fa-graduation-cap"></i></div>
-                <div class="lp-float lp-float-4"><i class="fas fa-trophy"></i></div>
-
-                <div class="lp-hero-card">
-                    <div class="lp-hero-card-top">
-                        <div class="lp-hero-emoji"><i class="fas fa-laptop-code"></i></div>
-                        <div>
-                            <strong><?php echo t('Belajar Seru', 'Learn Fun'); ?></strong>
-                            <span><?php echo t('Kelas interaktif & live', 'Interactive & live classes'); ?></span>
-                        </div>
-                    </div>
-                    <div class="lp-hero-progress">
-                        <div class="lp-hp-head"><span>Progress Kamu</span><span>80%</span></div>
-                        <div class="lp-hp-bar"><div style="width:80%"></div></div>
-                    </div>
-                    <div class="lp-hero-card-tags">
-                        <span><i class="fas fa-check-circle"></i> Video</span>
-                        <span><i class="fas fa-check-circle"></i> Kuis</span>
-                        <span><i class="fas fa-check-circle"></i> Sertifikat</span>
-                    </div>
-                </div>
-
-                <div class="lp-bubble lp-bubble-1">
-                    <i class="fas fa-certificate"></i>
-                    <div><strong>+120</strong><span>Sertifikat</span></div>
-                </div>
-                <div class="lp-bubble lp-bubble-2">
-                    <i class="fas fa-user-tie"></i>
-                    <div><strong><?php echo $total_teachers_count; ?>+</strong><span>Mentor Ahli</span></div>
-                </div>
+            <div class="bt-hero-visual" data-aos="fade-left" data-aos-duration="1000">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=70" alt="<?php echo t('Ilustrasi belajar', 'Learning illustration'); ?>">
+                <div class="bt-hero-chip bt-chip-1"><i class="fas fa-certificate"></i><div><strong><?php echo $total_certificates; ?>+</strong><span><?php echo t('Sertifikat Terbit', 'Certificates Issued'); ?></span></div></div>
+                <div class="bt-hero-chip bt-chip-2"><i class="fas fa-user-tie"></i><div><strong><?php echo $total_teachers_count; ?>+</strong><span><?php echo t('Mentor Ahli', 'Expert Mentors'); ?></span></div></div>
             </div>
         </div>
     </div>
 </section>
 <?php endif; ?>
 
-<!-- ================= TRUSTED BY ================= -->
-<section class="lp-trusted">
+<!-- ================= CLIENTS ================= -->
+<section class="bt-clients" data-aos="fade-up" data-aos-duration="1000">
     <div class="container">
-        <p class="lp-trusted-text"><?php echo t('Dipercaya oleh', 'Trusted by'); ?> <strong><?php echo $total_students_count; ?>+</strong> <?php echo t('siswa di Indonesia', 'students across Indonesia'); ?></p>
-        <div class="lp-trusted-logos">
+        <p class="bt-clients-text"><?php echo t('Bergabung dengan', 'Join'); ?> <span><?php echo $total_students_count; ?>+</span> <?php echo t('siswa di Indonesia yang mempercayai BISATUNTAS', 'students across Indonesia who trust BISATUNTAS'); ?></p>
+        <div class="bt-clients-logos">
             <span><i class="fab fa-google"></i> Google</span>
             <span><i class="fab fa-microsoft"></i> Microsoft</span>
             <span><i class="fab fa-github"></i> GitHub</span>
-            <span class="d-none d-md-flex"><i class="fab fa-aws"></i> AWS</span>
-            <span class="d-none d-md-flex"><i class="fab fa-figma"></i> Figma</span>
+            <span><i class="fab fa-aws"></i> AWS</span>
+            <span><i class="fab fa-figma"></i> Figma</span>
         </div>
     </div>
 </section>
 
-<!-- ================= KATEGORI ================= -->
-<?php if ((!isset($site_settings['home_show_categories']) || $site_settings['home_show_categories'] === '1') && !empty($categories)): ?>
-<section class="lp-section">
+<!-- ================= FEATURE SPLIT 1 ================= -->
+<section class="bt-feature">
     <div class="container">
-        <div class="lp-section-head">
-            <div>
-                <span class="lp-kicker"><?php echo t('Eksplorasi', 'Explore'); ?></span>
-                <h2 class="lp-section-title"><?php echo t('Temukan Bidang yang Kamu Minati', 'Find Your Field of Interest'); ?></h2>
-                <p class="lp-section-desc"><?php echo t('Pilih kategori dan mulai perjalanan belajarmu', 'Choose a category and start your learning journey'); ?></p>
+        <div class="bt-feature-grid">
+            <div data-aos="fade-right" data-aos-duration="1000">
+                <span class="bt-chip-tag"><?php echo t('Fitur Unggulan', 'Key Feature'); ?></span>
+                <h2 class="bt-feature-title"><?php echo t('Kurikulum Terstruktur, Siap Kerja', 'Structured Curriculum, Job-Ready'); ?></h2>
+                <p class="bt-feature-desc"><?php echo t('Konten belajar disusun alur jelas dari pemula hingga mahir — video, kuis interaktif, dan studi kasus nyata yang langsung relevan dengan kebutuhan industri.', 'Learning content organized in a clear path from beginner to advanced — videos, interactive quizzes, and real case studies directly relevant to industry needs.'); ?></p>
+                <a href="<?php echo base_url('learning_paths'); ?>" class="bt-btn bt-btn-outline"><?php echo t('Pelajari Lebih Lanjut', 'Learn More'); ?> <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="bt-feature-media" data-aos="fade-left" data-aos-duration="1000">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=70" alt="">
             </div>
         </div>
+    </div>
+</section>
 
-        <div class="lp-cat-grid">
+<!-- ================= FEATURE SPLIT 2 (reversed) ================= -->
+<section class="bt-feature" style="padding-top:0;">
+    <div class="container">
+        <div class="bt-feature-grid">
+            <div class="bt-feature-media" data-aos="fade-right" data-aos-duration="1500">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=70" alt="">
+            </div>
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <span class="bt-chip-tag bt-chip-tag-amber"><?php echo t('Mentoring Langsung', 'Direct Mentoring'); ?></span>
+                <h2 class="bt-feature-title"><?php echo t('Belajar Bareng Mentor Praktisi', 'Learn with Practitioner Mentors'); ?></h2>
+                <p class="bt-feature-desc"><?php echo t('Sesi mentoring 1-on-1 dan grup dengan praktisi industri berpengalaman. Tanyakan apa pun, dapatkan feedback detail, dan akselerasi progres belajarmu.', 'One-on-one and group mentoring sessions with experienced industry practitioners. Ask anything, get detailed feedback, and accelerate your learning progress.'); ?></p>
+                <a href="<?php echo base_url('mentoring'); ?>" class="bt-btn bt-btn-outline"><?php echo t('Lihat Program Mentoring', 'View Mentoring Programs'); ?> <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= KATEGORI / INTEGRATIONS ================= -->
+<?php if ((!isset($site_settings['home_show_categories']) || $site_settings['home_show_categories'] === '1') && !empty($categories)): ?>
+<section class="bt-integrations">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="bt-center">
+            <span class="bt-chip-tag"><?php echo t('Kategori', 'Categories'); ?></span>
+            <h2 class="bt-title"><?php echo t('Temukan Bidang yang Kamu Minati', 'Find Your Field of Interest'); ?></h2>
+            <p class="bt-sub"><?php echo t('Pilih kategori dan mulai perjalanan belajarmu', 'Choose a category and start your learning journey'); ?> <span class="bt-teal"><?php echo t('di mana pun kamu berada.', 'from anywhere.'); ?></span></p>
+        </div>
+        <div class="bt-grid-2">
             <?php $ci = 0; foreach ($categories as $cat): $c = $cat_colors[$ci % count($cat_colors)]; $ci++; ?>
-                <a href="<?php echo base_url('courses?category_id=' . $cat->id); ?>" class="lp-cat-card" style="--cat:<?php echo $c; ?>">
-                    <div class="lp-cat-icon"><i class="fas fa-<?php echo $cat->icon ?: 'folder-open'; ?>"></i></div>
-                    <div class="lp-cat-info">
-                        <strong><?php echo htmlspecialchars($cat->name); ?></strong>
-                        <span><?php echo t('Lihat konten', 'View content'); ?> <i class="fas fa-arrow-right"></i></span>
+                <a href="<?php echo base_url('courses?category_id=' . $cat->id); ?>" class="bt-integ-card" style="--ic:<?php echo $c; ?>">
+                    <span class="bt-integ-icon <?php echo $ci % 4 == 0 ? 'alt' : ($ci % 4 == 1 ? 'navy' : ($ci % 4 == 2 ? 'soft' : '')); ?>"><i class="fas fa-<?php echo $cat->icon ?: 'folder-open'; ?>"></i></span>
+                    <div>
+                        <h5><?php echo htmlspecialchars($cat->name); ?></h5>
+                        <p><?php echo t('Jelajahi kelas & materi', 'Explore classes & materials'); ?> — <strong style="color:var(--bt-teal);"><?php echo htmlspecialchars($cat->name); ?></strong></p>
                     </div>
                 </a>
             <?php endforeach; ?>
-            <a href="<?php echo base_url('courses'); ?>" class="lp-cat-card lp-cat-all">
-                <div class="lp-cat-icon"><i class="fas fa-th-large"></i></div>
-                <div class="lp-cat-info">
-                    <strong><?php echo t('Semua Konten', 'All Content'); ?></strong>
-                    <span><?php echo t('Jelajahi semua', 'Browse all'); ?> <i class="fas fa-arrow-right"></i></span>
-                </div>
-            </a>
         </div>
     </div>
 </section>
 <?php endif; ?>
 
-<!-- ================= FEATURED ================= -->
+<!-- ================= FEATURED COURSES ================= -->
 <?php if ((!isset($site_settings['home_show_featured']) || $site_settings['home_show_featured'] === '1') && !empty($featured_courses)): ?>
-<section class="lp-section lp-section-tint">
-    <div class="container">
-        <div class="lp-section-head">
-            <div>
-                <span class="lp-kicker"><?php echo t('Rekomendasi', 'Recommended'); ?></span>
-                <h2 class="lp-section-title"><?php echo t('Konten Pilihan', 'Featured Content'); ?></h2>
-                <p class="lp-section-desc"><?php echo t('Rekomendasi materi belajar terbaik untukmu', 'Recommended learning content for you'); ?></p>
-            </div>
-            <a href="<?php echo base_url('courses'); ?>" class="lp-link-all"><?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-arrow-right"></i></a>
+<section class="bt-courses">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="bt-center">
+            <span class="bt-chip-tag"><?php echo t('Rekomendasi', 'Recommended'); ?></span>
+            <h2 class="bt-title"><?php echo t('Konten Pilihan', 'Featured Content'); ?></h2>
+            <p class="bt-sub"><?php echo t('Rekomendasi materi belajar terbaik untukmu', 'Recommended learning content for you'); ?></p>
         </div>
-
-        <div class="row g-3">
+        <div class="bt-course-grid">
             <?php foreach ($featured_courses as $course): ?>
-                <div class="col-md-6 col-lg-3">
-                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="lp-card">
-                        <div class="lp-card-img">
-                            <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60';" alt="">
-                            <span class="lp-card-badge"><?php echo content_type_label($course->content_type); ?></span>
-                            <?php if ($course->price > 0): ?>
-                                <span class="lp-card-price">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span>
-                            <?php endif; ?>
+                <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="bt-course-card">
+                    <div class="bt-course-img">
+                        <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=400&auto=format&fit=crop&q=60';" alt="">
+                        <span class="bt-course-badge"><?php echo content_type_label($course->content_type); ?></span>
+                        <?php if ($course->price > 0): ?><span class="bt-course-price">Rp <?php echo number_format($course->price, 0, ',', '.'); ?></span><?php endif; ?>
+                    </div>
+                    <div class="bt-course-body">
+                        <div class="bt-course-meta">
+                            <span><i class="fas fa-folder-open"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?></span>
+                            <span><i class="fas fa-user"></i><?php echo htmlspecialchars($course->teacher_name); ?></span>
                         </div>
-                        <div class="lp-card-body">
-                            <div class="lp-card-meta">
-                                <span><i class="fas fa-folder-open"></i><?php echo htmlspecialchars($course->category_name ?? ''); ?></span>
-                                <span><i class="fas fa-user"></i><?php echo htmlspecialchars($course->teacher_name); ?></span>
-                            </div>
-                            <h6 class="lp-card-title"><?php echo htmlspecialchars($course->title); ?></h6>
-                            <div class="lp-card-foot">
-                                <?php echo $course->price > 0 ? '<span class="lp-price">Rp ' . number_format($course->price, 0, ',', '.') . '</span>' : '<span class="lp-free">' . t('Gratis', 'Free') . '</span>'; ?>
-                                <span class="lp-learn"><i class="fas fa-arrow-right"></i></span>
-                            </div>
+                        <h6 class="bt-course-title"><?php echo htmlspecialchars($course->title); ?></h6>
+                        <div class="bt-course-foot">
+                            <?php echo $course->price > 0 ? '<span>Rp ' . number_format($course->price, 0, ',', '.') . '</span>' : '<span class="bt-course-free">' . t('Gratis', 'Free') . '</span>'; ?>
+                            <span class="bt-learn"><i class="fas fa-arrow-right"></i></span>
                         </div>
-                    </a>
-                </div>
+                    </div>
+                </a>
             <?php endforeach; ?>
         </div>
+        <div class="bt-center" style="margin-top:2.2rem;">
+            <a href="<?php echo base_url('courses'); ?>" class="bt-btn bt-btn-outline"><?php echo t('Lihat Semua Konten', 'View All Content'); ?> <i class="fas fa-arrow-right"></i></a>
+        </div>
     </div>
 </section>
 <?php endif; ?>
 
-<!-- ================= WHY ================= -->
-<section class="lp-section">
-    <div class="container">
-        <div class="text-center" style="margin-bottom:2.5rem;">
-            <span class="lp-kicker"><?php echo t('Keunggulan', 'Why Us'); ?></span>
-            <h2 class="lp-section-title"><?php echo t('Kenapa BISATUNTAS', 'Why BISATUNTAS'); ?>?</h2>
-            <p class="lp-section-desc" style="max-width:500px;margin:0 auto;"><?php echo t('Platform belajar yang peduli hasil karirmu', 'A learning platform that cares about your career results'); ?></p>
+<!-- ================= STEPS (dark) ================= -->
+<section class="bt-steps-section">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="bt-center">
+            <span class="bt-chip-tag" style="background:rgba(251,191,36,0.15);color:var(--bt-amber);"><?php echo t('Cara Kerja', 'How It Works'); ?></span>
+            <h2 class="bt-title"><?php echo t('3 Langkah Sederhana', '3 Simple Steps'); ?></h2>
+            <p class="bt-sub"><?php echo t('Mulai perjalanan belajarmu dalam hitungan menit', 'Start your learning journey in minutes'); ?></p>
         </div>
-
-        <div class="row g-3">
-            <div class="col-md-6 col-lg-4"><div class="lp-why"><div class="lp-why-icon" style="--wi:#009688;background:rgba(5,150,105,0.1);color:#009688;"><i class="fas fa-sitemap"></i></div><h6><?php echo t('Kurikulum Terstruktur', 'Structured Curriculum'); ?></h6><p><?php echo t('Alur belajar yang jelas dari pemula hingga mahir.', 'Clear learning paths from beginner to advanced.'); ?></p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="lp-why"><div class="lp-why-icon" style="--wi:#0D1830;background:rgba(99,102,241,0.1);color:#0D1830;"><i class="fas fa-user-tie"></i></div><h6><?php echo t('Mentor Praktisi', 'Practitioner Mentors'); ?></h6><p><?php echo t('Belajar langsung dari praktisi industri berpengalaman.', 'Learn directly from experienced industry practitioners.'); ?></p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="lp-why"><div class="lp-why-icon" style="--wi:#FBBF24;background:rgba(245,158,11,0.1);color:#FBBF24;"><i class="fas fa-project-diagram"></i></div><h6><?php echo t('Project-Based', 'Project-Based'); ?></h6><p><?php echo t('Praktik langsung dan bangun portofolio untuk karir.', 'Practice directly and build a portfolio for your career.'); ?></p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="lp-why"><div class="lp-why-icon" style="--wi:#ec4899;background:rgba(236,72,153,0.1);color:#ec4899;"><i class="fas fa-certificate"></i></div><h6><?php echo t('Sertifikat Resmi', 'Official Certificate'); ?></h6><p><?php echo t('Dapatkan sertifikat yang diakui industri.', 'Get an industry-recognized certificate.'); ?></p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="lp-why"><div class="lp-why-icon" style="--wi:#0ea5e9;background:rgba(14,165,233,0.1);color:#0ea5e9;"><i class="fas fa-users"></i></div><h6><?php echo t('Komunitas Aktif', 'Active Community'); ?></h6><p><?php echo t('Diskusi dan networking dengan sesama pembelajar.', 'Discuss and network with fellow learners.'); ?></p></div></div>
-            <div class="col-md-6 col-lg-4"><div class="lp-why"><div class="lp-why-icon" style="--wi:#8b5cf6;background:rgba(139,92,246,0.1);color:#8b5cf6;"><i class="fas fa-clock"></i></div><h6><?php echo t('Belajar Fleksibel', 'Flexible Learning'); ?></h6><p><?php echo t('Akses kapan saja, di mana saja, sesuai kecepatanmu.', 'Access anytime, anywhere, at your own pace.'); ?></p></div></div>
-        </div>
-    </div>
-</section>
-
-<!-- ================= STEPS ================= -->
-<section class="lp-section lp-dark">
-    <div class="container">
-        <div class="text-center" style="margin-bottom:2.5rem;">
-            <span class="lp-kicker lp-kicker-light"><?php echo t('Cara Kerja', 'How It Works'); ?></span>
-            <h2 class="lp-section-title" style="color:#fff;"><?php echo t('3 Langkah Sederhana', '3 Simple Steps'); ?></h2>
-            <p class="lp-section-desc" style="color:rgba(255,255,255,0.6);"><?php echo t('Mulai perjalanan belajarmu dalam hitungan menit', 'Start your learning journey in minutes'); ?></p>
-        </div>
-
-        <div class="lp-steps">
-            <div class="lp-step">
-                <div class="lp-step-num">1</div>
-                <div class="lp-step-icon"><i class="fas fa-compass"></i></div>
+        <div class="bt-steps">
+            <div class="bt-step">
+                <div class="bt-step-num">01</div>
+                <div class="bt-step-icon"><i class="fas fa-compass"></i></div>
                 <h5><?php echo t('Jelajahi Konten', 'Explore Content'); ?></h5>
                 <p><?php echo t('Temukan kelas, materi, dan mentor sesuai minatmu.', 'Find classes, materials, and mentors based on your interests.'); ?></p>
             </div>
-            <div class="lp-step">
-                <div class="lp-step-num">2</div>
-                <div class="lp-step-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="bt-step">
+                <div class="bt-step-num">02</div>
+                <div class="bt-step-icon"><i class="fas fa-calendar-check"></i></div>
                 <h5><?php echo t('Pilih Jadwal', 'Choose Schedule'); ?></h5>
                 <p><?php echo t('Daftar dan pilih waktu belajar yang fleksibel.', 'Register and choose flexible study times.'); ?></p>
             </div>
-            <div class="lp-step">
-                <div class="lp-step-num">3</div>
-                <div class="lp-step-icon"><i class="fas fa-award"></i></div>
+            <div class="bt-step">
+                <div class="bt-step-num">03</div>
+                <div class="bt-step-icon"><i class="fas fa-award"></i></div>
                 <h5><?php echo t('Dapatkan Sertifikat', 'Get Certified'); ?></h5>
                 <p><?php echo t('Selesaikan materi dan dapatkan sertifikat resmi.', 'Complete materials and get official certificates.'); ?></p>
             </div>
@@ -234,73 +323,91 @@
     </div>
 </section>
 
-<!-- ================= RECENT ================= -->
-<?php if ((!isset($site_settings['home_show_recent']) || $site_settings['home_show_recent'] === '1') && !empty($recent_courses)): ?>
-<section class="lp-section">
-    <div class="container">
-        <div class="lp-section-head">
-            <div>
-                <span class="lp-kicker"><?php echo t('Baru Rilis', 'New Releases'); ?></span>
-                <h2 class="lp-section-title"><?php echo t('Konten Terbaru', 'Latest Content'); ?></h2>
-                <p class="lp-section-desc"><?php echo t('Materi terbaru untuk skill terbarumu', 'Latest content for your newest skills'); ?></p>
-            </div>
-            <a href="<?php echo base_url('courses'); ?>" class="lp-link-all"><?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-arrow-right"></i></a>
+<!-- ================= PRICING ================= -->
+<?php if (!empty($packages)): ?>
+<section class="bt-pricing">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="bt-center">
+            <span class="bt-chip-tag"><?php echo t('Paket', 'Pricing'); ?></span>
+            <h2 class="bt-title"><?php echo t('Paket Langganan', 'Subscription Plans'); ?></h2>
+            <p class="bt-sub"><?php echo t('Harga yang', 'Pricing that'); ?> <span class="bt-teal"><?php echo t('bersahabat', 'works'); ?></span> <?php echo t('untuk semua orang.', 'for everyone.'); ?></p>
         </div>
-
-        <div class="row g-3">
-            <?php foreach (array_slice($recent_courses, 0, 3) as $course): ?>
-                <div class="col-md-4">
-                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="lp-card lp-card-h">
-                        <div class="lp-card-img" style="width:150px;flex-shrink:0;aspect-ratio:auto;">
-                            <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500&auto=format&fit=crop&q=60';" alt="">
-                            <span class="lp-card-badge"><?php echo content_type_label($course->content_type); ?></span>
-                        </div>
-                        <div class="lp-card-body">
-                            <div class="lp-card-meta"><span><?php echo htmlspecialchars($course->category_name ?? ''); ?></span></div>
-                            <h6 class="lp-card-title"><?php echo htmlspecialchars($course->title); ?></h6>
-                            <div class="lp-card-foot">
-                                <?php echo $course->price > 0 ? '<span class="lp-price">Rp ' . number_format($course->price, 0, ',', '.') . '</span>' : '<span class="lp-free">' . t('Gratis', 'Free') . '</span>'; ?>
-                                <span class="lp-learn"><?php echo t('Pelajari', 'Learn'); ?> <i class="fas fa-arrow-right"></i></span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            <?php endforeach; ?>
+        <div class="overflow-auto">
+            <table class="bt-price-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <?php foreach ($packages as $i => $pkg): ?>
+                            <th class="<?php echo ($i == 1) ? 'bt-col-popular' : ''; ?>">
+                                <h5><?php echo htmlspecialchars(t($pkg->name, $pkg->name_en ?: $pkg->name)); ?>
+                                    <?php if ($i == 1): ?><span class="bt-popular-badge"><?php echo t('Populer', 'Popular'); ?></span><?php endif; ?>
+                                </h5>
+                                <p>Rp <?php echo number_format($pkg->price, 0, ',', '.'); ?>/<?php echo t('bulan', 'mo'); ?></p>
+                            </th>
+                        <?php endforeach; ?>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><?php echo t('Akses konten belajar', 'Access learning content'); ?></td>
+                        <?php foreach ($packages as $i => $pkg): ?><td class="<?php echo ($i == 1) ? 'bt-col-popular' : ''; ?>"><i class="fas fa-check bt-price-check"></i></td><?php endforeach; ?>
+                    </tr>
+                    <tr>
+                        <td><?php echo t('Video & kuis interaktif', 'Video & interactive quizzes'); ?></td>
+                        <?php foreach ($packages as $i => $pkg): ?><td class="<?php echo ($i == 1) ? 'bt-col-popular' : ''; ?>"><i class="fas fa-check bt-price-check"></i></td><?php endforeach; ?>
+                    </tr>
+                    <tr>
+                        <td><?php echo t('Sertifikat resmi', 'Official certificate'); ?></td>
+                        <?php foreach ($packages as $i => $pkg): ?>
+                            <td class="<?php echo ($i == 1) ? 'bt-col-popular' : ''; ?>">
+                                <?php if ($pkg->access_scope === 'all'): ?><i class="fas fa-check bt-price-check"></i>
+                                <?php else: ?><span class="bt-addon"><?php echo t('Add-on', 'Add-on'); ?></span><?php endif; ?>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                    <tr>
+                        <td><?php echo t('Diskon langganan 6 bulan', '6-month subscription discount'); ?></td>
+                        <?php foreach ($packages as $i => $pkg): ?>
+                            <td class="<?php echo ($i == 1) ? 'bt-col-popular' : ''; ?>">
+                                <?php if ($pkg->discount_6mo > 0): ?><i class="fas fa-check bt-price-check"></i>
+                                <?php else: ?><span class="bt-addon"><?php echo t('Add-on', 'Add-on'); ?></span><?php endif; ?>
+                            </td>
+                        <?php endforeach; ?>
+                    </tr>
+                    <tr>
+                        <td><?php echo t('Mentoring langsung', 'Direct mentoring'); ?></td>
+                        <?php foreach ($packages as $i => $pkg): ?><td class="<?php echo ($i == 1) ? 'bt-col-popular' : ''; ?>">—</td><?php endforeach; ?>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </section>
 <?php endif; ?>
 
 <!-- ================= TESTIMONIALS ================= -->
-<section class="lp-section lp-section-tint">
-    <div class="container">
-        <div class="text-center" style="margin-bottom:2.5rem;">
-            <span class="lp-kicker"><?php echo t('Testimoni', 'Testimonials'); ?></span>
-            <h2 class="lp-section-title"><?php echo t('Apa Kata Mereka', 'What They Say'); ?></h2>
-            <p class="lp-section-desc"><?php echo t('Review dari siswa yang sudah bergabung', 'Reviews from students who have joined'); ?></p>
+<section class="bt-testi-section">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="bt-center">
+            <span class="bt-chip-tag"><?php echo t('Testimoni', 'Testimonials'); ?></span>
+            <h2 class="bt-title"><?php echo t('Apa Kata Mereka', 'What They Say'); ?></h2>
+            <p class="bt-sub"><?php echo t('Review dari siswa yang sudah bergabung', 'Reviews from students who have joined'); ?></p>
         </div>
-
-        <div class="row g-3 justify-content-center">
-            <div class="col-md-4">
-                <div class="lp-testi">
-                    <div class="lp-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p>"Materinya sangat terstruktur dan mudah dipahami. Dari yang awalnya tidak bisa coding, sekarang sudah bisa membuat website sendiri."</p>
-                    <div class="lp-testi-by"><span class="lp-avatar" style="background:#009688;">RK</span><div><strong>Rina Kusuma</strong><small><?php echo t('Siswa Web Development', 'Web Development Student'); ?></small></div></div>
-                </div>
+        <div class="bt-testi-grid">
+            <div class="bt-testi">
+                <div class="bt-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Materinya sangat terstruktur dan mudah dipahami. Dari yang awalnya tidak bisa coding, sekarang sudah bisa membuat website sendiri."</p>
+                <div class="bt-testi-by"><span class="bt-avatar" style="background:var(--bt-teal);">RK</span><div><strong>Rina Kusuma</strong><small><?php echo t('Siswa Web Development', 'Web Development Student'); ?></small></div></div>
             </div>
-            <div class="col-md-4">
-                <div class="lp-testi">
-                    <div class="lp-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p>"Sesi mentoring benar-benar membantu memahami konsep yang sulit. Mentor sangat sabar dan memberikan feedback yang detail."</p>
-                    <div class="lp-testi-by"><span class="lp-avatar" style="background:#0D1830;">DP</span><div><strong>Dimas Pratama</strong><small><?php echo t('Siswa Program Mentorship', 'Mentorship Program Student'); ?></small></div></div>
-                </div>
+            <div class="bt-testi">
+                <div class="bt-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Sesi mentoring benar-benar membantu memahami konsep yang sulit. Mentor sangat sabar dan memberikan feedback yang detail."</p>
+                <div class="bt-testi-by"><span class="bt-avatar" style="background:var(--bt-navy);">DP</span><div><strong>Dimas Pratama</strong><small><?php echo t('Siswa Program Mentorship', 'Mentorship Program Student'); ?></small></div></div>
             </div>
-            <div class="col-md-4">
-                <div class="lp-testi">
-                    <div class="lp-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p>"Sertifikat dari BISATUNTAS membantu saya mendapat promosi di kantor. Materi yang diajarkan sangat relevan dengan kebutuhan industri saat ini."</p>
-                    <div class="lp-testi-by"><span class="lp-avatar" style="background:#FBBF24;">SI</span><div><strong>Sari Indah</strong><small><?php echo t('Siswa Digital Marketing', 'Digital Marketing Student'); ?></small></div></div>
-                </div>
+            <div class="bt-testi">
+                <div class="bt-stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>"Sertifikat dari BISATUNTAS membantu saya mendapat promosi di kantor. Materi yang diajarkan sangat relevan dengan kebutuhan industri saat ini."</p>
+                <div class="bt-testi-by"><span class="bt-avatar" style="background:var(--bt-amber);color:var(--bt-navy);">SI</span><div><strong>Sari Indah</strong><small><?php echo t('Siswa Digital Marketing', 'Digital Marketing Student'); ?></small></div></div>
             </div>
         </div>
     </div>
@@ -308,169 +415,18 @@
 
 <!-- ================= CTA ================= -->
 <?php if (!isset($site_settings['home_show_cta']) || $site_settings['home_show_cta'] === '1'): ?>
-<section class="lp-section">
-    <div class="container">
-        <div class="lp-cta">
-            <div class="lp-cta-glow"></div>
-            <div class="lp-cta-content">
+<section class="bt-cta-section">
+    <div class="container" data-aos="fade-up" data-aos-duration="1000">
+        <div class="bt-cta">
+            <div>
                 <h2><?php echo t(setting('home_cta_title', 'Siap Menguasai Skill Baru?'), setting('home_cta_title_en', 'Ready to Master a New Skill?')); ?></h2>
                 <p><?php echo t(setting('home_cta_subtitle', 'Daftar gratis sekarang dan mulai perjalanan belajarmu bersama ribuan siswa lainnya.'), setting('home_cta_subtitle_en', 'Register for free and start your learning journey with thousands of other students.')); ?></p>
-                <a href="<?php echo base_url(setting('home_cta_button_link', 'auth/register')); ?>" class="lp-btn lp-btn-amber lp-btn-lg">
-                    <i class="fas fa-user-plus"></i>
-                    <?php echo t(setting('home_cta_button_text', 'Daftar Gratis Sekarang'), setting('home_cta_button_text_en', 'Register Free Now')); ?>
-                </a>
             </div>
+            <a href="<?php echo base_url(setting('home_cta_button_link', 'auth/register')); ?>" class="bt-btn bt-btn-amber">
+                <i class="fas fa-user-plus"></i>
+                <?php echo t(setting('home_cta_button_text', 'Daftar Gratis Sekarang'), setting('home_cta_button_text_en', 'Register Free Now')); ?>
+            </a>
         </div>
     </div>
 </section>
 <?php endif; ?>
-
-<style>
-/* ===== Landing redesign (lp-) ===== */
-.lp-hero{position:relative;overflow:hidden;background:linear-gradient(160deg,#0D1830 0%,#00796B 40%,#009688 100%);padding:4.5rem 0 4rem;color:#fff;}
-.lp-hero-glow{position:absolute;border-radius:50%;pointer-events:none;}
-.lp-hero-glow-1{width:560px;height:560px;background:radial-gradient(circle,rgba(255,255,255,0.10) 0%,transparent 65%);top:-180px;right:-120px;}
-.lp-hero-glow-2{width:420px;height:420px;background:radial-gradient(circle,rgba(251,191,36,0.12) 0%,transparent 65%);bottom:-160px;left:-100px;}
-.lp-hero-inner{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr 0.9fr;gap:3rem;align-items:center;}
-.lp-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,0.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:99px;padding:0.4rem 0.9rem;font-size:0.75rem;font-weight:600;margin-bottom:1.4rem;}
-.lp-badge i{color:#fbbf24;font-size:0.7rem;}
-.lp-hero-title{font-size:2.7rem;font-weight:800;letter-spacing:-0.04em;line-height:1.12;color:#fff;margin:0 0 1rem;}
-.lp-hero-title span{color:#fbbf24;}
-.lp-hero-sub{font-size:0.95rem;color:rgba(255,255,255,0.75);max-width:520px;margin:0 0 1.8rem;line-height:1.65;}
-.lp-hero-cta{display:flex;align-items:center;gap:0.8rem;margin-bottom:2.2rem;flex-wrap:wrap;}
-.lp-btn{display:inline-flex;align-items:center;gap:8px;padding:0.6rem 1.3rem;border-radius:12px;font-size:0.88rem;font-weight:700;text-decoration:none;transition:all 0.2s;cursor:pointer;border:none;font-family:inherit;}
-.lp-btn i{font-size:0.8rem;}
-.lp-btn-primary{background:#fff;color:#00796B;box-shadow:0 8px 24px rgba(0,0,0,0.2);}
-.lp-btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(0,0,0,0.25);color:#00796B;}
-.lp-btn-ghost{background:rgba(255,255,255,0.1);color:#fff;border:1.5px solid rgba(255,255,255,0.3);}
-.lp-btn-ghost:hover{background:rgba(255,255,255,0.18);color:#fff;}
-.lp-btn-amber{background:linear-gradient(135deg,#fbbf24,#FBBF24);color:#0D1830;box-shadow:0 10px 28px rgba(251,191,36,0.4);}
-.lp-btn-amber:hover{transform:translateY(-2px);box-shadow:0 14px 34px rgba(251,191,36,0.5);color:#0D1830;}
-.lp-btn-lg{padding:0.85rem 2rem;font-size:0.95rem;border-radius:14px;}
-.lp-hero-stats{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
-.lp-stat strong{display:block;font-size:1.5rem;font-weight:800;color:#fff;line-height:1.1;}
-.lp-stat span{font-size:0.75rem;color:rgba(255,255,255,0.65);}
-.lp-stat-divider{width:1px;height:34px;background:rgba(255,255,255,0.2);}
-/* visual kanan */
-.lp-hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:400px;}
-.lp-hero-card{width:100%;max-width:360px;background:rgba(255,255,255,0.12);backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,0.22);border-radius:24px;padding:1.6rem;box-shadow:0 30px 70px rgba(0,0,0,0.3);transform:rotate(-3deg);transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);}
-.lp-hero-card:hover{transform:rotate(0deg) scale(1.02);}
-.lp-hero-card-top{display:flex;align-items:center;gap:0.9rem;margin-bottom:1.2rem;}
-.lp-hero-emoji{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#fbbf24,#FBBF24);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#0D1830;box-shadow:0 8px 20px rgba(251,191,36,0.4);}
-.lp-hero-card-top strong{display:block;font-size:0.95rem;color:#fff;font-weight:700;}
-.lp-hero-card-top span{font-size:0.72rem;color:rgba(255,255,255,0.65);}
-.lp-hero-progress{margin-bottom:1.2rem;}
-.lp-hp-head{display:flex;justify-content:space-between;font-size:0.7rem;color:rgba(255,255,255,0.7);margin-bottom:0.4rem;}
-.lp-hp-bar{height:8px;border-radius:99px;background:rgba(255,255,255,0.15);overflow:hidden;}
-.lp-hp-bar div{height:100%;border-radius:99px;background:linear-gradient(90deg,#fbbf24,#FBBF24);}
-.lp-hero-card-tags{display:flex;gap:0.5rem;flex-wrap:wrap;}
-.lp-hero-card-tags span{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.18);color:#fff;font-size:0.68rem;font-weight:600;padding:0.25rem 0.6rem;border-radius:99px;}
-.lp-hero-card-tags i{color:#fbbf24;font-size:0.6rem;}
-.lp-bubble{position:absolute;background:rgba(255,255,255,0.14);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.22);border-radius:16px;padding:0.7rem 0.95rem;display:flex;align-items:center;gap:0.6rem;box-shadow:0 14px 34px rgba(0,0,0,0.22);animation:lpFloat 6s ease-in-out infinite;}
-.lp-bubble i{font-size:1.1rem;color:#fbbf24;}
-.lp-bubble strong{display:block;font-size:0.8rem;color:#fff;font-weight:700;line-height:1.2;}
-.lp-bubble span{display:block;font-size:0.62rem;color:rgba(255,255,255,0.7);}
-.lp-bubble-1{top:8%;left:-10px;animation-delay:0.6s;}
-.lp-bubble-2{bottom:10%;right:-14px;animation-delay:1.4s;}
-.lp-float{position:absolute;color:rgba(255,255,255,0.4);font-size:1.2rem;animation:lpFloat 5s ease-in-out infinite;pointer-events:none;}
-.lp-float-1{top:4%;right:8%;animation-delay:0s;}
-.lp-float-2{top:18%;left:2%;animation-delay:1.1s;color:#fbbf24;}
-.lp-float-3{bottom:16%;left:6%;animation-delay:0.5s;}
-.lp-float-4{bottom:4%;right:16%;animation-delay:1.8s;color:#fbbf24;}
-@keyframes lpFloat{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-13px) rotate(7deg);}}
-/* trusted */
-.lp-trusted{padding:2rem 0;background:#fff;border-bottom:1px solid #f0f0f0;}
-.lp-trusted-text{text-align:center;font-size:0.78rem;color:#a3a3a3;margin-bottom:1rem;}
-.lp-trusted-text strong{color:#525252;}
-.lp-trusted-logos{display:flex;align-items:center;justify-content:center;gap:2.5rem;flex-wrap:wrap;opacity:0.45;filter:grayscale(100%);}
-.lp-trusted-logos span{display:flex;align-items:center;gap:6px;font-size:0.85rem;font-weight:700;color:#525252;}
-.lp-trusted-logos i{font-size:1.1rem;}
-/* section umum */
-.lp-section{padding:3.5rem 0;background:#fff;}
-.lp-section-tint{background:#E0F2F1;}
-.lp-section-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:1.6rem;flex-wrap:wrap;gap:0.75rem;}
-.lp-kicker{display:inline-block;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#009688;margin-bottom:0.35rem;}
-.lp-kicker-light{color:#fbbf24;}
-.lp-section-title{font-size:1.55rem;font-weight:800;letter-spacing:-0.03em;color:#0D1830;margin:0;}
-.lp-section-desc{font-size:0.85rem;color:#737373;margin:0.25rem 0 0;}
-.lp-link-all{font-size:0.82rem;font-weight:700;color:#009688;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
-.lp-link-all:hover{color:#00796B;text-decoration:underline;}
-/* kategori */
-.lp-cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.9rem;}
-.lp-cat-card{display:flex;align-items:center;gap:0.85rem;padding:1rem 1.1rem;border-radius:14px;border:1.5px solid #eef2f1;background:#fff;text-decoration:none;transition:all 0.2s;}
-.lp-cat-card:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,0,0,0.08);border-color:var(--cat);}
-.lp-cat-icon{width:42px;height:42px;border-radius:12px;background:color-mix(in srgb,var(--cat) 12%,white);color:var(--cat);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;transition:all 0.2s;}
-.lp-cat-card:hover .lp-cat-icon{background:var(--cat);color:#fff;}
-.lp-cat-info strong{display:block;font-size:0.82rem;font-weight:700;color:#0D1830;margin-bottom:0.1rem;}
-.lp-cat-info span{font-size:0.68rem;color:#9ca3af;}
-.lp-cat-info span i{font-size:0.55rem;transition:transform 0.2s;}
-.lp-cat-card:hover .lp-cat-info span i{transform:translateX(3px);}
-.lp-cat-all{background:#0D1830;border-color:#0D1830;}
-.lp-cat-all .lp-cat-icon{background:rgba(255,255,255,0.1);color:#fff;}
-.lp-cat-all .lp-cat-info strong{color:#fff;}
-.lp-cat-all .lp-cat-info span{color:rgba(255,255,255,0.6);}
-/* kartu konten */
-.lp-card{display:flex;flex-direction:column;height:100%;border:1px solid #eef2f1;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:transform 0.22s ease,box-shadow 0.22s ease;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.04);}
-.lp-card:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(0,0,0,0.1);}
-.lp-card-h{flex-direction:row;}
-.lp-card-img{position:relative;aspect-ratio:16/9;overflow:hidden;background:#fafafa;}
-.lp-card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.35s;}
-.lp-card:hover .lp-card-img img{transform:scale(1.05);}
-.lp-card-body{padding:0.85rem;display:flex;flex-direction:column;flex:1;min-width:0;}
-.lp-card-meta{display:flex;align-items:center;gap:10px;font-size:0.66rem;color:#9ca3af;margin-bottom:0.4rem;}
-.lp-card-meta i{font-size:0.55rem;margin-right:2px;color:#009688;}
-.lp-card-title{font-size:0.84rem;font-weight:700;color:#0D1830;margin:0 0 0.5rem;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.lp-card-foot{display:flex;align-items:center;justify-content:space-between;font-size:0.82rem;font-weight:700;color:#0D1830;margin-top:auto;}
-.lp-price{color:#0D1830;}
-.lp-free{color:#009688;font-weight:600;}
-.lp-learn{width:28px;height:28px;border-radius:8px;background:#f0fdf4;color:#009688;display:inline-flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
-.lp-card:hover .lp-learn{background:#009688;color:#fff;}
-.lp-card-badge{position:absolute;top:8px;left:8px;background:rgba(255,255,255,0.92);backdrop-filter:blur(4px);color:#0D1830;font-size:0.6rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:6px;}
-.lp-card-price{position:absolute;top:8px;right:8px;background:rgba(5,150,105,0.92);backdrop-filter:blur(4px);color:#fff;font-size:0.62rem;font-weight:700;padding:0.2rem 0.5rem;border-radius:6px;}
-/* why */
-.lp-why{padding:1.5rem;border:1px solid #eef2f1;border-radius:16px;height:100%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.03);transition:transform 0.2s ease,box-shadow 0.2s ease;}
-.lp-why:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(0,0,0,0.08);}
-.lp-why-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;margin-bottom:0.9rem;}
-.lp-why h6{font-size:0.88rem;font-weight:700;color:#0D1830;margin:0 0 0.35rem;}
-.lp-why p{font-size:0.78rem;color:#737373;margin:0;line-height:1.55;}
-/* steps dark */
-.lp-dark{background:linear-gradient(160deg,#0D1830 0%,#00796B 60%,#00796B 100%);position:relative;overflow:hidden;}
-.lp-dark::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,0.08),transparent 70%);top:-120px;right:-100px;}
-.lp-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:820px;margin:0 auto;position:relative;z-index:1;}
-.lp-step{text-align:center;padding:1.8rem 1.2rem;position:relative;}
-.lp-step:not(:last-child)::after{content:'';position:absolute;top:52px;right:-14px;width:28px;height:2px;background:linear-gradient(90deg,rgba(251,191,36,0.5),transparent);}
-.lp-step-num{position:absolute;top:0;left:50%;transform:translateX(-50%);width:30px;height:30px;border-radius:50%;background:#fbbf24;color:#0D1830;font-weight:800;font-size:0.8rem;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 6px rgba(251,191,36,0.15);}
-.lp-step-icon{width:60px;height:60px;border-radius:18px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fbbf24;margin:1.4rem auto 1rem;}
-.lp-step h5{font-size:0.95rem;font-weight:700;color:#fff;margin:0 0 0.4rem;}
-.lp-step p{font-size:0.78rem;color:rgba(255,255,255,0.6);margin:0;line-height:1.55;}
-/* testimoni */
-.lp-testi{border:1px solid #eef2f1;border-radius:18px;padding:1.6rem;height:100%;background:#fff;box-shadow:0 2px 6px rgba(0,0,0,0.04);transition:transform 0.2s ease,box-shadow 0.2s ease;}
-.lp-testi:hover{transform:translateY(-3px);box-shadow:0 16px 34px rgba(0,0,0,0.08);}
-.lp-testi p{font-size:0.82rem;color:#525252;line-height:1.6;margin:0 0 1.1rem;font-style:italic;}
-.lp-stars{display:flex;gap:3px;margin-bottom:0.8rem;}
-.lp-stars i{font-size:0.75rem;color:#FBBF24;}
-.lp-testi-by{display:flex;align-items:center;gap:10px;}
-.lp-avatar{width:38px;height:38px;border-radius:50%;color:#fff;font-size:0.68rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
-.lp-testi-by strong{display:block;font-size:0.8rem;color:#0D1830;}
-.lp-testi-by small{font-size:0.68rem;color:#9ca3af;}
-/* CTA */
-.lp-cta{position:relative;overflow:hidden;padding:3.2rem 2.5rem;border-radius:22px;background:linear-gradient(135deg,#0D1830 0%,#00796B 50%,#009688 100%);text-align:center;box-shadow:0 24px 60px rgba(5,150,105,0.25);}
-.lp-cta-glow{position:absolute;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(251,191,36,0.15),transparent 65%);top:-140px;right:-100px;}
-.lp-cta-content{position:relative;z-index:1;max-width:540px;margin:0 auto;}
-.lp-cta h2{font-size:1.6rem;font-weight:800;letter-spacing:-0.03em;color:#fff;margin:0 0 0.6rem;}
-.lp-cta p{font-size:0.88rem;color:rgba(255,255,255,0.75);margin:0 0 1.5rem;line-height:1.6;}
-/* responsive */
-@media (max-width:992px){
-  .lp-hero-inner{grid-template-columns:1fr;gap:2.5rem;}
-  .lp-hero-visual{min-height:340px;}
-  .lp-cat-grid{grid-template-columns:repeat(2,1fr);}
-  .lp-steps{grid-template-columns:1fr;max-width:480px;}
-  .lp-step:not(:last-child)::after{display:none;}
-}
-@media (max-width:768px){
-  .lp-hero{padding:3rem 0;}
-  .lp-hero-title{font-size:2rem;}
-  .lp-cat-grid{grid-template-columns:1fr;}
-  .lp-hero-stats{gap:1rem;}
-}
-</style>

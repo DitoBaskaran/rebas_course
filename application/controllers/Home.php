@@ -10,6 +10,7 @@ class Home extends CI_Controller {
         $this->load->model('Tag_model');
         $this->load->model('Setting_model');
         $this->load->model('User_model');
+        $this->load->model('Package_model');
     }
 
     public function index() {
@@ -23,6 +24,7 @@ class Home extends CI_Controller {
         $data['upcoming_seminars'] = $this->Seminar_model->get_seminars();
         $data['categories'] = $this->Course_model->get_root_categories();
         $data['popular_tags'] = $this->Tag_model->get_popular(10);
+        $data['packages'] = $this->Package_model->get_packages(true);
         $data['total_courses_count'] = $this->db->count_all('courses');
         $data['total_teachers_count'] = $this->db->where('is_teacher', 1)->count_all_results('users');
         $data['total_students_count'] = $this->db->where('role', 'student')->count_all_results('users');
