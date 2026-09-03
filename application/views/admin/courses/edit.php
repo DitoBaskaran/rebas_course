@@ -104,42 +104,40 @@
                 <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2" style="font-size:0.85rem;">
                     <i data-lucide="wallet" style="width:16px;height:16px;color:var(--warning);"></i> <?php echo t('Harga & Detail', 'Price & Details'); ?>
                 </h6>
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <div class="form-float">
-                            <div class="input-icon-wrap">
-                                <span class="input-icon-left">Rp</span>
-                                <input type="number" name="price" id="pv_price" class="form-control" value="<?php echo set_value('price', round($course->price)); ?>" min="0" placeholder=" ">
-                            </div>
-                            <label class="fl-label"><?php echo t('Harga (Rp)', 'Price (Rp)'); ?></label>
+                <div class="row g-4">
+                    <!-- Harga -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small"><?php echo t('Harga (Rp)', 'Price (IDR)'); ?> *</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text border-0" style="background:var(--gray-100,#f1f5f9);border-radius:12px 0 0 12px;font-size:0.8rem;font-weight:700;color:var(--gray-600,#57534e);">Rp</span>
+                            <input type="number" name="price" id="pv_price" class="form-control" value="<?php echo set_value('price', round($course->price)); ?>" min="0" step="1000" placeholder="0" style="border-radius:0 12px 12px 0;font-size:0.88rem;height:44px;">
+                        </div>
+                        <small class="field-hint"><i class="fas fa-info-circle" style="font-size:0.7rem;"></i> <?php echo t('Isi 0 untuk konten gratis.', 'Set 0 for free content.'); ?></small>
+                    </div>
+                    <!-- Durasi -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small"><?php echo t('Durasi', 'Duration'); ?></label>
+                        <div class="input-group input-group-lg">
+                            <input type="number" name="duration_total" class="form-control" value="<?php echo set_value('duration_total', $course->duration_total); ?>" min="0" placeholder="0" style="border-radius:12px 0 0 12px;font-size:0.88rem;height:44px;">
+                            <span class="input-group-text border-0" style="background:var(--gray-100,#f1f5f9);border-radius:0 12px 12px 0;font-size:0.78rem;font-weight:600;color:var(--gray-600,#57534e);"><?php echo t('menit', 'minutes'); ?></span>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-float">
-                            <input type="number" name="duration_total" class="form-control" value="<?php echo set_value('duration_total', $course->duration_total); ?>" min="0" placeholder=" ">
-                            <label class="fl-label"><?php echo t('Durasi (menit)', 'Duration (min)'); ?></label>
-                        </div>
+                    <!-- Bahasa -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small"><?php echo t('Bahasa', 'Language'); ?></label>
+                        <select name="language" class="form-select" style="border-radius:12px;font-size:0.85rem;height:44px;">
+                            <option value="id" <?php echo $course->language === 'id' ? 'selected' : ''; ?>>Indonesia</option>
+                            <option value="en" <?php echo $course->language === 'en' ? 'selected' : ''; ?>>English</option>
+                        </select>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-float">
-                            <select name="language" class="form-select">
-                                <option value=""> </option>
-                                <option value="id" <?php echo $course->language === 'id' ? 'selected' : ''; ?>>Indonesia</option>
-                                <option value="en" <?php echo $course->language === 'en' ? 'selected' : ''; ?>>English</option>
-                            </select>
-                            <label class="fl-label"><?php echo t('Bahasa', 'Language'); ?></label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-float">
-                            <select name="status" id="pv_status" class="form-select">
-                                <option value=""> </option>
-                                <option value="published" <?php echo $course->status === 'published' ? 'selected' : ''; ?>><?php echo t('Published', 'Published'); ?></option>
-                                <option value="draft" <?php echo $course->status === 'draft' ? 'selected' : ''; ?>><?php echo t('Draft', 'Draft'); ?></option>
-                                <option value="archived" <?php echo $course->status === 'archived' ? 'selected' : ''; ?>><?php echo t('Archived', 'Archived'); ?></option>
-                            </select>
-                            <label class="fl-label"><?php echo t('Status', 'Status'); ?></label>
-                        </div>
+                    <!-- Status -->
+                    <div class="col-md-6">
+                        <label class="form-label fw-semibold small"><?php echo t('Status', 'Status'); ?></label>
+                        <select name="status" id="pv_status" class="form-select" style="border-radius:12px;font-size:0.85rem;height:44px;">
+                            <option value="published" <?php echo $course->status === 'published' ? 'selected' : ''; ?>><?php echo t('Published', 'Published'); ?></option>
+                            <option value="draft" <?php echo $course->status === 'draft' ? 'selected' : ''; ?>><?php echo t('Draft', 'Draft'); ?></option>
+                            <option value="archived" <?php echo $course->status === 'archived' ? 'selected' : ''; ?>><?php echo t('Archived', 'Archived'); ?></option>
+                        </select>
                     </div>
                 </div>
             </div>
