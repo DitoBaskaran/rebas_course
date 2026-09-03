@@ -175,25 +175,33 @@
                     <i data-lucide="file-text" style="width:16px;height:16px;color:#0D1830;"></i> <?php echo t('Deskripsi', 'Description'); ?>
                 </h6>
                 <div class="d-flex flex-column gap-3">
-                    <div class="form-float">
-                        <textarea name="description" rows="5" class="form-control" required data-max-chars="500"><?php echo set_value('description', $course->description); ?></textarea>
-                        <label class="fl-label"><?php echo t('Deskripsi (ID)', 'Description (ID)'); ?> *</label>
-                    </div>
-                    <div class="form-float">
-                        <textarea name="description_en" rows="5" class="form-control" data-max-chars="500"><?php echo set_value('description_en', $course->description_en); ?></textarea>
-                        <label class="fl-label"><?php echo t('Deskripsi (EN)', 'Description (EN)'); ?></label>
-                    </div>
                     <div>
-                        <div class="form-float">
-                            <select name="tags[]" class="form-select select-multiple-tags" multiple>
-                                <?php $ctag_ids = array_map(function($t) { return $t->id; }, $content_tags); ?>
-                                <?php foreach ($tags as $tag): ?>
-                                    <option value="<?php echo $tag->id; ?>" <?php echo in_array($tag->id, $ctag_ids) ? 'selected' : ''; ?>><?php echo htmlspecialchars($tag->name); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                            <label class="fl-label"><?php echo t('Tags', 'Tags'); ?></label>
-                        </div>
-                        <small class="field-hint"><?php echo t('Tahan Ctrl untuk memilih banyak', 'Hold Ctrl to select multiple'); ?></small>
+                        <label class="form-label fw-semibold small d-flex align-items-center justify-content-between">
+                            <span><i class="fas fa-language me-1" style="color:var(--primary);font-size:0.72rem;"></i> <?php echo t('Deskripsi (Indonesia)', 'Description (Indonesian)'); ?> *</span>
+                            <span class="text-muted fw-normal" style="font-size:0.66rem;"><?php echo t('Wajib', 'Required'); ?></span>
+                        </label>
+                        <textarea name="description" rows="6" class="form-control" required data-max-chars="2000" style="border-radius:12px;font-size:0.85rem;line-height:1.65;"><?php echo set_value('description', $course->description); ?></textarea>
+                    </div>
+                    <div style="border-top:1px dashed var(--gray-200,#e7e5e4);"></div>
+                    <div>
+                        <label class="form-label fw-semibold small">
+                            <i class="fas fa-globe me-1" style="color:var(--gray-400);font-size:0.72rem;"></i> <?php echo t('Deskripsi (English)', 'Description (English)'); ?>
+                            <span class="text-muted fw-normal">— <?php echo t('Opsional', 'Optional'); ?></span>
+                        </label>
+                        <textarea name="description_en" rows="5" class="form-control" data-max-chars="2000" style="border-radius:12px;font-size:0.85rem;line-height:1.65;"><?php echo set_value('description_en', $course->description_en); ?></textarea>
+                    </div>
+                    <div style="border-top:1px dashed var(--gray-200,#e7e5e4);"></div>
+                    <div>
+                        <label class="form-label fw-semibold small">
+                            <i class="fas fa-tags me-1" style="color:var(--warning);font-size:0.72rem;"></i> <?php echo t('Tags', 'Tags'); ?>
+                        </label>
+                        <select name="tags[]" class="form-select select-multiple-tags" multiple style="border-radius:12px;font-size:0.85rem;">
+                            <?php $ctag_ids = array_map(function($t) { return $t->id; }, $content_tags); ?>
+                            <?php foreach ($tags as $tag): ?>
+                                <option value="<?php echo $tag->id; ?>" <?php echo in_array($tag->id, $ctag_ids) ? 'selected' : ''; ?>><?php echo htmlspecialchars($tag->name); ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                        <small class="field-hint"><?php echo t('Tahan Ctrl/Cmd untuk memilih banyak', 'Hold Ctrl/Cmd to select multiple'); ?></small>
                     </div>
                 </div>
             </div>
