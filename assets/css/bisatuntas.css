@@ -1191,6 +1191,33 @@ h1, h2, h3, h4, h5, h6,
   .perm-box { width: 26px; height: 26px; font-size: 0.62rem; }
 }
 
+/* ---- Chip checkbox picker (package create/edit) ---- */
+.perm-chip-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.chip-check { position: relative; cursor: pointer; }
+.chip-check input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.chip-check span {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-size: 0.74rem; font-weight: 600;
+  color: var(--gray-600, #57534e);
+  background: var(--gray-100, #f1f5f9);
+  border: 1px solid transparent;
+  border-radius: 100px;
+  padding: 0.35rem 0.8rem;
+  transition: var(--transition-smooth);
+}
+.chip-check:hover span { border-color: var(--gray-300, #cbd5e1); }
+.chip-check-active span {
+  background: #E0F2F1;
+  color: #0d9488;
+  border-color: #99f6e4;
+  font-weight: 700;
+}
+.chip-check input:focus-visible + span { outline: 2px solid var(--primary); outline-offset: 1px; }
+
 /* ============================================================
    ===  SETTINGS  ===
    ============================================================ */
