@@ -1,4 +1,4 @@
-<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 900px;">
+<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 900px; padding-bottom: 6.5rem !important;">
 
     <!-- ===== BACK + META ===== -->
     <div class="d-flex align-items-center gap-3 mb-4">
@@ -7,7 +7,7 @@
         </a>
         <div class="flex-fill min-w-0" style="min-width:0;">
             <div class="fw-semibold text-truncate" style="font-size:0.68rem; color:#009688; text-transform:uppercase; letter-spacing:0.04em;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?? $course->title)); ?></div>
-            <h5 class="fw-extrabold mb-0 text-truncate" style="color:#0D1830; letter-spacing:-0.02em; font-size:1.05rem;"><?php echo $discussion->is_pinned ? '<i class="fas fa-thumbtack" style="color:#FBBF24; font-size:0.75rem;"></i> ' : ''; ?><?php echo htmlspecialchars($discussion->title); ?></h5>
+            <h5 class="fw-extrabold mb-0" style="color:#0D1830; letter-spacing:-0.02em; font-size:1.05rem; line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;"><?php echo $discussion->is_pinned ? '<i class="fas fa-thumbtack" style="color:#FBBF24; font-size:0.75rem;"></i> ' : ''; ?><?php echo htmlspecialchars($discussion->title); ?></h5>
             <div class="d-flex align-items-center gap-2 mt-0" style="color:#a8a29e; font-size:0.7rem; white-space:nowrap;">
                 <span class="d-inline-flex align-items-center gap-1"><i class="far fa-comment"></i> <?php echo count($replies); ?> <?php echo t('balasan', 'replies'); ?></span>
                 <span class="opacity-50">·</span>
