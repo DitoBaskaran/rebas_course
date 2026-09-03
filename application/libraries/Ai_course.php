@@ -42,10 +42,13 @@ class Ai_course {
     /**
      * Minta rekomendasi kursus dari AI.
      * Return array('ok'=>bool, 'course_ids'=>int[], 'explanation'=>string, 'error'=>string|null).
+     *
+     * @param int $user_id ID user pemanggil (0 = anonim) — utk log pemakaian AI.
      */
-    public function recommend($user_goal, $user_name = '') {
+    public function recommend($user_goal, $user_name = '', $user_id = 0) {
         $catalog = $this->build_course_catalog();
         if (empty($catalog)) {
+            $this->_log($user_id, 'course', 'error', $user_goal, 'no_courses', array(), '');
             return array('ok' => false, 'course_ids' => array(), 'explanation' => '', 'error' => 'no_courses');
         }
 
@@ -74,8 +77,12 @@ class Ai_course {
 
         $result = $this->call_ai($prompt);
         if (!$result['ok']) {
+            $this->_log($user_id, 'course', 'error', $user_goal, $result['error'], array(), '');
             return array('ok' => false, 'course_ids' => array(), 'explanation' => '', 'error' => $result['error']);
         }
+
+        // Simpan log pemakaian AI + token (user & respons AI)
+        $this->_log($user_id, 'course', 'success', $user_goal, $result['content'], $result['usage'], $result['model']);
 
         $content = trim($result['content']);
         if (preg_match('/```(?:json)?\s*(\{.*?\})\s*```/s', $content, $m)) {
@@ -163,6 +170,23 @@ class Ai_course {
             $msg = isset($data['error']['message']) ? $data['error']['message'] : ('http_' . $http);
             return array('ok' => false, 'content' => '', 'error' => $msg);
         }
-        return array('ok' => true, 'content' => $data['choices'][0]['message']['content'], 'error' => null);
+        $usage = isset($data['usage']) && is_array($data['usage']) ? $data['usage'] : array();
+        $model = isset($data['model']) ? $data['model'] : '';
+        return array(
+            'ok' => true,
+            'content' => $data['choices'][0]['message']['content'],
+            'usage' => $usage,
+            'model' => $model,
+            'error' => null,
+        );
+    }
+
+    /**
+     * Catat pemakaian AI ke tabel ai_usage_logs (lihat library Ai_logger).
+     * Aman: kalau tabel/log gagal, call AI utama tidak terganggu.
+     */
+    protected function _log($user_id, $module, $status, $user_message, $ai_response, $usage = array(), $model_name = '') {
+        $this->CI->load->library('Ai_logger');
+        $this->CI->ai_logger->log_usage($user_id, $module, $status, $user_message, $ai_response, $usage, $model_name);
     }
 }

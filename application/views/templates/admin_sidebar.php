@@ -45,6 +45,9 @@
     <a class="nav-link <?php echo $active_page === 'role_permissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/role_permissions'); ?>">
         <i data-lucide="shield-check"></i> <span><?php echo t('Role Default', 'Default Roles'); ?></span>
     </a>
+    <a class="nav-link <?php echo $active_page === 'ai_history' ? 'active' : ''; ?>" href="<?php echo base_url('admin/ai_history'); ?>">
+        <i data-lucide="bot"></i> <span><?php echo t('Riwayat AI', 'AI History'); ?></span>
+    </a>
     <?php endif; ?>
     <?php if ($sidebar_role === 'admin' || $this->access_library->can('submissions', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'submissions' ? 'active' : ''; ?>" href="<?php echo base_url('admin/submissions'); ?>">

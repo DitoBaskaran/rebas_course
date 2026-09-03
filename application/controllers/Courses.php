@@ -427,7 +427,8 @@ class Courses extends MY_Controller {
         }
 
         $this->load->library('Ai_course');
-        $res = $this->ai_course->recommend($goal);
+        $user_id = (int) $this->session->userdata('user_id');
+        $res = $this->ai_course->recommend($goal, '', $user_id);
 
         if (!$res['ok']) {
             echo json_encode(array(

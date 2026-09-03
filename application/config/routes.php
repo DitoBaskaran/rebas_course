@@ -215,6 +215,9 @@ $route['admin/settings'] = 'admin/settings/general';
 // Admin WhatsApp Gateway module
 $route['admin/whatsapp'] = 'admin/whatsapp';
 
+// Admin AI Usage History
+$route['admin/ai_history'] = 'admin/ai_history';
+
 // Marketing / Pages routes
 $route['sitemap\.xml'] = 'sitemap/index';
 $route['about'] = 'pages/about';

@@ -827,3 +827,22 @@ CREATE TABLE IF NOT EXISTS `user_permissions` (
   UNIQUE KEY `user_module_action` (`user_id`,`module`,`action`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- 60. AI usage logs (riwayat pemakaian AI rekomendasi mentor/kursus + token)
+CREATE TABLE IF NOT EXISTS `ai_usage_logs` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `module` ENUM('mentor','course') NOT NULL,
+  `status` ENUM('success','error') NOT NULL DEFAULT 'success',
+  `user_message` TEXT NOT NULL,
+  `ai_response` TEXT NOT NULL,
+  `prompt_tokens` INT NOT NULL DEFAULT 0,
+  `completion_tokens` INT NOT NULL DEFAULT 0,
+  `total_tokens` INT NOT NULL DEFAULT 0,
+  `model_name` VARCHAR(100) DEFAULT NULL,
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  KEY `idx_user` (`user_id`),
+  KEY `idx_module` (`module`),
+  KEY `idx_created` (`created_at`),
+  CONSTRAINT `fk_ai_logs_user` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

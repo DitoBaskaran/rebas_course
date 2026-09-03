@@ -268,7 +268,8 @@ class Mentoring extends MY_Controller {
 
         $this->load->library('Ai_mentor');
         $user_name = $this->session->userdata('name') ?: '';
-        $res = $this->ai_mentor->recommend($problem, $user_name);
+        $user_id = (int) $this->session->userdata('user_id');
+        $res = $this->ai_mentor->recommend($problem, $user_name, $user_id);
 
         if (!$res['ok']) {
             echo json_encode(array(

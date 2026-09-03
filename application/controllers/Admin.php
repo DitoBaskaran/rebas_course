@@ -1134,6 +1134,57 @@ class Admin extends MY_Controller {
     }
 
     // ================ REFERENCE DOCUMENTS ================
+    public function ai_history() {
+        if ($this->session->userdata('role') !== 'admin') {
+            $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
+            redirect('admin/dashboard');
+        }
+        // Cek tabel ada — kalau migrasi belum jalan, tampilkan kosong ramah.
+        if (!$this->db->table_exists('ai_usage_logs')) {
+            $data['error_db'] = t('Tabel ai_usage_logs belum ada. Jalankan migrasi SQL.', 'Table ai_usage_logs is missing. Run the SQL migration.');
+        }
+
+        $module_filter = $this->input->get('module');
+        $search = trim((string) $this->input->get('search'));
+        $module_filter = in_array($module_filter, array('mentor', 'course'), true) ? $module_filter : '';
+        $search = mb_substr($search, 0, 100);
+
+        // ---- Statistik ringkas ----
+        $stats = array(
+            'total_calls'  => (int) $this->db->count_all('ai_usage_logs'),
+            'total_tokens' => (int) $this->db->select('COALESCE(SUM(total_tokens),0) AS t')->get('ai_usage_logs')->row()->t,
+            'total_users'  => (int) $this->db->select('COUNT(DISTINCT user_id) AS c')->get('ai_usage_logs')->row()->c,
+            'mentor_calls' => (int) $this->db->where('module', 'mentor')->count_all_results('ai_usage_logs'),
+            'course_calls' => (int) $this->db->where('module', 'course')->count_all_results('ai_usage_logs'),
+        );
+
+        // ---- Query log (dengan filter) ----
+        $this->db->select('l.*, u.name AS user_name, u.email AS user_email, u.avatar, u.role, u.is_teacher, u.is_mentor');
+        $this->db->from('ai_usage_logs l');
+        $this->db->join('users u', 'u.id = l.user_id', 'left');
+        if ($module_filter) $this->db->where('l.module', $module_filter);
+        if ($search !== '') {
+            $this->db->group_start();
+            $this->db->like('u.name', $search);
+            $this->db->or_like('u.email', $search);
+            $this->db->or_like('l.user_message', $search);
+            $this->db->group_end();
+        }
+        $this->db->order_by('l.id', 'DESC');
+        $this->db->limit(100, 0);
+
+        $data['logs'] = $this->db->get()->result();
+        $data['stats'] = $stats;
+        $data['module_filter'] = $module_filter;
+        $data['search'] = $search;
+        $data['active_page'] = 'ai_history';
+        $data['title'] = t('Riwayat AI - BISATUNTAS', 'AI History - BISATUNTAS');
+
+        $this->load->view('templates/admin_header', $data);
+        $this->load->view('admin/ai_history', $data);
+        $this->load->view('templates/admin_footer');
+    }
+
     public function documents() {
         if ($this->session->userdata('role') !== 'admin') {
             $this->session->set_flashdata('error', t('Akses ditolak. Hanya untuk admin.', 'Access denied. Admin only.'));
