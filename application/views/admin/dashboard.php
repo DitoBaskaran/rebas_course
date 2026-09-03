@@ -175,7 +175,15 @@
             <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
                 <i data-lucide="receipt" style="width:17px;height:17px;color:var(--primary);"></i>
                 <?php echo t('Verifikasi Transaksi', 'Transaction Verification'); ?>
-                <span class="badge rounded-pill" style="background:#fff7ed;color:#0D1830;font-size:0.62rem;font-weight:700;"><?php echo count($transactions); ?></span>
+                <?php
+                    $pending_count = 0;
+                    foreach ($transactions as $tx) { if ($tx->status === 'pending') $pending_count++; }
+                ?>
+                <?php if ($pending_count > 0): ?>
+                <span class="badge rounded-pill" style="background:#fff7ed;color:#ea580c;font-size:0.62rem;font-weight:700;">
+                    <?php echo $pending_count; ?> <?php echo t('pending', 'pending'); ?>
+                </span>
+                <?php endif; ?>
             </h6>
             <a href="<?php echo base_url('admin/transactions'); ?>" class="fw-semibold text-decoration-none text-primary d-inline-flex align-items-center gap-1" style="font-size:0.75rem;">
                 <?php echo t('Lihat Semua', 'View All'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
@@ -188,61 +196,41 @@
             <p style="color:var(--gray-500,#78716c);font-size:0.82rem;"><?php echo t('Transaksi akan muncul disini setelah ada pembelian.', 'Transactions will appear after purchases.'); ?></p>
         </div>
         <?php else: ?>
-        <div class="table-responsive">
-            <table class="table mb-0 align-middle" style="font-size:0.82rem;">
-                <thead>
-                    <tr>
-                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;">ID</th>
-                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Siswa', 'Student'); ?></th>
-                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Tipe', 'Type'); ?></th>
-                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Nominal', 'Amount'); ?></th>
-                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Channel', 'Channel'); ?></th>
-                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Status', 'Status'); ?></th>
-                        <th class="text-uppercase small text-center" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Aksi', 'Action'); ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($transactions as $tx): ?>
-                    <tr>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;font-weight:700;color:var(--gray-900,#0D1830);">#<?php echo $tx->id; ?></td>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;">
-                            <div class="d-flex align-items-center gap-2">
-                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white flex-shrink-0" style="width:30px;height:30px;background:var(--primary,#009688);font-size:0.7rem;">
-                                    <?php echo strtoupper(substr($tx->user_name, 0, 1)); ?>
-                                </span>
-                                <span class="fw-semibold" style="color:var(--gray-900,#0D1830);"><?php echo htmlspecialchars($tx->user_name); ?></span>
-                            </div>
-                        </td>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;">
-                            <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#E6EBEF;color:#57534e;font-size:0.62rem;text-transform:uppercase;"><?php echo $tx->item_type; ?></span>
-                        </td>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;font-weight:700;color:var(--gray-900,#0D1830);">Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></td>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;color:var(--gray-500,#78716c);font-size:0.75rem;">
-                            <?php echo !empty($tx->payment_channel) ? strtoupper(str_replace('_', ' ', $tx->payment_channel)) : (empty($tx->payment_proof) ? '-' : 'Transfer'); ?>
-                        </td>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;">
+        <div>
+            <?php foreach (array_slice($transactions, 0, 5) as $tx): ?>
+                <?php
+                    $avatar_bg = '#E6EBEF'; $avatar_tx = '#57534e';
+                    if ($tx->status === 'approved') { $avatar_bg = '#E0F2F1'; $avatar_tx = '#009688'; }
+                    elseif ($tx->status === 'rejected') { $avatar_bg = '#fef2f2'; $avatar_tx = '#f43f5e'; }
+                    else { $avatar_bg = '#fff7ed'; $avatar_tx = '#d97706'; }
+                    $channel = !empty($tx->payment_channel) ? strtoupper(str_replace('_', ' ', $tx->payment_channel)) : (empty($tx->payment_proof) ? 'Transfer' : 'Transfer');
+                    $time = !empty($tx->created_at) ? date('d M H:i', strtotime($tx->created_at)) : '';
+                ?>
+                <div class="mob-list-row" style="cursor:default;padding:0.85rem 1.25rem;">
+                    <div class="mob-avatar" style="background:<?php echo $avatar_bg; ?>;color:<?php echo $avatar_tx; ?>;font-size:0.85rem;">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <div class="mob-list-body">
+                        <div class="mob-list-title"><?php echo htmlspecialchars($tx->user_name); ?></div>
+                        <div class="mob-list-sub">#<?php echo $tx->id; ?> · <?php echo htmlspecialchars($tx->item_type); ?> · <?php echo $channel; ?><?php echo $time ? ' · ' . $time : ''; ?></div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+                        <span class="fw-bold" style="color:var(--gray-900,#0D1830);font-size:0.82rem;">Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></span>
+                        <?php if ($tx->status === 'pending'): ?>
+                        <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background:#E0F2F1;color:#009688;font-size:0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>"><i class="fas fa-check"></i></a>
+                        <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border:1px solid #fca5a5;color:#f43f5e;font-size:0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>"><i class="fas fa-times"></i></a>
+                        <?php else: ?>
                             <?php if ($tx->status === 'approved'): ?>
-                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#E0F2F1;color:#009688;font-size:0.65rem;"><i class="fas fa-check-circle me-1" style="font-size:0.55rem;"></i> Approved</span>
+                                <span class="mob-chip mob-chip-green">Approved</span>
                             <?php elseif ($tx->status === 'rejected'): ?>
-                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fef2f2;color:#f43f5e;font-size:0.65rem;"><i class="fas fa-times-circle me-1" style="font-size:0.55rem;"></i> Rejected</span>
+                                <span class="mob-chip mob-chip-red">Rejected</span>
                             <?php else: ?>
-                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fff7ed;color:#0D1830;font-size:0.65rem;"><i class="fas fa-clock me-1" style="font-size:0.55rem;"></i> Pending</span>
+                                <span class="mob-chip mob-chip-amber">Pending</span>
                             <?php endif; ?>
-                        </td>
-                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;text-align:center;">
-                            <?php if ($tx->status === 'pending'): ?>
-                                <div class="d-flex justify-content-center gap-1">
-                                    <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background:#E0F2F1;color:#009688;font-size:0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>"><i class="fas fa-check"></i></a>
-                                    <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border:1px solid #fca5a5;color:#f43f5e;font-size:0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>"><i class="fas fa-times"></i></a>
-                                </div>
-                            <?php else: ?>
-                                <span style="color:#a8a29e;font-size:0.72rem;">-</span>
-                            <?php endif; ?>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            <?php endforeach; ?>
         </div>
         <?php endif; ?>
     </div>
