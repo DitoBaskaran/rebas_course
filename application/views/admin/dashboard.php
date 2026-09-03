@@ -1,361 +1,251 @@
 <!-- ============================================================
-     ADMIN DASHBOARD — MOBILE APP-STYLE VIEW (max-width: 768px)
+     ADMIN DASHBOARD v3.1 — bento design system
+     (mobile & desktop share the same bento blocks, responsive)
      ============================================================ -->
-<div class="dashboard-mobile-only">
+<div class="container-fluid px-0">
 
-    <!-- Hero Card -->
-    <div class="mob-hero-card admin-mob-hero">
-        <div class="mob-hero-greeting">
-            <?php
-            $hour = (int)date('H');
-            if ($hour < 11) echo t('Selamat pagi', 'Good morning');
-            elseif ($hour < 15) echo t('Selamat siang', 'Good afternoon');
-            elseif ($hour < 19) echo t('Selamat sore', 'Good evening');
-            else echo t('Selamat malam', 'Good night');
-            ?> 👋
-        </div>
-        <div class="mob-hero-name">
-            <?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?>
-        </div>
-        <div class="mob-hero-stats">
-            <div class="mob-hero-stat">
-                <b><?php echo $total_courses; ?></b>
-                <span><?php echo t('Kelas', 'Courses'); ?></span>
-            </div>
-            <div class="mob-hero-stat">
-                <b><?php echo $total_seminars; ?></b>
-                <span><?php echo t('Seminar', 'Seminars'); ?></span>
-            </div>
-            <div class="mob-hero-stat">
-                <b><?php echo $total_students; ?></b>
-                <span><?php echo t('Siswa', 'Students'); ?></span>
-            </div>
-            <?php if ($current_role === 'admin'): ?>
-            <div class="mob-hero-stat">
-                <b>Rp<?php echo number_format($total_revenue / 1000000, 1, ',', '.'); ?>jt</b>
-                <span><?php echo t('Revenue', 'Revenue'); ?></span>
-            </div>
-            <?php endif; ?>
-        </div>
-    </div>
-
-    <!-- Quick Actions Grid -->
-    <div class="mob-quick-grid">
-        <a href="<?php echo base_url('admin/create_course'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-plus-circle"></i></span>
-            <span><?php echo t('Buat Kelas', 'New Course'); ?></span>
-        </a>
-        <a href="<?php echo base_url('admin/create_seminar'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-calendar-plus"></i></span>
-            <span><?php echo t('Buat Seminar', 'New Seminar'); ?></span>
-        </a>
-        <?php if ($current_role === 'admin'): ?>
-        <a href="<?php echo base_url('admin/transactions'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-receipt"></i></span>
-            <span><?php echo t('Transaksi', 'Transactions'); ?></span>
-        </a>
-        <a href="<?php echo base_url('admin/users'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-users"></i></span>
-            <span><?php echo t('Pengguna', 'Users'); ?></span>
-        </a>
-        <a href="<?php echo base_url('admin/analytics'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#fef3c7;color:#d97706;"><i class="fas fa-chart-line"></i></span>
-            <span><?php echo t('Analitik', 'Analytics'); ?></span>
-        </a>
-        <a href="<?php echo base_url('admin/settings/general'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#E6EBEF;color:#57534e;"><i class="fas fa-cog"></i></span>
-            <span><?php echo t('Pengaturan', 'Settings'); ?></span>
-        </a>
-        <?php else: ?>
-        <a href="<?php echo base_url('admin/submissions'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-code"></i></span>
-            <span><?php echo t('Tugas', 'Submissions'); ?></span>
-        </a>
-        <a href="<?php echo base_url('admin/courses'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-book-open"></i></span>
-            <span><?php echo t('Kelas', 'Courses'); ?></span>
-        </a>
-        <a href="<?php echo base_url('admin/seminars'); ?>" class="mob-quick-item">
-            <span class="qi-ic" style="background:#fef3c7;color:#d97706;"><i class="fas fa-calendar"></i></span>
-            <span><?php echo t('Seminar', 'Seminars'); ?></span>
-        </a>
-        <?php endif; ?>
-    </div>
-
-    <!-- Enrollment Chart -->
-    <div class="mob-section-head">
-        <h6><i class="fas fa-chart-line" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Analytics Pendaftaran', 'Enrollment Analytics'); ?></h6>
-    </div>
-    <div class="mob-list-card p-3" style="border-radius:16px;">
-        <div style="position: relative; width: 100%; height: 190px;">
-            <canvas id="enrollmentChart"></canvas>
-        </div>
-    </div>
-
-    <!-- Transactions (mobile) -->
-    <?php if ($current_role === 'admin'): ?>
-    <div class="mob-section-head">
-        <h6><i class="fas fa-receipt" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Verifikasi Transaksi', 'Transaction Verification'); ?></h6>
-        <a href="<?php echo base_url('admin/transactions'); ?>"><?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
-    </div>
-    <?php if (empty($transactions)): ?>
-        <div class="mob-empty">
-            <i class="fas fa-receipt"></i>
-            <p><?php echo t('Belum Ada Transaksi', 'No Transactions Yet'); ?></p>
-            <a href="<?php echo base_url('admin/transactions'); ?>"><?php echo t('Lihat Transaksi', 'View Transactions'); ?></a>
-        </div>
-    <?php else: ?>
-        <div class="mob-list-card">
-            <?php foreach (array_slice($transactions, 0, 5) as $tx): ?>
-                <div class="mob-list-row" style="cursor:default;">
-                    <div class="mob-avatar" style="background:<?php echo $tx->status === 'approved' ? '#E0F2F1' : ($tx->status === 'rejected' ? '#fef2f2' : '#fff7ed'); ?>;color:<?php echo $tx->status === 'approved' ? '#009688' : ($tx->status === 'rejected' ? '#dc2626' : '#d97706'); ?>;">
-                        <i class="fas fa-receipt"></i>
-                    </div>
-                    <div class="mob-list-body">
-                        <div class="mob-list-title"><?php echo htmlspecialchars($tx->user_name); ?></div>
-                        <div class="mob-list-sub">#<?php echo $tx->id; ?> · <?php echo strtoupper(str_replace('_', ' ', !empty($tx->payment_channel) ? $tx->payment_channel : 'transfer')); ?> · Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
-                    </div>
-                    <?php if ($tx->status === 'pending'): ?>
-                        <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background:#E0F2F1;color:#009688;font-size:0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>"><i class="fas fa-check"></i></a>
-                        <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border:1px solid #fca5a5;color:#f43f5e;font-size:0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>"><i class="fas fa-times"></i></a>
-                    <?php else: ?>
-                        <?php
-                        $chip = 'mob-chip-gray';
-                        $chip_text = $tx->status;
-                        if ($tx->status === 'approved') { $chip = 'mob-chip-green'; $chip_text = 'Approved'; }
-                        elseif ($tx->status === 'rejected') { $chip = 'mob-chip-red'; $chip_text = 'Rejected'; }
-                        else { $chip_text = 'Pending'; }
-                        ?>
-                        <span class="mob-chip <?php echo $chip; ?>"><?php echo $chip_text; ?></span>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php endif; ?>
-    <?php endif; ?>
-
-</div><!-- /.dashboard-mobile-only -->
-
-<!-- ============================================================
-     ADMIN DASHBOARD — DESKTOP VIEW (kept as-is, minor polish)
-     ============================================================ -->
-<div class="dashboard-desktop-only">
-
-    <div class="container-fluid py-4" style="max-width: 1400px;">
-    <!-- Header -->
+    <!-- ============ HEADER ============ -->
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between mb-4 gap-3">
         <div>
-            <div style="color: #0D1830; font-weight: 700; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.15rem;"><?php echo t('Panel Admin', 'Admin Panel'); ?></div>
-            <h4 class="fw-extrabold mb-0" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.4rem;">
+            <span class="text-primary fw-semibold small text-uppercase tracking-wide d-block mb-1">
+                <?php echo $is_teacher ? t('Panel Guru', 'Teacher Panel') : t('Panel Admin', 'Admin Panel'); ?>
+            </span>
+            <h4 class="fw-extrabold text-dark mb-1 lh-sm" style="letter-spacing:-0.02em;">
                 <?php echo t('Dashboard', 'Dashboard'); ?>
             </h4>
-            <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
-                <?php if ($is_teacher): ?>
-                    <?php echo t('Kelola kelas dan seminar Anda.', 'Manage your courses and seminars.'); ?>
-                <?php else: ?>
-                    <?php echo t('Kelola kelas, seminar, dan verifikasi pembayaran.', 'Manage courses, seminars, and payment verification.'); ?>
-                <?php endif; ?>
+            <p class="text-secondary mb-0 small">
+                <?php echo $is_teacher
+                    ? t('Kelola kelas dan seminar Anda.', 'Manage your courses and seminars.')
+                    : t('Kelola kelas, seminar, dan verifikasi pembayaran.', 'Manage courses, seminars, and payment verification.'); ?>
             </p>
         </div>
-        <div class="d-flex gap-2">
-            <a href="<?php echo base_url('admin/courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="background: #0D1830; color: #fff; font-size: 0.78rem;">
-                <i class="fas fa-book-open" style="font-size: 0.7rem;"></i> <?php echo t('Kelas', 'Courses'); ?>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="<?php echo base_url('admin/courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-2 btn-dark border-0" style="font-size:0.78rem;">
+                <i data-lucide="book-open" style="width:14px;height:14px;"></i> <?php echo t('Kelas', 'Courses'); ?>
             </a>
-            <a href="<?php echo base_url('admin/seminars'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.78rem;">
-                <i class="fas fa-calendar" style="font-size: 0.7rem;"></i> <?php echo t('Seminar', 'Seminars'); ?>
+            <a href="<?php echo base_url('admin/seminars'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-2 border-0" style="background:#E6EBEF;color:#57534e;font-size:0.78rem;">
+                <i data-lucide="calendar" style="width:14px;height:14px;"></i> <?php echo t('Seminar', 'Seminars'); ?>
             </a>
             <?php if ($current_role === 'admin'): ?>
-            <a href="<?php echo base_url('admin/settings/general'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-flex align-items-center gap-1" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.78rem;">
-                <i class="fas fa-cog" style="font-size: 0.7rem;"></i>
+            <a href="<?php echo base_url('admin/settings/general'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill d-inline-flex align-items-center justify-content-center border-0" style="background:#E6EBEF;color:#57534e;font-size:0.78rem;" title="<?php echo t('Pengaturan', 'Settings'); ?>">
+                <i data-lucide="settings" style="width:15px;height:15px;"></i>
             </a>
             <?php endif; ?>
         </div>
     </div>
 
-    <!-- Stats Grid -->
-    <div class="row g-3 mb-4">
-        <div class="col-6 col-md-3">
-            <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #fff7ed;">
-                        <i class="fas fa-book-open" style="color: #0D1830; font-size: 0.9rem;"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold" style="color: #0D1830; font-size: 1.2rem; line-height: 1;"><?php echo $total_courses; ?></div>
-                        <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Total Kelas', 'Total Courses'); ?></small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-6 col-md-3">
-            <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #fef3c7;">
-                        <i class="fas fa-calendar" style="color: #d97706; font-size: 0.9rem;"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold" style="color: #0D1830; font-size: 1.2rem; line-height: 1;"><?php echo $total_seminars; ?></div>
-                        <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Total Seminar', 'Total Seminars'); ?></small>
+    <!-- ============ WELCOME / HERO STRIP ============ -->
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#164e63 100%);border:none;color:#fff;">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 position-relative" style="z-index:1;">
+            <div class="d-flex align-items-center gap-3">
+                <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white flex-shrink-0" style="width:52px;height:52px;background:rgba(255,255,255,0.16);font-size:1.25rem;border:1px solid rgba(255,255,255,0.25);">
+                    <?php echo strtoupper(substr($this->session->userdata('name'), 0, 1)); ?>
+                </span>
+                <div>
+                    <?php
+                    $hour = (int)date('H');
+                    if ($hour < 11) $greet = t('Selamat pagi', 'Good morning');
+                    elseif ($hour < 15) $greet = t('Selamat siang', 'Good afternoon');
+                    elseif ($hour < 19) $greet = t('Selamat sore', 'Good evening');
+                    else $greet = t('Selamat malam', 'Good night');
+                    ?>
+                    <div class="fw-bold" style="font-size:1.15rem;"><?php echo $greet; ?>, <?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?> 👋</div>
+                    <div style="color:rgba(255,255,255,0.72);font-size:0.82rem;">
+                        <?php echo $is_teacher
+                            ? t('Semua konten dan sesimu ada di sini.', 'Your content and sessions are all here.')
+                            : t('Ringkasan aktivitas platform hari ini.', 'Today\'s platform activity summary.'); ?>
                     </div>
                 </div>
             </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <?php if ($current_role === 'admin'): ?>
+                <a href="<?php echo base_url('admin/transactions'); ?>" class="btn btn-sm fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0" style="background:#FBBF24;color:#0D1830;font-size:0.75rem;">
+                    <i data-lucide="receipt" style="width:13px;height:13px;"></i> <?php echo t('Verifikasi Transaksi', 'Verify Transactions'); ?>
+                </a>
+                <?php endif; ?>
+                <a href="<?php echo base_url('admin/create_course'); ?>" class="btn btn-sm fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0" style="background:rgba(255,255,255,0.14);color:#fff;font-size:0.75rem;">
+                    <i data-lucide="plus" style="width:13px;height:13px;"></i> <?php echo t('Konten Baru', 'New Content'); ?>
+                </a>
+            </div>
         </div>
-        <div class="col-6 col-md-3">
-            <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #E0F2F1;">
-                        <i class="fas fa-users" style="color: #009688; font-size: 0.9rem;"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold" style="color: #0D1830; font-size: 1.2rem; line-height: 1;"><?php echo $total_students; ?></div>
-                        <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Siswa', 'Students'); ?></small>
-                    </div>
+    </div>
+
+    <!-- ============ STATS (bento) ============ -->
+    <div class="bento-grid bento-grid-4 mb-4">
+        <div class="bento-card blob-primary">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bento-icon bg-primary-subtle text-primary"><i data-lucide="book-open" style="width:22px;height:22px;"></i></div>
+                <div>
+                    <div class="bento-label"><?php echo t('Total Kelas', 'Total Courses'); ?></div>
+                    <div class="bento-value"><?php echo $total_courses; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="bento-card blob-warning">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bento-icon bg-warning-subtle text-warning"><i data-lucide="calendar" style="width:22px;height:22px;"></i></div>
+                <div>
+                    <div class="bento-label"><?php echo t('Total Seminar', 'Total Seminars'); ?></div>
+                    <div class="bento-value"><?php echo $total_seminars; ?></div>
+                </div>
+            </div>
+        </div>
+        <div class="bento-card blob-success">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bento-icon bg-success-subtle text-success"><i data-lucide="users" style="width:22px;height:22px;"></i></div>
+                <div>
+                    <div class="bento-label"><?php echo t('Siswa', 'Students'); ?></div>
+                    <div class="bento-value"><?php echo $total_students; ?></div>
                 </div>
             </div>
         </div>
         <?php if ($current_role === 'admin'): ?>
-        <div class="col-6 col-md-3">
-            <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2" style="width: 40px; height: 40px; background: #E0F2F1;">
-                        <i class="fas fa-wallet" style="color: #009688; font-size: 0.9rem;"></i>
-                    </div>
-                    <div>
-                        <div class="fw-bold" style="color: #0D1830; font-size: 1.2rem; line-height: 1;">Rp <?php echo number_format($total_revenue / 1000000, 1, ',', '.'); ?>jt</div>
-                        <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Total Revenue', 'Total Revenue'); ?></small>
-                    </div>
+        <div class="bento-card blob-danger">
+            <div class="d-flex align-items-center gap-3">
+                <div class="bento-icon bg-danger-subtle text-danger"><i data-lucide="wallet" style="width:22px;height:22px;"></i></div>
+                <div>
+                    <div class="bento-label"><?php echo t('Total Revenue', 'Total Revenue'); ?></div>
+                    <div class="bento-value" style="font-size:1.45rem;">Rp <?php echo number_format($total_revenue, 0, ',', '.'); ?></div>
                 </div>
             </div>
         </div>
         <?php endif; ?>
     </div>
 
-    <!-- Chart + Quick Actions -->
-    <div class="row g-3 mb-4">
-        <div class="col-lg-8">
-            <div class="border rounded-3 p-3 h-100" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                        <i class="fas fa-chart-line" style="color: #0D1830; font-size: 0.75rem;"></i>
-                        <?php echo t('Analytics Pendaftaran', 'Enrollment Analytics'); ?>
-                    </h6>
-                </div>
-                <div style="position: relative; width: 100%; height: 240px;">
-                    <canvas id="enrollmentChartDesktop"></canvas>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4">
-            <div class="border rounded-3 p-3 h-100" style="border-color: #e7e5e4; border-radius: 12px;">
-                <h6 class="fw-bold mb-3 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                    <i class="fas fa-bolt" style="color: #009688; font-size: 0.75rem;"></i>
-                    <?php echo t('Aksi Cepat', 'Quick Actions'); ?>
+    <!-- ============ CHART + QUICK ACTIONS ============ -->
+    <div class="bento-grid bento-grid-3-1 mb-4">
+        <!-- Enrollment chart -->
+        <div class="bento-card">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                    <i data-lucide="activity" style="width:17px;height:17px;color:var(--primary);"></i>
+                    <?php echo t('Analytics Pendaftaran', 'Enrollment Analytics'); ?>
                 </h6>
-                <div class="d-flex flex-column gap-2">
-                    <a href="<?php echo base_url('admin/create_course'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none fw-semibold" style="background: #fff7ed; color: #0D1830; font-size: 0.8rem; transition: all 0.15s;">
-                        <i class="fas fa-plus-circle" style="font-size: 0.85rem;"></i>
-                        <span><?php echo t('Buat Kelas Baru', 'New Course'); ?></span>
-                    </a>
-                    <a href="<?php echo base_url('admin/create_seminar'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.8rem; transition: all 0.15s;">
-                        <i class="fas fa-plus-circle" style="font-size: 0.85rem;"></i>
-                        <span><?php echo t('Buat Seminar Baru', 'New Seminar'); ?></span>
-                    </a>
-                    <?php if ($current_role === 'admin'): ?>
-                    <a href="<?php echo base_url('admin/transactions'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.8rem; transition: all 0.15s;">
-                        <i class="fas fa-receipt" style="font-size: 0.85rem;"></i>
-                        <span><?php echo t('Verifikasi Transaksi', 'Verify Trx'); ?></span>
-                    </a>
-                    <a href="<?php echo base_url('admin/settings/appearance'); ?>" class="d-flex align-items-center gap-3 p-3 rounded-3 text-decoration-none fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.8rem; transition: all 0.15s;">
-                        <i class="fas fa-palette" style="font-size: 0.85rem;"></i>
-                        <span><?php echo t('Ubah Tampilan', 'Appearance'); ?></span>
-                    </a>
-                    <?php endif; ?>
-                </div>
+                <?php if ($current_role === 'admin'): ?>
+                <a href="<?php echo base_url('admin/analytics'); ?>" class="fw-semibold text-decoration-none text-primary" style="font-size:0.72rem;">
+                    <?php echo t('Analitik', 'Analytics'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
+                </a>
+                <?php endif; ?>
+            </div>
+            <div class="chart-container" style="height:250px;"><canvas id="enrollmentChartDesktop"></canvas></div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="bento-card">
+            <h6 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                <i data-lucide="zap" style="width:17px;height:17px;color:var(--warning);"></i>
+                <?php echo t('Aksi Cepat', 'Quick Actions'); ?>
+            </h6>
+            <div class="d-flex flex-column gap-2">
+                <a href="<?php echo base_url('admin/create_course'); ?>" class="quick-act-btn">
+                    <span class="qi-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-plus-circle"></i></span>
+                    <span><?php echo t('Buat Kelas Baru', 'New Course'); ?></span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                </a>
+                <a href="<?php echo base_url('admin/create_seminar'); ?>" class="quick-act-btn">
+                    <span class="qi-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-calendar-plus"></i></span>
+                    <span><?php echo t('Buat Seminar Baru', 'New Seminar'); ?></span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                </a>
+                <?php if ($current_role === 'admin'): ?>
+                <a href="<?php echo base_url('admin/analytics'); ?>" class="quick-act-btn">
+                    <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-chart-line"></i></span>
+                    <span><?php echo t('Lihat Analitik', 'View Analytics'); ?></span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                </a>
+                <a href="<?php echo base_url('admin/settings/appearance'); ?>" class="quick-act-btn">
+                    <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-palette"></i></span>
+                    <span><?php echo t('Ubah Tampilan', 'Appearance'); ?></span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                </a>
+                <?php else: ?>
+                <a href="<?php echo base_url('admin/submissions'); ?>" class="quick-act-btn">
+                    <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-code"></i></span>
+                    <span><?php echo t('Periksa Tugas', 'Submissions'); ?></span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                </a>
+                <a href="<?php echo base_url('admin/courses'); ?>" class="quick-act-btn">
+                    <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-book-open"></i></span>
+                    <span><?php echo t('Kelola Konten', 'Manage Content'); ?></span>
+                    <i data-lucide="chevron-right" style="width:14px;height:14px;color:#c2c8d0;"></i>
+                </a>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 
-    <!-- Transactions -->
+    <!-- ============ TRANSACTIONS ============ -->
     <?php if ($current_role === 'admin'): ?>
-    <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-        <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
-            <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                <i class="fas fa-receipt" style="color: #78716c; font-size: 0.75rem;"></i>
+    <div class="bento-card p-0">
+        <div class="d-flex justify-content-between align-items-center px-4 py-3" style="border-bottom:1px solid var(--card-border,#eef0f3);">
+            <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                <i data-lucide="receipt" style="width:17px;height:17px;color:var(--primary);"></i>
                 <?php echo t('Verifikasi Transaksi', 'Transaction Verification'); ?>
-                <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #0D1830; font-size: 0.6rem;"><?php echo count($transactions); ?></span>
+                <span class="badge rounded-pill" style="background:#fff7ed;color:#0D1830;font-size:0.62rem;font-weight:700;"><?php echo count($transactions); ?></span>
             </h6>
-            <a href="<?php echo base_url('admin/transactions'); ?>" class="fw-semibold text-decoration-none" style="color: #0D1830; font-size: 0.75rem;">
-                <?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
+            <a href="<?php echo base_url('admin/transactions'); ?>" class="fw-semibold text-decoration-none text-primary d-inline-flex align-items-center gap-1" style="font-size:0.75rem;">
+                <?php echo t('Lihat Semua', 'View All'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i>
             </a>
         </div>
         <?php if (empty($transactions)): ?>
         <div class="p-5 text-center">
-            <div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-receipt"></i></div>
-            <h6 class="fw-bold" style="color: #0D1830;"><?php echo t('Belum Ada Transaksi', 'No Transactions Yet'); ?></h6>
-            <p style="color: #78716c; font-size: 0.82rem;"><?php echo t('Transaksi akan muncul disini setelah ada pembelian.', 'Transactions will appear after purchases.'); ?></p>
+            <div style="font-size:2rem;color:#cbd5e1;margin-bottom:0.5rem;"><i class="fas fa-receipt"></i></div>
+            <h6 class="fw-bold" style="color:var(--gray-900,#0D1830);"><?php echo t('Belum Ada Transaksi', 'No Transactions Yet'); ?></h6>
+            <p style="color:var(--gray-500,#78716c);font-size:0.82rem;"><?php echo t('Transaksi akan muncul disini setelah ada pembelian.', 'Transactions will appear after purchases.'); ?></p>
         </div>
         <?php else: ?>
-        <div class="table-responsive p-0">
-            <table class="table mb-0" style="font-size: 0.8rem;">
+        <div class="table-responsive">
+            <table class="table mb-0 align-middle" style="font-size:0.82rem;">
                 <thead>
                     <tr>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;">ID</th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Siswa', 'Student'); ?></th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tipe', 'Type'); ?></th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Nominal', 'Amount'); ?></th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Channel', 'Channel'); ?></th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Status', 'Status'); ?></th>
-                        <th style="font-weight: 600; color: #78716c; font-size: 0.68rem; border-color: #e7e5e4; padding: 0.7rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;"><?php echo t('Aksi', 'Action'); ?></th>
+                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;">ID</th>
+                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Siswa', 'Student'); ?></th>
+                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Tipe', 'Type'); ?></th>
+                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Nominal', 'Amount'); ?></th>
+                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Channel', 'Channel'); ?></th>
+                        <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Status', 'Status'); ?></th>
+                        <th class="text-uppercase small text-center" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Aksi', 'Action'); ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($transactions as $tx): ?>
-                        <tr>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-weight: 700; color: #0D1830;">#<?php echo $tx->id; ?></td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;"><span class="fw-semibold" style="color: #0D1830;"><?php echo htmlspecialchars($tx->user_name); ?></span></td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;">
-                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.65rem; text-transform: uppercase;">
-                                    <?php echo $tx->item_type; ?>
+                    <tr>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;font-weight:700;color:var(--gray-900,#0D1830);">#<?php echo $tx->id; ?></td>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;">
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white flex-shrink-0" style="width:30px;height:30px;background:var(--primary,#009688);font-size:0.7rem;">
+                                    <?php echo strtoupper(substr($tx->user_name, 0, 1)); ?>
                                 </span>
-                            </td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; font-weight: 700; color: #0D1830;">
-                                Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?>
-                            </td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;">
-                                <span style="color: #78716c; font-size: 0.75rem;">
-                                    <?php echo !empty($tx->payment_channel) ? strtoupper(str_replace('_', ' ', $tx->payment_channel)) : (empty($tx->payment_proof) ? '-' : 'Transfer'); ?>
-                                </span>
-                            </td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem;">
-                                <?php if ($tx->status === 'approved'): ?>
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E0F2F1; color: #009688; font-size: 0.65rem;">
-                                        <i class="fas fa-check-circle me-1" style="font-size: 0.55rem;"></i> Approved
-                                    </span>
-                                <?php elseif ($tx->status === 'rejected'): ?>
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fef2f2; color: #f43f5e; font-size: 0.65rem;">
-                                        <i class="fas fa-times-circle me-1" style="font-size: 0.55rem;"></i> Rejected
-                                    </span>
-                                <?php else: ?>
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #fff7ed; color: #0D1830; font-size: 0.65rem;">
-                                        <i class="fas fa-clock me-1" style="font-size: 0.55rem;"></i> Pending
-                                    </span>
-                                <?php endif; ?>
-                            </td>
-                            <td style="border-color: #f0eeeb; padding: 0.65rem 1rem; text-align: center;">
-                                <?php if ($tx->status === 'pending'): ?>
-                                    <div class="d-flex justify-content-center gap-1">
-                                        <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background: #E0F2F1; color: #009688; font-size: 0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>">
-                                            <i class="fas fa-check"></i>
-                                        </a>
-                                        <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border: 1px solid #fca5a5; color: #f43f5e; font-size: 0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>">
-                                            <i class="fas fa-times"></i>
-                                        </a>
-                                    </div>
-                                <?php else: ?>
-                                    <span style="color: #a8a29e; font-size: 0.72rem;">-</span>
-                                <?php endif; ?>
-                            </td>
-                        </tr>
+                                <span class="fw-semibold" style="color:var(--gray-900,#0D1830);"><?php echo htmlspecialchars($tx->user_name); ?></span>
+                            </div>
+                        </td>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;">
+                            <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#E6EBEF;color:#57534e;font-size:0.62rem;text-transform:uppercase;"><?php echo $tx->item_type; ?></span>
+                        </td>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;font-weight:700;color:var(--gray-900,#0D1830);">Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></td>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;color:var(--gray-500,#78716c);font-size:0.75rem;">
+                            <?php echo !empty($tx->payment_channel) ? strtoupper(str_replace('_', ' ', $tx->payment_channel)) : (empty($tx->payment_proof) ? '-' : 'Transfer'); ?>
+                        </td>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;">
+                            <?php if ($tx->status === 'approved'): ?>
+                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#E0F2F1;color:#009688;font-size:0.65rem;"><i class="fas fa-check-circle me-1" style="font-size:0.55rem;"></i> Approved</span>
+                            <?php elseif ($tx->status === 'rejected'): ?>
+                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fef2f2;color:#f43f5e;font-size:0.65rem;"><i class="fas fa-times-circle me-1" style="font-size:0.55rem;"></i> Rejected</span>
+                            <?php else: ?>
+                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background:#fff7ed;color:#0D1830;font-size:0.65rem;"><i class="fas fa-clock me-1" style="font-size:0.55rem;"></i> Pending</span>
+                            <?php endif; ?>
+                        </td>
+                        <td style="border-color:#f0eeeb;padding:0.7rem 1rem;text-align:center;">
+                            <?php if ($tx->status === 'pending'): ?>
+                                <div class="d-flex justify-content-center gap-1">
+                                    <a href="<?php echo base_url('admin/approve_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="background:#E0F2F1;color:#009688;font-size:0.68rem;" data-confirm="<?php echo t('Setujui transaksi ini?', 'Approve this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Setujui', 'Yes, Approve'); ?>" data-icon="question" title="<?php echo t('Setujui', 'Approve'); ?>"><i class="fas fa-check"></i></a>
+                                    <a href="<?php echo base_url('admin/reject_transaction/' . $tx->id); ?>" class="btn btn-sm rounded-pill px-2 fw-semibold d-inline-flex align-items-center" style="border:1px solid #fca5a5;color:#f43f5e;font-size:0.68rem;" data-confirm="<?php echo t('Tolak transaksi ini?', 'Reject this transaction?'); ?>" data-confirm-button="<?php echo t('Ya, Tolak', 'Yes, Reject'); ?>" data-icon="warning" title="<?php echo t('Tolak', 'Reject'); ?>"><i class="fas fa-times"></i></a>
+                                </div>
+                            <?php else: ?>
+                                <span style="color:#a8a29e;font-size:0.72rem;">-</span>
+                            <?php endif; ?>
+                        </td>
+                    </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
@@ -363,15 +253,12 @@
         <?php endif; ?>
     </div>
     <?php endif; ?>
-    </div>
-</div><!-- /.dashboard-desktop-only -->
+</div>
 
-<!-- Chart.js (loaded by admin_footer when load_chartjs) -->
+<!-- Chart.js — dua canvas (desktop utama; yang mobile memakai canvas yang sama & responsif) -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var isMobile = window.matchMedia('(max-width: 768px)').matches;
-    var canvasId = isMobile ? 'enrollmentChart' : 'enrollmentChartDesktop';
-    var ctx = document.getElementById(canvasId);
+    var ctx = document.getElementById('enrollmentChartDesktop');
     if (ctx && window.Chart) {
         new Chart(ctx, {
             type: 'line',
@@ -381,45 +268,28 @@ document.addEventListener('DOMContentLoaded', function() {
                     label: '<?php echo t('Pendaftaran', 'Enrollments'); ?>',
                     data: <?php echo $chart_data; ?>,
                     borderColor: '#0D1830',
-                    backgroundColor: function(ctx) {
-                        var g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 240);
-                        g.addColorStop(0, 'rgba(249,115,22,0.15)');
-                        g.addColorStop(1, 'rgba(249,115,22,0)');
+                    backgroundColor: function(c) {
+                        var g = c.chart.ctx.createLinearGradient(0, 0, 0, 250);
+                        g.addColorStop(0, 'rgba(13,24,48,0.12)');
+                        g.addColorStop(1, 'rgba(13,24,48,0)');
                         return g;
                     },
-                    fill: true,
-                    tension: 0.4,
+                    fill: true, tension: 0.4,
                     pointBackgroundColor: '#0D1830',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2,
-                    pointRadius: 4,
-                    pointHoverRadius: 6,
+                    pointBorderColor: '#fff', pointBorderWidth: 2,
+                    pointRadius: 4, pointHoverRadius: 6,
                     borderWidth: 2.5
                 }]
             },
             options: {
-                responsive: true,
-                maintainAspectRatio: false,
+                responsive: true, maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
-                    tooltip: {
-                        backgroundColor: '#0D1830',
-                        cornerRadius: 8,
-                        padding: 8,
-                        bodyFont: { size: 12 },
-                        displayColors: false
-                    }
+                    tooltip: { backgroundColor: '#0D1830', cornerRadius: 8, padding: 8, bodyFont: { size: 12 }, displayColors: false }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false },
-                        ticks: { stepSize: 5, color: '#a8a29e', font: { size: 10 } }
-                    },
-                    x: {
-                        grid: { display: false },
-                        ticks: { color: '#a8a29e', font: { size: 10 } }
-                    }
+                    y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.04)', drawBorder: false }, ticks: { color: '#a8a29e', font: { size: 10 } } },
+                    x: { grid: { display: false }, ticks: { color: '#a8a29e', font: { size: 10 } } }
                 }
             }
         });
