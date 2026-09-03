@@ -1388,6 +1388,23 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ============================================================
+   ===  STUDENT DASHBOARD MINI CARDS  ===
+   ============================================================ */
+.course-mini-card {
+  padding: 0.7rem;
+  border-radius: 14px;
+  background: var(--gray-50, #f8fafc);
+  border: 1px solid transparent;
+  transition: var(--transition-smooth);
+  height: 100%;
+}
+.course-mini-card:hover {
+  background: var(--card-bg, #fff);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {

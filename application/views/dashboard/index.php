@@ -1,537 +1,257 @@
-<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1200px;">
+<!-- ============================================================
+     STUDENT DASHBOARD — responsive bento (mobile-first, desktop-ok)
+     ============================================================ -->
+<div class="container-fluid px-0">
 
-    <!-- ============================================================
-         MOBILE APP-STYLE VIEW (max-width: 768px)
-         ============================================================ -->
-    <div class="dashboard-mobile-only">
+    <!-- ============ BANNER CAROUSEL ============ -->
+    <?php $this->load->view('partials/banner_carousel'); ?>
 
-        <!-- Banner Carousel -->
-        <?php $this->load->view('partials/banner_carousel'); ?>
-
-        <!-- Hero Card -->
-        <div class="mob-hero-card">
-            <div class="mob-hero-greeting">
-                <?php
-                $hour = (int)date('H');
-                if ($hour < 12) echo t('Selamat pagi', 'Good morning');
-                elseif ($hour < 15) echo t('Selamat siang', 'Good afternoon');
-                elseif ($hour < 18) echo t('Selamat sore', 'Good evening');
-                else echo t('Selamat malam', 'Good night');
-                ?>
-            </div>
-            <div class="mob-hero-name">
-                <?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?>
-                <span class="wave">👋</span>
-            </div>
-            <div class="mob-hero-stats">
-                <div class="mob-hero-stat">
-                    <b><?php echo count($enrolled_courses); ?></b>
-                    <span><?php echo t('Kelas', 'Courses'); ?></span>
-                </div>
-                <div class="mob-hero-stat">
-                    <b><?php echo count($certificates); ?></b>
-                    <span><?php echo t('Sertifikat', 'Certificates'); ?></span>
-                </div>
-                <div class="mob-hero-stat">
-                    <b><?php echo count($registered_seminars); ?></b>
-                    <span><?php echo t('Seminar', 'Seminars'); ?></span>
+    <!-- ============ WELCOME HERO ============ -->
+    <?php
+        $hour = (int)date('H');
+        if ($hour < 11) $greet = t('Selamat pagi', 'Good morning');
+        elseif ($hour < 15) $greet = t('Selamat siang', 'Good afternoon');
+        elseif ($hour < 19) $greet = t('Selamat sore', 'Good evening');
+        else $greet = t('Selamat malam', 'Good night');
+    ?>
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#009688 160%);border:none;color:#fff;">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 position-relative" style="z-index:1;">
+            <div class="d-flex align-items-center gap-3">
+                <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white flex-shrink-0" style="width:54px;height:54px;background:rgba(255,255,255,0.16);border:1px solid rgba(255,255,255,0.25);font-size:1.3rem;">
+                    <?php echo strtoupper(substr($this->session->userdata('name'), 0, 1)); ?>
+                </span>
+                <div>
+                    <div class="fw-extrabold" style="font-size:1.2rem;"><?php echo $greet; ?>, <?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?> 👋</div>
+                    <div style="color:rgba(255,255,255,0.72);font-size:0.8rem;"><?php echo t('Lanjutkan perjalanan belajarmu hari ini.', 'Continue your learning journey today.'); ?></div>
                 </div>
             </div>
-        </div>
-
-        <!-- Quick Actions -->
-        <div class="mob-quick-grid">
-            <a href="<?php echo base_url('courses'); ?>" class="mob-quick-item">
-                <span class="qi-ic" style="background:#E0F2F1;color:#009688;"><i class="fas fa-search"></i></span>
-                <span><?php echo t('Cari Kelas', 'Find Courses'); ?></span>
-            </a>
-            <a href="<?php echo base_url('learning_paths/mine'); ?>" class="mob-quick-item">
-                <span class="qi-ic" style="background:#eff6ff;color:#2563eb;"><i class="fas fa-route"></i></span>
-                <span><?php echo t('Learning Path', 'Learning Path'); ?></span>
-            </a>
-            <a href="<?php echo base_url('forum'); ?>" class="mob-quick-item">
-                <span class="qi-ic" style="background:#fdf4ff;color:#c026d3;"><i class="fas fa-comments"></i></span>
-                <span><?php echo t('Forum', 'Forum'); ?></span>
-            </a>
-            <a href="<?php echo base_url('wishlist'); ?>" class="mob-quick-item">
-                <span class="qi-ic" style="background:#fff7ed;color:#ea580c;"><i class="fas fa-heart"></i></span>
-                <span><?php echo t('Wishlist', 'Wishlist'); ?></span>
-            </a>
-        </div>
-
-        <!-- My Courses (horizontal scroll) -->
-        <div class="mob-section-head">
-            <h6><i class="fas fa-book-open" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Lanjutkan Belajar', 'Continue Learning'); ?></h6>
-            <a href="<?php echo base_url('courses/mine'); ?>"><?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
-        </div>
-        <?php if (empty($enrolled_courses)): ?>
-            <div class="mob-empty">
-                <i class="fas fa-book-open"></i>
-                <p><?php echo t('Belum ada kelas diambil.', 'No courses enrolled yet.'); ?></p>
-                <a href="<?php echo base_url('courses'); ?>"><?php echo t('Jelajahi Kelas', 'Explore Courses'); ?> →</a>
-            </div>
-        <?php else: ?>
-            <div class="mob-scroll-x">
-                <?php
-                $mob_grads = array(
-                    'linear-gradient(135deg,#009688,#009688)',
-                    'linear-gradient(135deg,#2563eb,#38bdf8)',
-                    'linear-gradient(135deg,#c026d3,#f472b6)',
-                    'linear-gradient(135deg,#ea580c,#fbbf24)',
-                    'linear-gradient(135deg,#0d9488,#2dd4bf)',
-                    'linear-gradient(135deg,#7c3aed,#a78bfa)'
-                );
-                $gi = 0;
-                foreach ($enrolled_courses as $course):
-                    $mob_pct = $course->progress_pct ?? 0;
-                    $init = strtoupper(substr(trim($course->title), 0, 1));
-                ?>
-                    <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="mob-course-card">
-                        <div class="mob-course-thumb" style="background: <?php echo $mob_grads[$gi++ % count($mob_grads)]; ?>;">
-                            <?php
-                            $mob_thumb_ok = !empty($course->thumbnail)
-                                && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
-                                && $course->thumbnail !== 'default_course.png';
-                            if ($mob_thumb_ok): ?>
-                                <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" onerror="this.style.display='none';this.parentNode.textContent='<?php echo $init; ?>';">
-                            <?php else: ?>
-                                <?php echo $init; ?>
-                            <?php endif; ?>
-                        </div>
-                        <div class="mob-course-title"><?php echo htmlspecialchars(t($course->title, $course->title_en ?: $course->title)); ?></div>
-                        <div class="mob-progress-track"><div style="width: <?php echo $mob_pct; ?>%;"></div></div>
-                        <div class="mob-course-meta">
-                            <span><?php echo $mob_pct; ?>% <?php echo t('selesai', 'done'); ?></span>
-                            <b><?php echo t('Belajar', 'Learn'); ?> <i class="fas fa-arrow-right" style="font-size:0.5rem;"></i></b>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Upcoming Seminars -->
-        <?php $mob_upcoming_sems = array_filter($registered_seminars ?? array(), function($s) { return strtotime($s->date_time) > time(); }); ?>
-        <div class="mob-section-head">
-            <h6><i class="fas fa-calendar" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Seminar Terdekat', 'Upcoming Seminars'); ?></h6>
-            <a href="<?php echo base_url('seminars/mine'); ?>"><?php echo t('Semua', 'All'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
-        </div>
-        <?php if (empty($mob_upcoming_sems)): ?>
-            <div class="mob-empty">
-                <i class="fas fa-calendar"></i>
-                <p><?php echo t('Belum ada seminar mendatang.', 'No upcoming seminars.'); ?></p>
-                <a href="<?php echo base_url('seminars'); ?>"><?php echo t('Cari Seminar', 'Find Seminars'); ?> →</a>
-            </div>
-        <?php else: ?>
-            <div class="mob-list-card">
-                <?php foreach (array_slice(array_values($mob_upcoming_sems), 0, 3) as $i => $sem): ?>
-                    <a class="mob-list-row" href="<?php echo base_url('seminars'); ?>">
-                        <span class="mob-avatar" style="background: linear-gradient(135deg,#009688,#00796B);"><?php echo date('d', strtotime($sem->date_time)); ?></span>
-                        <span class="mob-list-body">
-                            <span class="mob-list-title"><?php echo htmlspecialchars(t($sem->title, $sem->title_en ?: $sem->title)); ?></span>
-                            <span class="mob-list-sub"><?php echo date('M Y', strtotime($sem->date_time)); ?> · <?php echo date('H:i', strtotime($sem->date_time)); ?> WIB</span>
-                        </span>
-                        <span class="mob-chev"><i class="fas fa-chevron-right"></i></span>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Mentoring Sessions -->
-        <div class="mob-section-head">
-            <h6><i class="fas fa-calendar-check" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Sesi Mentoring', 'Mentoring Sessions'); ?></h6>
-            <a href="<?php echo base_url('mentoring'); ?>"><?php echo t('Cari Mentor', 'Find Mentor'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
-        </div>
-        <?php $mob_ment = array_slice(array_filter($mentoring_sessions ?? array(), fn($s) => strtotime($s->scheduled_at) > time()), 0, 3); ?>
-        <?php if (empty($mob_ment)): ?>
-            <div class="mob-empty">
-                <i class="fas fa-user-tie"></i>
-                <p><?php echo t('Tidak ada sesi mendatang.', 'No upcoming sessions.'); ?></p>
-                <a href="<?php echo base_url('mentoring'); ?>"><?php echo t('Temukan Mentor', 'Find a Mentor'); ?> →</a>
-            </div>
-        <?php else: ?>
-            <div class="mob-list-card">
-                <?php foreach ($mob_ment as $s): ?>
-                    <a class="mob-list-row" href="<?php echo base_url('mentoring/my_sessions'); ?>">
-                        <span class="mob-avatar" style="background: linear-gradient(135deg,#009688,#34d399);"><?php echo strtoupper(substr($s->mentor_name ?? 'M', 0, 1)); ?></span>
-                        <span class="mob-list-body">
-                            <span class="mob-list-title"><?php echo htmlspecialchars($s->mentor_name ?? 'Mentor'); ?></span>
-                            <span class="mob-list-sub"><?php echo date('d M · H:i', strtotime($s->scheduled_at)); ?></span>
-                        </span>
-                        <?php if ($s->status === 'confirmed'): ?>
-                            <span class="mob-chip mob-chip-green"><?php echo t('Dikonfirmasi', 'Confirmed'); ?></span>
-                        <?php elseif ($s->status === 'completed'): ?>
-                            <span class="mob-chip mob-chip-gray"><?php echo t('Selesai', 'Done'); ?></span>
-                        <?php else: ?>
-                            <span class="mob-chip mob-chip-amber"><?php echo t('Menunggu', 'Pending'); ?></span>
-                        <?php endif; ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Recent Transactions -->
-        <?php if (!empty($transactions)): ?>
-            <div class="mob-section-head">
-                <h6><i class="fas fa-receipt" style="color:#78716c;font-size:0.8rem;"></i> <?php echo t('Transaksi Terakhir', 'Recent Transactions'); ?></h6>
-                <a href="<?php echo base_url('transactions/history'); ?>"><?php echo t('Riwayat', 'History'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
-            </div>
-            <div class="mob-list-card">
-                <?php foreach (array_slice($transactions, 0, 3) as $tx): ?>
-                    <a class="mob-list-row" href="<?php echo base_url('transactions/history'); ?>">
-                        <span class="mob-avatar" style="background:#E6EBEF;color:#78716c;border:1px solid #e7e5e4;"><i class="fas fa-receipt"></i></span>
-                        <span class="mob-list-body">
-                            <span class="mob-list-title"><?php echo t(ucfirst($tx->item_type), ucfirst($tx->item_type)); ?></span>
-                            <span class="mob-list-sub"><?php echo date('d M Y', strtotime($tx->created_at)); ?> · Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></span>
-                        </span>
-                        <?php if ($tx->status === 'approved'): ?>
-                            <span class="mob-chip mob-chip-green"><?php echo t('Berhasil', 'Success'); ?></span>
-                        <?php elseif ($tx->status === 'pending'): ?>
-                            <span class="mob-chip mob-chip-amber"><?php echo t('Pending', 'Pending'); ?></span>
-                        <?php else: ?>
-                            <span class="mob-chip mob-chip-red"><?php echo t('Ditolak', 'Failed'); ?></span>
-                        <?php endif; ?>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-        <!-- Certificates -->
-        <?php if (!empty($certificates)): ?>
-            <div class="mob-section-head">
-                <h6><i class="fas fa-award" style="color:#009688;font-size:0.8rem;"></i> <?php echo t('Sertifikat', 'Certificates'); ?></h6>
-                <a href="<?php echo base_url('certificate/my'); ?>"><?php echo t('Semua', 'All'); ?> <i class="fas fa-chevron-right" style="font-size:0.55rem;"></i></a>
-            </div>
-            <div class="mob-list-card">
-                <?php foreach (array_slice($certificates, 0, 3) as $cert): ?>
-                    <a class="mob-list-row" href="<?php echo base_url('certificate/view/' . encode_id($cert->id)); ?>">
-                        <span class="mob-avatar" style="background: linear-gradient(135deg,#009688,#34d399);"><i class="fas fa-file-alt"></i></span>
-                        <span class="mob-list-body">
-                            <span class="mob-list-title"><?php echo htmlspecialchars($cert->title); ?></span>
-                            <span class="mob-list-sub"><?php echo t('Lihat sertifikat', 'View certificate'); ?></span>
-                        </span>
-                        <span class="mob-chev"><i class="fas fa-chevron-right"></i></span>
-                    </a>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-
-    </div><!-- /.dashboard-mobile-only -->
-
-    <!-- ============================================================
-         DESKTOP VIEW
-         ============================================================ -->
-    <div class="dashboard-desktop-only">
-
-        <!-- Banner Carousel -->
-        <?php $this->load->view('partials/banner_carousel'); ?>
-
-        <!-- Header with greeting -->
-        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
-            <div>
-                <div style="color: #78716c; font-size: 0.82rem; font-weight: 500; margin-bottom: 0.15rem;">
-                    <?php
-                    $hour = (int)date('H');
-                    if ($hour < 12) echo t('Selamat pagi', 'Good morning');
-                    elseif ($hour < 15) echo t('Selamat siang', 'Good afternoon');
-                    elseif ($hour < 18) echo t('Selamat sore', 'Good evening');
-                    else echo t('Selamat malam', 'Good night');
-                    ?>
-                </div>
-                <h4 class="fw-extrabold mb-0" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.4rem;">
-                    <?php echo htmlspecialchars(ucfirst($this->session->userdata('name'))); ?> 👋
-                </h4>
-            </div>
-            <div>
-                <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #009688; color: #fff; font-size: 0.8rem;">
-                    <i class="fas fa-search me-1"></i> <?php echo t('Cari Kelas', 'Find Courses'); ?>
+            <div class="d-flex gap-2 flex-shrink-0">
+                <a href="<?php echo base_url('courses'); ?>" class="btn fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0" style="background:rgba(255,255,255,0.14);color:#fff;font-size:0.76rem;padding:0.5rem 1rem;">
+                    <i data-lucide="search" style="width:13px;height:13px;"></i> <?php echo t('Cari Kelas', 'Find Courses'); ?>
+                </a>
+                <a href="<?php echo base_url('mentoring'); ?>" class="btn fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0 d-none d-md-inline-flex" style="background:#FBBF24;color:#0D1830;font-size:0.76rem;padding:0.5rem 1rem;">
+                    <i data-lucide="calendar-check" style="width:13px;height:13px;"></i> <?php echo t('Mentoring', 'Mentoring'); ?>
                 </a>
             </div>
         </div>
+    </div>
 
-        <!-- Stats Grid -->
-        <div class="row g-3 mb-4">
-            <div class="col-6 col-md-3">
-                <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #E0F2F1;">
-                        <i class="fas fa-book-open" style="color: #009688; font-size: 0.85rem;"></i>
-                    </div>
-                    <div class="fw-bold" style="color: #0D1830; font-size: 1.1rem; line-height: 1;"><?php echo count($enrolled_courses); ?></div>
-                    <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Kelas Aktif', 'Active Courses'); ?></small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #E0F2F1;">
-                        <i class="fas fa-certificate" style="color: #009688; font-size: 0.85rem;"></i>
-                    </div>
-                    <div class="fw-bold" style="color: #0D1830; font-size: 1.1rem; line-height: 1;"><?php echo count($certificates); ?></div>
-                    <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Sertifikat', 'Certificates'); ?></small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #E0F2F1;">
-                        <i class="fas fa-calendar" style="color: #009688; font-size: 0.85rem;"></i>
-                    </div>
-                    <div class="fw-bold" style="color: #0D1830; font-size: 1.1rem; line-height: 1;"><?php echo count($registered_seminars); ?></div>
-                    <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Seminar', 'Seminars'); ?></small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="border rounded-3 p-3 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                    <div class="d-inline-flex align-items-center justify-content-center rounded-2 mb-2" style="width: 38px; height: 38px; background: #E0F2F1;">
-                        <i class="fas fa-calendar-check" style="color: #009688; font-size: 0.85rem;"></i>
-                    </div>
-                    <div class="fw-bold" style="color: #0D1830; font-size: 1.1rem; line-height: 1;"><?php echo count($mentoring_sessions ?? []); ?></div>
-                    <small style="color: #a8a29e; font-size: 0.7rem;"><?php echo t('Mentoring', 'Mentoring'); ?></small>
-                </div>
+    <!-- ============ STATS ============ -->
+    <div class="bento-grid bento-grid-4 mb-4">
+        <div class="bento-card blob-primary d-flex align-items-center gap-2">
+            <div class="bento-icon bg-primary-subtle text-primary"><i data-lucide="book-open" style="width:20px;height:20px;"></i></div>
+            <div>
+                <div class="bento-value" style="font-size:1.4rem;"><?php echo count($enrolled_courses); ?></div>
+                <div class="bento-label"><?php echo t('Kelas', 'Courses'); ?></div>
             </div>
         </div>
-
-        <!-- Learning Paths -->
-        <?php if (!empty($learning_paths)): ?>
-        <div class="border rounded-3 mb-4" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-            <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
-                <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                    <i class="fas fa-route" style="color: #009688; font-size: 0.75rem;"></i>
-                    <?php echo t('Learning Paths', 'Learning Paths'); ?>
-                </h6>
+        <div class="bento-card blob-warning d-flex align-items-center gap-2">
+            <div class="bento-icon bg-warning-subtle text-warning"><i data-lucide="calendar" style="width:20px;height:20px;"></i></div>
+            <div>
+                <div class="bento-value" style="font-size:1.4rem;"><?php echo count($registered_seminars); ?></div>
+                <div class="bento-label"><?php echo t('Seminar', 'Seminars'); ?></div>
             </div>
-            <div class="p-3">
-                <div class="d-flex flex-column gap-2">
-                    <?php foreach ($learning_paths as $lp): ?>
-                        <div class="d-flex justify-content-between align-items-center p-2 rounded-3" style="background: #E6EBEF;">
-                            <div class="flex-fill me-3 min-w-0">
-                                <span class="fw-semibold" style="color: #0D1830; font-size: 0.8rem;"><?php echo htmlspecialchars($lp->title); ?></span>
-                            </div>
-                            <div class="d-flex align-items-center gap-2 flex-shrink-0" style="min-width: 130px;">
-                                <div class="flex-fill rounded-pill overflow-hidden" style="height: 6px; background: #e7e5e4;">
-                                    <div class="h-100 rounded-pill" style="width: <?php echo $lp->progress_pct; ?>%; background: #009688;"></div>
-                                </div>
-                                <span class="fw-bold" style="color: #0D1830; font-size: 0.75rem; min-width: 35px; text-align: right;"><?php echo $lp->progress_pct; ?>%</span>
-                            </div>
+        </div>
+        <div class="bento-card blob-success d-flex align-items-center gap-2">
+            <div class="bento-icon bg-success-subtle text-success"><i data-lucide="award" style="width:20px;height:20px;"></i></div>
+            <div>
+                <div class="bento-value" style="font-size:1.4rem;"><?php echo count($certificates); ?></div>
+                <div class="bento-label"><?php echo t('Sertifikat', 'Certificates'); ?></div>
+            </div>
+        </div>
+        <div class="bento-card blob-danger d-flex align-items-center gap-2">
+            <div class="bento-icon bg-danger-subtle text-danger"><i data-lucide="calendar-check" style="width:20px;height:20px;"></i></div>
+            <div>
+                <div class="bento-value" style="font-size:1.4rem;"><?php echo count($mentoring_sessions ?? array()); ?></div>
+                <div class="bento-label"><?php echo t('Mentoring', 'Mentoring'); ?></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ LEARNING PATHS ============ -->
+    <?php if (!empty($learning_paths)): ?>
+    <div class="bento-card mb-4">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                <i data-lucide="route" style="width:16px;height:16px;color:var(--primary);"></i> <?php echo t('Learning Paths', 'Learning Paths'); ?>
+            </h6>
+            <a href="<?php echo base_url('learning_paths/mine'); ?>" class="fw-semibold text-decoration-none text-primary d-inline-flex align-items-center gap-1" style="font-size:0.72rem;"><?php echo t('Semua', 'All'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+        </div>
+        <div class="d-flex flex-column gap-2">
+            <?php foreach ($learning_paths as $lp): ?>
+                <div class="d-flex align-items-center justify-content-between gap-3 p-2 rounded-3" style="background:var(--gray-50,#f8fafc);">
+                    <div class="d-flex align-items-center gap-2 flex-fill min-w-0">
+                        <span class="d-inline-flex align-items-center justify-content-center rounded-circle flex-shrink-0" style="width:8px;height:8px;background:<?php echo $lp->color ?? '#4361ee'; ?>;"></span>
+                        <span class="fw-semibold text-dark text-truncate" style="font-size:0.8rem;"><?php echo htmlspecialchars($lp->title); ?></span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2 flex-shrink-0" style="min-width:120px;">
+                        <div class="flex-fill rounded-pill overflow-hidden" style="height:6px;background:var(--gray-200,#e7e5e4);">
+                            <div class="h-100 rounded-pill" style="width:<?php echo $lp->progress_pct ?? 0; ?>%;background:<?php echo $lp->color ?? '#4361ee'; ?>;"></div>
                         </div>
-                    <?php endforeach; ?>
-                </div>
-            </div>
-        </div>
-        <?php endif; ?>
-
-        <!-- Main Content Grid -->
-        <div class="row g-3 mb-4">
-            <!-- My Courses -->
-            <div class="col-lg-8">
-                <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-                    <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                            <i class="fas fa-book-open" style="color: #009688; font-size: 0.75rem;"></i>
-                            <?php echo t('Kelas Saya', 'My Courses'); ?>
-                        </h6>
-                        <a href="<?php echo base_url('courses/mine'); ?>" class="fw-semibold text-decoration-none" style="color: #009688; font-size: 0.75rem;">
-                            <?php echo t('Lihat Semua', 'View All'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
-                        </a>
+                        <span class="fw-bold text-dark" style="font-size:0.72rem;min-width:34px;text-align:right;"><?php echo $lp->progress_pct ?? 0; ?>%</span>
                     </div>
-                    <div class="p-3">
-                        <?php if (empty($enrolled_courses)): ?>
-                            <div class="text-center py-4">
-                                <div style="font-size: 1.5rem; color: #d6d3d1; margin-bottom: 0.5rem;"><i class="fas fa-book-open"></i></div>
-                                <h6 class="fw-bold" style="color: #0D1830;"><?php echo t('Belum Ada Kelas', 'No Courses Yet'); ?></h6>
-                                <p style="color: #78716c; font-size: 0.8rem; margin-bottom: 0.75rem; max-width: 280px; margin-left: auto; margin-right: auto;">
-                                    <?php echo t('Mulai perjalanan belajarmu dengan mendaftar ke kelas yang tersedia.', 'Start your learning journey by enrolling in available courses.'); ?>
-                                </p>
-                                <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #009688; color: #fff; font-size: 0.8rem;">
-                                    <i class="fas fa-search me-1"></i> <?php echo t('Jelajahi Konten', 'Explore Content'); ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- ============ MAIN GRID ============ -->
+    <div class="bento-grid bento-grid-3-1 mb-4" style="align-items:start;">
+        <!-- ===== KIRI: KELAS + MENTORING ===== -->
+        <div class="d-flex flex-column gap-3">
+            <!-- Continue learning -->
+            <div class="bento-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                        <i data-lucide="book-open" style="width:16px;height:16px;color:var(--primary);"></i> <?php echo t('Lanjutkan Belajar', 'Continue Learning'); ?>
+                    </h6>
+                    <a href="<?php echo base_url('courses/mine'); ?>" class="fw-semibold text-decoration-none text-primary d-inline-flex align-items-center gap-1" style="font-size:0.72rem;"><?php echo t('Lihat Semua', 'View All'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+                </div>
+                <?php if (empty($enrolled_courses)): ?>
+                    <div class="text-center py-4">
+                        <div class="mx-auto d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width:56px;height:56px;background:#E0F2F1;color:#009688;"><i data-lucide="book-open" style="width:24px;height:24px;"></i></div>
+                        <p class="text-secondary small mb-3"><?php echo t('Belum ada kelas diambil. Mulai jelajahi kelas yang tersedia!', 'No courses enrolled yet. Start exploring available courses!'); ?></p>
+                        <a href="<?php echo base_url('courses'); ?>" class="btn btn-primary rounded-pill px-4 fw-semibold btn-sm"><?php echo t('Jelajahi Kelas', 'Explore Courses'); ?></a>
+                    </div>
+                <?php else: ?>
+                    <div class="row g-2">
+                        <?php foreach (array_slice($enrolled_courses, 0, 4) as $course): ?>
+                            <?php $pct = $course->progress_pct ?? 0; ?>
+                            <div class="col-md-6">
+                                <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="course-mini-card text-decoration-none d-block">
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <span class="d-inline-flex align-items-center justify-content-center rounded-2 fw-bold text-white flex-shrink-0" style="width:34px;height:34px;background:linear-gradient(135deg,#009688,#0d9488);font-size:0.8rem;">
+                                            <?php echo strtoupper(substr(trim($course->title), 0, 1)); ?>
+                                        </span>
+                                        <span class="fw-bold text-dark text-truncate" style="font-size:0.78rem;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?: $course->title)); ?></span>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="flex-fill rounded-pill overflow-hidden" style="height:5px;background:var(--gray-200,#e7e5e4);">
+                                            <div class="h-100 rounded-pill" style="width:<?php echo $pct; ?>%;background:linear-gradient(90deg,#009688,#34d399);"></div>
+                                        </div>
+                                        <span class="fw-bold text-dark" style="font-size:0.7rem;"><?php echo $pct; ?>%</span>
+                                    </div>
+                                    <div class="text-primary mt-1" style="font-size:0.68rem;font-weight:600;"><?php echo t('Belajar', 'Learn'); ?> <i class="fas fa-arrow-right" style="font-size:0.5rem;"></i></div>
                                 </a>
                             </div>
-                        <?php else: ?>
-                            <div class="d-flex flex-column gap-2">
-                                <?php foreach (array_slice($enrolled_courses, 0, 5) as $course): ?>
-                                    <div class="d-flex align-items-center gap-3 p-2 rounded-3" style="background: #E6EBEF;">
-                                        <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($course->title); ?>&background=fafaf9&color=78716c&size=44&font-size=0.35" alt="" class="rounded-2 flex-shrink-0" style="width: 40px; height: 32px; border: 1px solid #e7e5e4;">
-                                        <div class="flex-fill min-w-0">
-                                            <h6 class="fw-bold mb-1 text-truncate" style="color: #0D1830; font-size: 0.8rem;">
-                                                <?php echo htmlspecialchars(t($course->title, $course->title_en ?: $course->title)); ?>
-                                            </h6>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <div class="flex-fill rounded-pill overflow-hidden" style="height: 4px; background: #e7e5e4;">
-                                                    <div class="h-100 rounded-pill" style="width: <?php echo $course->progress_pct ?? 0; ?>%; background: #009688;"></div>
-                                                </div>
-                                                <span class="fw-bold" style="color: #0D1830; font-size: 0.7rem; min-width: 30px; text-align: right;">
-                                                    <?php echo $course->progress_pct ?? 0; ?>%
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-3 flex-shrink-0" style="background: #009688; color: #fff; font-size: 0.72rem;">
-                                            <?php echo t('Belajar', 'Learn'); ?>
-                                        </a>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
 
-            <!-- Right Column: Seminars + Certificates -->
-            <div class="col-lg-4 d-flex flex-column gap-3">
-                <!-- Upcoming Seminars -->
-                <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-                    <div class="p-3" style="border-bottom: 1px solid #f0eeeb;">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                            <i class="fas fa-calendar" style="color: #009688; font-size: 0.75rem;"></i>
-                            <?php echo t('Seminar Terbaru', 'Latest Seminars'); ?>
-                        </h6>
-                    </div>
-                    <div class="p-3">
-                        <?php $upcoming_sems = array_slice(array_filter($registered_seminars ?? array(), function($s) { return strtotime($s->date_time) > time(); }), 0, 3); ?>
-                        <?php if (empty($upcoming_sems)): ?>
-                            <p style="color: #78716c; font-size: 0.78rem; margin-bottom: 0;">
-                                <?php echo t('Belum ada seminar.', 'No seminars yet.'); ?>
-                                <a href="<?php echo base_url('seminars'); ?>" style="color: #009688; font-weight: 600; text-decoration: none;"><?php echo t('Cari Seminar', 'Find Seminars'); ?></a>
-                            </p>
-                        <?php else: ?>
-                            <div class="d-flex flex-column gap-2">
-                                <?php foreach ($upcoming_sems as $sem): ?>
-                                    <div class="d-flex align-items-start gap-2">
-                                        <div class="rounded-2 d-flex align-items-center justify-content-center fw-bold flex-shrink-0" style="width: 36px; height: 36px; background: #E6EBEF; border: 1px solid #e7e5e4; font-size: 0.65rem; color: #78716c; flex-direction: column; line-height: 1.1;">
-                                            <span style="font-size: 0.6rem;"><?php echo date('M', strtotime($sem->date_time)); ?></span>
-                                            <span style="font-size: 0.75rem;"><?php echo date('d', strtotime($sem->date_time)); ?></span>
-                                        </div>
-                                        <div class="min-w-0 flex-fill">
-                                            <h6 class="fw-bold mb-0 text-truncate" style="color: #0D1830; font-size: 0.78rem;">
-                                                <?php echo htmlspecialchars(t($sem->title, $sem->title_en ?: $sem->title)); ?>
-                                            </h6>
-                                            <small style="color: #a8a29e; font-size: 0.68rem;"><?php echo date('H:i', strtotime($sem->date_time)); ?> WIB</small>
-                                        </div>
-                                    </div>
-                                <?php endforeach; ?>
-                                <?php if (count($upcoming_sems) < count($registered_seminars)): ?>
-                                    <a href="<?php echo base_url('seminars/mine'); ?>" class="fw-semibold text-decoration-none text-center pt-1" style="color: #009688; font-size: 0.72rem;">
-                                        <?php echo t('Lihat semua', 'View all'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
-                                    </a>
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
+            <!-- Mentoring sessions -->
+            <div class="bento-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                        <i data-lucide="calendar-check" style="width:16px;height:16px;color:var(--warning);"></i> <?php echo t('Sesi Mentoring', 'Mentoring Sessions'); ?>
+                    </h6>
+                    <a href="<?php echo base_url('mentoring'); ?>" class="fw-semibold text-decoration-none text-primary d-inline-flex align-items-center gap-1" style="font-size:0.72rem;"><?php echo t('Cari Mentor', 'Find Mentor'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
                 </div>
-
-                <!-- Certificates -->
-                <div class="border rounded-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-                    <div class="p-3" style="border-bottom: 1px solid #f0eeeb;">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                            <i class="fas fa-award" style="color: #009688; font-size: 0.75rem;"></i>
-                            <?php echo t('Sertifikat', 'Certificates'); ?>
-                        </h6>
-                    </div>
-                    <div class="p-3">
-                        <?php if (empty($certificates)): ?>
-                            <p style="color: #78716c; font-size: 0.78rem; margin-bottom: 0;">
-                                <?php echo t('Belum ada sertifikat.', 'No certificates yet.'); ?>
-                                <?php if (!empty($enrolled_courses)): ?>
-                                    <a href="<?php echo base_url('courses/mine'); ?>" style="color: #009688; font-weight: 600; text-decoration: none;"><?php echo t('Selesaikan kelas', 'Complete a course'); ?></a>
-                                <?php endif; ?>
-                            </p>
-                        <?php else: ?>
-                            <div class="d-flex flex-wrap gap-2">
-                                <?php foreach ($certificates as $cert): ?>
-                                    <a href="<?php echo base_url('certificate/view/' . encode_id($cert->id)); ?>" class="text-decoration-none d-inline-flex align-items-center gap-2 px-3 py-2 rounded-pill" style="border: 1px solid #e7e5e4; color: #0D1830; font-size: 0.75rem; font-weight: 600;">
-                                        <i class="fas fa-file-alt" style="color: #009688; font-size: 0.65rem;"></i>
-                                        <?php echo htmlspecialchars($cert->title); ?>
-                                    </a>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Bottom Row: Mentoring + Transactions -->
-        <div class="row g-3">
-            <!-- Mentoring -->
-            <div class="col-md-6">
-                <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-                    <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                            <i class="fas fa-calendar-check" style="color: #009688; font-size: 0.75rem;"></i>
-                            <?php echo t('Sesi Mentoring', 'Mentoring Sessions'); ?>
-                        </h6>
-                        <a href="<?php echo base_url('mentoring'); ?>" class="fw-semibold text-decoration-none" style="color: #009688; font-size: 0.75rem;">
-                            <?php echo t('Cari Mentor', 'Find Mentor'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
-                        </a>
-                    </div>
-                    <div class="p-3">
-                        <?php $upcoming = array_filter($mentoring_sessions ?? array(), fn($s) => strtotime($s->scheduled_at) > time()); ?>
-                        <?php $upcoming = array_slice($upcoming, 0, 4); ?>
-                        <?php if (empty($upcoming)): ?>
-                            <p style="color: #78716c; font-size: 0.78rem; margin-bottom: 0;">
-                                <?php echo t('Tidak ada sesi mendatang.', 'No upcoming sessions.'); ?>
-                                <a href="<?php echo base_url('mentoring'); ?>" style="color: #009688; font-weight: 600; text-decoration: none;"><?php echo t('Temukan mentor', 'Find a mentor'); ?></a>
-                            </p>
-                        <?php else: ?>
-                            <div class="d-flex flex-column gap-2">
-                                <?php foreach ($upcoming as $s): ?>
-                                    <div class="d-flex align-items-center justify-content-between p-2 rounded-3" style="background: #E6EBEF;">
-                                        <div class="d-flex align-items-center gap-2 min-w-0">
-                                            <img src="https://ui-avatars.com/api/?name=<?php echo urlencode($s->mentor_name ?? 'M'); ?>&background=fafaf9&color=78716c&size=28" alt="" style="width: 28px; height: 28px; border-radius: 50%; border: 1px solid #e7e5e4;">
-                                            <div class="min-w-0">
-                                                <div class="fw-semibold text-truncate" style="color: #0D1830; font-size: 0.75rem;"><?php echo htmlspecialchars($s->mentor_name ?? 'Mentor'); ?></div>
-                                                <small style="color: #a8a29e; font-size: 0.65rem;"><?php echo date('d M H:i', strtotime($s->scheduled_at)); ?></small>
-                                            </div>
-                                        </div>
-                                        <span class="px-2 py-1 rounded-pill fw-medium" style="font-size: 0.6rem; background: <?php echo $s->status === 'confirmed' ? '#E0F2F1' : '#E0F2F1'; ?>; color: <?php echo $s->status === 'confirmed' ? '#009688' : '#009688'; ?>;">
-                                            <?php echo $s->status === 'confirmed' ? t('Dikonfirmasi', 'Confirmed') : t('Menunggu', 'Pending'); ?>
-                                        </span>
-                                    </div>
-                                <?php endforeach; ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Transactions -->
-            <?php if (!empty($transactions)): ?>
-            <div class="col-md-6">
-                <div class="border rounded-3 h-100" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
-                    <div class="d-flex justify-content-between align-items-center p-3" style="border-bottom: 1px solid #f0eeeb;">
-                        <h6 class="fw-bold mb-0 d-flex align-items-center gap-2" style="color: #0D1830; font-size: 0.88rem;">
-                            <i class="fas fa-receipt" style="color: #78716c; font-size: 0.75rem;"></i>
-                            <?php echo t('Transaksi Terakhir', 'Recent Transactions'); ?>
-                        </h6>
-                        <a href="<?php echo base_url('transactions/history'); ?>" class="fw-semibold text-decoration-none" style="color: #009688; font-size: 0.75rem;">
-                            <?php echo t('Riwayat', 'History'); ?> <i class="fas fa-chevron-right" style="font-size: 0.5rem;"></i>
-                        </a>
-                    </div>
-                    <div class="p-3">
-                        <div class="d-flex flex-column gap-2">
-                            <?php foreach (array_slice($transactions, 0, 4) as $tx): ?>
-                                <div class="d-flex align-items-center gap-3 p-2 rounded-3" style="background: #E6EBEF;">
-                                    <div class="d-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width: 32px; height: 32px; background: #E6EBEF;">
-                                        <i class="fas fa-receipt" style="color: #78716c; font-size: 0.7rem;"></i>
-                                    </div>
-                                    <div class="flex-fill min-w-0">
-                                        <div class="fw-semibold text-truncate" style="color: #0D1830; font-size: 0.78rem;">
-                                            <?php echo t(ucfirst($tx->item_type), ucfirst($tx->item_type)); ?>
-                                        </div>
-                                        <div style="color: #a8a29e; font-size: 0.68rem;">
-                                            <?php echo date('d M Y', strtotime($tx->created_at)); ?> · Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?>
-                                        </div>
-                                    </div>
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="font-size: 0.6rem; 
-                                        background: <?php echo $tx->status === 'approved' ? '#E0F2F1' : ($tx->status === 'pending' ? '#E0F2F1' : '#fef2f2'); ?>;
-                                        color: <?php echo $tx->status === 'approved' ? '#009688' : ($tx->status === 'pending' ? '#009688' : '#009688'); ?>;">
-                                        <?php echo $tx->status === 'approved' ? t('Berhasil', 'Success') : ($tx->status === 'pending' ? t('Pending', 'Pending') : t('Ditolak', 'Failed')); ?>
-                                    </span>
+                <?php
+                    $upcoming_m = array_slice(array_filter($mentoring_sessions ?? array(), fn($s) => strtotime($s->scheduled_at) > time()), 0, 3);
+                ?>
+                <?php if (empty($upcoming_m)): ?>
+                    <p class="text-secondary small mb-0"><?php echo t('Tidak ada sesi mendatang.', 'No upcoming sessions.'); ?> <a href="<?php echo base_url('mentoring'); ?>" class="fw-semibold text-primary text-decoration-none"><?php echo t('Temukan mentor', 'Find a mentor'); ?></a></p>
+                <?php else: ?>
+                    <div class="d-flex flex-column gap-2">
+                        <?php foreach ($upcoming_m as $s): ?>
+                            <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:var(--gray-50,#f8fafc);">
+                                <span class="d-inline-flex align-items-center justify-content-center rounded-circle fw-bold text-white flex-shrink-0" style="width:30px;height:30px;background:linear-gradient(135deg,#009688,#34d399);font-size:0.75rem;"><?php echo strtoupper(substr($s->mentor_name ?? 'M', 0, 1)); ?></span>
+                                <div class="flex-fill min-w-0">
+                                    <div class="fw-semibold text-dark text-truncate" style="font-size:0.76rem;"><?php echo htmlspecialchars($s->mentor_name ?? 'Mentor'); ?></div>
+                                    <div class="text-secondary" style="font-size:0.66rem;"><?php echo date('d M · H:i', strtotime($s->scheduled_at)); ?></div>
                                 </div>
-                            <?php endforeach; ?>
-                        </div>
+                                <?php if ($s->status === 'confirmed'): ?><span class="px-2 py-1 rounded-pill fw-bold flex-shrink-0" style="background:#E0F2F1;color:#009688;font-size:0.6rem;"><?php echo t('Dikonfirmasi', 'Confirmed'); ?></span>
+                                <?php elseif ($s->status === 'completed'): ?><span class="px-2 py-1 rounded-pill fw-bold flex-shrink-0" style="background:#f1f5f9;color:#64748b;font-size:0.6rem;"><?php echo t('Selesai', 'Done'); ?></span>
+                                <?php else: ?><span class="px-2 py-1 rounded-pill fw-bold flex-shrink-0" style="background:#fffbeb;color:#d97706;font-size:0.6rem;"><?php echo t('Menunggu', 'Pending'); ?></span><?php endif; ?>
+                            </div>
+                        <?php endforeach; ?>
                     </div>
+                <?php endif; ?>
+            </div>
+
+            <!-- Recent transactions -->
+            <?php if (!empty($transactions)): ?>
+            <div class="bento-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                        <i data-lucide="receipt" style="width:16px;height:16px;color:var(--gray-400,#94a3b8);"></i> <?php echo t('Transaksi Terakhir', 'Recent Transactions'); ?>
+                    </h6>
+                    <a href="<?php echo base_url('transactions/history'); ?>" class="fw-semibold text-decoration-none text-primary d-inline-flex align-items-center gap-1" style="font-size:0.72rem;"><?php echo t('Riwayat', 'History'); ?> <i data-lucide="arrow-right" style="width:12px;height:12px;"></i></a>
+                </div>
+                <div class="d-flex flex-column">
+                    <?php foreach (array_slice($transactions, 0, 3) as $tx): ?>
+                        <?php if ($tx->status === 'approved') { $tb='#E0F2F1'; $tt='#009688'; $tl=t('Berhasil','Success'); }
+                        elseif ($tx->status === 'pending') { $tb='#fffbeb'; $tt='#d97706'; $tl=t('Pending','Pending'); }
+                        else { $tb='#fef2f2'; $tt='#dc2626'; $tl=t('Ditolak','Failed'); } ?>
+                        <div class="d-flex align-items-center gap-3 py-2" style="border-bottom:1px dashed var(--gray-100,#f0eeeb);">
+                            <span class="d-inline-flex align-items-center justify-content-center rounded-2 flex-shrink-0" style="width:32px;height:32px;background:#E6EBEF;color:#78716c;"><i class="fas fa-receipt" style="font-size:0.68rem;"></i></span>
+                            <div class="flex-fill min-w-0">
+                                <div class="fw-semibold text-dark text-truncate" style="font-size:0.76rem;"><?php echo t(ucfirst($tx->item_type), ucfirst($tx->item_type)); ?></div>
+                                <div class="text-secondary" style="font-size:0.68rem;"><?php echo date('d M Y', strtotime($tx->created_at)); ?> · Rp <?php echo number_format($tx->amount, 0, ',', '.'); ?></div>
+                            </div>
+                            <span class="px-2 py-1 rounded-pill fw-bold flex-shrink-0" style="background:<?php echo $tb; ?>;color:<?php echo $tt; ?>;font-size:0.6rem;"><?php echo $tl; ?></span>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <?php endif; ?>
         </div>
 
-    </div><!-- /.dashboard-desktop-only -->
+        <!-- ===== KANAN: SEMINAR + SERTIFIKAT ===== -->
+        <div class="d-flex flex-column gap-3">
+            <!-- Seminars -->
+            <div class="bento-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                        <i data-lucide="calendar" style="width:16px;height:16px;color:var(--warning);"></i> <?php echo t('Seminar Terdekat', 'Upcoming Seminars'); ?>
+                    </h6>
+                    <a href="<?php echo base_url('seminars/mine'); ?>" class="fw-semibold text-decoration-none text-primary" style="font-size:0.72rem;"><?php echo t('Semua', 'All'); ?></a>
+                </div>
+                <?php $upcoming_sems = array_slice(array_filter($registered_seminars ?? array(), function($s) { return strtotime($s->date_time) > time(); }), 0, 3); ?>
+                <?php if (empty($upcoming_sems)): ?>
+                    <p class="text-secondary small mb-0"><?php echo t('Belum ada seminar mendatang.', 'No upcoming seminars.'); ?> <a href="<?php echo base_url('seminars'); ?>" class="fw-semibold text-primary text-decoration-none"><?php echo t('Cari Seminar', 'Find Seminars'); ?></a></p>
+                <?php else: ?>
+                    <div class="d-flex flex-column gap-2">
+                        <?php foreach ($upcoming_sems as $sem): ?>
+                            <div class="d-flex align-items-center gap-2 p-2 rounded-3" style="background:var(--gray-50,#f8fafc);">
+                                <div class="d-flex flex-column align-items-center justify-content-center rounded-2 flex-shrink-0 fw-bold" style="width:38px;height:42px;background:#E0F2F1;color:#009688;line-height:1.1;">
+                                    <span style="font-size:0.55rem;"><?php echo date('M', strtotime($sem->date_time)); ?></span>
+                                    <span style="font-size:0.85rem;"><?php echo date('d', strtotime($sem->date_time)); ?></span>
+                                </div>
+                                <div class="flex-fill min-w-0">
+                                    <div class="fw-semibold text-dark text-truncate" style="font-size:0.75rem;"><?php echo htmlspecialchars(t($sem->title, $sem->title_en ?: $sem->title)); ?></div>
+                                    <div class="text-secondary" style="font-size:0.66rem;"><?php echo date('H:i', strtotime($sem->date_time)); ?> WIB</div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
 
+            <!-- Certificates -->
+            <div class="bento-card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                        <i data-lucide="award" style="width:16px;height:16px;color:#d97706;"></i> <?php echo t('Sertifikat', 'Certificates'); ?>
+                    </h6>
+                    <a href="<?php echo base_url('certificate/my'); ?>" class="fw-semibold text-decoration-none text-primary" style="font-size:0.72rem;"><?php echo t('Semua', 'All'); ?></a>
+                </div>
+                <?php if (empty($certificates)): ?>
+                    <p class="text-secondary small mb-0"><?php echo t('Belum ada sertifikat.', 'No certificates yet.'); ?></p>
+                <?php else: ?>
+                    <div class="d-flex flex-column gap-2">
+                        <?php foreach (array_slice($certificates, 0, 3) as $cert): ?>
+                            <a href="<?php echo base_url('certificate/view/' . encode_id($cert->id)); ?>" class="profile-link-row">
+                                <i class="fas fa-file-alt" style="font-size:0.75rem;color:#d97706;"></i>
+                                <span class="fw-semibold text-dark text-truncate" style="font-size:0.78rem;"><?php echo htmlspecialchars($cert->title); ?></span>
+                                <i data-lucide="chevron-right" style="width:13px;height:13px;color:#c2c8d0;flex-shrink:0;"></i>
+                            </a>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
 </div>
