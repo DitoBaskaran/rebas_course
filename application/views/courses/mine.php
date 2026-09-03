@@ -1,32 +1,77 @@
-<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1200px;">
+<div class="container-fluid px-0">
 
-    <!-- ============ MOBILE APP-STYLE ============ -->
-    <div class="dashboard-mobile-only">
-        <!-- Header -->
-        <div class="d-flex align-items-center justify-content-between mb-3">
+    <!-- ============ HEADER (hero) ============ -->
+    <?php
+        $total_pct = 0; $done_n = 0;
+        foreach ($enrolled_courses as $course) {
+            $total_pct += (int)($course->progress_pct ?? 0);
+            if (($course->progress_pct ?? 0) >= 100) $done_n++;
+        }
+        $avg_pct = count($enrolled_courses) > 0 ? round($total_pct / count($enrolled_courses)) : 0;
+    ?>
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#009688 160%);border:none;color:#fff;">
+        <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 position-relative" style="z-index:1;">
             <div>
-                <h5 class="fw-extrabold mb-0" style="color: #0D1830; font-size: 1.15rem; letter-spacing: -0.02em;">
+                <span class="d-inline-flex align-items-center gap-1" style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:#FBBF24;font-size:0.66rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:100px;">
+                    <i data-lucide="book-open" style="width:12px;height:12px;"></i> <?php echo t('Belajarku', 'My Learning'); ?>
+                </span>
+                <h1 class="fw-extrabold text-white mb-1 mt-2 lh-sm" style="letter-spacing:-0.03em;font-size:1.6rem;">
                     <?php echo t('Kelas Saya', 'My Courses'); ?>
-                </h5>
-                <small style="color: #78716c; font-size: 0.72rem;"><?php echo count($enrolled_courses); ?> <?php echo t('kelas', 'courses'); ?></small>
+                </h1>
+                <p class="mb-0" style="color:rgba(255,255,255,0.72);font-size:0.82rem;">
+                    <?php echo t('Semua kelas yang sudah kamu daftar.', 'All courses you have enrolled in.'); ?>
+                    <span class="fw-semibold text-white">(<?php echo count($enrolled_courses); ?>)</span>
+                </p>
             </div>
-            <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background:#E0F2F1; color:#009688; font-size:0.72rem;">
-                <i class="fas fa-plus me-1" style="font-size:0.65rem;"></i> <?php echo t('Tambah', 'Add'); ?>
+            <a href="<?php echo base_url('courses'); ?>" class="btn fw-semibold rounded-pill d-inline-flex align-items-center gap-2 border-0 flex-shrink-0" style="background:#FBBF24;color:#0D1830;font-size:0.78rem;padding:0.55rem 1.1rem;box-shadow:0 4px 14px rgba(251,191,36,0.3);">
+                <i data-lucide="plus" style="width:14px;height:14px;"></i> <?php echo t('Tambah Kelas', 'Add Course'); ?>
             </a>
         </div>
+    </div>
 
-        <?php if (empty($enrolled_courses)): ?>
-            <div class="mob-empty">
-                <i class="fas fa-book-open"></i>
-                <p><?php echo t('Belum ada kelas diambil.', 'No courses enrolled yet.'); ?></p>
-                <a href="<?php echo base_url('courses'); ?>"><?php echo t('Jelajahi Kelas', 'Explore Courses'); ?> →</a>
+    <!-- ============ STATS ============ -->
+    <div class="bento-grid bento-grid-3 mb-4">
+        <div class="bento-card blob-primary d-flex align-items-center gap-3">
+            <div class="bento-icon bg-primary-subtle text-primary"><i data-lucide="book-open" style="width:22px;height:22px;"></i></div>
+            <div>
+                <div class="bento-label"><?php echo t('Kelas Diambil', 'Enrolled Courses'); ?></div>
+                <div class="bento-value"><?php echo count($enrolled_courses); ?></div>
             </div>
-        <?php else: ?>
-            <div class="d-flex flex-column gap-3">
-                <?php foreach ($enrolled_courses as $i => $course): ?>
-                    <?php
-                    $m_grads = array(
-                        'linear-gradient(135deg,#009688,#009688)',
+        </div>
+        <div class="bento-card blob-success d-flex align-items-center gap-3">
+            <div class="bento-icon bg-success-subtle text-success"><i data-lucide="check-circle" style="width:22px;height:22px;"></i></div>
+            <div>
+                <div class="bento-label"><?php echo t('Selesai', 'Completed'); ?></div>
+                <div class="bento-value"><?php echo $done_n; ?></div>
+            </div>
+        </div>
+        <div class="bento-card blob-warning d-flex align-items-center gap-3">
+            <div class="bento-icon bg-warning-subtle text-warning"><i data-lucide="trending-up" style="width:22px;height:22px;"></i></div>
+            <div>
+                <div class="bento-label"><?php echo t('Rata-rata Progress', 'Average Progress'); ?></div>
+                <div class="bento-value"><?php echo $avg_pct; ?>%</div>
+            </div>
+        </div>
+    </div>
+
+    <?php if (empty($enrolled_courses)): ?>
+        <div class="bento-card p-5 text-center">
+            <div class="mx-auto d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width:72px;height:72px;background:#E0F2F1;color:#009688;">
+                <i data-lucide="book-open" style="width:30px;height:30px;"></i>
+            </div>
+            <h5 class="fw-extrabold text-dark mb-1"><?php echo t('Belum Ada Kelas', 'No Courses Yet'); ?></h5>
+            <p class="text-secondary small mb-4" style="max-width:24rem;margin-left:auto;margin-right:auto;"><?php echo t('Kamu belum terdaftar di kelas apapun. Mulai eksplorasi dan temukan materi yang menarik.', 'You are not enrolled in any courses yet. Explore and find interesting content.'); ?></p>
+            <a href="<?php echo base_url('courses'); ?>" class="btn btn-primary rounded-pill px-4 fw-semibold d-inline-flex align-items-center gap-2">
+                <i data-lucide="search" style="width:15px;height:15px;"></i> <?php echo t('Jelajahi Konten', 'Explore Content'); ?>
+            </a>
+        </div>
+    <?php else: ?>
+        <!-- ============ COURSE GRID ============ -->
+        <div class="bento-grid bento-grid-3" style="align-items:stretch;">
+            <?php foreach ($enrolled_courses as $i => $course): ?>
+                <?php
+                    $grads = array(
+                        'linear-gradient(135deg,#009688,#00796B)',
                         'linear-gradient(135deg,#2563eb,#38bdf8)',
                         'linear-gradient(135deg,#c026d3,#f472b6)',
                         'linear-gradient(135deg,#ea580c,#fbbf24)',
@@ -37,105 +82,50 @@
                     $thumb_ok = !empty($course->thumbnail)
                         && file_exists(FCPATH . 'uploads/courses/' . $course->thumbnail)
                         && $course->thumbnail !== 'default_course.png';
-                    $pct = $course->progress_pct ?? 0;
-                    ?>
-                    <div class="bg-white rounded-4 border p-3" style="border-color: #f0eeeb !important; box-shadow: 0 1px 4px rgba(0,0,0,0.03);">
-                        <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="d-flex align-items-center gap-3 text-decoration-none">
-                            <div class="rounded-3 flex-shrink-0 d-flex align-items-center justify-content-center" style="width: 64px; height: 48px; background: <?php echo $m_grads[$gi]; ?>; color: #fff; font-weight: 800; font-size: 1.1rem; overflow: hidden;">
-                                <?php if ($thumb_ok): ?>
-                                    <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" class="w-100 h-100" style="object-fit: cover;">
-                                <?php else: ?>
-                                    <?php echo strtoupper(substr(trim($course->title), 0, 1)); ?>
-                                <?php endif; ?>
+                    $pct = (int)($course->progress_pct ?? 0);
+                    $done = $pct >= 100;
+                ?>
+                <div class="bento-card p-0 my-course-card" style="display:flex;flex-direction:column;overflow:hidden;">
+                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="position-relative d-block" style="aspect-ratio:16/9;background:<?php echo $grads[$gi]; ?>;overflow:hidden;">
+                        <?php if ($thumb_ok): ?>
+                            <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" alt="" class="w-100 h-100" style="object-fit:cover;">
+                        <?php else: ?>
+                            <div class="w-100 h-100 d-flex align-items-center justify-content-center fw-extrabold" style="color:rgba(255,255,255,0.9);font-size:2rem;">
+                                <?php echo strtoupper(substr(trim($course->title), 0, 1)); ?>
                             </div>
-                            <div class="flex-fill min-w-0">
-                                <div class="fw-bold text-dark text-truncate" style="font-size: 0.85rem;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?: $course->title)); ?></div>
-                                <div class="d-flex align-items-center gap-2 mt-1">
-                                    <span class="px-2 py-0 rounded-pill fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.58rem;"><?php echo content_type_label($course->content_type); ?></span>
-                                    <?php if ($pct >= 100): ?>
-                                        <span class="px-2 py-0 rounded-pill fw-semibold" style="background: #E0F2F1; color: #009688; font-size: 0.58rem;"><i class="fas fa-check"></i> <?php echo t('Selesai', 'Done'); ?></span>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-                            <i class="fas fa-chevron-right text-secondary" style="font-size: 0.7rem;"></i>
+                        <?php endif; ?>
+                        <span class="position-absolute d-inline-flex align-items-center gap-1 px-2 py-1 rounded-pill fw-semibold" style="top:0.6rem;left:0.6rem;background:rgba(13,24,48,0.65);color:#fff;font-size:0.62rem;backdrop-filter:blur(4px);">
+                            <?php echo content_type_label($course->content_type); ?>
+                        </span>
+                        <?php if ($done): ?>
+                        <span class="position-absolute d-inline-flex align-items-center gap-1 px-2 py-1 rounded-pill fw-semibold" style="top:0.6rem;right:0.6rem;background:#E0F2F1;color:#009688;font-size:0.62rem;">
+                            <i data-lucide="check-circle" style="width:11px;height:11px;"></i> <?php echo t('Selesai', 'Done'); ?>
+                        </span>
+                        <?php endif; ?>
+                    </a>
+                    <div class="p-3 d-flex flex-column" style="flex:1;">
+                        <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none">
+                            <div class="fw-bold text-dark" style="font-size:0.88rem;line-height:1.35;min-height:2.4em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?: $course->title)); ?></div>
                         </a>
-                        <div class="d-flex align-items-center gap-2 mt-3">
-                            <div class="flex-fill rounded-pill overflow-hidden" style="height: 6px; background: #f0eeeb;">
-                                <div class="h-100 rounded-pill" style="width: <?php echo $pct; ?>%; background: linear-gradient(90deg,#009688,#009688);"></div>
+                        <div class="d-flex align-items-center gap-3 mt-2" style="color:#78716c;font-size:0.68rem;">
+                            <?php if (!empty($course->teacher_name)): ?><span class="text-truncate"><i class="fas fa-chalkboard-teacher me-1" style="font-size:0.55rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?></span><?php endif; ?>
+                            <?php if (!empty($course->category_name)): ?><span class="text-truncate"><i class="fas fa-folder me-1" style="font-size:0.55rem;"></i><?php echo htmlspecialchars($course->category_name); ?></span><?php endif; ?>
+                        </div>
+                        <div class="d-flex align-items-center gap-2 mt-auto pt-3">
+                            <div class="flex-fill rounded-pill overflow-hidden" style="height:6px;background:var(--gray-200,#e7e5e4);">
+                                <div class="h-100 rounded-pill" style="width:<?php echo $pct; ?>%;background:<?php echo $done ? '#10b981' : 'linear-gradient(90deg,#009688,#34d399)'; ?>;"></div>
                             </div>
-                            <span class="fw-bold" style="color: #0D1830; font-size: 0.7rem;"><?php echo $pct; ?>%</span>
-                            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-3" style="background: var(--primary); color: #fff; font-size: 0.68rem; border: none;">
-                                <?php echo $pct >= 100 ? t('Ulangi', 'Review') : t('Lanjut', 'Continue'); ?>
+                            <span class="fw-extrabold text-dark" style="font-size:0.72rem;min-width:34px;text-align:right;"><?php echo $pct; ?>%</span>
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="btn btn-sm fw-semibold rounded-pill flex-fill" style="border:1px solid var(--gray-300,#d4d4d4);color:#57534e;font-size:0.7rem;"><?php echo t('Detail', 'Detail'); ?></a>
+                            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill flex-fill d-inline-flex align-items-center justify-content-center gap-1" style="background:#0D1830;color:#fff;font-size:0.7rem;border:none;">
+                                <i class="fas fa-play" style="font-size:0.55rem;"></i> <?php echo $done ? t('Ulangi', 'Review') : t('Lanjut', 'Continue'); ?>
                             </a>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
-
-    <!-- ============ DESKTOP ============ -->
-    <div class="dashboard-desktop-only">
-        <!-- Header -->
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-                <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.3rem;">
-                    <?php echo t('Kelas Saya', 'My Courses'); ?>
-                </h4>
-                <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
-                    <?php echo t('Semua kelas yang sudah kamu daftar.', 'All courses you have enrolled in.'); ?>
-                </p>
-            </div>
-            <a href="<?php echo base_url('courses'); ?>" class="btn px-3 py-2 fw-semibold rounded-pill" style="background: #009688; color: #fff; font-size: 0.8rem;">
-                <i class="fas fa-plus me-1"></i> <?php echo t('Tambah Kelas', 'Add Course'); ?>
-            </a>
+                </div>
+            <?php endforeach; ?>
         </div>
-
-        <?php if (empty($enrolled_courses)): ?>
-            <div class="border rounded-3 p-5 text-center" style="border-color: #e7e5e4; border-radius: 12px;">
-                <div style="font-size: 2rem; color: #d6d3d1; margin-bottom: 0.75rem;"><i class="fas fa-book-open"></i></div>
-                <h5 class="fw-bold" style="color: #0D1830; margin-bottom: 0.375rem;"><?php echo t('Belum Ada Kelas', 'No Courses Yet'); ?></h5>
-                <p style="color: #78716c; font-size: 0.85rem; max-width: 350px; margin: 0 auto 1rem;">
-                    <?php echo t('Kamu belum terdaftar di kelas apapun. Mulai eksplorasi dan temukan materi yang menarik.', 'You are not enrolled in any courses yet. Explore and find interesting content.'); ?>
-                </p>
-                <a href="<?php echo base_url('courses'); ?>" class="btn px-4 py-2 fw-bold rounded-pill" style="background: #009688; color: #fff; font-size: 0.85rem;">
-                    <i class="fas fa-search me-1"></i> <?php echo t('Jelajahi Konten', 'Explore Content'); ?>
-                </a>
-            </div>
-        <?php else: ?>
-            <div class="d-flex flex-column gap-3">
-                <?php foreach ($enrolled_courses as $course): ?>
-                    <div class="border rounded-3 d-flex align-items-center gap-3 p-3 flex-column flex-md-row" style="border-color: #e7e5e4; border-radius: 12px; transition: all 0.15s; background: #fff;">
-                        <div class="flex-shrink-0" style="width: 100%; max-width: 140px; border-radius: 8px; overflow: hidden;">
-                            <img src="<?php echo base_url('uploads/courses/' . $course->thumbnail); ?>" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=140&auto=format&fit=crop&q=60';" alt="" class="w-100 object-fit-cover" style="height: 80px; display: block;">
-                        </div>
-                        <div class="flex-fill min-w-0">
-                            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E6EBEF; color: #57534e; font-size: 0.65rem;"><?php echo content_type_label($course->content_type); ?></span>
-                                <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #faf5ff; color: #7c3aed; font-size: 0.65rem;"><?php echo skill_level_label($course->skill_level); ?></span>
-                                <?php if (($course->progress_pct ?? 0) >= 100): ?>
-                                    <span class="px-2 py-1 rounded-pill fw-semibold" style="background: #E0F2F1; color: #009688; font-size: 0.65rem;"><i class="fas fa-check" style="font-size: 0.5rem;"></i> <?php echo t('Selesai', 'Done'); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <h6 class="fw-bold mb-1 text-truncate" style="color: #0D1830; font-size: 0.88rem;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?: $course->title)); ?></h6>
-                            <div class="d-flex align-items-center gap-3 mb-2" style="font-size: 0.72rem; color: #78716c;">
-                                <span><i class="fas fa-chalkboard-teacher me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->teacher_name); ?></span>
-                                <?php if ($course->category_name): ?><span><i class="fas fa-folder me-1" style="font-size: 0.6rem;"></i><?php echo htmlspecialchars($course->category_name); ?></span><?php endif; ?>
-                            </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="flex-fill rounded-pill overflow-hidden" style="height: 5px; background: #e7e5e4; max-width: 200px;">
-                                    <div class="h-100 rounded-pill" style="width: <?php echo $course->progress_pct ?? 0; ?>%; background: #009688;"></div>
-                                </div>
-                                <span class="fw-bold" style="color: #0D1830; font-size: 0.72rem; min-width: 32px; text-align: right;"><?php echo $course->progress_pct ?? 0; ?>%</span>
-                            </div>
-                        </div>
-                        <div class="d-flex gap-2 flex-shrink-0">
-                            <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="btn btn-sm fw-semibold rounded-pill px-3" style="border: 1px solid #e7e5e4; color: #57534e; font-size: 0.75rem;"><?php echo t('Detail', 'Detail'); ?></a>
-                            <a href="<?php echo base_url('courses/learn/' . $course->slug); ?>" class="btn btn-sm fw-bold rounded-pill px-4" style="background: #009688; color: #fff; font-size: 0.75rem;"><i class="fas fa-play me-1" style="font-size: 0.65rem;"></i> <?php echo t('Mulai', 'Start'); ?></a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
-    </div>
+    <?php endif; ?>
 </div>
