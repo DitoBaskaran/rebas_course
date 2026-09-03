@@ -1433,6 +1433,18 @@ h1, h2, h3, h4, h5, h6,
 .lp-mine-card:hover { box-shadow: var(--shadow-md); border-color: rgba(var(--primary-rgb), 0.25); }
 
 /* ============================================================
+   ===  USER TRANSACTION CARD (mobile, transactions/history) ===
+   ============================================================ */
+.tx-user-card {
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #e7e5e4);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
+  box-shadow: var(--card-shadow, 0 1px 3px rgba(0,0,0,0.03));
+}
+#mobTxList { gap: 10px !important; }
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {

@@ -28,18 +28,24 @@
     <!-- ============ DESKTOP (DataTables) ============ -->
     <div class="dashboard-desktop-only">
         <!-- Table Card -->
-        <div class="border rounded-3 p-3" style="border-color: #e7e5e4; border-radius: 12px; overflow: hidden;">
+        <div class="bento-card p-0">
+            <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid var(--card-border,#eef0f3);">
+                <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2" style="font-size:0.88rem;">
+                    <i data-lucide="receipt" style="width:16px;height:16px;color:var(--primary);"></i> <?php echo t('Daftar Transaksi', 'Transaction List'); ?>
+                </h6>
+                <span class="px-2 py-1 rounded-pill fw-bold" style="background:#E6EBEF;color:#57534e;font-size:0.62rem;" id="txCountLabel">—</span>
+            </div>
             <div class="table-responsive">
-                <table id="transactionTable" class="table mb-0" style="width: 100%; font-size: 0.82rem;">
+                <table id="transactionTable" class="table mb-0 align-middle" style="width: 100%; font-size: 0.82rem;">
                     <thead>
                         <tr>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tanggal', 'Date'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Tipe', 'Type'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Item', 'Item'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Nominal', 'Amount'); ?></th>
+                            <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Tanggal', 'Date'); ?></th>
+                            <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Tipe', 'Type'); ?></th>
+                            <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Item', 'Item'); ?></th>
+                            <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Nominal', 'Amount'); ?></th>
                             <th style="display:none;"></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em;"><?php echo t('Status', 'Status'); ?></th>
-                            <th style="font-weight: 600; color: #78716c; font-size: 0.7rem; border-color: #e7e5e4; padding: 0.75rem 1rem; background: #E6EBEF; text-transform: uppercase; letter-spacing: 0.05em; text-align: center;"><?php echo t('Aksi', 'Action'); ?></th>
+                            <th class="text-uppercase small" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Status', 'Status'); ?></th>
+                            <th class="text-uppercase small text-center" style="font-weight:600;color:var(--gray-500,#78716c);font-size:0.65rem;letter-spacing:0.05em;border-color:#f0eeeb;background:#f8fafc;"><?php echo t('Aksi', 'Action'); ?></th>
                         </tr>
                     </thead>
                     <tbody></tbody>
@@ -241,6 +247,10 @@ document.addEventListener('DOMContentLoaded', function() {
             zeroRecords: "<div style='padding:2rem 0;'><div style='font-size:2rem;color:#d6d3d1;margin-bottom:0.5rem;'><i class='fas fa-receipt'></i></div><div><?php echo t('Belum ada transaksi.', 'No transactions found.'); ?></div></div>",
         },
         drawCallback: function(settings) {
+            // Update count label
+            var info = this.api().page.info();
+            var lbl = document.getElementById('txCountLabel');
+            if (lbl) lbl.textContent = info.recordsTotal + ' <?php echo t('transaksi', 'transactions'); ?>';
             if (isMobile) {
                 var api = this.api();
                 var data = api.rows({page:'current'}).data();
@@ -250,17 +260,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     data.each(function(row) {
                         html += `
-                        <div class="bg-white rounded-4 border p-3" style="border-color:#f0eeeb!important;">
+                        <div class="tx-user-card">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div class="min-w-0">
-                                    <div class="fw-bold text-dark text-truncate" style="font-size:0.85rem;">${row[2]}</div>
-                                    <div class="text-muted" style="font-size:0.7rem;">${row[0]}</div>
-                                    <div class="text-muted" style="font-size:0.65rem; font-family:monospace;">BT-${row[7]}</div>
+                                    <div class="fw-bold text-dark text-truncate" style="font-size:0.86rem;">${row[2]}</div>
+                                    <div class="text-muted d-flex align-items-center gap-1 flex-wrap" style="font-size:0.68rem;">${row[1]} <span style="opacity:0.5;">·</span> ${row[0]}</div>
                                 </div>
-                                <div>${row[5]}</div>
+                                <div class="flex-shrink-0 ms-2">${row[5]}</div>
                             </div>
-                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top" style="border-color:#fafafa!important;">
-                                <div class="fw-extrabold text-dark" style="font-size:0.9rem;">${row[3]}</div>
+                            <div class="d-flex justify-content-between align-items-center mt-2 pt-2" style="border-top:1px dashed #f0eeeb;">
+                                <div>
+                                    <div class="fw-extrabold text-dark" style="font-size:0.92rem;">${row[3]}</div>
+                                    <div class="text-muted" style="font-size:0.62rem;font-family:monospace;">BT-${row[7]}</div>
+                                </div>
                                 <div>${row[6]}</div>
                             </div>
                         </div>`;
