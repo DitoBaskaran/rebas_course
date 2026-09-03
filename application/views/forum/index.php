@@ -1,19 +1,17 @@
-<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 900px;">
+<div class="container-fluid px-0" style="max-width:960px;margin:0 auto;">
 
     <!-- ===== HERO / JUDUL HALAMAN ===== -->
-    <div class="mb-4">
-        <div class="d-flex flex-wrap align-items-center gap-3 justify-content-between">
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#009688 150%);border:none;color:#fff;">
+        <div class="d-flex flex-wrap align-items-center gap-3 justify-content-between position-relative" style="z-index:1;">
             <div>
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <span class="fw-semibold rounded-pill px-2 py-0" style="background:#E0F2F1; color:#009688; font-size:0.62rem; letter-spacing:0.03em; text-transform:uppercase;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?? $course->title)); ?></span>
-                </div>
-                <h4 class="fw-extrabold mb-0" style="color:#0D1830; letter-spacing:-0.02em; font-size:1.3rem;"><?php echo t('Forum Diskusi', 'Discussion Forum'); ?></h4>
-                <div class="d-flex align-items-center gap-3 mt-1" style="color:#a8a29e; font-size:0.72rem;">
-                    <span class="d-inline-flex align-items-center gap-1"><i class="fas fa-comment-dots"></i> <strong style="color:#57534e;"><?php echo count($discussions); ?></strong> <?php echo t('topik', 'topics'); ?></span>
-                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none d-inline-flex align-items-center gap-1" style="color:#009688; font-weight:600;"><i class="fas fa-arrow-left"></i> <?php echo t('Ke Kelas', 'Back to Course'); ?></a>
+                <span class="d-inline-flex align-items-center rounded-pill px-2 py-1 fw-bold" style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:#FBBF24;font-size:0.62rem;letter-spacing:0.05em;text-transform:uppercase;"><?php echo htmlspecialchars(t($course->title, $course->title_en ?? $course->title)); ?></span>
+                <h4 class="fw-extrabold mb-0 mt-2" style="color:#fff; letter-spacing:-0.02em; font-size:1.3rem;"><?php echo t('Forum Diskusi', 'Discussion Forum'); ?></h4>
+                <div class="d-flex align-items-center gap-3 mt-1" style="color:rgba(255,255,255,0.6); font-size:0.72rem;">
+                    <span class="d-inline-flex align-items-center gap-1"><i data-lucide="message-square" style="width:12px;height:12px;"></i> <strong style="color:#fff;"><?php echo count($discussions); ?></strong> <?php echo t('topik', 'topics'); ?></span>
+                    <a href="<?php echo base_url('courses/detail/' . $course->slug); ?>" class="text-decoration-none d-inline-flex align-items-center gap-1" style="color:#FBBF24; font-weight:600;"><i class="fas fa-arrow-left"></i> <?php echo t('Ke Kelas', 'Back to Course'); ?></a>
                 </div>
             </div>
-            <a href="<?php echo base_url('forum/create/' . $course->slug); ?>" class="btn fw-bold rounded-pill px-4 py-2 shadow-sm flex-shrink-0" style="background:#0D1830; color:#fff; font-size:0.8rem;">
+            <a href="<?php echo base_url('forum/create/' . $course->slug); ?>" class="btn fw-bold rounded-pill px-4 py-2 flex-shrink-0" style="background:#FBBF24; color:#0D1830; font-size:0.8rem; box-shadow:0 4px 14px rgba(251,191,36,0.3);">
                 <i class="fas fa-plus me-1" style="font-size:0.7rem;"></i> <?php echo t('Diskusi Baru', 'New Discussion'); ?>
             </a>
         </div>

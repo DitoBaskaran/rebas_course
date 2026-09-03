@@ -1405,6 +1405,34 @@ h1, h2, h3, h4, h5, h6,
 }
 
 /* ============================================================
+   ===  MY SEMINARS & MY LEARNING PATHS (user pages)  ===
+   ============================================================ */
+.sem-mine-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.8rem 1rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #e7e5e4);
+  border-radius: 14px;
+  transition: var(--transition-smooth);
+}
+.sem-mine-card:hover { box-shadow: var(--shadow-md); border-color: rgba(var(--primary-rgb), 0.25); }
+.sem-date-up { background: #E0F2F1; color: #009688; }
+.sem-date-past { background: var(--gray-100, #f1f5f9); color: #94a3b8; }
+.lp-mine-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.8rem 1rem;
+  background: var(--card-bg, #fff);
+  border: 1px solid var(--card-border, #e7e5e4);
+  border-radius: 14px;
+  transition: var(--transition-smooth);
+}
+.lp-mine-card:hover { box-shadow: var(--shadow-md); border-color: rgba(var(--primary-rgb), 0.25); }
+
+/* ============================================================
    ===  ROLE PERMISSION MATRIX (admin/role_permissions)  ===
    ============================================================ */
 .perm-grid {

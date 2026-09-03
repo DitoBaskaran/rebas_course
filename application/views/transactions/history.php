@@ -1,12 +1,18 @@
-<div class="container-fluid py-4" style="padding-top: 0px !important; max-width: 1200px;">
-    <!-- Header -->
-    <div class="mb-3">
-        <h4 class="fw-extrabold mb-1" style="color: #0D1830; letter-spacing: -0.02em; font-size: 1.3rem;">
-            <?php echo t('Riwayat Transaksi', 'Transaction History'); ?>
-        </h4>
-        <p style="color: #78716c; font-size: 0.82rem; margin-bottom: 0;">
-            <?php echo t('Semua transaksi dan pembelian kamu.', 'All your transactions and purchases.'); ?>
-        </p>
+<div class="container-fluid px-0">
+
+    <!-- ============ HEADER (hero) ============ -->
+    <div class="bento-card mb-4 overflow-hidden" style="background:linear-gradient(120deg,#0D1830 0%,#164e63 100%);border:none;color:#fff;">
+        <div class="d-flex align-items-center justify-content-between gap-3 position-relative" style="z-index:1;">
+            <div>
+                <span class="d-inline-flex align-items-center gap-1" style="background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.2);color:#FBBF24;font-size:0.66rem;font-weight:800;letter-spacing:0.12em;text-transform:uppercase;padding:0.3rem 0.7rem;border-radius:100px;">
+                    <i data-lucide="receipt" style="width:12px;height:12px;"></i> <?php echo t('Keuangan', 'Finance'); ?>
+                </span>
+                <h1 class="fw-extrabold text-white mb-0 mt-2 lh-sm" style="letter-spacing:-0.03em;font-size:1.5rem;">
+                    <?php echo t('Riwayat Transaksi', 'Transaction History'); ?>
+                </h1>
+                <p class="mb-0 mt-1" style="color:rgba(255,255,255,0.72);font-size:0.8rem;"><?php echo t('Semua transaksi dan pembelian kamu.', 'All your transactions and purchases.'); ?></p>
+            </div>
+        </div>
     </div>
 
     <!-- ============ MOBILE APP-STYLE (list card) ============ -->
