@@ -26,16 +26,16 @@
                 <i data-lucide="layout-dashboard"></i>
                 <span><?php echo t('Beranda', 'Home'); ?></span>
             </a>
-            <?php if ($this->access_library->can('courses', 'read')): ?>
-            <a href="<?php echo base_url('courses/mine'); ?>" class="<?php echo $_bn_active === 'my_courses' ? 'active' : ''; ?>">
-                <i data-lucide="book-open"></i>
-                <span><?php echo t('Kelas', 'Courses'); ?></span>
-            </a>
-            <?php endif; ?>
             <?php if ($this->access_library->can('mentoring', 'read')): ?>
             <a href="<?php echo base_url($_bn_is_mentor ? 'mentor/sessions' : 'mentoring'); ?>" class="<?php echo $_bn_active === 'mentoring' ? 'active' : ''; ?>">
                 <i data-lucide="calendar-check"></i>
                 <span><?php echo t('Mentor', 'Mentor'); ?></span>
+            </a>
+            <?php endif; ?>
+            <?php if ($this->access_library->can('courses', 'read')): ?>
+            <a href="<?php echo base_url('courses/mine'); ?>" class="<?php echo $_bn_active === 'my_courses' ? 'active' : ''; ?>">
+                <i data-lucide="book-open"></i>
+                <span><?php echo t('Kelas', 'Courses'); ?></span>
             </a>
             <?php endif; ?>
             <a href="<?php echo base_url('profile'); ?>" class="<?php echo $_bn_active === 'profile' ? 'active' : ''; ?>">
