@@ -1289,6 +1289,59 @@ class Admin extends MY_Controller {
         $this->db->limit($per_page, $offset);
         $data['logs'] = $this->db->get()->result();
 
+        // ---- Parse ai_response (JSON dari AI) supaya view tidak menampilkan JSON mentah ----
+        // Kumpulkan dulu semua mentor_id/course_id yang direkomendasikan utk 1x query lookup nama.
+        $mentor_ids_needed = array();
+        $course_ids_needed = array();
+        foreach ($data['logs'] as $log) {
+            $decoded = json_decode(trim((string) $log->ai_response), true);
+            $log->parsed = is_array($decoded) ? $decoded : null;
+            if ($log->parsed) {
+                if (!empty($log->parsed['mentor_ids'])) {
+                    foreach ((array) $log->parsed['mentor_ids'] as $mid) $mentor_ids_needed[] = (int) $mid;
+                }
+                if (!empty($log->parsed['course_ids'])) {
+                    foreach ((array) $log->parsed['course_ids'] as $cid) $course_ids_needed[] = (int) $cid;
+                }
+            }
+        }
+        $mentor_names = array();
+        if (!empty($mentor_ids_needed)) {
+            $rows = $this->db->select('mentors.id, users.name')
+                ->from('mentors')->join('users', 'users.id = mentors.user_id')
+                ->where_in('mentors.id', array_unique($mentor_ids_needed))->get()->result();
+            foreach ($rows as $r) $mentor_names[$r->id] = $r->name;
+        }
+        $course_names = array();
+        if (!empty($course_ids_needed)) {
+            $rows = $this->db->select('id, title')->from('courses')
+                ->where_in('id', array_unique($course_ids_needed))->get()->result();
+            foreach ($rows as $r) $course_names[$r->id] = $r->title;
+        }
+        // Sisipkan nama terselesaikan ke tiap log utk dipakai view
+        foreach ($data['logs'] as $log) {
+            $log->reason_text = '';
+            $log->recommended_items = array(); // array of ['name'=>..]
+            if ($log->parsed) {
+                $log->reason_text = isset($log->parsed['reason']) ? $log->parsed['reason'] : '';
+                if (!empty($log->parsed['mentor_ids'])) {
+                    foreach ((array) $log->parsed['mentor_ids'] as $mid) {
+                        $mid = (int) $mid;
+                        if (isset($mentor_names[$mid])) $log->recommended_items[] = $mentor_names[$mid];
+                    }
+                }
+                if (!empty($log->parsed['course_ids'])) {
+                    foreach ((array) $log->parsed['course_ids'] as $cid) {
+                        $cid = (int) $cid;
+                        if (isset($course_names[$cid])) $log->recommended_items[] = $course_names[$cid];
+                    }
+                }
+            } else {
+                // Bukan JSON (mis. teks prosa langsung dari AI) — tampilkan apa adanya sbg reason.
+                $log->reason_text = trim((string) $log->ai_response);
+            }
+        }
+
         // ---- Data pagination utk view ----
         $total_pages = (int) ceil($total_filtered / $per_page);
         if ($page > $total_pages && $total_pages > 0) $page = $total_pages;

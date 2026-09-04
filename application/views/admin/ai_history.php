@@ -207,7 +207,8 @@
                     $initial = strtoupper(mb_substr($display_name, 0, 1));
 
                     $ai_display = trim($log->ai_response);
-                    $is_raw_json = (strpos($ai_display, '{') === 0 && function_exists('json_decode') && json_decode($ai_display) !== null);
+                    $reason_text = isset($log->reason_text) ? $log->reason_text : '';
+                    $recommended_items = isset($log->recommended_items) ? $log->recommended_items : array();
                 ?>
                 <div class="tx-row ai-log-row" style="display:flex;align-items:flex-start;gap:0.9rem;padding:1.1rem 1.25rem;border-bottom:1px solid var(--card-border,#eef0f3);">
                     <!-- Avatar user -->
@@ -253,13 +254,37 @@
                                     <?php echo t('Respons AI', 'AI Response'); ?>
                                 </span>
                             </div>
-                            <div class="text-secondary" style="font-size:0.8rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;">
-                                <?php if ($is_raw_json && function_exists('json_encode')): ?>
-                                    <?php echo htmlspecialchars(json_encode(json_decode($ai_display), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)); ?>
-                                <?php else: ?>
-                                    <?php echo htmlspecialchars($ai_display); ?>
+                            <?php if ($is_error): ?>
+                                <div class="text-danger" style="font-size:0.8rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;">
+                                    <?php echo htmlspecialchars($reason_text !== '' ? $reason_text : $ai_display); ?>
+                                </div>
+                            <?php elseif ($reason_text !== ''): ?>
+                                <div class="text-secondary" style="font-size:0.82rem;line-height:1.6;white-space:pre-wrap;word-break:break-word;">
+                                    <?php echo htmlspecialchars($reason_text); ?>
+                                </div>
+                                <?php if (!empty($recommended_items)): ?>
+                                <div class="d-flex align-items-center gap-1 flex-wrap mt-2">
+                                    <span class="fw-semibold" style="font-size:0.6rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--gray-400,#94a3b8);">
+                                        <i class="fas fa-<?php echo $is_course ? 'book' : 'user-tie'; ?>" style="font-size:0.55rem;"></i>
+                                        <?php echo $is_course ? t('Direkomendasikan:', 'Recommended:') : t('Mentor Direkomendasikan:', 'Recommended Mentors:'); ?>
+                                    </span>
+                                    <?php foreach ($recommended_items as $item_name): ?>
+                                        <span class="px-2 py-1 rounded-pill fw-semibold d-inline-flex align-items-center gap-1" style="background:#ffffff;border:1px solid #cce7e2;color:#0d9488;font-size:0.68rem;">
+                                            <i class="fas fa-check-circle" style="font-size:0.6rem;"></i> <?php echo htmlspecialchars($item_name); ?>
+                                        </span>
+                                    <?php endforeach; ?>
+                                </div>
                                 <?php endif; ?>
-                            </div>
+                            <?php else: ?>
+                                <!-- Tidak ada reason (mis. respons kosong / tak ter-parse) -->
+                                <div class="text-secondary" style="font-size:0.8rem;line-height:1.55;white-space:pre-wrap;word-break:break-word;">
+                                    <?php if ($ai_display === ''): ?>
+                                        <em class="text-muted"><?php echo t('(Respons kosong)', '(Empty response)'); ?></em>
+                                    <?php else: ?>
+                                        <?php echo htmlspecialchars($ai_display); ?>
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
                         </div>
 
                         <!-- Token usage -->
