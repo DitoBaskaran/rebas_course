@@ -136,31 +136,6 @@
 .bt-cta h2{font-size:1.5rem;font-weight:700;color:#fff;margin:0 0 0.4rem;}
 .bt-cta p{font-size:0.86rem;color:rgba(255,255,255,0.75);margin:0;}
 .bt-cta .bt-btn{position:relative;z-index:1;}
-/* ===== AI RECOMMENDATION (interactive wow) ===== */
-.bt-ai-section{background:linear-gradient(180deg,#ffffff,#f0fdfa 100%);padding:4.5rem 0;}
-.bt-ai-box{max-width:760px;margin:2.6rem auto 0;background:#fff;border:1px solid #e4ecef;border-radius:22px;padding:2rem;box-shadow:0 24px 60px rgba(13,24,48,0.10);position:relative;}
-.bt-ai-box::before{content:'';position:absolute;inset:-1px;border-radius:22px;padding:1.5px;background:linear-gradient(120deg,var(--bt-teal),var(--bt-amber));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
-.bt-ai-label{display:flex;align-items:center;gap:8px;font-size:0.72rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--bt-teal);margin-bottom:0.8rem;}
-.bt-ai-label i{color:var(--bt-amber);}
-.bt-ai-inputwrap{display:flex;gap:0.6rem;flex-wrap:wrap;}
-.bt-ai-inputwrap input{flex:1;min-width:220px;border:1.5px solid #d7e2e6;border-radius:10px;padding:0.72rem 1rem;font-size:0.88rem;font-family:inherit;transition:border 0.2s;}
-.bt-ai-inputwrap input:focus{outline:none;border-color:var(--bt-teal);box-shadow:0 0 0 3px rgba(0,150,136,0.12);}
-.bt-ai-inputwrap .bt-btn{white-space:nowrap;}
-.bt-ai-hint{font-size:0.7rem;color:var(--bt-muted);margin:0.6rem 0 0;}
-.bt-ai-result{margin-top:1.1rem;display:none;}
-.bt-ai-loading{display:none;align-items:center;gap:10px;color:var(--bt-muted);font-size:0.84rem;margin-top:1.1rem;}
-.bt-ai-loading .spinner{width:16px;height:16px;border:2.5px solid #d1e7e6;border-top-color:var(--bt-teal);border-radius:50%;animation:btSpin 0.7s linear infinite;}
-@keyframes btSpin{to{transform:rotate(360deg)}}
-.bt-ai-msg{background:#f0fdfa;border:1px solid #ccfbf1;border-radius:12px;padding:0.9rem 1.1rem;font-size:0.86rem;line-height:1.65;color:#134e4a;margin-bottom:0.9rem;display:none;}
-.bt-ai-cards{display:flex;flex-direction:column;gap:0.7rem;}
-.bt-ai-mentor{display:flex;align-items:center;gap:0.9rem;background:#fff;border:1px solid #e8eef1;border-radius:14px;padding:0.85rem 1rem;text-decoration:none;transition:all 0.2s;}
-.bt-ai-mentor:hover{border-color:var(--bt-teal);box-shadow:0 10px 24px rgba(13,24,48,0.08);transform:translateY(-2px);}
-.bt-ai-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;background:linear-gradient(135deg,var(--bt-teal),var(--bt-navy));}
-.bt-ai-mentor h6{font-size:0.86rem;font-weight:700;color:var(--bt-navy);margin:0;}
-.bt-ai-mentor small{font-size:0.7rem;color:var(--bt-muted);display:block;margin-top:1px;}
-.bt-ai-go{margin-left:auto;width:34px;height:34px;border-radius:10px;background:var(--bt-amber);color:var(--bt-navy);display:flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;}
-.bt-ai-login-note{font-size:0.74rem;color:var(--bt-muted);text-align:center;margin-top:0.9rem;}
-.bt-ai-login-note a{color:var(--bt-teal);font-weight:700;text-decoration:none;}
 /* ===== MENTOR GRID ===== */
 .bt-mentors{background:var(--bt-gray);padding:4.5rem 0;}
 .bt-mentor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;margin-top:3rem;}
@@ -230,33 +205,6 @@
     </div>
 </section>
 <?php endif; ?>
-
-<!-- ================= AI RECOMMENDATION (interactive) ================= -->
-<section class="bt-ai-section" id="ai-recommend">
-    <div class="container" data-aos="fade-up" data-aos-duration="1000">
-        <div class="bt-center">
-            <span class="bt-chip-tag"><?php echo t('Rekomendasi Cerdas', 'Smart Recommendation'); ?> <i class="fas fa-robot" style="margin-left:4px;"></i></span>
-            <h2 class="bt-title"><?php echo t('Bingung Mulai dari Mana?', 'Not Sure Where to Start?'); ?></h2>
-            <p class="bt-sub"><?php echo t('Ceritakan masalah atau tujuanmu, AI kami akan', 'Tell us your problem or goal, our AI will'); ?> <span class="bt-teal"><?php echo t('mencocokkan mentor yang tepat', 'match you with the right mentor'); ?></span> <?php echo t('untukmu.', 'for you.'); ?></p>
-        </div>
-
-        <div class="bt-ai-box">
-            <div class="bt-ai-label"><i class="fas fa-magic"></i> <?php echo t('Asisten BISATUNTAS', 'BISATUNTAS Assistant'); ?></div>
-            <div class="bt-ai-inputwrap">
-                <input type="text" id="aiProblemInput" maxlength="200" placeholder="<?php echo t('Misal: Saya bingung memilih karir antara programmer atau desainer…', 'E.g. I am confused choosing a career between programmer or designer…'); ?>">
-                <button type="button" class="bt-btn bt-btn-solid" id="aiRecommendBtn"><i class="fas fa-wand-magic-sparkles"></i> <?php echo t('Rekomendasikan', 'Recommend'); ?></button>
-            </div>
-            <p class="bt-ai-hint"><i class="fas fa-lightbulb" style="color:var(--bt-amber);"></i> <?php echo t('Coba: bingung pilih karir · persiapan interview kerja · ingin belajar coding dari nol · mengembangkan bisnis', 'Try: career choice · job interview prep · learning to code from scratch · growing a business'); ?></p>
-
-            <div class="bt-ai-loading" id="aiLoading"><span class="spinner"></span> <?php echo t('AI sedang mencari mentor terbaik untukmu…', 'AI is finding the best mentors for you…'); ?></div>
-            <div class="bt-ai-msg" id="aiMsg"></div>
-            <div class="bt-ai-result" id="aiResult"></div>
-            <div class="bt-ai-login-note" id="aiLoginNote" style="display:none;">
-                <?php echo t('Silakan', 'Please'); ?> <a href="<?php echo base_url('auth/login'); ?>"><?php echo t('masuk', 'login'); ?></a> <?php echo t('atau', 'or'); ?> <a href="<?php echo base_url('auth/register'); ?>"><?php echo t('daftar gratis', 'register free'); ?></a> <?php echo t('untuk mencoba rekomendasi AI dan booking mentor.', 'to try AI recommendations and book mentors.'); ?>
-            </div>
-        </div>
-    </div>
-</section>
 
 <!-- ================= FEATURED MENTORS ================= -->
 <?php if (!empty($featured_mentors)): ?>
@@ -558,87 +506,3 @@
     </div>
 </section>
 <?php endif; ?>
-
-<script>
-(function() {
-    var loggedIn = <?php echo $this->session->userdata('logged_in') ? 'true' : 'false'; ?>;
-    var input = document.getElementById('aiProblemInput');
-    var btn = document.getElementById('aiRecommendBtn');
-    var loading = document.getElementById('aiLoading');
-    var msgEl = document.getElementById('aiMsg');
-    var resultEl = document.getElementById('aiResult');
-    var noteEl = document.getElementById('aiLoginNote');
-
-    function esc(s) {
-        var d = document.createElement('div');
-        d.textContent = s == null ? '' : s;
-        return d.innerHTML;
-    }
-    function showMsg(html, isErr) {
-        msgEl.innerHTML = html;
-        msgEl.style.display = '';
-        msgEl.style.background = isErr ? '#fff5f5' : '#f0fdfa';
-        msgEl.style.borderColor = isErr ? '#fecaca' : '#ccfbf1';
-        msgEl.style.color = isErr ? '#b91c1c' : '#134e4a';
-    }
-    function doRecommend() {
-        if (!loggedIn) {
-            resultEl.style.display = 'none';
-            msgEl.style.display = 'none';
-            if (noteEl) noteEl.style.display = '';
-            return;
-        }
-        var problem = (input ? input.value.trim() : '');
-        if (problem === '') {
-            input.focus();
-            input.style.borderColor = '#ef4444';
-            setTimeout(function() { input.style.borderColor = ''; }, 1500);
-            return;
-        }
-        if (btn) btn.disabled = true;
-        if (loading) loading.style.display = 'flex';
-        msgEl.style.display = 'none';
-        resultEl.style.display = 'none';
-        if (noteEl) noteEl.style.display = 'none';
-
-        var fd = new FormData();
-        fd.append('problem', problem);
-        fd.append('<?php echo $this->security->get_csrf_token_name(); ?>', '<?php echo $this->security->get_csrf_hash(); ?>');
-
-        fetch('<?php echo base_url('mentoring/ai-recommend'); ?>', {
-            method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' }
-        })
-        .then(function(r) { return r.json(); })
-        .then(function(d) {
-            if (loading) loading.style.display = 'none';
-            if (btn) btn.disabled = false;
-            if (d.status !== 'ok') {
-                showMsg(esc(d.message || 'Terjadi kesalahan.'), true);
-                return;
-            }
-            if (d.reason) showMsg(esc(d.reason), false);
-            var cards = '';
-            if (d.mentors && d.mentors.length) {
-                d.mentors.forEach(function(m) {
-                    cards += '<a class="bt-ai-mentor" href="<?php echo base_url('mentoring/detail/'); ?>' + esc(m.encoded_id) + '">'
-                        + '<span class="bt-ai-avatar">' + esc((m.name || '?').charAt(0).toUpperCase()) + '</span>'
-                        + '<div><h6>' + esc(m.name) + '</h6><small>' + esc(m.title || '') + ' · ★ ' + esc(m.avg_rating || '0') + '</small></div>'
-                        + '<span class="bt-ai-go"><i class="fas fa-arrow-right"></i></span>'
-                        + '</a>';
-                });
-                resultEl.innerHTML = cards;
-                resultEl.style.display = '';
-            } else {
-                resultEl.style.display = 'none';
-            }
-        })
-        .catch(function() {
-            if (loading) loading.style.display = 'none';
-            if (btn) btn.disabled = false;
-            showMsg('<?php echo t('Terjadi kesalahan jaringan. Silakan coba lagi.', 'Network error. Please try again.'); ?>', true);
-        });
-    }
-    if (btn) btn.addEventListener('click', doRecommend);
-    if (input) input.addEventListener('keydown', function(e) { if (e.key === 'Enter') doRecommend(); });
-})();
-</script>
