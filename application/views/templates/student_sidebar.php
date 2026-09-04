@@ -15,6 +15,11 @@
     <a class="nav-link <?php echo $active_page === 'dashboard' ? 'active' : ''; ?>" href="<?php echo base_url($_ss_dash_url); ?>">
         <i data-lucide="layout-dashboard"></i> <span><?php echo t('Dashboard', 'Dashboard'); ?></span>
     </a>
+    <?php if ($this->access_library->can('mentoring', 'read')): ?>
+    <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url($_ss_is_mentor ? 'mentor/sessions' : 'mentoring'); ?>">
+        <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
+    </a>
+    <?php endif; ?>
     <?php if ($this->access_library->can('courses', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'my_courses' ? 'active' : ''; ?>" href="<?php echo base_url('courses/mine'); ?>">
         <i data-lucide="book-open"></i> <span><?php echo t('Kelas Saya', 'My Courses'); ?></span>
@@ -28,11 +33,6 @@
     <?php if ($this->access_library->can('learning_paths', 'read')): ?>
     <a class="nav-link <?php echo $active_page === 'learning_paths' ? 'active' : ''; ?>" href="<?php echo base_url('learning_paths/mine'); ?>">
         <i data-lucide="route"></i> <span><?php echo t('Learning Paths', 'Learning Paths'); ?></span>
-    </a>
-    <?php endif; ?>
-    <?php if ($this->access_library->can('mentoring', 'read')): ?>
-    <a class="nav-link <?php echo $active_page === 'mentoring' ? 'active' : ''; ?>" href="<?php echo base_url($_ss_is_mentor ? 'mentor/sessions' : 'mentoring'); ?>">
-        <i data-lucide="calendar-check"></i> <span><?php echo t('Mentoring', 'Mentoring'); ?></span>
     </a>
     <?php endif; ?>
     <?php if ($this->access_library->can('forum', 'read')): ?>
