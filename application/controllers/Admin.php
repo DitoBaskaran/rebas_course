@@ -1185,20 +1185,27 @@ class Admin extends MY_Controller {
         if ($date_start !== '') $stats_q->where('created_at >=', $date_start);
         if ($date_end !== '')   $stats_q->where('created_at <', $date_end);
         $stats['total_calls'] = (int) $stats_q->count_all_results();
-        $stats['total_tokens'] = (int) $this->db->select('COALESCE(SUM(total_tokens),0) AS t')->from('ai_usage_logs');
+
+        // Total token (sum)
+        $this->db->select('COALESCE(SUM(total_tokens),0) AS t');
+        $this->db->from('ai_usage_logs');
         if ($date_start !== '') $this->db->where('created_at >=', $date_start);
         if ($date_end !== '')   $this->db->where('created_at <', $date_end);
         $stats['total_tokens'] = (int) $this->db->get()->row()->t;
-        $stats['total_users'] = (int) $this->db->select('COUNT(DISTINCT user_id) AS c')->from('ai_usage_logs');
+
+        $this->db->select('COUNT(DISTINCT user_id) AS c');
+        $this->db->from('ai_usage_logs');
         if ($date_start !== '') $this->db->where('created_at >=', $date_start);
         if ($date_end !== '')   $this->db->where('created_at <', $date_end);
         $stats['total_users'] = (int) $this->db->get()->row()->c;
-        $stats['mentor_calls'] = (int) $this->db->from('ai_usage_logs');
+
+        $this->db->from('ai_usage_logs');
         if ($date_start !== '') $this->db->where('created_at >=', $date_start);
         if ($date_end !== '')   $this->db->where('created_at <', $date_end);
         $this->db->where('module', 'mentor');
         $stats['mentor_calls'] = (int) $this->db->count_all_results();
-        $stats['course_calls'] = (int) $this->db->from('ai_usage_logs');
+
+        $this->db->from('ai_usage_logs');
         if ($date_start !== '') $this->db->where('created_at >=', $date_start);
         if ($date_end !== '')   $this->db->where('created_at <', $date_end);
         $this->db->where('module', 'course');
