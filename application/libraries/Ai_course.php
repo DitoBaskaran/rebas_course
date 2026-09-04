@@ -155,6 +155,7 @@ class Ai_course {
             ),
             'temperature' => 0.3,
             'max_tokens' => 800,
+            'stream' => false, // minta respons JSON penuh (bukan SSE chunk)
         );
 
         $ch = curl_init($base_url . '/chat/completions');

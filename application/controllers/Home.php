@@ -11,6 +11,7 @@ class Home extends CI_Controller {
         $this->load->model('Setting_model');
         $this->load->model('User_model');
         $this->load->model('Package_model');
+        $this->load->model('Mentor_model');
     }
 
     public function index() {
@@ -28,6 +29,9 @@ class Home extends CI_Controller {
         $data['total_courses_count'] = $this->db->count_all('courses');
         $data['total_teachers_count'] = $this->db->where('is_teacher', 1)->count_all_results('users');
         $data['total_students_count'] = $this->db->where('role', 'student')->count_all_results('users');
+        // Mentor unggulan utk home (top 4 by review/rating)
+        $data['featured_mentors'] = $this->Mentor_model->get_top_mentors(4);
+        $data['total_mentors_count'] = $this->db->where('is_mentor', 1)->count_all_results('users');
 
         $this->db->select('COUNT(*) as count');
         $this->db->from('certificates');

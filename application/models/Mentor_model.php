@@ -26,6 +26,27 @@ class Mentor_model extends CI_Model {
         return $this->db->get()->result();
     }
 
+    /**
+     * Mentor unggulan utk landing page — top N berdasarkan rating & jumlah review.
+     * Sudah termasuk kategori (dipakai utk badge di kartu).
+     */
+    public function get_top_mentors($limit = 4) {
+        $this->db->select('mentors.*, users.name, users.email, users.avatar, users.phone');
+        $this->db->from('mentors');
+        $this->db->join('users', 'users.id = mentors.user_id');
+        $this->db->where('mentors.is_active', 1);
+        $this->db->where('users.status', 'active');
+        $this->db->order_by('mentors.avg_rating', 'DESC');
+        $this->db->order_by('mentors.total_reviews', 'DESC');
+        $this->db->limit($limit);
+        $mentors = $this->db->get()->result();
+
+        foreach ($mentors as $m) {
+            $m->categories = $this->get_categories($m->id);
+        }
+        return $mentors;
+    }
+
     public function get_by_id($id) {
         $this->db->select('mentors.*, users.name, users.email, users.avatar, users.phone');
         $this->db->from('mentors');

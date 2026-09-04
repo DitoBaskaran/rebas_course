@@ -136,6 +136,53 @@
 .bt-cta h2{font-size:1.5rem;font-weight:700;color:#fff;margin:0 0 0.4rem;}
 .bt-cta p{font-size:0.86rem;color:rgba(255,255,255,0.75);margin:0;}
 .bt-cta .bt-btn{position:relative;z-index:1;}
+/* ===== AI RECOMMENDATION (interactive wow) ===== */
+.bt-ai-section{background:linear-gradient(180deg,#ffffff,#f0fdfa 100%);padding:4.5rem 0;}
+.bt-ai-box{max-width:760px;margin:2.6rem auto 0;background:#fff;border:1px solid #e4ecef;border-radius:22px;padding:2rem;box-shadow:0 24px 60px rgba(13,24,48,0.10);position:relative;}
+.bt-ai-box::before{content:'';position:absolute;inset:-1px;border-radius:22px;padding:1.5px;background:linear-gradient(120deg,var(--bt-teal),var(--bt-amber));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}
+.bt-ai-label{display:flex;align-items:center;gap:8px;font-size:0.72rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--bt-teal);margin-bottom:0.8rem;}
+.bt-ai-label i{color:var(--bt-amber);}
+.bt-ai-inputwrap{display:flex;gap:0.6rem;flex-wrap:wrap;}
+.bt-ai-inputwrap input{flex:1;min-width:220px;border:1.5px solid #d7e2e6;border-radius:10px;padding:0.72rem 1rem;font-size:0.88rem;font-family:inherit;transition:border 0.2s;}
+.bt-ai-inputwrap input:focus{outline:none;border-color:var(--bt-teal);box-shadow:0 0 0 3px rgba(0,150,136,0.12);}
+.bt-ai-inputwrap .bt-btn{white-space:nowrap;}
+.bt-ai-hint{font-size:0.7rem;color:var(--bt-muted);margin:0.6rem 0 0;}
+.bt-ai-result{margin-top:1.1rem;display:none;}
+.bt-ai-loading{display:none;align-items:center;gap:10px;color:var(--bt-muted);font-size:0.84rem;margin-top:1.1rem;}
+.bt-ai-loading .spinner{width:16px;height:16px;border:2.5px solid #d1e7e6;border-top-color:var(--bt-teal);border-radius:50%;animation:btSpin 0.7s linear infinite;}
+@keyframes btSpin{to{transform:rotate(360deg)}}
+.bt-ai-msg{background:#f0fdfa;border:1px solid #ccfbf1;border-radius:12px;padding:0.9rem 1.1rem;font-size:0.86rem;line-height:1.65;color:#134e4a;margin-bottom:0.9rem;display:none;}
+.bt-ai-cards{display:flex;flex-direction:column;gap:0.7rem;}
+.bt-ai-mentor{display:flex;align-items:center;gap:0.9rem;background:#fff;border:1px solid #e8eef1;border-radius:14px;padding:0.85rem 1rem;text-decoration:none;transition:all 0.2s;}
+.bt-ai-mentor:hover{border-color:var(--bt-teal);box-shadow:0 10px 24px rgba(13,24,48,0.08);transform:translateY(-2px);}
+.bt-ai-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:0.85rem;flex-shrink:0;background:linear-gradient(135deg,var(--bt-teal),var(--bt-navy));}
+.bt-ai-mentor h6{font-size:0.86rem;font-weight:700;color:var(--bt-navy);margin:0;}
+.bt-ai-mentor small{font-size:0.7rem;color:var(--bt-muted);display:block;margin-top:1px;}
+.bt-ai-go{margin-left:auto;width:34px;height:34px;border-radius:10px;background:var(--bt-amber);color:var(--bt-navy);display:flex;align-items:center;justify-content:center;font-size:0.72rem;flex-shrink:0;}
+.bt-ai-login-note{font-size:0.74rem;color:var(--bt-muted);text-align:center;margin-top:0.9rem;}
+.bt-ai-login-note a{color:var(--bt-teal);font-weight:700;text-decoration:none;}
+/* ===== MENTOR GRID ===== */
+.bt-mentors{background:var(--bt-gray);padding:4.5rem 0;}
+.bt-mentor-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem;margin-top:3rem;}
+.bt-mentor-card{background:#fff;border-radius:16px;overflow:hidden;text-decoration:none;color:inherit;transition:all 0.22s ease;border:1px solid #eef1f5;display:flex;flex-direction:column;}
+.bt-mentor-card:hover{transform:translateY(-4px);box-shadow:0 18px 38px rgba(13,24,48,0.12);border-color:transparent;}
+.bt-mentor-head{padding:1.4rem 1.2rem 1rem;text-align:center;background:linear-gradient(180deg,#f4f8f9,#fff);}
+.bt-mentor-avatar{width:74px;height:74px;border-radius:50%;margin:0 auto 0.7rem;display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.3rem;font-weight:700;box-shadow:0 8px 20px rgba(13,24,48,0.18);}
+.bt-mentor-name{font-size:0.92rem;font-weight:700;color:var(--bt-navy);margin:0;}
+.bt-mentor-title{font-size:0.7rem;color:var(--bt-muted);margin:0.15rem 0 0;}
+.bt-mentor-body{padding:0.9rem 1.2rem 1.2rem;display:flex;flex-direction:column;gap:0.6rem;flex:1;}
+.bt-mentor-cats{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;}
+.bt-mentor-cats span{font-size:0.6rem;font-weight:700;background:rgba(0,150,136,0.09);color:var(--bt-teal);padding:0.2rem 0.55rem;border-radius:99px;}
+.bt-mentor-rate{display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.75rem;color:#475569;}
+.bt-mentor-rate i{color:var(--bt-amber);font-size:0.7rem;}
+.bt-mentor-rate strong{color:var(--bt-navy);}
+.bt-mentor-foot{border-top:1px solid #f0f3f6;padding:0.8rem 1.2rem;display:flex;justify-content:space-between;align-items:center;}
+.bt-mentor-price{font-size:0.72rem;color:var(--bt-muted);}
+.bt-mentor-price strong{font-size:0.85rem;color:var(--bt-teal);display:block;}
+.bt-mentor-book{font-size:0.7rem;font-weight:700;color:var(--bt-teal);}
+.bt-mentor-book i{margin-left:3px;}
+/* ===== MENTOR STEPS (dark, reuse steps) ===== */
+.bt-steps-mentor .bt-step-icon i{color:var(--bt-amber);}
 /* responsive */
 @media (max-width:992px){
   .bt-hero{padding:7rem 0 4rem;}
@@ -147,36 +194,112 @@
   .bt-course-grid{grid-template-columns:repeat(2,1fr);}
   .bt-steps{grid-template-columns:1fr;max-width:440px;margin-left:auto;margin-right:auto;}
   .bt-testi-grid{grid-template-columns:1fr;}
+  .bt-mentor-grid{grid-template-columns:repeat(2,1fr);}
 }
 @media (max-width:768px){
   .bt-hero-title{font-size:1.75rem;}
   .bt-course-grid{grid-template-columns:1fr;}
   .bt-cta{padding:2rem 1.4rem;text-align:center;justify-content:center;}
+  .bt-mentor-grid{grid-template-columns:1fr;max-width:400px;margin-left:auto;margin-right:auto;}
 }
 </style>
 
-<!-- ================= HERO (Startup style) ================= -->
+<!-- ================= HERO (Mentoring-first) ================= -->
 <?php if (!isset($site_settings['hero_enabled']) || $site_settings['hero_enabled'] === '1'): ?>
 <section class="bt-hero">
     <div class="container">
         <div class="bt-hero-inner">
             <div class="text-center sm:text-start" style="text-align:center;">
                 <h1 class="bt-hero-title">
-                    <?php echo t(setting('hero_title', 'Belajar <span class="bt-mark">Skill</span> Apapun, Kapanpun'), setting('hero_title_en', 'Learn <span class="bt-mark">Any Skill</span>, Anytime')); ?>
+                    <?php echo t(setting('hero_title', 'Masalahmu <span class="bt-mark">Tuntas</span> Bersama Mentor Ahli'), setting('hero_title_en', '<span class="bt-mark">Solve It</span> with Expert Mentors')); ?>
                 </h1>
                 <p class="bt-hero-sub" style="margin-left:auto;margin-right:auto;">
-                    <?php echo t(setting('hero_subtitle', 'Akses ribuan konten belajar terstruktur, mentoring langsung dengan ahli, dan sertifikat yang diakui industri.'), setting('hero_subtitle_en', 'Access thousands of structured learning content, direct mentoring with experts, and industry-recognized certificates.')); ?>
+                    <?php echo t(setting('hero_subtitle', 'Konsultasi 1-on-1 langsung dengan praktisi berpengalaman — karier, bisnis, coding, hingga pengembangan diri. Dilengkapi materi belajar mandiri untuk persiapanmu.'), setting('hero_subtitle_en', 'Get 1-on-1 consultation directly with experienced practitioners — career, business, coding, and personal growth. Complete with self-paced materials to prepare.')); ?>
                 </p>
                 <div class="bt-hero-cta" style="justify-content:center;">
-                    <a href="<?php echo base_url(setting('hero_cta_link', 'courses')); ?>" class="bt-btn bt-btn-solid"><?php echo t(setting('hero_cta_text', 'Mulai Belajar'), setting('hero_cta_text_en', 'Start Learning')); ?> <i class="fas fa-arrow-right"></i></a>
-                    <a href="<?php echo base_url(setting('hero_secondary_cta_link', 'learning_paths')); ?>" class="bt-btn bt-btn-outline"><?php echo t(setting('hero_secondary_cta_text', 'Lihat Alur Belajar'), setting('hero_secondary_cta_text_en', 'View Learning Paths')); ?></a>
+                    <a href="<?php echo base_url(setting('hero_cta_link', 'mentoring')); ?>" class="bt-btn bt-btn-solid"><?php echo t(setting('hero_cta_text', 'Cari Mentor Sekarang'), setting('hero_cta_text_en', 'Find a Mentor Now')); ?> <i class="fas fa-arrow-right"></i></a>
+                    <a href="<?php echo base_url(setting('hero_secondary_cta_link', 'courses')); ?>" class="bt-btn bt-btn-outline"><?php echo t(setting('hero_secondary_cta_text', 'Jelajahi Kelas'), setting('hero_secondary_cta_text_en', 'Explore Courses')); ?></a>
                 </div>
             </div>
             <div class="bt-hero-visual" data-aos="fade-left" data-aos-duration="1000">
-                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&auto=format&fit=crop&q=70" alt="<?php echo t('Ilustrasi belajar', 'Learning illustration'); ?>">
-                <div class="bt-hero-chip bt-chip-1"><i class="fas fa-certificate"></i><div><strong><?php echo $total_certificates; ?>+</strong><span><?php echo t('Sertifikat Terbit', 'Certificates Issued'); ?></span></div></div>
-                <div class="bt-hero-chip bt-chip-2"><i class="fas fa-user-tie"></i><div><strong><?php echo $total_teachers_count; ?>+</strong><span><?php echo t('Mentor Ahli', 'Expert Mentors'); ?></span></div></div>
+                <img src="https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=900&auto=format&fit=crop&q=70" alt="<?php echo t('Sesi mentoring 1-on-1', '1-on-1 mentoring session'); ?>">
+                <div class="bt-hero-chip bt-chip-1"><i class="fas fa-user-tie"></i><div><strong><?php echo $total_teachers_count; ?>+</strong><span><?php echo t('Mentor Ahli', 'Expert Mentors'); ?></span></div></div>
+                <div class="bt-hero-chip bt-chip-2"><i class="fas fa-comments"></i><div><strong><?php echo $total_certificates; ?>+</strong><span><?php echo t('Sesi Berhasil', 'Sessions Completed'); ?></span></div></div>
             </div>
+        </div>
+    </div>
+</section>
+<?php endif; ?>
+
+<!-- ================= AI RECOMMENDATION (interactive) ================= -->
+<section class="bt-ai-section" id="ai-recommend">
+    <div class="container" data-aos="fade-up" data-aos-duration="1000">
+        <div class="bt-center">
+            <span class="bt-chip-tag"><?php echo t('Rekomendasi Cerdas', 'Smart Recommendation'); ?> <i class="fas fa-robot" style="margin-left:4px;"></i></span>
+            <h2 class="bt-title"><?php echo t('Bingung Mulai dari Mana?', 'Not Sure Where to Start?'); ?></h2>
+            <p class="bt-sub"><?php echo t('Ceritakan masalah atau tujuanmu, AI kami akan', 'Tell us your problem or goal, our AI will'); ?> <span class="bt-teal"><?php echo t('mencocokkan mentor yang tepat', 'match you with the right mentor'); ?></span> <?php echo t('untukmu.', 'for you.'); ?></p>
+        </div>
+
+        <div class="bt-ai-box">
+            <div class="bt-ai-label"><i class="fas fa-magic"></i> <?php echo t('Asisten BISATUNTAS', 'BISATUNTAS Assistant'); ?></div>
+            <div class="bt-ai-inputwrap">
+                <input type="text" id="aiProblemInput" maxlength="200" placeholder="<?php echo t('Misal: Saya bingung memilih karir antara programmer atau desainer…', 'E.g. I am confused choosing a career between programmer or designer…'); ?>">
+                <button type="button" class="bt-btn bt-btn-solid" id="aiRecommendBtn"><i class="fas fa-wand-magic-sparkles"></i> <?php echo t('Rekomendasikan', 'Recommend'); ?></button>
+            </div>
+            <p class="bt-ai-hint"><i class="fas fa-lightbulb" style="color:var(--bt-amber);"></i> <?php echo t('Coba: bingung pilih karir · persiapan interview kerja · ingin belajar coding dari nol · mengembangkan bisnis', 'Try: career choice · job interview prep · learning to code from scratch · growing a business'); ?></p>
+
+            <div class="bt-ai-loading" id="aiLoading"><span class="spinner"></span> <?php echo t('AI sedang mencari mentor terbaik untukmu…', 'AI is finding the best mentors for you…'); ?></div>
+            <div class="bt-ai-msg" id="aiMsg"></div>
+            <div class="bt-ai-result" id="aiResult"></div>
+            <div class="bt-ai-login-note" id="aiLoginNote" style="display:none;">
+                <?php echo t('Silakan', 'Please'); ?> <a href="<?php echo base_url('auth/login'); ?>"><?php echo t('masuk', 'login'); ?></a> <?php echo t('atau', 'or'); ?> <a href="<?php echo base_url('auth/register'); ?>"><?php echo t('daftar gratis', 'register free'); ?></a> <?php echo t('untuk mencoba rekomendasi AI dan booking mentor.', 'to try AI recommendations and book mentors.'); ?>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURED MENTORS ================= -->
+<?php if (!empty($featured_mentors)): ?>
+<section class="bt-mentors">
+    <div class="container" data-aos="fade-up" data-aos-duration="1500">
+        <div class="bt-center">
+            <span class="bt-chip-tag"><?php echo t('Mentor Unggulan', 'Featured Mentors'); ?></span>
+            <h2 class="bt-title"><?php echo t('Belajar Langsung dari Praktisi', 'Learn Directly from Practitioners'); ?></h2>
+            <p class="bt-sub"><?php echo t('Mentor berpengalaman siap membantu', 'Experienced mentors ready to help'); ?> <span class="bt-teal"><?php echo t('masalahmu tuntas.', 'solve your problem.'); ?></span></p>
+        </div>
+        <div class="bt-mentor-grid">
+            <?php $mc = 0; $mentor_colors = array('linear-gradient(135deg,#009688,#0D1830)', 'linear-gradient(135deg,#FBBF24,#f59e0b)', 'linear-gradient(135deg,#0D1830,#233358)', 'linear-gradient(135deg,#a855f7,#6d28d9)'); ?>
+            <?php foreach ($featured_mentors as $mentor): $mc++; ?>
+                <a href="<?php echo base_url('mentoring/detail/' . encode_id($mentor->id)); ?>" class="bt-mentor-card">
+                    <div class="bt-mentor-head">
+                        <div class="bt-mentor-avatar" style="background:<?php echo $mentor_colors[($mc - 1) % count($mentor_colors)]; ?>;">
+                            <?php echo strtoupper(mb_substr($mentor->name, 0, 1)); ?>
+                        </div>
+                        <h5 class="bt-mentor-name"><?php echo htmlspecialchars($mentor->name); ?></h5>
+                        <p class="bt-mentor-title"><?php echo htmlspecialchars(t($mentor->title, $mentor->title_en ?: $mentor->title)); ?></p>
+                    </div>
+                    <div class="bt-mentor-body">
+                        <?php if (!empty($mentor->categories)): ?>
+                        <div class="bt-mentor-cats">
+                            <?php foreach (array_slice($mentor->categories, 0, 2) as $cat): ?>
+                                <span><?php echo htmlspecialchars($cat->name ?: $cat->name_en); ?></span>
+                            <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                        <div class="bt-mentor-rate">
+                            <i class="fas fa-star"></i> <strong><?php echo number_format((float)$mentor->avg_rating, 1); ?></strong>
+                            <span>(<?php echo (int)$mentor->total_reviews; ?> <?php echo t('ulasan', 'reviews'); ?>)</span>
+                        </div>
+                    </div>
+                    <div class="bt-mentor-foot">
+                        <span class="bt-mentor-price"><?php echo t('Mulai dari', 'Starting from'); ?><strong>Rp <?php echo number_format((float)$mentor->price_per_session, 0, ',', '.'); ?></strong></span>
+                        <span class="bt-mentor-book"><?php echo t('Booking', 'Book'); ?> <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+        <div class="bt-center" style="margin-top:2.2rem;">
+            <a href="<?php echo base_url('mentoring'); ?>" class="bt-btn bt-btn-solid"><?php echo t('Lihat Semua Mentor', 'View All Mentors'); ?> <i class="fas fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
@@ -196,35 +319,40 @@
     </div>
 </section>
 
-<!-- ================= FEATURE SPLIT 1 ================= -->
+<!-- ================= FEATURE: MENTORING (1-on-1) ================= -->
 <section class="bt-feature">
     <div class="container">
         <div class="bt-feature-grid">
-            <div data-aos="fade-right" data-aos-duration="1000">
-                <span class="bt-chip-tag"><?php echo t('Fitur Unggulan', 'Key Feature'); ?></span>
-                <h2 class="bt-feature-title"><?php echo t('Kurikulum Terstruktur, Siap Kerja', 'Structured Curriculum, Job-Ready'); ?></h2>
-                <p class="bt-feature-desc"><?php echo t('Konten belajar disusun alur jelas dari pemula hingga mahir — video, kuis interaktif, dan studi kasus nyata yang langsung relevan dengan kebutuhan industri.', 'Learning content organized in a clear path from beginner to advanced — videos, interactive quizzes, and real case studies directly relevant to industry needs.'); ?></p>
-                <a href="<?php echo base_url('learning_paths'); ?>" class="bt-btn bt-btn-outline"><?php echo t('Pelajari Lebih Lanjut', 'Learn More'); ?> <i class="fas fa-arrow-right"></i></a>
+            <div class="bt-feature-media" data-aos="fade-right" data-aos-duration="1000">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=70" alt="">
             </div>
-            <div class="bt-feature-media" data-aos="fade-left" data-aos-duration="1000">
-                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=70" alt="">
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <span class="bt-chip-tag bt-chip-tag-amber"><?php echo t('Sesi 1-on-1', 'One-on-One Sessions'); ?></span>
+                <h2 class="bt-feature-title"><?php echo t('Diskusi Langsung, Solusi Personal', 'Direct Talk, Personal Solution'); ?></h2>
+                <p class="bt-feature-desc"><?php echo t('Tidak sekadar menonton video — ajukan pertanyaanmu, dapatkan arahan yang personal, dan selesaikan hambatanmu bersama mentor praktisi yang sudah malang melintang di industri.', 'Not just watching videos — ask your questions, get personal guidance, and resolve your blockers with practitioner mentors who have real industry experience.'); ?></p>
+                <ul style="list-style:none;padding:0;margin:0 0 1.6rem;display:flex;flex-direction:column;gap:0.5rem;">
+                    <li style="font-size:0.84rem;color:var(--bt-text);"><i class="fas fa-check-circle" style="color:var(--bt-teal);margin-right:8px;"></i><?php echo t('Feedback personal & rencana aksi nyata', 'Personal feedback & actionable plan'); ?></li>
+                    <li style="font-size:0.84rem;color:var(--bt-text);"><i class="fas fa-check-circle" style="color:var(--bt-teal);margin-right:8px;"></i><?php echo t('Jadwal fleksibel, sesi online dari mana saja', 'Flexible schedule, online from anywhere'); ?></li>
+                    <li style="font-size:0.84rem;color:var(--bt-text);"><i class="fas fa-check-circle" style="color:var(--bt-teal);margin-right:8px;"></i><?php echo t('Didukung materi mandiri sebagai persiapan', 'Supported by self-paced materials to prepare'); ?></li>
+                </ul>
+                <a href="<?php echo base_url('mentoring'); ?>" class="bt-btn bt-btn-solid"><?php echo t('Temukan Mentor yang Tepat', 'Find the Right Mentor'); ?> <i class="fas fa-arrow-right"></i></a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ================= FEATURE SPLIT 2 (reversed) ================= -->
+<!-- ================= FEATURE: KURSUS (pendukung) ================= -->
 <section class="bt-feature" style="padding-top:0;">
     <div class="container">
         <div class="bt-feature-grid">
-            <div class="bt-feature-media" data-aos="fade-right" data-aos-duration="1500">
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&auto=format&fit=crop&q=70" alt="">
+            <div data-aos="fade-right" data-aos-duration="1000">
+                <span class="bt-chip-tag"><?php echo t('Materi Mandiri', 'Self-Paced Materials'); ?></span>
+                <h2 class="bt-feature-title"><?php echo t('Persiapan Terbaik Sebelum Mentoring', 'Best Preparation Before Mentoring'); ?></h2>
+                <p class="bt-feature-desc"><?php echo t('Kuasai dasar lewat video, kuis interaktif, dan studi kasus — lalu maksimalkan sesi mentoringmu dengan pertanyaan yang lebih dalam dan spesifik.', 'Master the basics through videos, interactive quizzes, and case studies — then maximize your mentoring session with deeper, more specific questions.'); ?></p>
+                <a href="<?php echo base_url('courses'); ?>" class="bt-btn bt-btn-outline"><?php echo t('Jelajahi Kelas', 'Explore Courses'); ?> <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div data-aos="fade-left" data-aos-duration="1000">
-                <span class="bt-chip-tag bt-chip-tag-amber"><?php echo t('Mentoring Langsung', 'Direct Mentoring'); ?></span>
-                <h2 class="bt-feature-title"><?php echo t('Belajar Bareng Mentor Praktisi', 'Learn with Practitioner Mentors'); ?></h2>
-                <p class="bt-feature-desc"><?php echo t('Sesi mentoring 1-on-1 dan grup dengan praktisi industri berpengalaman. Tanyakan apa pun, dapatkan feedback detail, dan akselerasi progres belajarmu.', 'One-on-one and group mentoring sessions with experienced industry practitioners. Ask anything, get detailed feedback, and accelerate your learning progress.'); ?></p>
-                <a href="<?php echo base_url('mentoring'); ?>" class="bt-btn bt-btn-outline"><?php echo t('Lihat Program Mentoring', 'View Mentoring Programs'); ?> <i class="fas fa-arrow-right"></i></a>
+            <div class="bt-feature-media" data-aos="fade-left" data-aos-duration="1000">
+                <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=70" alt="">
             </div>
         </div>
     </div>
@@ -297,27 +425,27 @@
     <div class="container" data-aos="fade-up" data-aos-duration="1500">
         <div class="bt-center">
             <span class="bt-chip-tag" style="background:rgba(251,191,36,0.15);color:var(--bt-amber);"><?php echo t('Cara Kerja', 'How It Works'); ?></span>
-            <h2 class="bt-title"><?php echo t('3 Langkah Sederhana', '3 Simple Steps'); ?></h2>
-            <p class="bt-sub"><?php echo t('Mulai perjalanan belajarmu dalam hitungan menit', 'Start your learning journey in minutes'); ?></p>
+            <h2 class="bt-title"><?php echo t('3 Langkah Menuju Tuntas', '3 Steps to Get Solved'); ?></h2>
+            <p class="bt-sub"><?php echo t('Dari masalah ke solusi dalam hitungan menit', 'From problem to solution in minutes'); ?></p>
         </div>
         <div class="bt-steps">
             <div class="bt-step">
                 <div class="bt-step-num">01</div>
-                <div class="bt-step-icon"><i class="fas fa-compass"></i></div>
-                <h5><?php echo t('Jelajahi Konten', 'Explore Content'); ?></h5>
-                <p><?php echo t('Temukan kelas, materi, dan mentor sesuai minatmu.', 'Find classes, materials, and mentors based on your interests.'); ?></p>
+                <div class="bt-step-icon"><i class="fas fa-comments"></i></div>
+                <h5><?php echo t('Ceritakan Masalahmu', 'Tell Us Your Problem'); ?></h5>
+                <p><?php echo t('Tulis kesulitan atau tujuanmu — AI kami bantu cocokkan dengan mentor yang paling relevan.', 'Describe your challenge or goal — our AI helps match you with the most relevant mentor.'); ?></p>
             </div>
             <div class="bt-step">
                 <div class="bt-step-num">02</div>
                 <div class="bt-step-icon"><i class="fas fa-calendar-check"></i></div>
-                <h5><?php echo t('Pilih Jadwal', 'Choose Schedule'); ?></h5>
-                <p><?php echo t('Daftar dan pilih waktu belajar yang fleksibel.', 'Register and choose flexible study times.'); ?></p>
+                <h5><?php echo t('Pilih Mentor & Jadwal', 'Pick Mentor & Schedule'); ?></h5>
+                <p><?php echo t('Lihat profil, rating, dan bidang mentor. Booking sesi 1-on-1 di waktu yang fleksibel.', 'Review profiles, ratings, and specialties. Book a 1-on-1 session at a time that suits you.'); ?></p>
             </div>
             <div class="bt-step">
                 <div class="bt-step-num">03</div>
-                <div class="bt-step-icon"><i class="fas fa-award"></i></div>
-                <h5><?php echo t('Dapatkan Sertifikat', 'Get Certified'); ?></h5>
-                <p><?php echo t('Selesaikan materi dan dapatkan sertifikat resmi.', 'Complete materials and get official certificates.'); ?></p>
+                <div class="bt-step-icon"><i class="fas fa-flag-checkered"></i></div>
+                <h5><?php echo t('Selesaikan Bersama', 'Get It Solved'); ?></h5>
+                <p><?php echo t('Diskusi langsung, dapatkan solusi & rencana aksi. Kembangkan dirimu sampai tuntas.', 'Talk directly, get solutions & action plans. Grow until your problem is fully solved.'); ?></p>
             </div>
         </div>
     </div>
@@ -430,3 +558,87 @@
     </div>
 </section>
 <?php endif; ?>
+
+<script>
+(function() {
+    var loggedIn = <?php echo $this->session->userdata('logged_in') ? 'true' : 'false'; ?>;
+    var input = document.getElementById('aiProblemInput');
+    var btn = document.getElementById('aiRecommendBtn');
+    var loading = document.getElementById('aiLoading');
+    var msgEl = document.getElementById('aiMsg');
+    var resultEl = document.getElementById('aiResult');
+    var noteEl = document.getElementById('aiLoginNote');
+
+    function esc(s) {
+        var d = document.createElement('div');
+        d.textContent = s == null ? '' : s;
+        return d.innerHTML;
+    }
+    function showMsg(html, isErr) {
+        msgEl.innerHTML = html;
+        msgEl.style.display = '';
+        msgEl.style.background = isErr ? '#fff5f5' : '#f0fdfa';
+        msgEl.style.borderColor = isErr ? '#fecaca' : '#ccfbf1';
+        msgEl.style.color = isErr ? '#b91c1c' : '#134e4a';
+    }
+    function doRecommend() {
+        if (!loggedIn) {
+            resultEl.style.display = 'none';
+            msgEl.style.display = 'none';
+            if (noteEl) noteEl.style.display = '';
+            return;
+        }
+        var problem = (input ? input.value.trim() : '');
+        if (problem === '') {
+            input.focus();
+            input.style.borderColor = '#ef4444';
+            setTimeout(function() { input.style.borderColor = ''; }, 1500);
+            return;
+        }
+        if (btn) btn.disabled = true;
+        if (loading) loading.style.display = 'flex';
+        msgEl.style.display = 'none';
+        resultEl.style.display = 'none';
+        if (noteEl) noteEl.style.display = 'none';
+
+        var fd = new FormData();
+        fd.append('problem', problem);
+        fd.append('<?php echo $this->security->get_csrf_token_name(); ?>', '<?php echo $this->security->get_csrf_hash(); ?>');
+
+        fetch('<?php echo base_url('mentoring/ai-recommend'); ?>', {
+            method: 'POST', body: fd, headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (loading) loading.style.display = 'none';
+            if (btn) btn.disabled = false;
+            if (d.status !== 'ok') {
+                showMsg(esc(d.message || 'Terjadi kesalahan.'), true);
+                return;
+            }
+            if (d.reason) showMsg(esc(d.reason), false);
+            var cards = '';
+            if (d.mentors && d.mentors.length) {
+                d.mentors.forEach(function(m) {
+                    cards += '<a class="bt-ai-mentor" href="<?php echo base_url('mentoring/detail/'); ?>' + esc(m.encoded_id) + '">'
+                        + '<span class="bt-ai-avatar">' + esc((m.name || '?').charAt(0).toUpperCase()) + '</span>'
+                        + '<div><h6>' + esc(m.name) + '</h6><small>' + esc(m.title || '') + ' · ★ ' + esc(m.avg_rating || '0') + '</small></div>'
+                        + '<span class="bt-ai-go"><i class="fas fa-arrow-right"></i></span>'
+                        + '</a>';
+                });
+                resultEl.innerHTML = cards;
+                resultEl.style.display = '';
+            } else {
+                resultEl.style.display = 'none';
+            }
+        })
+        .catch(function() {
+            if (loading) loading.style.display = 'none';
+            if (btn) btn.disabled = false;
+            showMsg('<?php echo t('Terjadi kesalahan jaringan. Silakan coba lagi.', 'Network error. Please try again.'); ?>', true);
+        });
+    }
+    if (btn) btn.addEventListener('click', doRecommend);
+    if (input) input.addEventListener('keydown', function(e) { if (e.key === 'Enter') doRecommend(); });
+})();
+</script>
